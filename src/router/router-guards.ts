@@ -30,9 +30,7 @@ router.beforeEach((to, from, next) => {
                     // 请求带有 redirect 重定向时，登录自动重定向到该地址
                     const redirect = decodeURIComponent((from.query.redirect || to.path) as string)
                     if (to.path === redirect) {
-                        // set the replace: true so the navigation will not leave a history record
                         next({...to, replace: true})
-                        // next('/strategy/license')
                     } else {
                         // 跳转到目的路由
                         next({path: redirect})
@@ -52,7 +50,7 @@ router.beforeEach((to, from, next) => {
             // 在免登录名单，直接进入
             next()
         } else {
-            next({path: loginRoutePath, query: {redirect: to.fullPath}})
+            next({path: loginRoutePath, query: {redirect: to.fullPath}, replace: true})
             NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
         }
     }

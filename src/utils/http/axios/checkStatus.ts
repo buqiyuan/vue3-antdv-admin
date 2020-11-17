@@ -1,6 +1,5 @@
 import {message as Message} from "ant-design-vue";
 import router from '@/router'
-import {ACCESS_TOKEN} from '@/store/mutation-types'
 import {createStorage} from '@/utils/Storage'
 
 const storage = createStorage()
@@ -18,7 +17,7 @@ export function checkStatus(status: number, msg: string): void {
                 }
             })
             Message.destroy()
-            storage.remove(ACCESS_TOKEN)
+            storage.clear()
             error('登录身份已过期，请重新登录！');
             break;
         case 400:
@@ -65,5 +64,6 @@ export function checkStatus(status: number, msg: string): void {
             error('http版本不支持该请求!');
             break;
         default:
+            error(msg)
     }
 }

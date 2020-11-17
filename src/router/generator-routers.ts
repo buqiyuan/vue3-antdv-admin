@@ -109,6 +109,10 @@ const list2tree = (items, parentId = -1, arr = []) => {
                 icon: icon || 'icon-zhuomian',
                 // hiddenHeaderContent: hiddenHeaderContent,
                 // permission: item.actions || []
+                // TODO 简单模拟CRUD权限：创建（Create）、更新（Update）、读取（Retrieve）和删除（Delete）操作，可以自行修改查看页面效果
+                permission: parentId == -1
+                    ? []
+                    : ['create', 'update', 'retrieve', 'delete' ].map(n => `${url.split('/').filter(m => m.trim() != '').join('.')}.${n}`)
             }
         }
     })
@@ -130,7 +134,7 @@ export const generatorDynamicRouter = () => {
             // rootRouter.children = childrenNav
             menuNav.push(childrenNav)
             const routeList = list2tree(result)
-            console.log(routeList, '生成的路由')
+            console.log(routeList, '根据后端返回的权限路由生成')
             routeList.forEach(item => {
                 // 设置模块重定向到菜单
                 if (item.children?.length > 0 && !item.redirect) {

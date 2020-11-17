@@ -87,6 +87,8 @@ import {defineComponent, reactive, nextTick, toRefs, unref, watch} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 import components from "@/layout/tabs/components";
 import {RouterTransition} from '@/components/transition'
+import {createStorage} from '@/utils/Storage'
+import {TABS_ROUTES} from '@/store/mutation-types'
 
 import {message} from 'ant-design-vue'
 
@@ -108,6 +110,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const storage = createStorage()
 
     // 获取简易的路由对象
     const getSimpleRoute = (route): RouteItem => {
@@ -118,7 +121,7 @@ export default defineComponent({
     let routes: RouteItem[] = []
 
     try {
-      const routesStr = localStorage.getItem('routes') as string | null | undefined
+      const routesStr = storage.get(TABS_ROUTES) as string | null | undefined
       routes = routesStr ? JSON.parse(routesStr) : [getSimpleRoute(route)]
     } catch (e) {
       routes = [getSimpleRoute(route)]
@@ -141,7 +144,7 @@ export default defineComponent({
 
     // 在页面关闭或刷新之前，保存数据
     window.addEventListener('beforeunload', () => {
-      localStorage.setItem('routes', JSON.stringify(state.pageList))
+      storage.set(TABS_ROUTES, JSON.stringify(state.pageList))
     })
 
     // 关闭页面

@@ -59,6 +59,7 @@ import components from "@/layout/header/components";
 import {message, Modal} from 'ant-design-vue'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 import {useStore} from 'vuex'
+import {TABS_ROUTES} from "@/store/mutation-types";
 
 export default defineComponent({
   name: "PageHeader",
@@ -91,12 +92,14 @@ export default defineComponent({
           // logout({})
           store.dispatch('user/Logout').then(res => {
             message.success('成功退出登录')
+            // 移除标签页
+            localStorage.removeItem(TABS_ROUTES)
             router.replace({
               name: 'login',
               query: {
                 redirect: route.fullPath
               }
-            })
+            }).finally(() => location.reload())
           })
         }
       })

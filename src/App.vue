@@ -32,11 +32,15 @@ export default defineComponent({
     const timekeeping = () => {
       clearInterval(timer)
       if (route.name == 'login' || isLock.value) return
+      // 设置不锁屏
       store.commit('lockscreen/setLock', false)
+      // 重置锁屏时间
       store.commit('lockscreen/setLockTime')
       timer = setInterval(() => {
+        // 锁屏倒计时递减
         store.commit('lockscreen/setLockTime', lockTime.value - 1)
         if (lockTime.value <= 0) {
+          // 设置锁屏
           store.commit('lockscreen/setLock', true)
           return clearInterval(timer)
         }

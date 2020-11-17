@@ -19,7 +19,7 @@ import {useCreateModal} from "@/hooks";
 import {delAdminDictConfig, getAdminDictConfig} from '@/api/system/dict'
 import AddModal from './add-modal.vue'
 import {columns} from "./columns";
-import {hasPermission} from "@/utils/hasPermission";
+import {hasPermission} from "@/utils/permission/hasPermission";
 
 export default defineComponent({
   name: 'system-dict',

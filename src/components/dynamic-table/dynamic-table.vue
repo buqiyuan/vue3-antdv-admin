@@ -63,7 +63,7 @@
             </template>
             <!--            按钮-->
             <template v-if="action.type ==  'button'">
-              <a-button v-permission="{ action: action.permission, effect: 'disabled'}"
+              <a-button v-permission="action.permission"
                         v-bind="{...buttonProps,...action.props}" @click="actionEvent(slotProps.record, action.func)"
                         :key="index">
                 {{ action.text }}

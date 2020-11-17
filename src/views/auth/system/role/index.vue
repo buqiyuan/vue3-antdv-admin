@@ -1,10 +1,10 @@
 <template>
   <dynamic-table ref="tableRef" :columns="columns" :get-list-func="getAdminRole" rowKey="id" :row-selection="rowSelection">
     <template v-slot:title>
-      <a-button @click="addItem" type="primary">
+      <a-button v-permission="{ action: 'create', effect: 'disabled' }" @click="addItem" type="primary">
         添加
       </a-button>
-      <a-button @click="deleteItems" :disabled="isDisabled" type="primary">
+      <a-button @click="deleteItems" v-permission="{ action: 'delete' }" :disabled="isDisabled" type="primary">
         删除
       </a-button>
     </template>
@@ -19,7 +19,7 @@ import { useCreateModal} from "@/hooks";
 import {delAdminRole, getAdminRole} from '@/api/system/role'
 import AddModal from './add-modal.vue'
 import {columns} from "./columns";
-import {hasPermission} from "@/utils/hasPermission";
+import {hasPermission} from "@/utils/permission/hasPermission";
 
 export default defineComponent({
   name: 'system-role',

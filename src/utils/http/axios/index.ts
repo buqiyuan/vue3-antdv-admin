@@ -32,7 +32,10 @@ const transform: AxiosTransform = {
         //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
         const {code, result, message} = data;
 
-        if (code == 10042) return checkStatus(code, message)
+        if (code != 0) {
+            checkStatus(code, message)
+            return res.data
+        }
 
         // 不进行任何处理，直接返回
         // 用于页面代码可能需要直接获取code，data，message这些信息时开启

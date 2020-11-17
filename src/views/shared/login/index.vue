@@ -70,7 +70,7 @@ export default defineComponent({
         password
       }
       // params.password = md5(password)
-      const {code, result} = await store.dispatch('user/Login', params).finally(() => {
+      const {code, result, message: msg} = await store.dispatch('user/Login', params).finally(() => {
         state.loading = false
         message.destroy()
       })
@@ -83,7 +83,7 @@ export default defineComponent({
           }
         })
       } else {
-        message.info(result.message || '登录失败')
+        message.info(msg || '登录失败')
       }
     }
     return {
