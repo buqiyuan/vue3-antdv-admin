@@ -1,0 +1,61 @@
+@import "~ant-design-vue/lib/style/themes/default";
+@import "~ant-design-vue/es/button/style/mixin";
+
+// 若需要增加按钮类型，只需在这里修改这4个属性即可
+@btn-color: @white; // 按钮文字颜色
+@btn-bg: @warning-color; // 按钮背景颜色
+@btn-type: warning; //按钮类型
+@btn-border-color: @gold-5; // 按钮边框颜色
+
+.button-variant(@color; @background) {
+  .button-color(@color; @background; @background);
+
+  text-shadow: @btn-text-shadow;
+  box-shadow: @btn-primary-shadow;
+
+  &:hover,
+  &:focus {
+    .button-color(@color; ~`colorPalette('@{background}', 5) `; ~`colorPalette('@{background}', 5) `);
+  }
+
+  &:active,
+  &.active {
+    .button-color(@color; ~`colorPalette('@{background}', 7) `; ~`colorPalette('@{background}', 7) `);
+  }
+
+  .button-disabled();
+}
+
+body .ant-btn-@{btn-type} {
+  .button-variant(@btn-color; @btn-bg);
+
+  .ant-btn-group {
+    &:not(:first-child):not(:last-child) {
+      border-right-color: @btn-border-color;
+      border-left-color: @btn-border-color;
+
+      &:disabled {
+        border-color: @btn-default-border;
+      }
+    }
+
+    &:first-child {
+      &:not(:last-child) {
+        border-right-color: @btn-border-color;
+
+        &[disabled] {
+          border-right-color: @btn-default-border;
+        }
+      }
+    }
+  }
+
+  .ant-btn-group &:last-child:not(:first-child),
+  .ant-btn-group & + & {
+    border-left-color: @btn-border-color;
+
+    &[disabled] {
+      border-left-color: @btn-default-border;
+    }
+  }
+}

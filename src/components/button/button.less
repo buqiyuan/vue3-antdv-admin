@@ -1,0 +1,57 @@
+@import "~ant-design-vue/lib/style/themes/default";
+@import "~ant-design-vue/es/button/style/mixin";
+
+.btn-color(@btn-bg, @btn-type, @btn-color, @border-color) {
+  .button-variant(@color; @background) {
+    .button-color(@color; @background; @background);
+
+    text-shadow: @btn-text-shadow;
+    box-shadow: @btn-primary-shadow;
+
+    &:hover,
+    &:focus {
+      .button-color(@color; ~`colorPalette('@{background}', 5) `; ~`colorPalette('@{background}', 5) `);
+    }
+
+    &:active,
+    &.active {
+      .button-color(@color; ~`colorPalette('@{background}', 7) `; ~`colorPalette('@{background}', 7) `);
+    }
+
+    .button-disabled();
+  }
+
+  .ant-btn-@{btn-type} {
+    .button-variant(@btn-color; @btn-bg);
+
+    .ant-btn-group {
+      &:not(:first-child):not(:last-child) {
+        border-right-color: @border-color;
+        border-left-color: @border-color;
+
+        &:disabled {
+          border-color: @btn-default-border;
+        }
+      }
+
+      &:first-child {
+        &:not(:last-child) {
+          border-right-color: @border-color;
+
+          &[disabled] {
+            border-right-color: @btn-default-border;
+          }
+        }
+      }
+    }
+
+    .ant-btn-group &:last-child:not(:first-child),
+    .ant-btn-group & + & {
+      border-left-color: @border-color;
+
+      &[disabled] {
+        border-left-color: @btn-default-border;
+      }
+    }
+  }
+}

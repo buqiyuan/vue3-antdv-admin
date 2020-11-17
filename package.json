@@ -1,0 +1,74 @@
+{
+  "name": "vue3-antd",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "deploy": "gh-pages -d dist",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps",
+    "test prod gzip": "http-server dist --cors --gzip -c-1",
+    "test prod cors": "http-server dist --cors -P http://localhost:8080/BlackBox"
+  },
+  "main": "background.js",
+  "dependencies": {
+    "ant-design-vue": "^2.0.0-rc.1",
+    "axios": "^0.20.0",
+    "blueimp-md5": "^2.18.0",
+    "core-js": "^3.6.5",
+    "dayjs": "^1.8.35",
+    "lodash": "^4.17.20",
+    "mitt": "^2.1.0",
+    "nprogress": "^0.2.0",
+    "qs": "^6.9.4",
+    "vue": "^3.0.2",
+    "vue-router": "^4.0.0-rc.1",
+    "vuex": "^4.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.160",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "@vue/cli-plugin-babel": "^4.5.8",
+    "@vue/cli-plugin-eslint": "^4.5.8",
+    "@vue/cli-plugin-router": "^4.5.8",
+    "@vue/cli-plugin-typescript": "^4.5.8",
+    "@vue/cli-plugin-vuex": "^4.5.8",
+    "@vue/cli-service": "^4.5.8",
+    "@vue/compiler-sfc": "^3.0.2",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "babel-plugin-lodash": "^3.3.4",
+    "compression-webpack-plugin": "^5.0.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.1.0",
+    "gh-pages": "^3.1.0",
+    "http-server": "^0.12.3",
+    "less": "^3.12.2",
+    "less-loader": "^5.0.0",
+    "lodash-webpack-plugin": "^0.11.5",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.2",
+    "svg-sprite-loader": "^5.0.0",
+    "typescript": "^4.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $GIT_PARAMS"
+    }
+  },
+  "keywords": [
+    "vue",
+    "ant-design-vue",
+    "vue3",
+    "ts",
+    "tsx",
+    "admin",
+    "typescript"
+  ],
+  "homepage": "git@buqiyuan.github.io/vue3-antd",
+  "__npminstall_done": false
+}
