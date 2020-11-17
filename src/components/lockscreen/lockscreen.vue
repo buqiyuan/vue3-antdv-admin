@@ -23,11 +23,11 @@
             <user-outlined/>
           </template>
         </a-avatar>
-        <div class="username">{{ loginForm.user }}</div>
+        <div class="username">{{ loginForm.username }}</div>
         <a-input-search
             v-model:value="loginForm.password"
             type="password"
-            placeholder="解锁密码(123456)"
+            placeholder="请输入登录密码"
             size="large"
             @search="onLogin"
         >
@@ -75,7 +75,7 @@ import {useRouter, useRoute} from "vue-router";
 import {useOnline} from '@/hooks/useOnline'
 import {useTime} from '@/hooks/useTime'
 import {login} from "@/api/system/user";
-import md5 from 'blueimp-md5'
+// import md5 from 'blueimp-md5'
 import HuaweiCharge from './huawei-charge.vue'
 import XiaomiCharge from './xiaomi-charge.vue'
 import {useBattery} from '@/hooks/useBattery'
