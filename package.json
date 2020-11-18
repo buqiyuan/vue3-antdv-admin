@@ -12,7 +12,7 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "test prod gzip": "http-server dist --cors --gzip -c-1",
-    "test prod cors": "http-server dist --cors -P http://localhost:8080/BlackBox"
+    "test prod cors": "http-server dist --cors --gzip -P http://us-la-cn2.sakurafrp.com:59660"
   },
   "main": "background.js",
   "dependencies": {

@@ -1,5 +1,6 @@
 # vue3-antd
 基于vue3+antd的后台管理系统
+- 账号：admin，密码：123456
 - 在线预览：http://us-la-cn2.sakurafrp.com:59660/
 - 在线文档：http://us-la-cn2.sakurafrp.com:59660/api/v1/docs/
 - https://buqiyuan.github.io/vue3-antd/
