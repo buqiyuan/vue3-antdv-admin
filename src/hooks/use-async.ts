@@ -12,8 +12,6 @@ export const useAsync = async (func: Promise<any>, loading: any): Promise<any> =
 
     setLoading(loading, true)
 
-    const data = await func.finally(() => setLoading(loading, false))
-
-    return data
+    return await func.finally(() => setLoading(loading, false))
 }
 

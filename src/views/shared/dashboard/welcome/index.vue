@@ -1,24 +1,26 @@
 <template>
-  <div class="box">
-    <img src="~@/assets/analysis.svg">
-    <a-descriptions title="浏览器信息" bordered>
-      <a-descriptions-item v-for="(value, key) in browserInfo" :label="key" :key="key">
-        {{ value }}
-      </a-descriptions-item>
-      <a-descriptions-item label="网络状态">
-        <a-badge :status="online ? 'processing' : 'default'" :text="online ? '在线' : '离线'"/>
-      </a-descriptions-item>
-    </a-descriptions>
-  </div>
-  <!--  下面这段没啥用-->
-  <div v-show="false" class="charging">
-    <div>{{ batteryStatus }}</div>
-    <div v-show="Number.isFinite(battery.dischargingTime) && battery.dischargingTime != 0">
-      剩余可使用时间：{{ calcDischargingTime }}
+  <div>
+    <div class="box">
+      <img src="~@/assets/analysis.svg">
+      <a-descriptions title="浏览器信息" bordered>
+        <a-descriptions-item v-for="(value, key) in browserInfo" :label="key" :key="key">
+          {{ value }}
+        </a-descriptions-item>
+        <a-descriptions-item label="网络状态">
+          <a-badge :status="online ? 'processing' : 'default'" :text="online ? '在线' : '离线'"/>
+        </a-descriptions-item>
+      </a-descriptions>
     </div>
-    <span v-show="Number.isFinite(battery.chargingTime) && battery.chargingTime != 0">
+    <!--  下面这段没啥用-->
+    <div v-show="false" class="charging">
+      <div>{{ batteryStatus }}</div>
+      <div v-show="Number.isFinite(battery.dischargingTime) && battery.dischargingTime != 0">
+        剩余可使用时间：{{ calcDischargingTime }}
+      </div>
+      <span v-show="Number.isFinite(battery.chargingTime) && battery.chargingTime != 0">
           距离电池充满需要：{{ calcDischargingTime }}
         </span>
+    </div>
   </div>
 </template>
 

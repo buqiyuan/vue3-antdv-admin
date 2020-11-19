@@ -1,5 +1,6 @@
 import {RouteRecordRaw} from 'vue-router'
 import {RouterTransition} from '@/components/transition'
+import {markRaw} from "vue";
 
 const routeName = 'error'
 
@@ -14,7 +15,7 @@ export const errorRoutes = {
     path: '/error',
     name: routeName,
     redirect: '/error/404',
-    component: RouterTransition,
+    component: markRaw(RouterTransition),
     meta: {
         title: '错误页',
         icon: 'EditOutlined',

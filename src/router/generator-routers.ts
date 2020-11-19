@@ -4,6 +4,8 @@ import router from "@/router/index";
 import {routes} from "@/router/index";
 import {notFound} from '@/router/modules/error'
 import {Empty} from 'ant-design-vue'
+import common from "@/router/common";
+import store from "@/store";
 
 /**
  * 数组转树形结构
@@ -141,11 +143,14 @@ export const generatorDynamicRouter = () => {
                     item.redirect = {name: item.children[0].name}
                 }
             })
-            // routers.push(notFoundRouter)
-            routes[0].children?.push(...routeList)
-            router.addRoute(routes[0])
+            const layout = routes.find(item => item.name == 'Layout')!
+            layout.children = [
+                ...common,
+                ...routeList
+            ]
+            router.addRoute(layout)
             router.addRoute(notFound)
-            resolve(routeList)
+            resolve(layout.children)
         }).catch(err => {
             reject(err)
         })

@@ -6,8 +6,8 @@ import {Module} from 'vuex'
 import { generatorDynamicRouter } from '@/router/generator-routers'
 
 const state = {
-    routers: [],
     addRouters: [],
+    menus: [],
 }
 
 type StateType = typeof state
@@ -17,8 +17,7 @@ const asyncRouter: Module<StateType, any> = {
     state,
     mutations: {
         SET_ROUTERS: (state, routers) => {
-            state.addRouters = routers
-            state.routers = routers
+            state.menus = routers
         },
     },
     actions: {

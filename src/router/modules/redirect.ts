@@ -1,10 +1,11 @@
 import {RouteRecordRaw} from 'vue-router'
 import {RouterTransition} from '@/components/transition'
+import {markRaw} from "vue";
 
 const routes: Array<RouteRecordRaw> = [{
     path: '/redirect/:path*',
     name: 'Redirect',
-    component: RouterTransition,
+    component: markRaw(RouterTransition),
     meta: {
         title: '重定向',
         icon: 'SettingOutlined',

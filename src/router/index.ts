@@ -4,11 +4,9 @@ import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router'
 import NProgress from 'nprogress' // 进度条
 import 'nprogress/nprogress.css' // 进度条样式
 
-import redirect from './modules/redirect'
 import shared from './modules/shared'
-import dashboard from './modules/dashboard'
-import demos from './modules/demos'
 import {errorRoutes, notFound} from './modules/error'
+import common from "@/router/common";
 
 export const routes: Array<RouteRecordRaw> = [
     {
@@ -19,14 +17,12 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
             title: '首页'
         },
+        end: false,
         children: [
-            ...dashboard,
-            ...demos,
-            ...redirect,
+            ...common
         ]
     },
     ...shared,
-    notFound,
     errorRoutes,
 ]
 

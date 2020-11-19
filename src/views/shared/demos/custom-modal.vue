@@ -1,14 +1,16 @@
 <template>
-  <a-alert
-      message="自定义模态框"
-      description="沿用ant-design-vue的modal样式，自定义一个可拖拽、可调整大小的模态框"
-      type="info"
-      show-icon
-  />
-  <a-card>
-    <a-button @click="visible = true" type="primary">弹出弹窗</a-button>
-  </a-card>
-  <a-custom-modal v-model:visible="visible" />
+  <div>
+    <a-alert
+        message="自定义模态框"
+        description="沿用ant-design-vue的modal样式，自定义一个可拖拽、可调整大小的模态框"
+        type="info"
+        show-icon
+    />
+    <a-card>
+      <a-button @click="visible = true" type="primary">弹出弹窗</a-button>
+    </a-card>
+    <a-custom-modal v-model:visible="visible" />
+  </div>
 </template>
 
 <script lang="ts">

@@ -17,10 +17,6 @@ export function adminMenus() {
   return http.request<GetMenuListByUserIdResult>({
     url: Api.adminMenus,
     method: 'GET',
-  }, {
-
-    successMessageText: '获取菜单成功',
-    errorMessageText: '获取菜单失败'
   });
 }
 

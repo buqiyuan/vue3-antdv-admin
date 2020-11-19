@@ -35,8 +35,8 @@ export const useCreateModal = (Component: ComponentOptions, options?: Options, a
         ...options
     })
     // 渲染组件，并插入 body 之中
-    render(h(Suspense, _instance), container)
-    document.body.appendChild(container)
+    render(_instance, container)
+    // document.body.appendChild(container)
     // 在组件添加一个 remove 方法用来销毁组件
     _instance.component.ctx.remove = remove
     console.log(Component, '组件')

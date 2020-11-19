@@ -23,7 +23,7 @@
     "nprogress": "^0.2.0",
     "qs": "^6.9.4",
     "vue": "^3.0.2",
-    "vue-router": "^4.0.0-rc.1",
+    "vue-router": "^4.0.0-rc.3",
     "vuex": "^4.0.0-rc.1"
   },
   "devDependencies": {

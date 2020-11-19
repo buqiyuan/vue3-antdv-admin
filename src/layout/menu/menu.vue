@@ -27,6 +27,8 @@ import {
 import { Menu } from 'ant-design-vue';
 import MenuItem from './menu-item.vue'
 import {useRoute, useRouter} from "vue-router";
+import {useStore} from 'vuex'
+import {routes} from "@/router";
 
 export default defineComponent({
   components: {
@@ -50,6 +52,7 @@ export default defineComponent({
     // 当前路由
     const currentRoute = useRoute()
     const router = useRouter()
+    const store = useStore()
 
     // 获取当前打开的子菜单
     const getOpenKeys = () => [currentRoute.matched[1]?.name]
@@ -59,8 +62,7 @@ export default defineComponent({
       selectedKeys: [currentRoute.name]
     })
 
-    const menus = computed(() => router.getRoutes().find(item => item.name == 'Layout')?.children || [])
-    console.log(menus, '菜单')
+    const menus = computed(() => store.getters.menus || routes.find(item => item.name == 'Layout')!.children)
 
     // 监听菜单收缩状态
     watch(() => props.collapsed, (newVal) => {

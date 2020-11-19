@@ -130,13 +130,14 @@ export default defineComponent({
 
     const handleOk = e => {
       e.preventDefault();
+      state.confirmLoading = true
       formRef.value.validate()
           .then(async () => {
-            state.visible = false;
             const id = props.fields.id
             const params = toRaw(modelRef)
             id && delete params.type
-            await useAsync(id ? patchAdminAccess(id, params) : postAdminAccess(params), {ref: state, loadingName: 'confirmLoading'})
+            await (id ? patchAdminAccess(id, params) : postAdminAccess(params)).finally(() => state.confirmLoading = false)
+            state.visible = false;
             props.callback && props.callback()
           })
           .catch(err => {

@@ -1,8 +1,7 @@
-import router from './index'
+import router, {routes} from './index'
 import store from '@/store'
 import NProgress from 'nprogress' // progress bar
-// import '@/components/NProgress/nprogress.less'
-import {notification} from 'ant-design-vue'
+import common from "@/router/common";
 import {ACCESS_TOKEN} from '@/store/mutation-types'
 import {createStorage} from '@/utils/Storage'
 const Storage = createStorage()
@@ -10,6 +9,19 @@ const Storage = createStorage()
 NProgress.configure({showSpinner: false}) // NProgress Configuration
 
 const allowList = ['login', 'icons', 'error', 'error-404'] // no redirect whitelist
+
+const getNames = (routes) => {
+    routes.forEach(item => {
+        allowList.push(item.name)
+        if (item?.children?.length > 0) {
+            getNames(item.children)
+        }
+    })
+}
+getNames(common)
+
+console.log(allowList, '白名单列表')
+
 const loginRoutePath = '/login'
 const defaultRoutePath = '/dashboard'
 router.beforeEach((to, from, next) => {
@@ -21,29 +33,34 @@ router.beforeEach((to, from, next) => {
             // next()
             NProgress.done()
         } else {
-            if (store.getters.addRouters.length === 0) {
+            const hasRoute = router.hasRoute(to.name!)
+            // if (store.getters.addRouters.length === 0) {
                 // generate dynamic router
-                store.dispatch('async-router/GenerateRoutes').then(() => {
-                    if (allowList.includes(to.name as string)) return
+                store.dispatch('async-router/GenerateRoutes').then(async () => {
+
                     // 根据roles权限生成可访问的路由表
                     // 动态添加可访问路由表
-                    // router.addRoute(store.getters.addRouters)
-                    // 请求带有 redirect 重定向时，登录自动重定向到该地址
-                    const redirect = decodeURIComponent((from.query.redirect || to.path) as string)
-                    if (to.path === redirect) {
-                        next({...to, replace: true})
-                    } else {
-                        // 跳转到目的路由
-                        next({path: redirect})
-                    }
+                    if (allowList.includes(to.name as string)) return
+
+                   if (!hasRoute) {
+                       // 请求带有 redirect 重定向时，登录自动重定向到该地址
+                       const redirect = decodeURIComponent((from.query.redirect || '') as string)
+                       if (to.path === redirect) {
+                           next({...to, replace: true})
+                       } else {
+                           // 跳转到目的路由
+                           next()
+                       }
+                   }
+
                 })
-                if (allowList.includes(to.name as string)) {
+                if (allowList.includes(to.name as string) || hasRoute) {
                     // 在免登录名单，直接进入
                     next()
                 }
-            } else {
-                next()
-            }
+            // } else {
+            //     next()
+            // }
         }
     } else {
         // not login

@@ -232,6 +232,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', initWin)
+      console.log('弹窗销毁了')
     })
 
     return {
