@@ -7,14 +7,11 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy": "gh-pages -d dist",
-    "electron:build": "vue-cli-service electron:build",
-    "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "test prod gzip": "http-server dist --cors --gzip -c-1",
     "test prod cors": "http-server dist --cors --gzip -P http://us-la-cn2.sakurafrp.com:59660"
   },
-  "main": "background.js",
   "dependencies": {
     "ant-design-vue": "^2.0.0-rc.1",
     "axios": "^0.20.0",

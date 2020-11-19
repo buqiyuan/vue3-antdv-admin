@@ -59,7 +59,7 @@ const transform: AxiosTransform = {
             }
         } else {
             if (message) {
-                // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
+                // errorMessageMode=‘custom-modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
                 if (options.errorMessageMode === 'modal') {
                     Modal.confirm({title: '错误提示', content: message});
                 } else {

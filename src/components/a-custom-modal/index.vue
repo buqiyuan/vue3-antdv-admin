@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <div v-if="!isClose" ref="modalRootRef" class="ant-modal-root custom-modal">
+    <div v-show="visible" ref="modalRootRef" class="ant-modal-root custom-modal">
       <div class="ant-modal-mask"></div>
       <div class="ant-modal-wrap">
         <div ref="dragRef" class="ant-modal">
@@ -32,8 +32,8 @@
             </div>
             <div ref="modalFooter" class="ant-modal-footer">
               <div>
-                <a-button>取 消</a-button>
-                <a-button type="primary">确 认</a-button>
+                <a-button @click="closeModal">取 消</a-button>
+                <a-button @click="closeModal" type="primary">确 认</a-button>
               </div>
             </div>
           </div>
@@ -44,12 +44,18 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onBeforeUnmount, onMounted, ref} from 'vue'
+import {defineComponent, onBeforeUnmount, onMounted, PropType, watch, nextTick, SetupContext, ref} from 'vue'
 
 export default defineComponent({
-  name: "basic-modal",
-  setup() {
-    const isClose = ref<boolean>(false)
+  name: "a-custom-modal",
+  emits: ['update:visible'],
+  props: {
+    visible: { // 弹出显隐
+      type: Boolean as PropType<boolean>,
+      default: false
+    }
+  },
+  setup(props, {emit, attrs}: SetupContext ) {
     const dragRef = ref<any>(null);
     const modalBody = ref<any>(null);
     const modalFooter = ref<any>(null);
@@ -208,23 +214,27 @@ export default defineComponent({
 
     // 关闭弹窗
     const closeModal = () => {
-      isClose.value = true
+      emit('update:visible', false)
     }
 
     onMounted(() => {
-      headerHeight = titleRef.value?.offsetHeight
-      footerHeight = modalFooter.value?.offsetHeight
-      initWin()
-      window.addEventListener('resize', initWin)
+      watch(() => props.visible, value => {
+        if (value) {
+          nextTick(() => {
+            headerHeight = titleRef.value?.offsetHeight
+            footerHeight = modalFooter.value?.offsetHeight
+            initWin()
+            window.addEventListener('resize', initWin)
+          })
+        }
+      }, {immediate: true})
     })
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', initWin)
     })
 
-
     return {
-      isClose,
       dragRef,
       modalBody,
       modalFooter,

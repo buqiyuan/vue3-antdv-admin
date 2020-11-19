@@ -7,7 +7,8 @@ import 'nprogress/nprogress.css' // 进度条样式
 import redirect from './modules/redirect'
 import shared from './modules/shared'
 import dashboard from './modules/dashboard'
-import {errorRoutes} from './modules/error'
+import demos from './modules/demos'
+import {errorRoutes, notFound} from './modules/error'
 
 export const routes: Array<RouteRecordRaw> = [
     {
@@ -20,11 +21,13 @@ export const routes: Array<RouteRecordRaw> = [
         },
         children: [
             ...dashboard,
+            ...demos,
             ...redirect,
         ]
     },
+    ...shared,
+    notFound,
     errorRoutes,
-    ...shared
 ]
 
 const router = createRouter({

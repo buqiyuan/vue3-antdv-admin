@@ -24,6 +24,7 @@ router.beforeEach((to, from, next) => {
             if (store.getters.addRouters.length === 0) {
                 // generate dynamic router
                 store.dispatch('async-router/GenerateRoutes').then(() => {
+                    if (allowList.includes(to.name as string)) return
                     // 根据roles权限生成可访问的路由表
                     // 动态添加可访问路由表
                     // router.addRoute(store.getters.addRouters)

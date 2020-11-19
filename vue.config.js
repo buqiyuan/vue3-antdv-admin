@@ -45,7 +45,7 @@ module.exports = {
         config
             .plugin('html')
             .tap(args => {
-                args[0].title = 'vue3-antd管理系统'
+                args[0].title = 'vue3-antd-admin管理系统'
                 return args
             })
 

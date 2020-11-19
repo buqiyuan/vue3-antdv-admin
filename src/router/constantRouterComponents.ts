@@ -6,6 +6,4 @@ export const constantRouterComponents = {
     '/system/account': () => import(/* webpackChunkName: "system-account" */ '@/views/auth/system/account/index.vue'), // 账号管理
     '/system/dict': () => import(/* webpackChunkName: "system-dict" */ '@/views/auth/system/dict/index.vue'), // 字典管理
     '/system/role': () => import(/* webpackChunkName: "system-role" */ '@/views/auth/system/role/index.vue'), // 角色管理
-    '/test': () => RouterTransition, // 测试
-    '/test/01': () => import(/* webpackChunkName: "test-01" */ '@/components/modal/basic-modal.vue'), // 测试
 }
