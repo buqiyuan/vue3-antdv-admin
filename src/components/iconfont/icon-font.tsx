@@ -4,8 +4,11 @@ import {isString} from "@/utils/is";
 
 const MyIconFont = createFromIconfontCN({
     // scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-    scriptUrl: '//at.alicdn.com/t/font_2184398_zflo1kjcemp.js',
+    // scriptUrl: '//at.alicdn.com/t/font_2184398_zflo1kjcemp.js',
+    // iconfont字体图标本地化，详见：/public/iconfont.js
+    scriptUrl: '',
 });
+
 export default defineComponent({
     name: 'icon-font',
     props: {

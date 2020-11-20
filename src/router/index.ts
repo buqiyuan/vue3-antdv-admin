@@ -17,7 +17,6 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
             title: '首页'
         },
-        end: false,
         children: [
             ...common
         ]

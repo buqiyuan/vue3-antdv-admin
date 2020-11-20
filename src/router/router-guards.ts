@@ -10,15 +10,15 @@ NProgress.configure({showSpinner: false}) // NProgress Configuration
 
 const allowList = ['login', 'icons', 'error', 'error-404'] // no redirect whitelist
 
-const getNames = (routes) => {
-    routes.forEach(item => {
-        allowList.push(item.name)
-        if (item?.children?.length > 0) {
-            getNames(item.children)
-        }
-    })
-}
-getNames(common)
+// const getNames = (routes) => {
+//     routes.forEach(item => {
+//         allowList.push(item.name)
+//         if (item?.children?.length > 0) {
+//             getNames(item.children)
+//         }
+//     })
+// }
+// getNames(common)
 
 console.log(allowList, '白名单列表')
 
@@ -30,7 +30,6 @@ router.beforeEach((to, from, next) => {
     if (token) {
         if (to.name === 'login') {
             next({path: defaultRoutePath})
-            // next()
             NProgress.done()
         } else {
             const hasRoute = router.hasRoute(to.name!)
@@ -63,6 +62,7 @@ router.beforeEach((to, from, next) => {
             // }
         }
     } else {
+        console.log(to.name, 'what h')
         // not login
         if (allowList.includes(to.name as string)) {
             // 在免登录名单，直接进入

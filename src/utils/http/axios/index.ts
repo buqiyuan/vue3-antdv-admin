@@ -207,7 +207,7 @@ const axios = new VAxios({
         // 接口地址
         apiUrl: isDev ? process.env.BASE_URL : 'http://us-la-cn2.sakurafrp.com:59660/api/v1',
     },
-    withCredentials: true
+    withCredentials: false
 });
 
 export default axios;

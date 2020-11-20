@@ -2,7 +2,7 @@
   <div class="icons-box">
     <a-card>
       <template #title>
-        菜单图标（<a href="//at.alicdn.com/t/font_2184398_zflo1kjcemp.js">//at.alicdn.com/t/font_2184398_zflo1kjcemp.js</a>）
+        菜单图标（<a href="/iconfont.js">/public/iconfont.js</a>）
       </template>
       <template v-for="iconItem in icons" :key="iconItem.code">
         <a-card-grid @click="copyIcon(iconItem)">
