@@ -2,7 +2,7 @@
   <div class="login-box">
     <div class="login-logo">
       <svg-icon icon-class="logo" />
-      <h1>黑匣子控制中心</h1>
+      <h1>vue3-antd-admin</h1>
     </div>
     <a-form layout="horizontal" :model="formInline" @submit="handleSubmit" @submit.prevent>
       <a-form-item>

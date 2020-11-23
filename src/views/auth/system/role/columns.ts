@@ -2,8 +2,9 @@ import {useCreateModal} from "@/hooks";
 import EditModal from './edit-modal.vue'
 import {delAdminRole} from "@/api/system/role";
 import {formatDate} from '@/utils/common'
+import {TableColumn} from "@/types/tableColumn";
 
-export const columns = [ // 进程策略
+export const columns: TableColumn[] = [ // 进程策略
     {
         title: '角色名称',
         dataIndex: 'title',

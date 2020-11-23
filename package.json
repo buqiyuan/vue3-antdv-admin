@@ -7,8 +7,6 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy": "gh-pages -d dist",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps",
     "test prod gzip": "http-server dist --cors --gzip -c-1",
     "test prod cors": "http-server dist --cors --gzip -P http://us-la-cn2.sakurafrp.com:59660"
   },
@@ -23,7 +21,7 @@
     "nprogress": "^0.2.0",
     "qs": "^6.9.4",
     "vue": "^3.0.2",
-    "vue-router": "^4.0.0-rc.3",
+    "vue-router": "^4.0.0-rc.5",
     "vuex": "^4.0.0-rc.1"
   },
   "devDependencies": {

@@ -161,7 +161,7 @@ module.exports = {
         proxy: {
             '/api': {
                 target: 'http://us-la-cn2.sakurafrp.com:59660',
-                // target: 'http://localhost:8080/BlackBox',
+                // target: 'http://localhost:7000',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/api/v1'

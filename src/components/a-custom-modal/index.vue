@@ -1,54 +1,61 @@
 <template>
   <teleport to="body">
-    <div v-show="visible" ref="modalRootRef" class="ant-modal-root custom-modal">
-      <div class="ant-modal-mask"></div>
-      <div class="ant-modal-wrap">
-        <div ref="dragRef" class="ant-modal">
-          <div class="ant-modal-content">
-            <div ref="titleRef" class="ant-modal-header">
-              <span class="ant-modal-title">这是一个可以拖动的窗口</span>
-              <div class="ant-modal-operate">
-                <button ref="minRef" type="button" class="min" title="最小化"></button>
-                <button ref="maxRef" type="button" class="max" title="最大化"></button>
-                <button ref="revertRef" type="button" class="revert" title="还原"></button>
-                <button @click="closeModal" type="button" class="close" title="关闭"></button>
+    <div ref="modalRootRef" class="ant-modal-root custom-modal">
+      <transition key="mask" v-bind="maskTransitionProps">
+        <div v-show="visible" class="ant-modal-mask"></div>
+      </transition>
+      <transition key="dialog" v-bind="dialogTransitionProps">
+        <div v-if="visible" class="ant-modal-wrap" >
+          <div v-if="visible" ref="dragRef" class="ant-modal">
+            <div class="ant-modal-content">
+              <div ref="titleRef" class="ant-modal-header">
+                <span class="ant-modal-title">这是一个可以拖动的窗口</span>
+                <div class="ant-modal-operate">
+                  <button ref="minRef" type="button" class="min" title="最小化"></button>
+                  <button ref="maxRef" type="button" class="max" title="最大化"></button>
+                  <button ref="revertRef" type="button" class="revert" title="还原"></button>
+                  <button @click="closeModal" type="button" class="close" title="关闭"></button>
+                </div>
               </div>
-            </div>
-            <div ref="resizeLRef" class="resizeL"></div>
-            <div ref="resizeTRef" class="resizeT"></div>
-            <div ref="resizeRRef" class="resizeR"></div>
-            <div ref="resizeBRef" class="resizeB"></div>
-            <div ref="resizeLTRef" class="resizeLT"></div>
-            <div ref="resizeTRRef" class="resizeTR"></div>
-            <div ref="resizeBRRef" class="resizeBR"></div>
-            <div ref="resizeLBRef" class="resizeLB"></div>
-            <div ref="modalBody" class="ant-modal-body">
-              <slot>
-                ① 窗口可以拖动；<br/>
-                ② 窗口可以通过八个方向改变大小；<br/>
-                ③ 窗口可以最小化、最大化、还原、关闭；<br/>
-                ④ 限制窗口最小宽度/高度。
-              </slot>
-            </div>
-            <div ref="modalFooter" class="ant-modal-footer">
-              <div>
-                <a-button @click="closeModal">取 消</a-button>
-                <a-button @click="closeModal" type="primary">确 认</a-button>
+              <div ref="resizeLRef" class="resizeL"></div>
+              <div ref="resizeTRef" class="resizeT"></div>
+              <div ref="resizeRRef" class="resizeR"></div>
+              <div ref="resizeBRef" class="resizeB"></div>
+              <div ref="resizeLTRef" class="resizeLT"></div>
+              <div ref="resizeTRRef" class="resizeTR"></div>
+              <div ref="resizeBRRef" class="resizeBR"></div>
+              <div ref="resizeLBRef" class="resizeLB"></div>
+              <div ref="modalBody" class="ant-modal-body">
+                <slot>
+                  ① 窗口可以拖动；<br/>
+                  ② 窗口可以通过八个方向改变大小；<br/>
+                  ③ 窗口可以最小化、最大化、还原、关闭；<br/>
+                  ④ 限制窗口最小宽度/高度。
+                </slot>
+              </div>
+              <div ref="modalFooter" class="ant-modal-footer">
+                <div>
+                  <a-button @click="closeModal">取 消</a-button>
+                  <a-button @click="closeModal" type="primary">确 认</a-button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
   </teleport>
 </template>
 
 <script lang="ts">
+import {debounce} from '@/utils/lodashChunk'
 import {defineComponent, onBeforeUnmount, onMounted, PropType, watch, nextTick, SetupContext, ref} from 'vue'
+import { getTransitionProps, Transition } from 'ant-design-vue/lib/_util/transition'
 
 export default defineComponent({
   name: "a-custom-modal",
   emits: ['update:visible'],
+  components: {Transition},
   props: {
     visible: { // 弹出显隐
       type: Boolean as PropType<boolean>,
@@ -72,6 +79,20 @@ export default defineComponent({
     const maxRef = ref<any>(null);
     const revertRef = ref<any>(null);
 
+    const mousePosition = {x: 0, y: 0}
+    // 获取鼠标点击位置
+    const getClickPosition = (e: MouseEvent) => {
+      Object.assign(mousePosition, {x: e.pageX, y: e.pageY})
+    }
+    document.documentElement.addEventListener('click', getClickPosition, true)
+
+    // 遮罩层动画
+    const maskTransitionProps = getTransitionProps('fade');
+    // 弹窗动画
+    const dialogTransitionProps = getTransitionProps('zoom', {
+      onAfterLeave: () => emit('update:visible', false),
+    });
+
     // 最小可调整的宽高
     const dragMinHeight = 140
     const dragMinWidth = 400
@@ -86,7 +107,6 @@ export default defineComponent({
       handle = handle || oDrag;
       handle.style.cursor = "move";
       handle.onmousedown = function (event) {
-        event = event || window.event;
         disX = event.clientX - oDrag.offsetLeft;
         const disY = event.clientY - oDrag.offsetTop;
 
@@ -196,6 +216,11 @@ export default defineComponent({
 
     const initWin = () => {
 
+      const {left, top} = dragRef.value.getBoundingClientRect()
+      const {x,y} = mousePosition
+
+      dragRef.value.style.transformOrigin = `${x - left}px ${y - top}px`
+
       drag(dragRef.value, titleRef.value);
       //四角
       resize(dragRef.value, resizeLTRef.value, true, true, false, false);
@@ -212,6 +237,8 @@ export default defineComponent({
       dragRef.value.style.top = (document.documentElement.clientHeight - dragRef.value.offsetHeight) / 2 + "px";
     }
 
+    const debounced = debounce(initWin, 30)
+
     // 关闭弹窗
     const closeModal = () => {
       emit('update:visible', false)
@@ -224,14 +251,16 @@ export default defineComponent({
             headerHeight = titleRef.value?.offsetHeight
             footerHeight = modalFooter.value?.offsetHeight
             initWin()
-            window.addEventListener('resize', initWin)
           })
+          window.addEventListener('resize', debounced)
         }
       }, {immediate: true})
     })
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', initWin)
+      window.removeEventListener('resize', debounced)
+      document.documentElement.removeEventListener('click', getClickPosition, true)
+      debounced.cancel
       console.log('弹窗销毁了')
     })
 
@@ -251,6 +280,8 @@ export default defineComponent({
       minRef,
       maxRef,
       revertRef,
+      maskTransitionProps,
+      dialogTransitionProps,
       closeModal
     }
   }
@@ -403,7 +434,6 @@ export default defineComponent({
           bottom: 0;
           overflow: hidden;
           cursor: nw-resize;
-          background: url(https://www.17sucai.com/preview/65612/2014-02-17/Desktop1/img/resize.png) no-repeat;
         }
       }
     }

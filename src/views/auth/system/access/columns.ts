@@ -2,8 +2,9 @@ import {useCreateModal} from "@/hooks";
 import AddModal from './add-modal.vue'
 import {delAdminAccess} from "@/api/system/access";
 import {formatDate} from '@/utils/common'
+import {TableColumn} from "@/types/tableColumn";
 
-export const columns = [ // 进程策略
+export const columns: TableColumn[] = [ // 进程策略
     {
         title: '名称',
         dataIndex: 'moduleName',
