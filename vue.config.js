@@ -12,7 +12,7 @@ const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
     // publicPath: isDev ? '' : querystring.unescape('<%=request.getContextPath()%>'),
-    publicPath: isDev ? '/' : '/vue3-antd-admin',
+    publicPath: process.env.BASE_URL,
     // filenameHashing: false,
     productionSourceMap: isDev,
     css: {

@@ -1,7 +1,6 @@
 import router, {routes} from './index'
 import store from '@/store'
 import NProgress from 'nprogress' // progress bar
-import common from "@/router/common";
 import {ACCESS_TOKEN} from '@/store/mutation-types'
 import {createStorage} from '@/utils/Storage'
 const Storage = createStorage()

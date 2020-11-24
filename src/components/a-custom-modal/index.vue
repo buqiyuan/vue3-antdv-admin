@@ -5,8 +5,8 @@
         <div v-show="visible" class="ant-modal-mask"></div>
       </transition>
       <transition key="dialog" v-bind="dialogTransitionProps">
-        <div v-if="visible" class="ant-modal-wrap" >
-          <div v-if="visible" ref="dragRef" class="ant-modal">
+        <div ref="modalWrapRef" v-if="visible" class="ant-modal-wrap" >
+          <div ref="dragRef" class="ant-modal">
             <div class="ant-modal-content">
               <div ref="titleRef" class="ant-modal-header">
                 <span class="ant-modal-title">这是一个可以拖动的窗口</span>
@@ -64,6 +64,7 @@ export default defineComponent({
   },
   setup(props, {emit, attrs}: SetupContext ) {
     const dragRef = ref<any>(null);
+    const modalWrapRef = ref<any>(null);
     const modalBody = ref<any>(null);
     const modalFooter = ref<any>(null);
     const titleRef = ref<any>(null);
@@ -81,9 +82,8 @@ export default defineComponent({
 
     const mousePosition = {x: 0, y: 0}
     // 获取鼠标点击位置
-    const getClickPosition = (e: MouseEvent) => {
-      Object.assign(mousePosition, {x: e.pageX, y: e.pageY})
-    }
+    const getClickPosition = (e: MouseEvent) => Object.assign(mousePosition, {x: e.pageX, y: e.pageY})
+
     document.documentElement.addEventListener('click', getClickPosition, true)
 
     // 遮罩层动画
@@ -219,7 +219,8 @@ export default defineComponent({
       const {left, top} = dragRef.value.getBoundingClientRect()
       const {x,y} = mousePosition
 
-      dragRef.value.style.transformOrigin = `${x - left}px ${y - top}px`
+      // 设置弹出的位置
+      modalWrapRef.value.style.transformOrigin = `${x - left}px ${y - top}px`
 
       drag(dragRef.value, titleRef.value);
       //四角
@@ -266,6 +267,7 @@ export default defineComponent({
 
     return {
       dragRef,
+      modalWrapRef,
       modalBody,
       modalFooter,
       titleRef,

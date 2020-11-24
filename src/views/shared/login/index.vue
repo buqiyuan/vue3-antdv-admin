@@ -2,7 +2,8 @@
   <div class="login-box">
     <div class="login-logo">
       <svg-icon icon-class="logo" />
-      <h1>vue3-antd-admin</h1>
+<!--      <img src="~@/assets/images/logo.png" alt="">-->
+      <h1>Antd Admin</h1>
     </div>
     <a-form layout="horizontal" :model="formInline" @submit="handleSubmit" @submit.prevent>
       <a-form-item>

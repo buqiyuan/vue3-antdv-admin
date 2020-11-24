@@ -35,7 +35,7 @@
       </a-form-item>
       <a-form-item label="小图标">
         <a-input v-model:value="modelRef.icon" placeholder="小图标"/>
-        <a href="/#/icons" target="_blank">可选图标</a>
+        <a :href="`${prefix}#/icons`" target="_blank">可选图标</a>
       </a-form-item>
       <a-form-item label="排序">
         <a-input-number v-model:value="modelRef.sort" :min="1" placeholder="排序"/>
@@ -49,6 +49,9 @@ import {defineComponent, reactive, toRefs, onMounted, toRaw, ref} from 'vue'
 import {Modal, Form, InputNumber, Input, Select} from 'ant-design-vue'
 import {useAsync} from "@/hooks";
 import {postAdminAccess, getAdminAccessModule, patchAdminAccess} from "@/api/system/access";
+const prefix = process.env.BASE_URL
+
+console.log(process.env, 'process.env')
 
 export default defineComponent({
   name: "add-modal",
@@ -150,6 +153,7 @@ export default defineComponent({
       ...toRefs(state),
       formRef,
       rules,
+      prefix,
       labelCol: {span: 6},
       wrapperCol: {span: 18},
       modelRef,

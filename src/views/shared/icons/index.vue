@@ -2,7 +2,7 @@
   <div class="icons-box">
     <a-card>
       <template #title>
-        菜单图标（<a href="/iconfont.js">/public/iconfont.js</a>）
+        菜单图标（<a :href="`${prefix}iconfont.js`">/public/iconfont.js</a>）
       </template>
       <template v-for="iconItem in icons" :key="iconItem.code">
         <a-card-grid @click="copyIcon(iconItem)">
@@ -24,6 +24,8 @@ import {IconFont} from '@/components/iconfont'
 import icons from "./icons";
 import {copyText} from '@/utils/common'
 
+const prefix = process.env.BASE_URL
+
 export default defineComponent({
   name: "icons",
   components: {IconFont, [Card.name]: Card, [Card.Grid.name]: Card.Grid},
@@ -36,6 +38,7 @@ export default defineComponent({
 
     return {
       icons,
+      prefix,
       copyIcon
     }
   }

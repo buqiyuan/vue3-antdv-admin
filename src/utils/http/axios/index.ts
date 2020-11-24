@@ -205,7 +205,7 @@ const axios = new VAxios({
         // 消息提示类型
         errorMessageMode: 'none',
         // 接口地址
-        apiUrl: isDev ? process.env.BASE_URL : 'http://us-la-cn2.sakurafrp.com:59660/api/v1',
+        apiUrl: process.env.VUE_APP_API_URL,
     },
     withCredentials: false
 });
