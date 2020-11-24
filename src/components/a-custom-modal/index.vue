@@ -9,7 +9,7 @@
           <div ref="dragRef" class="ant-modal">
             <div class="ant-modal-content">
               <div ref="titleRef" class="ant-modal-header">
-                <span class="ant-modal-title">这是一个可以拖动的窗口</span>
+                <span class="ant-modal-title">{{ title }}</span>
                 <div class="ant-modal-operate">
                   <button ref="minRef" type="button" class="min" title="最小化"></button>
                   <button ref="maxRef" type="button" class="max" title="最大化"></button>
@@ -33,12 +33,14 @@
                   ④ 限制窗口最小宽度/高度。
                 </slot>
               </div>
-              <div ref="modalFooter" class="ant-modal-footer">
-                <div>
-                  <a-button @click="closeModal">取 消</a-button>
-                  <a-button @click="closeModal" type="primary">确 认</a-button>
+                <div v-if="footer != null" ref="modalFooter" class="ant-modal-footer">
+                  <slot name="footer">
+                  <div>
+                    <a-button @click="closeModal">取 消</a-button>
+                    <a-button @click="closeModal" type="primary" :loading="confirmLoading">确 认</a-button>
+                  </div>
+                  </slot>
                 </div>
-              </div>
             </div>
           </div>
         </div>
@@ -57,7 +59,22 @@ export default defineComponent({
   emits: ['update:visible'],
   components: {Transition},
   props: {
+    title: {
+      type: String as PropType<string>,
+      default: '标题'
+    },
     visible: { // 弹出显隐
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    footer: { // 底部内容，当不需要默认底部按钮时，可以设为 :footer="null"	string|slot
+      default: 'I am footer'
+    },
+    confirmLoading: { // 确定按钮 loading
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    centered: { // 垂直居中展示 Modal
       type: Boolean as PropType<boolean>,
       default: false
     }
@@ -215,13 +232,7 @@ export default defineComponent({
     }
 
     const initWin = () => {
-
-      const {left, top} = dragRef.value.getBoundingClientRect()
-      const {x,y} = mousePosition
-
-      // 设置弹出的位置
-      modalWrapRef.value.style.transformOrigin = `${x - left}px ${y - top}px`
-
+      // 注册拖拽
       drag(dragRef.value, titleRef.value);
       //四角
       resize(dragRef.value, resizeLTRef.value, true, true, false, false);
@@ -235,7 +246,14 @@ export default defineComponent({
       resize(dragRef.value, resizeBRef.value, false, false, true, false);
 
       dragRef.value.style.left = (document.documentElement.clientWidth - dragRef.value.offsetWidth) / 2 + "px";
-      dragRef.value.style.top = (document.documentElement.clientHeight - dragRef.value.offsetHeight) / 2 + "px";
+      dragRef.value.style.top = props.centered ? (document.documentElement.clientHeight - dragRef.value.offsetHeight) / 2 + "px" : '100px';
+
+      // 模态框的位置
+      const {left, top} = dragRef.value.getBoundingClientRect()
+      // 鼠标点击的位置
+      const {x,y} = mousePosition
+      // 设置弹出的位置
+      modalWrapRef.value.style.transformOrigin = `${x - left}px ${y - top}px`
     }
 
     const debounced = debounce(initWin, 30)
@@ -249,8 +267,8 @@ export default defineComponent({
       watch(() => props.visible, value => {
         if (value) {
           nextTick(() => {
-            headerHeight = titleRef.value?.offsetHeight
-            footerHeight = modalFooter.value?.offsetHeight
+            headerHeight = titleRef.value?.offsetHeight || 0
+            footerHeight = modalFooter.value?.offsetHeight || 0
             initWin()
           })
           window.addEventListener('resize', debounced)
@@ -291,154 +309,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.custom-modal {
-  .ant-modal-wrap {
-    .ant-modal {
-      position: absolute;
-      min-width: 400px;
-      min-height: 140px;
-      padding-bottom: 0;
-
-      .ant-modal-content {
-        height: 100%;
-
-        .ant-modal-header {
-          display: flex;
-          justify-content: space-between;
-
-          .ant-modal-operate {
-            display: flex;
-
-            button, button.open {
-              width: 21px;
-              height: 19px;
-              line-height: 56px;
-              display: block;
-              border: 0;
-              cursor: pointer;
-              margin-left: 5px;
-              background: url(~@/assets/images/tool.png) no-repeat;
-            }
-
-            button.open {
-              position: absolute;
-              top: 10px;
-              left: 50%;
-              margin-left: -10px;
-              background-position: 0 0;
-            }
-
-            button.open:hover {
-              background-position: 0 -29px;
-            }
-
-            button.min {
-              background-position: -29px 0;
-            }
-
-            button.min:hover {
-              background-position: -29px -29px;
-            }
-
-            button.max {
-              background-position: -60px 0;
-            }
-
-            button.max:hover {
-              background-position: -60px -29px;
-            }
-
-            button.revert {
-              background-position: -149px 0;
-              display: none;
-            }
-
-            button.revert:hover {
-              background-position: -149px -29px;
-            }
-
-            button.close {
-              background-position: -89px 0;
-            }
-
-            button.close:hover {
-              background-position: -89px -29px;
-            }
-          }
-        }
-
-        .ant-modal-body {
-          overflow: auto;
-        }
-
-        .resizeL, .resizeT, .resizeR, .resizeB, .resizeLT, .resizeTR, .resizeLB {
-          position: absolute;
-          background: #000;
-          overflow: hidden;
-          opacity: 0;
-          filter: alpha(opacity=0);
-        }
-
-        .resizeL, .resizeR {
-          top: 0;
-          width: 5px;
-          height: 100%;
-          cursor: w-resize;
-        }
-
-        .resizeR {
-          right: 0;
-        }
-
-        .resizeT, .resizeB {
-          width: 100%;
-          height: 5px;
-          cursor: n-resize;
-        }
-
-        .resizeT {
-          top: 0;
-        }
-
-        .resizeB {
-          bottom: 0;
-        }
-
-        .resizeLT, .resizeTR, .resizeLB {
-          width: 8px;
-          height: 8px;
-          background: #FF0;
-        }
-
-        .resizeLT {
-          top: 0;
-          left: 0;
-          cursor: nw-resize;
-        }
-
-        .resizeTR {
-          top: 0;
-          right: 0;
-          cursor: ne-resize;
-        }
-
-        .resizeLB {
-          left: 0;
-          bottom: 0;
-          cursor: ne-resize;
-        }
-
-        .resizeBR {
-          position: absolute;
-          width: 14px;
-          height: 14px;
-          right: 0;
-          bottom: 0;
-          overflow: hidden;
-          cursor: nw-resize;
-        }
-      }
-    }
-  }
-}
+@import './style';
 </style>

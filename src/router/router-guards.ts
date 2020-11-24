@@ -1,3 +1,4 @@
+import {isNavigationFailure} from 'vue-router'
 import router, {routes} from './index'
 import store from '@/store'
 import NProgress from 'nprogress' // progress bar
@@ -48,6 +49,7 @@ router.beforeEach((to, from, next) => {
                        } else {
                            // 跳转到目的路由
                            next()
+                           setTimeout(() => router.replace({...to}))
                        }
                    }
 
@@ -73,7 +75,10 @@ router.beforeEach((to, from, next) => {
     }
 })
 
-router.afterEach(() => {
+router.afterEach((to, from, failure) => {
+    if (isNavigationFailure(failure)) {
+        console.log('failed navigation', failure)
+    }
     NProgress.done() // finish progress bar
 })
 
