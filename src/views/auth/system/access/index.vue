@@ -10,14 +10,16 @@
       </a-button>
     </template>
     <template v-slot:moduleName="{record}">
-      {{ record.moduleName || record.actionName }}
+      <span :ref="el => itemRefs[record.id] = el">
+        {{ record.moduleName || record.actionName }}
+      </span>
     </template>
   </dynamic-table>
 </template>
 <script lang="ts">
-import {defineComponent, reactive, toRefs, createVNode, computed, ref} from 'vue'
+import {defineComponent, reactive, toRefs, createVNode, render, nextTick, computed, ref} from 'vue'
 import {Modal} from 'ant-design-vue'
-import {QuestionCircleOutlined} from '@ant-design/icons-vue'
+import {QuestionCircleOutlined, LoadingOutlined} from '@ant-design/icons-vue'
 import {DynamicTable} from '@/components/dynamic-table'
 import {useCreateModal} from "@/hooks";
 import {delAdminAccess, getAdminAccess} from '@/api/system/access'
@@ -27,14 +29,16 @@ import {columns} from "./columns";
 export default defineComponent({
   name: 'system-access',
   components: {
-    DynamicTable
+    DynamicTable,
   },
   setup() {
     const tableRef = ref<any>(null)
 
     const state = reactive({
       data: [],
+      itemRefs: {},
       uploading: false,
+      expandedRowKeys: [] as string[],
       tableLoading: false,
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {
@@ -67,11 +71,20 @@ export default defineComponent({
     }
     const isDisabled = computed(() => state.rowSelection.selectedRowKeys.length == 0)
 
+    // 点击展开图标
     const expand = async (expanded, record) => {
       console.log(expanded, record)
+      // 如果是第一次展开
       if (expanded && record.children && !Array.isArray(record.children)) {
+        const iconEle = state.itemRefs[record.id].parentElement.querySelector('.ant-table-row-expand-icon')
+        render(createVNode(LoadingOutlined), iconEle)
+        await nextTick()
+        iconEle.classList.add('loading-icon')
         const {data} = await getAdminAccess({id: record.id,limit: 100})
         record.children = data
+        render(null, iconEle)
+        await nextTick()
+        iconEle.classList.remove('loading-icon')
       }
     }
 
@@ -88,3 +101,12 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss">
+.loading-icon {
+  border: none;
+  &.ant-table-row-expanded::after {
+    content: none;
+  }
+}
+</style>

@@ -42,8 +42,8 @@ export default defineComponent({
       state.confirmLoading = true;
       dynamicForm.value.validate()
           .then( async res => {
-            state.visible = false;
-            await useAsync(postAdminDictConfig(dynamicForm.value.modelRef), {ref: state, loadingName: 'confirmLoading'})
+            await postAdminDictConfig(dynamicForm.value.modelRef).finally(() => state.confirmLoading = false)
+            state.visible = false
             props.callback && props.callback()
           })
           .catch(err => {

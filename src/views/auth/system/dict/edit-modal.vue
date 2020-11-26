@@ -46,8 +46,8 @@ export default defineComponent({
       dynamicForm.value.validate()
           .then( async res => {
             const result = await useAsync(patchAdminDictConfig(props.fields?.id, dynamicForm.value.modelRef), {ref: state, loadingName: 'confirmLoading'})
-            props.callback && props.callback()
             state.visible = false;
+            props.callback && props.callback()
           })
           .catch(err => {
             console.log('error', err);

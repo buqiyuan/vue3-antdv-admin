@@ -10,17 +10,11 @@
       :pagination="pageOption"
       @change="paginationChange"
   >
-    <!--     表格标题start-->
-    <template v-if="$slots.title" v-slot:title>
-      <slot name="title"/>
+    <!--  自定义slots start-->
+    <template v-for="(value, key) in $slots" v-slot:[key]="slotProps">
+        <slot :name="key" v-bind="slotProps"></slot>
     </template>
-    <!--    表格标题end-->
-
-    <!--    展开行start-->
-    <template v-if="$slots.expandedRowRender" #expandedRowRender="slotProps">
-      <slot name="expandedRowRender" v-bind="slotProps"/>
-    </template>
-    <!--    展开行end-->
+    <!--    自定义slots end-->
 
     <!--    是否有自定义显示slots start-->
     <template v-for="slotItem in columns.filter(item => item.slots)"
@@ -149,7 +143,7 @@ export default defineComponent({
     [Popconfirm.name]: Popconfirm,
     [Select.Option.name]: Select.Option
   },
-  setup(props: Props) {
+  setup(props: Props, {attrs, slots}) {
     const {pageOption} = usePages()
 
     const state = reactive({

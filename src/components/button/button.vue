@@ -4,7 +4,7 @@
         :type="buttonTypes.includes(type) ? type : 'default'"
         :class="[`ant-btn-${type}`]"
     >
-    <template v-for="(value, key) in $slots">
+    <template v-for="(value, key) in $slots" v-slot:[key]="slotProps">
       <slot :name="key"></slot>
     </template>
   </Button>

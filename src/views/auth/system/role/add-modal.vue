@@ -43,12 +43,12 @@ export default defineComponent({
       state.confirmLoading = true;
       dynamicForm.value.validate()
           .then( async res => {
-            state.visible = false;
             const param = {
               ...dynamicForm.value.modelRef,
               accessIdsList: dynamicForm.value.modelRef.accessIdsList.toString()
             }
             await useAsync(postAdminRole(param), {ref: state, loadingName: 'confirmLoading'})
+            state.visible = false;
             props.callback && props.callback()
           })
           .catch(err => {

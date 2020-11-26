@@ -52,8 +52,8 @@ export default defineComponent({
               roles: roles.toString()
             }
             const result = await useAsync(patchAdminAccount(props.fields?.id, params), {ref: state, loadingName: 'confirmLoading'})
-            props.callback && props.callback()
             state.visible = false;
+            props.callback && props.callback()
           })
           .catch(err => {
             console.log('error', err);
