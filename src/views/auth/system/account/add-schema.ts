@@ -2,17 +2,6 @@ import {FormSchema} from "@/types/schema";
 import {getAdminRole, getAdminRoleAccess} from "@/api/system/role";
 
 export const addSchema: FormSchema = {
-    style: {
-        width: "auto"
-    },
-    formItemLayout: {
-        labelCol: {
-            span: 4
-        },
-        wrapperCol: {
-            span: 20
-        }
-    },
     formItem: [
         {
             type: "input",
@@ -51,6 +40,7 @@ export const addSchema: FormSchema = {
             field: "roles",
             value: [],
             options: [],
+            loading: true,
             asyncOptions: async () => {
                 // 获取角色列表
                 const {data} = await getAdminRole({})

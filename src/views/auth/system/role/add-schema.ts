@@ -41,13 +41,12 @@ export const addSchema: FormSchema = {
             }
         },
         {
-            type: "component",
+            type: markRaw(AccessTree),
             label: "资源",
             field: "accessIdsList",
             value: [],
-            component: markRaw(AccessTree),
             asyncValue: async (currentValue, formInstance) => {
-                const {id} = formInstance.props.fields as any
+                const {id} = formInstance?.props.fields as any
                 // 获取角色列表
                 const data = await getAdminRoleAccess(id)
                 // 设置角色复选框选项

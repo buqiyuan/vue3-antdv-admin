@@ -1,24 +1,26 @@
 <template>
-  <a-tree
-      checkable
-      checkStrictly
-      :selectable="false"
-      :tree-data="treeData"
-      :replace-fields="replaceFields"
-      v-model:checkedKeys="checkedKeys"
-      @check="onCheck"
-  >
-  </a-tree>
+  <a-spin :spinning="spinning">
+    <a-tree
+        checkable
+        checkStrictly
+        :selectable="false"
+        :tree-data="treeData"
+        :replace-fields="replaceFields"
+        v-model:checkedKeys="checkedKeys"
+        @check="onCheck"
+    >
+    </a-tree>
+  </a-spin>
 </template>
 
 <script lang="ts">
 import {defineComponent, reactive, toRefs, computed, onMounted} from 'vue'
-import {Tree} from 'ant-design-vue'
+import {Tree, Spin} from 'ant-design-vue'
 import {getAdminRoleAccess} from '@/api/system/role'
 
 export default defineComponent({
   name: "access-tree",
-  components: {[Tree.name]: Tree},
+  components: {[Tree.name]: Tree, [Spin.name]: Spin},
   emits: ['update:value'], // 双向数据绑定
   props: {
     value: {
@@ -29,6 +31,7 @@ export default defineComponent({
   setup(props, {emit}) {
     const state = reactive({
       treeData: [],
+      spinning: false,
       replaceFields: {
         key: 'id'
       },
@@ -51,7 +54,8 @@ export default defineComponent({
 
     onMounted(async () => {
       // 获取权限资源列表
-      const data = await getAdminRoleAccess()
+      state.spinning = true
+      const data = await getAdminRoleAccess().finally(() => state.spinning = false)
       state.treeData = list2tree(data)
     })
 

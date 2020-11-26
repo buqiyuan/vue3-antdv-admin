@@ -11,7 +11,7 @@
               <div ref="titleRef" class="ant-modal-header">
                 <span class="ant-modal-title">{{ title }}</span>
                 <div class="ant-modal-operate">
-                  <button ref="minRef" type="button" class="min" title="最小化"></button>
+                  <button v-show="false" ref="minRef" type="button" class="min" title="最小化"></button>
                   <button ref="maxRef" type="button" class="max" title="最大化"></button>
                   <button ref="revertRef" type="button" class="revert" title="还原"></button>
                   <button @click="closeModal" type="button" class="close" title="关闭"></button>

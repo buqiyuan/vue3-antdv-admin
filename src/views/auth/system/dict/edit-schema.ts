@@ -2,17 +2,6 @@ import {FormSchema} from "@/types/schema";
 import {getAdminRole} from "@/api/system/role";
 
 export const editSchema: FormSchema = {
-    style: {
-        width: "auto"
-    },
-    formItemLayout: {
-        labelCol: {
-            span: 4
-        },
-        wrapperCol: {
-            span: 20
-        }
-    },
     formItem: [
         {
             type: "input",

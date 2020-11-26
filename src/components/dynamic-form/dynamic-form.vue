@@ -20,7 +20,7 @@
           <!--        是否需要输入提示end-->
 
           <!--        普通输入框 start-->
-          <a-input v-if="formItem.type == 'input'" v-model:value="modelRef[formItem.field]" v-bind="formItem.props" v-on="formItem.eventObject" autocomplete="off"
+          <a-input v-if="formItem.type == 'input'" v-model:value="modelRef[formItem.field]" v-bind="formItem.props" v-on="formItem.eventObject" autocomplete="new-password"
                    :disabled="formItem?.props?.disabled"/>
           <!--        普通输入框 end-->
 

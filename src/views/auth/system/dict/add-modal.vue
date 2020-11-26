@@ -6,7 +6,7 @@
       :afterClose="remove"
       @ok="handleOk"
   >
-    <dynamic-form ref="dynamicForm" :dynamic-validate-form="dynamicValidateForm" />
+    <schema-form ref="dynamicForm" :dynamic-validate-form="dynamicValidateForm" />
   </a-modal>
 </template>
 
@@ -15,12 +15,12 @@ import {defineComponent, reactive, toRefs, onMounted, ref} from 'vue'
 import {Modal} from 'ant-design-vue'
 import {addSchema} from "./add-schema";
 import {useAsync} from "@/hooks";
-import DynamicForm from '@/components/dynamic-form/dynamic-form.vue'
+import {SchemaForm} from '@/components/JSON-schema-form'
 import {postAdminDictConfig} from "@/api/system/dict";
 
 export default defineComponent({
   name: "add-modal",
-  components: { [Modal.name]: Modal, DynamicForm},
+  components: { [Modal.name]: Modal, SchemaForm},
   props: {
     remove: { // 移除模态框
       type: Function

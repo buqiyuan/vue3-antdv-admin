@@ -6,7 +6,7 @@
       :afterClose="remove"
       @ok="handleOk"
   >
-    <dynamic-form ref="dynamicForm" :fields="{...fields,roles:fields?.roles.map(item => item.id)}" :dynamic-validate-form="dynamicValidateForm" />
+    <schema-form ref="dynamicForm" :fields="{...fields,roles:fields?.roles.map(item => item.id)}" :dynamic-validate-form="dynamicValidateForm" />
   </a-modal>
 </template>
 
@@ -15,12 +15,12 @@ import {defineComponent, reactive, toRefs, ref, onMounted} from 'vue'
 import {Modal} from 'ant-design-vue'
 import {editSchema} from "./edit-schema"
 import {useAsync} from "@/hooks";
-import DynamicForm from '@/components/dynamic-form/dynamic-form.vue'
+import {SchemaForm} from '@/components/JSON-schema-form'
 import {patchAdminAccount} from "@/api/system/account";
 
 export default defineComponent({
   name: "edit-modal",
-  components: { [Modal.name]: Modal, DynamicForm},
+  components: { [Modal.name]: Modal, SchemaForm},
   props: {
     remove: { // 移除模态框
       type: Function

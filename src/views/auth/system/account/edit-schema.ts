@@ -36,6 +36,7 @@ export const editSchema: FormSchema = {
             field: "roles",
             value: [],
             options: [],
+            loading: true,
             asyncOptions: async () => {
                 // 获取角色列表
                 const {data} = await getAdminRole({})
