@@ -51,8 +51,6 @@ import {useAsync} from "@/hooks";
 import {postAdminAccess, getAdminAccessModule, patchAdminAccess} from "@/api/system/access";
 const prefix = process.env.BASE_URL
 
-console.log(process.env, 'process.env')
-
 export default defineComponent({
   name: "add-modal",
   components: {[Modal.name]: Modal, [Form.name]: Form, [Form.Item.name]: Form.Item, [InputNumber.name]: InputNumber, [Input.name]: Input,[Select.name]: Select, ASelectOption: Select.Option},

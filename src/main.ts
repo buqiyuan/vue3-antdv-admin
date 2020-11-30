@@ -12,7 +12,6 @@ import 'ant-design-vue/dist/antd.css'
 import '@/router/router-guards'
 import {permission} from "@/directives/permission";
 import hasPermission from "@/utils/permission/hasPermission";
-
 const app = createApp(App)
 
 // app.config.globalProperties.$message = message
@@ -39,4 +38,4 @@ console.log(store)
 
 router.isReady().then(() => app.mount('#app'))
 
-// app.config.devtools = true
+

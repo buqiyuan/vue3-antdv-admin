@@ -103,7 +103,7 @@ const user: Module<StateType, any> = {
                 commit('SET_INFO', '')
                 Storage.remove(ACCESS_TOKEN)
                 Storage.remove(CURRENT_USER)
-                resolve()
+                resolve('')
                 // logout(state.token).then(() => {
                 //     commit('SET_TOKEN', '')
                 //     commit('SET_ROLES', [])

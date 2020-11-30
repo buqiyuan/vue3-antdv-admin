@@ -28,7 +28,11 @@
       <template v-else>
         <!--        非操作 start-->
         <div v-if="slotItem.slots.customRender !== 'action'" :key="slotItem.slots.customRender">
-          <!--        格式化显示-->
+          <!--        使用自定义组件格式化显示-->
+          <template v-if="slotItem.slotsType == 'component'">
+            <component :is="slotItem.slotsFunc(slotProps.record)" />
+          </template>
+          <!--        使用自定义组件格式化显示-->
           <template v-if="slotItem.slotsType == 'format'">
             {{ slotItem.slotsFunc(slotProps.record[slotItem.dataIndex || slotItem.key], slotProps.record) }}
           </template>
@@ -161,7 +165,7 @@ export default defineComponent({
     }) => {
       state.tableLoading = true
       const {data, pageNumber,pageSize, total} = await props.getListFunc(param).finally(() => state.tableLoading = false)
-      Object.assign(state.pageOption, {current: pageNumber,pageSize, total})
+      Object.assign(state.pageOption, {current: ~~pageNumber,pageSize: ~~pageSize, total: ~~total})
       state.data = data
     }
 

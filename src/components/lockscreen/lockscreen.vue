@@ -27,6 +27,7 @@
         <a-input-search
             v-model:value="loginForm.password"
             type="password"
+            autofocus
             placeholder="请输入登录密码"
             size="large"
             @search="onLogin"
@@ -120,6 +121,7 @@ export default defineComponent({
 
     // 登录
     const onLogin = async () => {
+      if (state.loginForm.password.trim() == '') return message.warn('请填写密码')
       const params = {...state.loginForm}
       state.loginLoading = true
       // params.password = md5(params.password)

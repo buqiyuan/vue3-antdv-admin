@@ -2,7 +2,10 @@
   <div>
     <div class="box">
       <img src="~@/assets/analysis.svg">
-      <a-descriptions title="浏览器信息" bordered>
+      <a-descriptions title="系统信息" bordered>
+        <a-descriptions-item label="IP" key="IP">
+          {{ userInfo.IP }}
+        </a-descriptions-item>
         <a-descriptions-item v-for="(value, key) in browserInfo" :label="key" :key="key">
           {{ value }}
         </a-descriptions-item>
@@ -32,6 +35,8 @@ import HuaweiCharge from '@/components/lockscreen/huawei-charge.vue'
 import BrowserType from '@/utils/browser-type'
 import {useBattery} from "@/hooks/useBattery";
 import {useOnline} from '@/hooks/useOnline'
+import {useStore} from 'vuex'
+import performanceMonitor from '@/utils/performanceMonitor'
 
 export default defineComponent({
   name: 'welcome',
@@ -45,6 +50,7 @@ export default defineComponent({
     EllipsisOutlined,
   },
   setup() {
+    const userInfo = useStore().getters.userInfo
     // 是否联网
     const {online} = useOnline()
     // 获取电池信息
@@ -61,7 +67,10 @@ export default defineComponent({
       })
     })
 
+    console.log(performanceMonitor.getPerformanceData(), 'performanceMonitor')
+
     return {
+      userInfo,
       browserInfo, online,
       battery, batteryStatus, calcDischargingTime
     }

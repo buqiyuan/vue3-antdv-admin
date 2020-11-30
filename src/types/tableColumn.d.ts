@@ -13,7 +13,7 @@ export declare interface ActionOptions {
 }
 
 export declare type TableColumn = ColumnProps & {
-    slotsType: 'format' | 'link';
+    slotsType: 'format' | 'link' | 'component';
     slotsFunc: (val) => any;
     actions: ActionOptions[];
 }

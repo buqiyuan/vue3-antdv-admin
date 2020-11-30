@@ -3,6 +3,9 @@ import AddModal from './add-modal.vue'
 import {delAdminAccess} from "@/api/system/access";
 import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
+import {message} from "ant-design-vue";
+import {IconFont} from '@/components/iconfont'
+import {createVNode} from 'vue'
 
 export const columns: TableColumn[] = [ // 进程策略
     {
@@ -19,6 +22,11 @@ export const columns: TableColumn[] = [ // 进程策略
     {
         title: 'icon图标',
         dataIndex: 'icon',
+        slots: {
+            customRender: 'icon'
+        },
+        slotsType: 'component',
+        slotsFunc: (record) => createVNode(IconFont, {type: record.icon})
     },
     {
         title: '排序',
@@ -62,6 +70,9 @@ export const columns: TableColumn[] = [ // 进程策略
                   type: 'danger'
                 },
                 func: async ({record}, callback) => {
+                    if (record.id < 6) {
+                        return message.warn('系统预置菜单，不能删除！')
+                    }
                     await delAdminAccess(record.id)
                     callback()
                 },

@@ -68,4 +68,15 @@ export default defineComponent({
 @import "~@/styles/global.scss";
 @import "~@/styles/common.scss";
 @import "~@/styles/override.scss";
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: transform .35s ease-in;
+}
+
+.slide-up-enter-form,
+.slide-up-leave-to{
+  transform: translateY(-100%);
+}
+
 </style>
