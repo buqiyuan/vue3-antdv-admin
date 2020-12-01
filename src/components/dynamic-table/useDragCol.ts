@@ -1,3 +1,5 @@
+import router from "@/router";
+
 /**
  * 使用表格列拖拽
  * @param columns
@@ -5,6 +7,9 @@
 let self //用来存储当前更改宽度的Table Cell,避免快速移动鼠标的问题
 let tableX
 let table
+
+// 路由切换后，清空保存的值
+router.afterEach(() => self = tableX = table = undefined)
 
 export default (columns) => {
     let headerCell
@@ -44,14 +49,14 @@ export default (columns) => {
                 }
             }
             headerCell.onmouseup = function () {
-                // headerCell.onmousemove = null
-                // headerCell.onmousedown = null
-                // headerCell.onmouseup = null
+                headerCell.onmousemove = null
+                headerCell.onmousedown = null
+                headerCell.onmouseup = null
             }
             table.onmouseup = function() {
                 document.body.style.userSelect = 'unset'
-                // headerCell.onmousemove = null
-                // headerCell.onmousedown = null
+                headerCell.onmousemove = null
+                headerCell.onmousedown = null
                 if (self == undefined) {
                     self = this;
                 }
@@ -61,8 +66,8 @@ export default (columns) => {
             }
         },
         onmouseup: () => {
-            // headerCell.onmousemove = null
-            // headerCell.onmousedown = null
+            headerCell.onmousemove = null
+            headerCell.onmousedown = null
         }
     }
 }
