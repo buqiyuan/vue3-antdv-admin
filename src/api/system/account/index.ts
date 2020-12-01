@@ -57,7 +57,6 @@ export function postAdminAccount(params) {
     method: RequestEnum.POST,
     params,
   }, {
-
     successMessageText: '创建成功',
     errorMessageText: '创建失败'
   });

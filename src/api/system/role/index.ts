@@ -38,7 +38,6 @@ export function delAdminRole(id: string) {
     url: [Api.adminRole, id].join('/'),
     method: RequestEnum.DELETE,
   }, {
-
     successMessageText: '删除成功',
     errorMessageText: '删除失败'
   });
@@ -54,7 +53,6 @@ export function patchAdminRole(id, params) {
     method: RequestEnum.PATCH,
     params,
   }, {
-
     successMessageText: '修改成功',
     errorMessageText: '修改失败'
   });
@@ -71,7 +69,6 @@ export function postAdminRole(params) {
     method: RequestEnum.POST,
     params,
   }, {
-
     successMessageText: '创建成功',
     errorMessageText: '创建失败'
   });

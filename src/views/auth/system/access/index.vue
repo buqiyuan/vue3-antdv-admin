@@ -35,9 +35,7 @@ export default defineComponent({
     const tableRef = ref<any>(null)
 
     const state = reactive({
-      data: [],
       itemRefs: {},
-      uploading: false,
       expandedRowKeys: [] as string[],
       tableLoading: false,
       rowSelection: {
@@ -61,7 +59,7 @@ export default defineComponent({
         }
       })
     }
-    // 添加策略
+    // 添加资源
     const addItem = () => {
       useCreateModal(AddModal, {
         callback: () => {
@@ -69,6 +67,8 @@ export default defineComponent({
         }
       })
     }
+
+    // 是否禁用批量删除按钮
     const isDisabled = computed(() => state.rowSelection.selectedRowKeys.length == 0)
 
     // 点击展开图标

@@ -41,7 +41,7 @@ export const addSchema: FormSchema = {
             value: [],
             options: [],
             loading: true,
-            asyncOptions: async () => {
+            asyncOptions: async () => { // 异步数据回调
                 // 获取角色列表
                 const {data} = await getAdminRole({})
                 return data.map(item => ({

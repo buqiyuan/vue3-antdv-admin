@@ -26,7 +26,7 @@ export const columns: TableColumn[] = [ // 进程策略
             customRender: 'icon'
         },
         slotsType: 'component',
-        slotsFunc: (record) => createVNode(IconFont, {type: record.icon})
+        slotsFunc: (record) => createVNode(IconFont, {type: record.icon}) // 动态创建图标
     },
     {
         title: '排序',
@@ -39,7 +39,7 @@ export const columns: TableColumn[] = [ // 进程策略
             customRender: 'createdAt'
         },
         slotsType: 'format',
-        slotsFunc: (val) => formatDate(val)
+        slotsFunc: (val) => formatDate(val) // 格式化时间
     },
     {
         title: '最后更新时间',
@@ -48,7 +48,7 @@ export const columns: TableColumn[] = [ // 进程策略
             customRender: 'updatedAt'
         },
         slotsType: 'format',
-        slotsFunc: (val) => formatDate(val)
+        slotsFunc: (val) => formatDate(val) // 格式化时间
     },
     {
         title: '操作',
@@ -63,13 +63,13 @@ export const columns: TableColumn[] = [ // 进程策略
                 key: 'fileid', // 删除的依据，如果需要根据多个字段删除，则字段之间以英文逗号分隔开，例如： id, name
                 text: '删除',
                 permission: { // 权限
-                    action: 'delete',
-                    effect: 'disabled'
+                    action: 'delete', // 删除权限
+                    effect: 'disabled' // 没有权限时禁用按钮，不传effect则不显示按钮
                 },
                 props: {
-                  type: 'danger'
+                  type: 'danger' // 按钮类型
                 },
-                func: async ({record}, callback) => {
+                func: async ({record}, callback) => { // 点击删除的回调
                     if (record.id < 6) {
                         return message.warn('系统预置菜单，不能删除！')
                     }
@@ -86,9 +86,9 @@ export const columns: TableColumn[] = [ // 进程策略
                     effect: 'disabled'
                 },
                 props: {
-                    type: 'warning'
+                    type: 'warning' // 按钮类型
                 },
-                func: ({record}, callback) => useCreateModal(AddModal, {
+                func: ({record}, callback) => useCreateModal(AddModal, { // 点击删除的回调
                     fields: record,
                     callback
                 }),

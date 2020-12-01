@@ -33,6 +33,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
                 component: () => import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/button.vue')
             },
+            {
+                path: 'icons',
+                name: `${routeName}-icons`,
+                meta: {
+                    title: '自定义图标',
+                    icon: 'icon-zhuomian',
+                },
+                component: () => import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/icons/Iconfont.vue')
+            },
         ]
     }
 ]

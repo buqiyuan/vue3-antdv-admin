@@ -29,8 +29,6 @@ export default defineComponent({
     const tableRef = ref<any>(null)
 
     const state = reactive({
-      data: [],
-      uploading: false,
       tableLoading: false,
       rowSelection: {
         onChange: (selectedRowKeys, selectedRows) => {

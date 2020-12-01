@@ -158,13 +158,15 @@ export default defineComponent({
     })
 
     // 获取表格数据
-    const refreshTableData = async (param: PagePrams = {
-      page: state.pageOption.current,
-      limit: state.pageOption.pageSize,
-      ...props.pageOption
-    }) => {
+    const refreshTableData = async (params = {}) => {
+      params = {
+        page: state.pageOption.current,
+        limit: state.pageOption.pageSize,
+        ...props.pageOption,
+        ...params
+      }
       state.tableLoading = true
-      const {data, pageNumber,pageSize, total} = await props.getListFunc(param).finally(() => state.tableLoading = false)
+      const {data, pageNumber,pageSize, total} = await props.getListFunc(params).finally(() => state.tableLoading = false)
       Object.assign(state.pageOption, {current: ~~pageNumber,pageSize: ~~pageSize, total: ~~total})
       state.data = data
     }

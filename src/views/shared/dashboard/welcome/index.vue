@@ -36,7 +36,7 @@ import BrowserType from '@/utils/browser-type'
 import {useBattery} from "@/hooks/useBattery";
 import {useOnline} from '@/hooks/useOnline'
 import {useStore} from 'vuex'
-import performanceMonitor from '@/utils/performanceMonitor'
+// import performanceMonitor from '@/utils/performanceMonitor'
 
 export default defineComponent({
   name: 'welcome',
@@ -67,7 +67,7 @@ export default defineComponent({
       })
     })
 
-    console.log(performanceMonitor.getPerformanceData(), 'performanceMonitor')
+    // console.log(performanceMonitor.getPerformanceData(), 'performanceMonitor')
 
     return {
       userInfo,
