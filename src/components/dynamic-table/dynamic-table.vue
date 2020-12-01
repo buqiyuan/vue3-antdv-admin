@@ -1,6 +1,5 @@
 <template>
   <a-table
-      v-bind="$props"
       :columns="columns"
       :loading="tableLoading"
       :rowSelection="rowSelection"
@@ -9,6 +8,8 @@
       :data-source="data"
       :pagination="pageOption"
       @change="paginationChange"
+      bordered
+      v-bind="{...$props, ...$attrs}"
   >
     <!--  自定义slots start-->
     <template v-for="(value, key) in $slots" v-slot:[key]="slotProps">
@@ -94,10 +95,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, PropType, toRefs} from 'vue'
+import {defineComponent, reactive, PropType, onMounted, toRefs} from 'vue'
 import {Card, Select, Table, Popconfirm, message} from 'ant-design-vue'
 import {TableProps} from 'ant-design-vue/lib/table/interface'
 import {usePages} from "@/hooks";
+import useDragCol from './useDragCol'
 
 interface Columns {
   actions?: any;
@@ -149,6 +151,9 @@ export default defineComponent({
   },
   setup(props: Props, {attrs, slots}) {
     const {pageOption} = usePages()
+
+    // 表格伸缩列
+    props.columns.forEach(item => item.customHeaderCell = useDragCol)
 
     const state = reactive({
       data: [], // 表格数据
@@ -204,7 +209,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 ::v-deep(.ant-table .ant-table-title) {
   display: flex;
-  border-top: 0;
 
   .ant-btn {
     margin-right: 10px;

@@ -5,6 +5,7 @@
         description="继承自原ant-design-vue的a-button，轻易扩展按钮的type定制不同颜色，详细看@/components/button/button.vue"
         type="info"
         show-icon
+        style="margin-bottom: 12px"
     />
     <a-card>
       <div class="btn-rows">

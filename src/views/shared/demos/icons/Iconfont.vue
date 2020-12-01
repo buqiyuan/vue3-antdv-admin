@@ -2,9 +2,10 @@
   <div>
     <a-alert
         message="自定义图标"
-        description="使用阿里图标库，可以有效减小项目的体积"
+        description="使用阿里图标库，可以有效减小项目的体积，支持离线本地图标和在线图标"
         type="info"
         show-icon
+        style="margin-bottom: 12px"
     />
     <a-card>
       示意图：<img @click="showPreview" class="image-demo" src="http://ww1.sinaimg.cn/large/005IOlAWgy1gl8bm4ot9dj314r0opabq.jpg">
