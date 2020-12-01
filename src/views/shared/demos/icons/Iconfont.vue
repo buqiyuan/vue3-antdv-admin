@@ -7,7 +7,7 @@
         show-icon
     />
     <a-card>
-      示意图：<img @click="showPreview" class="image-demo" src="~@/assets/demos/use-iconfont.png">
+      示意图：<img @click="showPreview" class="image-demo" src="http://ww1.sinaimg.cn/large/005IOlAWgy1gl8bm4ot9dj314r0opabq.jpg">
       <preview-modal v-if="visible" type="image" v-model:visible="visible" :url="imageUrl" />
       <a-form>
         <a-form-item label="阿里图标路径">

@@ -162,7 +162,7 @@ export default defineComponent({
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, .4);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -181,6 +181,9 @@ export default defineComponent({
 
 .preview-content {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, .05);
 
   img, video {
