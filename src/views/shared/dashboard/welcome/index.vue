@@ -14,21 +14,11 @@
         </a-descriptions-item>
       </a-descriptions>
     </div>
-    <!--  下面这段没啥用-->
-    <div v-show="false" class="charging">
-      <div>{{ batteryStatus }}</div>
-      <div v-show="Number.isFinite(battery.dischargingTime) && battery.dischargingTime != 0">
-        剩余可使用时间：{{ calcDischargingTime }}
-      </div>
-      <span v-show="Number.isFinite(battery.chargingTime) && battery.chargingTime != 0">
-          距离电池充满需要：{{ calcDischargingTime }}
-        </span>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, watchEffect} from 'vue'
+import {defineComponent, ref, watchEffect} from 'vue'
 import {Descriptions, Badge} from 'ant-design-vue'
 import {SettingOutlined, EditOutlined, EllipsisOutlined} from '@ant-design/icons-vue';
 import HuaweiCharge from '@/components/lockscreen/huawei-charge.vue'
@@ -56,10 +46,10 @@ export default defineComponent({
     // 获取电池信息
     const {battery, batteryStatus, calcDischargingTime} = useBattery()
     // 获取浏览器信息
-    const browserInfo = BrowserType("zh-cn")
+    const browserInfo = ref(BrowserType("zh-cn"))
 
     watchEffect(() => {
-      Object.assign(browserInfo, {
+      Object.assign(browserInfo.value, {
         距离电池充满需要: Number.isFinite(battery.value.chargingTime) && battery.value.chargingTime != 0 ? calcDischargingTime.value : '未知',
         剩余可使用时间: Number.isFinite(battery.value.dischargingTime) && battery.value.dischargingTime != 0 ? calcDischargingTime.value : '未知',
         电池状态: batteryStatus.value,
