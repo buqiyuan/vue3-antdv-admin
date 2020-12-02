@@ -52,12 +52,10 @@ export default defineComponent({
         }
       })
     }
-    // 添加策略
+    // 添加角色
     const addItem = () => {
       useCreateModal(AddModal, {
-        callback: () => {
-          tableRef.value.refreshTableData()
-        }
+        callback: () => tableRef.value.refreshTableData()
       })
     }
     const isDisabled = computed(() => state.rowSelection.selectedRowKeys.length == 0)

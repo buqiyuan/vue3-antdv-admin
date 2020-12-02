@@ -33,7 +33,7 @@ module.exports = {
     chainWebpack: config => {
         // 配置相关loader，支持修改，添加和替换相关的loader
         config.resolve.alias
-            .set('@', resolve('src'))
+            .set('/@/', resolve('src'))
         // 打包分析
         if (!isDev) {
             // config.plugin('webpack-report').use(BundleAnalyzerPlugin, [

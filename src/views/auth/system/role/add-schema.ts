@@ -1,4 +1,4 @@
-import {markRaw} from 'vue'
+import {createVNode} from 'vue'
 import AccessTree from './components/access-tree.vue'
 import {FormSchema} from "@/types/schema";
 import {getAdminRoleAccess} from "@/api/system/role";
@@ -41,7 +41,7 @@ export const addSchema: FormSchema = {
             }
         },
         {
-            type: markRaw(AccessTree),
+            type: createVNode(AccessTree),
             label: "资源",
             field: "accessIdsList",
             value: [],

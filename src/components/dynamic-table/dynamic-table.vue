@@ -30,19 +30,19 @@
       <template v-else>
         <!--        非操作 start-->
         <template v-if="slotItem.slots.customRender !== 'action'">
-            <!--        使用自定义组件格式化显示start-->
-            <template v-if="slotItem.slotsType == 'component'">
-              <component :is="slotItem.slotsFunc(slotProps.record)"/>
-            </template>
-            <!--        使用自定义组件格式化显示end-->
-            <!--        使用自定义组件格式化显示-->
-            <template v-if="slotItem.slotsType == 'format'">
-              {{ slotItem.slotsFunc(slotProps.record[slotItem.dataIndex || slotItem.key], slotProps.record) }}
-            </template>
-            <!--        链接用于跳转-->
-            <template v-if="slotItem.slotsType == 'link'">
-              <router-link :to="slotItem.linkPath + slotProps.record[slotItem.linkId]">{{ slotProps.text }}</router-link>
-            </template>
+          <!--        使用自定义组件格式化显示start-->
+          <template v-if="slotItem.slotsType == 'component'">
+            <component :is="slotItem.slotsFunc(slotProps.record)"/>
+          </template>
+          <!--        使用自定义组件格式化显示end-->
+          <!--        使用自定义函数格式化显示-->
+          <template v-if="slotItem.slotsType == 'format'">
+            {{ slotItem.slotsFunc(slotProps.record[slotItem.dataIndex || slotItem.key], slotProps.record) }}
+          </template>
+          <!--        链接用于跳转-->
+          <template v-if="slotItem.slotsType == 'link'">
+            <router-link :to="slotItem.linkPath + slotProps.record[slotItem.linkId]">{{ slotProps.text }}</router-link>
+          </template>
         </template>
         <!--      非操作 end-->
 
@@ -97,30 +97,30 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, PropType, onMounted, toRefs, render, createVNode, nextTick} from 'vue'
+import {defineComponent, reactive, PropType, toRefs} from 'vue'
 import {Card, Select, Table, Popconfirm, message} from 'ant-design-vue'
-import {TableProps} from 'ant-design-vue/lib/table/interface'
 import {usePages} from "@/hooks";
-import useDragCol from './useDragCol'
-import {LoadingOutlined} from "@ant-design/icons-vue";
+import useDragCol from './utils/useDragCol'
 
-interface Columns {
+interface Columns{
   actions?: any;
+
   [key: string]: any;
 }
 
-interface Props {
+type Props = {
   columns: Columns[];
   rowSelection: any;
-  rowKey: string | number;
+  rowKey: string | ((record: any) => string);
   pageOption: object;
   getListFunc: (prams) => any;
 }
 
 // 分页查询参数
 interface PagePrams {
-  limit?: string | number;
+  pageSize?: string | number;
   page?: string | number;
+
   [key: string]: any;
 }
 
@@ -130,17 +130,18 @@ export default defineComponent({
     columns: {
       type: Object as PropType<object[]>
     },
-    getListFunc: {
+    getListFunc: { // 获取列表数据函数API
       type: Function
     },
     rowSelection: {
       type: Object
     },
-    rowKey: {
-      type: [String, Number] as PropType<string | number>
+    rowKey: { // 表格唯一字段
+      type: [String, Function] as PropType<string | ((record: any) => string)>,
     },
-    pageOption: {
-      type: Object
+    pageOption: { // 分页参数
+      type: Object,
+      default: () => ({})
     }
   },
   components: {
@@ -153,7 +154,7 @@ export default defineComponent({
   setup(props: Props, {attrs, emit, slots}) {
     const {pageOption} = usePages()
 
-    // 表格伸缩列
+    // 开启表格伸缩列
     useDragCol(props.columns)
 
     const state = reactive({
@@ -168,7 +169,7 @@ export default defineComponent({
     const refreshTableData = async (params = {}) => {
       params = {
         page: state.pageOption.current,
-        limit: state.pageOption.pageSize,
+        pageSize: state.pageOption.pageSize,
         ...props.pageOption,
         ...params
       }
@@ -189,14 +190,23 @@ export default defineComponent({
     const actionEvent = (record, func) => func({record, props}, refreshTableData)
 
     // 分页改变
-    const paginationChange = (pagination) => {
+    const paginationChange = (pagination, filters, sorter) => {
+      const {field, order} = sorter
       console.log(pagination)
       state.pageOption = {
         ...state.pageOption,
         ...pagination
       }
-      refreshTableData({limit: pagination.pageSize, pageNumber: pagination.current, ...props.pageOption})
+      refreshTableData({
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current, ...props.pageOption, ...filters,
+        field,
+        order
+      })
     }
+
+    // dataIndex 可以为 a.b.c
+    const getDataIndexVal = (dataIndex, record) => dataIndex.split('.').reduce((pre, curr) => pre[curr], record)
 
     const buttonProps = {
       size: 'small'

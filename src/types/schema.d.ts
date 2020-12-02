@@ -1,9 +1,9 @@
-import {Component, ComponentInternalInstance, HTMLAttributes} from 'vue'
+import {VNode, ComponentInternalInstance, HTMLAttributes} from 'vue'
 
 declare interface Rules {
-    required?: boolean,
+    required?: boolean;
     message?: string;
-    validator?: (rule, value, callback) => Promise<any>,
+    validator?: (rule, value, callback) => Promise<any>;
     [key: string]: any;
 }
 
@@ -18,12 +18,12 @@ type Props = {
 }
 
 declare interface FormItem {
-    type?: 'input' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'input-number' | 'inputRange' | 'switch' | Component;
+    type?: 'input' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'input-number' | 'inputRange' | 'switch' | VNode;
     label?: string; // 表单标签
     field: string; // 表单字段
     value: any; // 表单默认值
-    props?: Props, // 表单属性
-    rules?: Rules[], // 表单验证规则
+    props?: Props; // 表单属性
+    rules?: Rules[]; // 表单验证规则
     options?: OptionItem[]; // 可选项
     eventObject?: object; // 事件对象，例如：{ mousedown: doThis, mouseup: doThat } 将会动态绑定为：v-on="{ mousedown: doThis, mouseup: doThat }"
     loading?: boolean; // 异步数据是否加载

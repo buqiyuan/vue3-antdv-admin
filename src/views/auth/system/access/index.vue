@@ -25,6 +25,8 @@ import {useCreateModal} from "@/hooks";
 import {delAdminAccess, getAdminAccess} from '@/api/system/access'
 import AddModal from './add-modal.vue'
 import {columns} from "./columns";
+import useExpandLoading from '@/components/dynamic-table/utils/useExpandLoading'
+
 
 export default defineComponent({
   name: 'system-access',
@@ -73,19 +75,15 @@ export default defineComponent({
 
     // 点击展开图标
     const expand = async (expanded, record) => {
-      console.log(expanded, record)
-      // 如果是第一次展开
-      if (expanded && record.children && !Array.isArray(record.children)) {
-        const iconEle = state.itemRefs[record.id].parentElement.querySelector('.ant-table-row-expand-icon')
-        render(createVNode(LoadingOutlined), iconEle)
-        await nextTick()
-        iconEle.classList.add('loading-icon')
-        const {data} = await getAdminAccess({id: record.id,limit: 100})
-        record.children = data
-        render(null, iconEle)
-        await nextTick()
-        iconEle.classList.remove('loading-icon')
-      }
+      const expandItemEl = state.itemRefs[record.id]
+      // 点击展开图标loading
+      const {data} = await useExpandLoading({
+        expanded,
+        record,
+        expandItemEl,
+        asyncFunc: getAdminAccess({id: record.id, limit: 100})
+      })
+      record.children = data
     }
 
     return {
@@ -105,6 +103,7 @@ export default defineComponent({
 <style lang="scss">
 .loading-icon {
   border: none;
+
   &.ant-table-row-expanded::after {
     content: none;
   }

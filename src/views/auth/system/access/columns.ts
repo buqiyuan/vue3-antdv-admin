@@ -13,7 +13,7 @@ export const columns: TableColumn[] = [ // 资源管理
         dataIndex: 'moduleName',
         slots: {
             customRender: 'moduleName'
-        }
+        },
     },
     {
         title: 'url地址',
@@ -60,7 +60,6 @@ export const columns: TableColumn[] = [ // 资源管理
         actions: [
             {
                 type: 'popconfirm', // 控制类型，默认为a,可选： select | button | text
-                key: 'fileid', // 删除的依据，如果需要根据多个字段删除，则字段之间以英文逗号分隔开，例如： id, name
                 text: '删除',
                 permission: { // 权限
                     action: 'delete', // 删除权限
@@ -79,7 +78,6 @@ export const columns: TableColumn[] = [ // 资源管理
             },
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
-                key: 'fileid', // 删除的依据，如果需要根据多个字段删除，则字段之间以英文逗号分隔开，例如： id, name
                 text: '编辑',
                 permission: { // 权限
                     action: 'update',
