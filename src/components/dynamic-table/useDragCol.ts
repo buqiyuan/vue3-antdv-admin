@@ -3,10 +3,11 @@
  * @param columns
  */
 export default (columnsProp) => {
-    let self //用来存储当前更改宽度的Table Cell,避免快速移动鼠标的问题
-    let tableX
-    let table
-    let headerCell
+    // self: 用来存储当前更改宽度的Table Cell,避免快速移动鼠标的问题
+    let self,tableX,table,headerCell
+
+    // 移除事件
+    const setEventNull = () => headerCell.onmouseup = headerCell.onmousedown = headerCell.onmousemove = null
 
     columnsProp.forEach(item => item.customHeaderCell = (columns) => ({
         onmouseenter: () => {
@@ -42,15 +43,10 @@ export default (columnsProp) => {
                     self.oldWidth = self.offsetWidth;
                 }
             }
-            headerCell.onmouseup = function () {
-                headerCell.onmousemove = null
-                headerCell.onmousedown = null
-                headerCell.onmouseup = null
-            }
+            headerCell.onmouseup = setEventNull
             table.onmouseup = function() {
                 document.body.style.userSelect = 'unset'
-                headerCell.onmousemove = null
-                headerCell.onmousedown = null
+                setEventNull()
                 if (self == undefined) {
                     self = this;
                 }
@@ -59,9 +55,6 @@ export default (columnsProp) => {
                 tableX = table.clientWidth;
             }
         },
-        onmouseup: () => {
-            headerCell.onmousemove = null
-            headerCell.onmousedown = null
-        }
+        onmouseup: () => setEventNull
     }))
 }
