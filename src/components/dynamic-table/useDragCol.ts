@@ -1,20 +1,14 @@
-import router from "@/router";
-
 /**
  * 使用表格列拖拽
  * @param columns
  */
-let self //用来存储当前更改宽度的Table Cell,避免快速移动鼠标的问题
-let tableX
-let table
-
-// 路由切换后，清空保存的值
-router.afterEach(() => self = tableX = table = undefined)
-
-export default (columns) => {
+export default (columnsProp) => {
+    let self //用来存储当前更改宽度的Table Cell,避免快速移动鼠标的问题
+    let tableX
+    let table
     let headerCell
 
-    return {
+    columnsProp.forEach(item => item.customHeaderCell = (columns) => ({
         onmouseenter: () => {
             headerCell = columns.title[0].el.closest('th')
             table ??= headerCell.closest('.ant-table-wrapper')
@@ -69,5 +63,5 @@ export default (columns) => {
             headerCell.onmousemove = null
             headerCell.onmousedown = null
         }
-    }
+    }))
 }

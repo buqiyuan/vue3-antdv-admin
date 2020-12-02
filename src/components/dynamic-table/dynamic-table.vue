@@ -13,12 +13,13 @@
   >
     <!--  自定义slots start-->
     <template v-for="(value, key) in $slots" v-slot:[key]="slotProps">
-        <slot :name="key" v-bind="slotProps"></slot>
+      <slot :name="key" v-bind="slotProps"></slot>
     </template>
     <!--    自定义slots end-->
 
     <!--    是否有自定义显示slots start-->
     <template v-for="slotItem in columns.filter(item => item.slots)"
+              :key="slotItem.dataIndex || slotItem.slots.customRender"
               v-slot:[slotItem.slots.customRender]="slotProps">
 
       <!--        自定义渲染start-->
@@ -28,20 +29,21 @@
       <!--     非自定义渲染start -->
       <template v-else>
         <!--        非操作 start-->
-        <div v-if="slotItem.slots.customRender !== 'action'" :key="slotItem.slots.customRender">
-          <!--        使用自定义组件格式化显示-->
-          <template v-if="slotItem.slotsType == 'component'">
-            <component :is="slotItem.slotsFunc(slotProps.record)" />
-          </template>
-          <!--        使用自定义组件格式化显示-->
-          <template v-if="slotItem.slotsType == 'format'">
-            {{ slotItem.slotsFunc(slotProps.record[slotItem.dataIndex || slotItem.key], slotProps.record) }}
-          </template>
-          <!--        链接用于跳转-->
-          <template v-if="slotItem.slotsType == 'link'">
-            <router-link :to="slotItem.linkPath + slotProps.record[slotItem.linkId]">{{ slotProps.text }}</router-link>
-          </template>
-        </div>
+        <template v-if="slotItem.slots.customRender !== 'action'">
+            <!--        使用自定义组件格式化显示start-->
+            <template v-if="slotItem.slotsType == 'component'">
+              <component :is="slotItem.slotsFunc(slotProps.record)"/>
+            </template>
+            <!--        使用自定义组件格式化显示end-->
+            <!--        使用自定义组件格式化显示-->
+            <template v-if="slotItem.slotsType == 'format'">
+              {{ slotItem.slotsFunc(slotProps.record[slotItem.dataIndex || slotItem.key], slotProps.record) }}
+            </template>
+            <!--        链接用于跳转-->
+            <template v-if="slotItem.slotsType == 'link'">
+              <router-link :to="slotItem.linkPath + slotProps.record[slotItem.linkId]">{{ slotProps.text }}</router-link>
+            </template>
+        </template>
         <!--      非操作 end-->
 
         <!--        操作start-->
@@ -95,15 +97,15 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, PropType, onMounted, toRefs} from 'vue'
+import {defineComponent, reactive, PropType, onMounted, toRefs, render, createVNode, nextTick} from 'vue'
 import {Card, Select, Table, Popconfirm, message} from 'ant-design-vue'
 import {TableProps} from 'ant-design-vue/lib/table/interface'
 import {usePages} from "@/hooks";
 import useDragCol from './useDragCol'
+import {LoadingOutlined} from "@ant-design/icons-vue";
 
 interface Columns {
   actions?: any;
-
   [key: string]: any;
 }
 
@@ -119,7 +121,6 @@ interface Props {
 interface PagePrams {
   limit?: string | number;
   page?: string | number;
-
   [key: string]: any;
 }
 
@@ -149,13 +150,14 @@ export default defineComponent({
     [Popconfirm.name]: Popconfirm,
     [Select.Option.name]: Select.Option
   },
-  setup(props: Props, {attrs, slots}) {
+  setup(props: Props, {attrs, emit, slots}) {
     const {pageOption} = usePages()
 
     // 表格伸缩列
-    props.columns.forEach(item => item.customHeaderCell = useDragCol)
+    useDragCol(props.columns)
 
     const state = reactive({
+      expandItemRefs: {},
       data: [], // 表格数据
       pageOption: Object.assign(pageOption, props.pageOption), // 表格分页
       actions: props.columns.find(item => (item.dataIndex || item.key) == 'action')?.actions || [], // 表格操作（如：编辑、删除的按钮等）
@@ -171,8 +173,13 @@ export default defineComponent({
         ...params
       }
       state.tableLoading = true
-      const {data, pageNumber,pageSize, total} = await props.getListFunc(params).finally(() => state.tableLoading = false)
-      Object.assign(state.pageOption, {current: ~~pageNumber,pageSize: ~~pageSize, total: ~~total})
+      const {
+        data,
+        pageNumber,
+        pageSize,
+        total
+      } = await props.getListFunc(params).finally(() => state.tableLoading = false)
+      Object.assign(state.pageOption, {current: ~~pageNumber, pageSize: ~~pageSize, total: ~~total})
       state.data = data
     }
 

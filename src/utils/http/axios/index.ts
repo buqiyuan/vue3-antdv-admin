@@ -20,6 +20,7 @@ import store from '@/store'
 
 /**
  * @description: 数据处理，方便区分多种处理方式
+ * axios封装使用了https://github.com/anncwb/vue-vben-admin/tree/main/src/utils/http/axios
  */
 const transform: AxiosTransform = {
     /**

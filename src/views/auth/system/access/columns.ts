@@ -7,7 +7,7 @@ import {message} from "ant-design-vue";
 import {IconFont} from '@/components/iconfont'
 import {createVNode} from 'vue'
 
-export const columns: TableColumn[] = [ // 进程策略
+export const columns: TableColumn[] = [ // 资源管理
     {
         title: '名称',
         dataIndex: 'moduleName',
@@ -26,7 +26,7 @@ export const columns: TableColumn[] = [ // 进程策略
             customRender: 'icon'
         },
         slotsType: 'component',
-        slotsFunc: (record) => createVNode(IconFont, {type: record.icon}) // 动态创建图标
+        slotsFunc: ( record) => createVNode(IconFont, {type: record.icon}) // 动态创建图标
     },
     {
         title: '排序',
