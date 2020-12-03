@@ -19,6 +19,7 @@ import {ButtonType} from "ant-design-vue/lib/button/buttonTypes";
 const buttonTypes = ["default", "primary", "ghost", "dashed", "danger", "link"]
 
 export default defineComponent({
+  mixins: [Button],
   name: "a-button",
   components: {Button},
   props: {

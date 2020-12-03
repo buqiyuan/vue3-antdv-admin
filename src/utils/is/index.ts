@@ -45,6 +45,12 @@ export function isNumber(val: unknown): val is number {
   return is(val, 'Number');
 }
 /**
+ * @description:  是否为AsyncFunction
+ */
+export function isAsyncFunction<T = unknown>(val: unknown): val is Promise<T> {
+  return is(val, 'Promise');
+}
+/**
  * @description:  是否为promise
  */
 export function isPromise<T = any>(val: unknown): val is Promise<T> {
