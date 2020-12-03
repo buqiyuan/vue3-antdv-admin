@@ -5,8 +5,6 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "dev": "vite",
-    "vite-build": "vuedx-typecheck . && vite build",
     "lint": "vue-cli-service lint",
     "deploy": "gh-pages -d dist",
     "test prod gzip": "http-server dist --cors --gzip -c-1",
@@ -22,7 +20,7 @@
     "mitt": "^2.1.0",
     "nprogress": "^0.2.0",
     "qs": "^6.9.4",
-    "vue": "3.0.2",
+    "vue": "^3.0.2",
     "vue-router": "^4.0.0-rc.6",
     "vuex": "^4.0.0-rc.2"
   },
@@ -36,7 +34,7 @@
     "@vue/cli-plugin-typescript": "^4.5.8",
     "@vue/cli-plugin-vuex": "^4.5.8",
     "@vue/cli-service": "^4.5.8",
-    "@vue/compiler-sfc": "3.0.2",
+    "@vue/compiler-sfc": "^3.0.2",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vuedx/typecheck": "latest",
     "@vuedx/typescript-plugin-vue": "latest",

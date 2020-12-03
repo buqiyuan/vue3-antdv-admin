@@ -61,7 +61,6 @@ import useModal from "@/components/a-custom-modal/useModal";
 export default defineComponent({
   name: "a-custom-modal",
   emits: ['update:visible'],
-  mixins: [Modal],
   components: {Transition},
   props: {
     title: {
