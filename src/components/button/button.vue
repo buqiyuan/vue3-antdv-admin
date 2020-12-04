@@ -1,5 +1,5 @@
 <template>
-    <Button
+    <antd-button
         v-bind="$attrs"
         :type="buttonTypes.includes(type) ? type : 'default'"
         :class="[`ant-btn-${type}`]"
@@ -7,7 +7,7 @@
     <template v-for="(value, key) in $slots" v-slot:[key]="slotProps">
       <slot :name="key"></slot>
     </template>
-  </Button>
+  </antd-button>
 </template>
 
 <script lang="ts">
@@ -20,7 +20,7 @@ const buttonTypes = ["default", "primary", "ghost", "dashed", "danger", "link"]
 
 export default defineComponent({
   name: "a-button",
-  components: {Button},
+  components: {'antd-button': Button}, // 换个名称，避免成死递归组件
   props: {
     type: {
       type: String as PropType<ButtonType | "warning" | 'success'>,

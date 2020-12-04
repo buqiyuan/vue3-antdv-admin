@@ -46,6 +46,7 @@ router.beforeEach((to, from, next) => {
             NProgress.done()
         } else {
             const hasRoute = router.hasRoute(to.name!)
+            // 如果不需要每次切换路由获取最新的动态路由，可把下面注释放开
             // if (store.getters.addRouters.length === 0) {
             // generate dynamic router
             // 防抖获取菜单

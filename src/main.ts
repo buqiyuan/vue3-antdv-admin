@@ -6,7 +6,7 @@ import store from '@/store'
 // import {SvgIcon} from '@/components/svg-icon'
 import {AButton} from '@/components/button/'
 
-import {Modal, Table, Menu, Input, Form,Card, Checkbox, Radio} from 'ant-design-vue';
+import {Modal, Table, Menu, Button, Input, Form,Card, Checkbox, Radio} from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css'
 // 路由守卫
 import '@/router/router-guards'
