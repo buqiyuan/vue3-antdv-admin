@@ -3,7 +3,7 @@ import AccessTree from './components/access-tree.vue'
 import {FormSchema} from "@/types/schema";
 import {getAdminRoleAccess} from "@/api/system/role";
 
-export const addSchema: FormSchema = {
+export const formSchema: FormSchema = {
     style: {
         width: "auto"
     },

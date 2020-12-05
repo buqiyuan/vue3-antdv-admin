@@ -2,11 +2,7 @@
  * 根据文件地址下载文件
  * @param {*} sUrl
  */
-export function downloadByUrl({
-                                  url,
-                                  target = '_blank',
-                                  fileName,
-                              }: {
+export function downloadByUrl({url, target = '_blank', fileName}: {
     url: string;
     target?: '_self' | '_blank';
     fileName?: string;

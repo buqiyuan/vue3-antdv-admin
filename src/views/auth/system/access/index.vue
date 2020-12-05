@@ -81,7 +81,8 @@ export default defineComponent({
         expanded,
         record,
         expandItemEl,
-        asyncFunc: getAdminAccess({id: record.id, limit: 100})
+        asyncFunc: getAdminAccess,
+        params: {id: record.id, limit: 100}
       })
       record.children = data
     }

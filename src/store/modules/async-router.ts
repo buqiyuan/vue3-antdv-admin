@@ -22,11 +22,11 @@ const asyncRouter: Module<StateType, any> = {
     },
     actions: {
         GenerateRoutes ({ commit }) {
-            return new Promise(resolve => {
+            return new Promise((resolve, reject) => {
                 generatorDynamicRouter().then(routers => {
                     commit('SET_ROUTERS', routers)
                     resolve(routers)
-                })
+                }).catch(e => reject(e))
             })
         },
     },

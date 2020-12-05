@@ -17,7 +17,7 @@ import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 import {DynamicTable} from '@/components/dynamic-table'
 import {useCreateModal} from "@/hooks";
 import {delAdminAccount, getAdminAccount} from '@/api/system/account'
-import AddModal from './add-modal.vue'
+import OperateModal from './operate-modal.vue'
 import {columns} from "./columns";
 
 export default defineComponent({
@@ -53,10 +53,8 @@ export default defineComponent({
     }
     // 添加策略
     const addItem = () => {
-      useCreateModal(AddModal, {
-        callback: () => {
-          tableRef.value.refreshTableData()
-        }
+      useCreateModal(OperateModal, {
+        callback: () => tableRef.value.refreshTableData()
       })
     }
     const isDisabled = computed(() => state.rowSelection.selectedRowKeys.length == 0)

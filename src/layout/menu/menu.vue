@@ -1,16 +1,16 @@
 <template>
-    <a-menu
-        v-model:open-keys="openKeys"
-        v-model:selected-keys="selectedKeys"
-        mode="inline"
-        theme="dark"
-        :inline-collapsed="collapsed"
-        @click="clickMenuItem"
-    >
-      <template v-for="item in menus" :key="item.name">
-        <menu-item :menu-info="item" />
-      </template>
-    </a-menu>
+  <a-menu
+      v-model:open-keys="openKeys"
+      v-model:selected-keys="selectedKeys"
+      mode="inline"
+      theme="dark"
+      :inline-collapsed="collapsed"
+      @click="clickMenuItem"
+  >
+    <template v-for="item in menus" :key="item.name">
+      <menu-item :menu-info="item"/>
+    </template>
+  </a-menu>
 </template>
 
 <script lang="ts">
@@ -24,7 +24,7 @@ import {
   InboxOutlined,
   AppstoreOutlined,
 } from '@ant-design/icons-vue';
-import { Menu } from 'ant-design-vue';
+import {Menu} from 'ant-design-vue';
 import MenuItem from './menu-item.vue'
 import {useRoute, useRouter} from "vue-router";
 import {useStore} from 'vuex'
@@ -62,7 +62,7 @@ export default defineComponent({
       selectedKeys: [currentRoute.name]
     })
 
-    const menus = computed(() => store.getters.menus || routes.find(item => item.name == 'Layout')!.children)
+    const menus = computed(() => store.getters.menus.length > 0 ? store.getters.menus : routes.find(item => item.name == 'Layout')!.children)
 
     // 监听菜单收缩状态
     watch(() => props.collapsed, (newVal) => {
@@ -78,7 +78,7 @@ export default defineComponent({
     })
 
     // 点击菜单
-    const clickMenuItem = ({ item, key, keyPath }) => {
+    const clickMenuItem = ({item, key, keyPath}) => {
       router.push({name: key})
     }
 

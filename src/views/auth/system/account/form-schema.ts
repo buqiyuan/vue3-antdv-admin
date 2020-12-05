@@ -1,18 +1,7 @@
 import {FormSchema} from "@/types/schema";
-import {getAdminRole} from "@/api/system/role";
+import {getAdminRole, getAdminRoleAccess} from "@/api/system/role";
 
-export const editSchema: FormSchema = {
-    style: {
-        width: "auto"
-    },
-    formItemLayout: {
-        labelCol: {
-            span: 4
-        },
-        wrapperCol: {
-            span: 20
-        }
-    },
+export const formSchema: FormSchema = {
     formItem: [
         {
             type: "input",
@@ -20,7 +9,6 @@ export const editSchema: FormSchema = {
             field: "username",
             value: '',
             props: {
-                disabled: true,
                 placeholder: "请输入用户名"
             },
             rules: [
@@ -31,13 +19,30 @@ export const editSchema: FormSchema = {
             ]
         },
         {
+            type: "input",
+            label: "密码",
+            field: "password",
+            hidden: false, // 是否隐藏
+            value: undefined,
+            props: {
+                type: 'password',
+                placeholder: "请输入密码"
+            },
+            rules: [
+                {
+                    "required": true,
+                    "message": "密码不能为空"
+                }
+            ]
+        },
+        {
             type: "checkbox",
             label: "角色",
             field: "roles",
             value: [],
             options: [],
             loading: true,
-            asyncOptions: async () => {
+            asyncOptions: async () => { // 异步数据回调
                 // 获取角色列表
                 const {data} = await getAdminRole({})
                 return data.map(item => ({
@@ -48,4 +53,5 @@ export const editSchema: FormSchema = {
         }
     ]
 }
+
 

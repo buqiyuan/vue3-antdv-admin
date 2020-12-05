@@ -1,10 +1,10 @@
 import {useCreateModal} from "@/hooks";
-import EditModal from './edit-modal.vue'
+import OperateModal from './operate-modal.vue'
 import {delAdminAccount} from "@/api/system/account";
 import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
 
-export const columns: TableColumn[] = [ // 进程策略
+export const columns: TableColumn[] = [ // 字典表格
     {
         title: 'ID',
         dataIndex: 'id',
@@ -72,7 +72,7 @@ export const columns: TableColumn[] = [ // 进程策略
                 props: {
                     type: 'warning'
                 },
-                func: ({record}, callback) => useCreateModal(EditModal, {
+                func: ({record}, callback) => useCreateModal(OperateModal, {
                     fields: record,
                     callback
                 }),

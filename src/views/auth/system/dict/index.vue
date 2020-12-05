@@ -17,7 +17,7 @@ import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 import {DynamicTable} from '@/components/dynamic-table'
 import {useCreateModal} from "@/hooks";
 import {delAdminDictConfig, getAdminDictConfig} from '@/api/system/dict'
-import AddModal from './add-modal.vue'
+import OperateModal from './operate-modal.vue'
 import {columns} from "./columns";
 import {hasPermission} from "@/utils/permission/hasPermission";
 
@@ -54,7 +54,7 @@ export default defineComponent({
     }
     // 添加策略
     const addItem = () => {
-      useCreateModal(AddModal, {
+      useCreateModal(OperateModal, {
         callback: () => {
           tableRef.value.refreshTableData()
         }

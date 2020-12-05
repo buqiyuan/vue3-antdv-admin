@@ -85,7 +85,7 @@ export default defineComponent({
     })
 
     // 生成表单验证规则
-    const rulesRef = reactive(props.dynamicValidateForm.formItem.reduce((previousValue, currentValue) => {
+    const rulesRef = reactive(props.dynamicValidateForm.formItem.filter(item => !item.hidden).reduce((previousValue, currentValue) => {
       currentValue.rules && (previousValue[currentValue.field] = currentValue.rules)
       return previousValue
     }, {}))

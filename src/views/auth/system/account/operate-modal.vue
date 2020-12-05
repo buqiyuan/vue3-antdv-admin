@@ -1,6 +1,6 @@
 <template>
   <a-modal
-      title="编辑账号"
+      :title="fields ? '编辑账号' : '添加账号'"
       v-model:visible="visible"
       :confirm-loading="confirmLoading"
       :afterClose="remove"
@@ -13,13 +13,13 @@
 <script lang="ts">
 import {defineComponent, reactive, toRefs, ref, onMounted} from 'vue'
 import {Modal} from 'ant-design-vue'
-import {editSchema} from "./edit-schema"
+import {formSchema} from "./form-schema"
 import {useAsync} from "@/hooks";
 import {SchemaForm} from '@/components/JSON-schema-form'
-import {patchAdminAccount} from "@/api/system/account";
+import {patchAdminAccount, postAdminAccount} from "@/api/system/account";
 
 export default defineComponent({
-  name: "edit-modal",
+  name: "operate-modal",
   components: { [Modal.name]: Modal, SchemaForm},
   props: {
     remove: { // 移除模态框
@@ -38,20 +38,30 @@ export default defineComponent({
     const state = reactive({
       visible: true,
       confirmLoading: false,
-      dynamicValidateForm: editSchema
+      dynamicValidateForm: formSchema
     })
+
+    // 如果是编辑操作，则隐藏password字段
+    state.dynamicValidateForm.formItem.find(item => item.field == 'password')!.hidden = !!props.fields
 
     const handleOk = () => {
       state.confirmLoading = true;
       dynamicForm.value.validate()
           .then( async res => {
-            const {username, roles} = dynamicForm.value.modelRef
+            const {username, password, roles} = dynamicForm.value.modelRef
 
             const params = {
               username,
+              password,
               roles: roles.toString()
             }
-            const result = await useAsync(patchAdminAccount(props.fields?.id, params), {ref: state, loadingName: 'confirmLoading'})
+            const id = props.fields?.id
+            // 有id为编辑，无则添加
+            if (id) {
+              await patchAdminAccount(id, params).finally(() => state.confirmLoading = false)
+            } else {
+              await postAdminAccount(params).finally(() => state.confirmLoading = false)
+            }
             state.visible = false;
             props.callback && props.callback()
           })
