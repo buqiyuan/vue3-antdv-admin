@@ -1,5 +1,6 @@
 <template>
-  <dynamic-table ref="tableRef" :columns="columns" :get-list-func="getAdminDictConfig" rowKey="id" :row-selection="rowSelection">
+  <dynamic-table ref="tableRef" :columns="columns" :get-list-func="getAdminDictConfig" rowKey="id"
+                 :row-selection="rowSelection">
     <template v-slot:title>
       <a-button @click="addItem" type="primary">
         新增字典
@@ -15,11 +16,11 @@ import {defineComponent, reactive, toRefs, createVNode, computed, ref} from 'vue
 import {Modal} from 'ant-design-vue'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 import {DynamicTable} from '@/components/dynamic-table'
-import {useCreateModal} from "@/hooks";
-import {delAdminDictConfig, getAdminDictConfig} from '@/api/system/dict'
-import OperateModal from './operate-modal.vue'
+import {delAdminDictConfig, getAdminDictConfig, patchAdminDictConfig, postAdminDictConfig} from '@/api/system/dict'
+import {formSchema} from "./form-schema"
 import {columns} from "./columns";
 import {hasPermission} from "@/utils/permission/hasPermission";
+import {useFormModal} from "@/hooks/useFormModal/";
 
 export default defineComponent({
   name: 'system-dict',
@@ -52,10 +53,13 @@ export default defineComponent({
         }
       })
     }
-    // 添加策略
+    // 添加字典
     const addItem = () => {
-      useCreateModal(OperateModal, {
-        callback: () => {
+      useFormModal({
+        title: '添加字典',
+        formSchema: formSchema,
+        handleOk: async (modelRef, state) => {
+          await postAdminDictConfig(modelRef)
           tableRef.value.refreshTableData()
         }
       })

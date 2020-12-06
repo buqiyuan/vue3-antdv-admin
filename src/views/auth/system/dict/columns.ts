@@ -1,8 +1,9 @@
-import {useCreateModal} from "@/hooks";
-import OperateModal from './operate-modal.vue'
 import {delAdminAccount} from "@/api/system/account";
 import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
+import {useFormModal} from "@/hooks/useFormModal";
+import {formSchema} from "@/views/auth/system/dict/form-schema";
+import {patchAdminDictConfig} from "@/api/system/dict";
 
 export const columns: TableColumn[] = [ // 字典表格
     {
@@ -57,9 +58,9 @@ export const columns: TableColumn[] = [ // 字典表格
                 props: {
                   type: 'danger'
                 },
-                func: async ({record}, callback) => {
+                func: async ({record}, refreshTableData) => {
                     await delAdminAccount(record.id)
-                    callback()
+                    refreshTableData()
                 },
             },
             {
@@ -72,10 +73,15 @@ export const columns: TableColumn[] = [ // 字典表格
                 props: {
                     type: 'warning'
                 },
-                func: ({record}, callback) => useCreateModal(OperateModal, {
+                func: ({record}, refreshTableData) => useFormModal({
+                    title: '编辑字典',
                     fields: record,
-                    callback
-                }),
+                    formSchema: formSchema,
+                    handleOk: async (modelRef, state) => {
+                        await patchAdminDictConfig(record.id, modelRef)
+                        refreshTableData()
+                    }
+                })
             }
         ]
     },

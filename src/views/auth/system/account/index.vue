@@ -15,10 +15,10 @@ import {defineComponent, reactive, toRefs, createVNode, computed, ref} from 'vue
 import {Modal} from 'ant-design-vue'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 import {DynamicTable} from '@/components/dynamic-table'
-import {useCreateModal} from "@/hooks";
-import {delAdminAccount, getAdminAccount} from '@/api/system/account'
-import OperateModal from './operate-modal.vue'
+import {delAdminAccount, getAdminAccount, postAdminAccount} from '@/api/system/account'
 import {columns} from "./columns";
+import {useFormModal} from "@/hooks/useFormModal";
+import {formSchema} from "./form-schema";
 
 export default defineComponent({
   name: 'system-account',
@@ -51,10 +51,22 @@ export default defineComponent({
         }
       })
     }
-    // 添加策略
+    // 添加账号
     const addItem = () => {
-      useCreateModal(OperateModal, {
-        callback: () => tableRef.value.refreshTableData()
+      useFormModal({
+        title: '添加账号',
+        formSchema: formSchema,
+        handleOk: async (modelRef, state) => {
+          const {username, password, roles} = modelRef
+
+          const params = {
+            username,
+            password,
+            roles: roles.toString()
+          }
+          await postAdminAccount(params)
+          tableRef.value.refreshTableData()
+        }
       })
     }
     const isDisabled = computed(() => state.rowSelection.selectedRowKeys.length == 0)

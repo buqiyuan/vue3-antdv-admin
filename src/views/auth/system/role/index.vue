@@ -15,11 +15,11 @@ import {defineComponent, reactive, toRefs, createVNode, computed, ref} from 'vue
 import {Modal} from 'ant-design-vue'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 import {DynamicTable} from '@/components/dynamic-table'
-import { useCreateModal} from "@/hooks";
-import {delAdminRole, getAdminRole} from '@/api/system/role'
-import OperateModal from './operate-modal.vue'
+import {delAdminRole, getAdminRole, postAdminRole} from '@/api/system/role'
 import {columns} from "./columns";
 import {hasPermission} from "@/utils/permission/hasPermission";
+import {useFormModal} from "@/hooks/useFormModal";
+import {formSchema} from "./form-schema";
 
 export default defineComponent({
   name: 'system-role',
@@ -54,9 +54,23 @@ export default defineComponent({
     }
     // 添加角色
     const addItem = () => {
-      useCreateModal(OperateModal, {
-        callback: () => tableRef.value.refreshTableData()
+      useFormModal({
+        title: '添加角色',
+        formSchema: formSchema,
+        handleOk: async (modelRef, state) => {
+          const {description, title, accessIdsList} = modelRef
+
+          const params = {
+            description, title,
+            accessIdsList: accessIdsList.toString()
+          }
+          await postAdminRole(params)
+          tableRef.value.refreshTableData()
+        }
       })
+      // useCreateModal(OperateModal, {
+      //   callback: () => tableRef.value.refreshTableData()
+      // })
     }
     const isDisabled = computed(() => state.rowSelection.selectedRowKeys.length == 0)
 

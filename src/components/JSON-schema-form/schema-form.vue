@@ -1,6 +1,6 @@
 <template>
-  <a-form v-bind="dynamicValidateForm.formItemLayout || formItemLayout">
-    <template v-for="(formItem, index) in dynamicValidateForm.formItem.filter(item => !item.hidden)"
+  <a-form v-bind="formSchema.formItemLayout || formItemLayout">
+    <template v-for="(formItem, index) in formSchema.formItem.filter(item => !item.hidden)"
               :key="formItem.field">
       <a-form-item
           :help="formItem.help"
@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, getCurrentInstance, isReactive, isRef, markRaw, watch} from 'vue'
+import {defineComponent, reactive, getCurrentInstance, isReactive, isRef, createVNode, watch} from 'vue'
 import {Form, Spin} from 'ant-design-vue'
 import {useForm} from "@ant-design-vue/use";
 import {isString, isFunction, isAsyncFunction} from '@/utils/is'
 import components from './components'
-import {FormItem} from "@/types/schema";
+import {FormItem, FormSchema} from "@/types/schema";
 
 export default defineComponent({
   name: "dynamic-form",
@@ -36,7 +36,7 @@ export default defineComponent({
     [Form.Item.name]: Form.Item,
   },
   props: {
-    dynamicValidateForm: { // 动态验证表单
+    formSchema: { // 动态验证表单
       required: true,
       type: [Object]
     } as any,
@@ -56,7 +56,7 @@ export default defineComponent({
     }
 
     // 表单项
-    const modelRef = reactive(props.dynamicValidateForm.formItem.reduce((previousValue, currentValue) => {
+    const modelRef = reactive(props.formSchema.formItem.reduce((previousValue, currentValue) => {
       currentValue.eventObject ??= {}
       // Object.keys(currentValue.eventObject).forEach(key => {
       //   const fn = currentValue.eventObject[key]
@@ -71,7 +71,7 @@ export default defineComponent({
     props.fields && Object.assign(modelRef, props.fields)
 
     // 异步设置默认数据
-    props.dynamicValidateForm.formItem.forEach(async (item: FormItem) => {
+    props.formSchema.formItem.forEach(async (item: FormItem) => {
       // 是否需要loading
       if (item?.hasOwnProperty('loading')) {
         item.loading = true
@@ -85,7 +85,7 @@ export default defineComponent({
     })
 
     // 生成表单验证规则
-    const rulesRef = reactive(props.dynamicValidateForm.formItem.filter(item => !item.hidden).reduce((previousValue, currentValue) => {
+    const rulesRef = reactive(props.formSchema.formItem.filter(item => !item.hidden).reduce((previousValue, currentValue) => {
       currentValue.rules && (previousValue[currentValue.field] = currentValue.rules)
       return previousValue
     }, {}))
@@ -93,14 +93,14 @@ export default defineComponent({
     // console.log(modelRef, '表单')
     // console.log(rulesRef, '表单验证规则')
 
-    // const watchCallback = props.dynamicValidateForm.watchCallback ?? (() => ({}))
+    // const watchCallback = props.formSchema.watchCallback ?? (() => ({}))
     //
     // // 是否有需要监测的字段
-    // props.dynamicValidateForm.watchKeys && watch(props.dynamicValidateForm.watchKeys.map(item => () => modelRef[item]), (curr, prev) => watchCallback(curr, {
-    //   dynamicForm: props.dynamicValidateForm,
+    // props.formSchema.watchKeys && watch(props.formSchema.watchKeys.map(item => () => modelRef[item]), (curr, prev) => watchCallback(curr, {
+    //   dynamicForm: props.formSchema,
     //   modelRef
     // }))
-    // watch(props.dynamicValidateForm.watchKeys.map(item => () => modelRef[item]), eval(props.dynamicValidateForm.watchCallback))
+    // watch(props.formSchema.watchKeys.map(item => () => modelRef[item]), eval(props.formSchema.watchCallback))
 
     const {resetFields, validate, validateInfos} = useForm(modelRef, rulesRef);
 
@@ -112,7 +112,7 @@ export default defineComponent({
       if (preset.includes(type)) {
         return 'schema-form-' + type
       } else if (isReactive(type) || isRef(type)) { // 自定义组件
-        return markRaw(type)
+        return createVNode(type)
       } else { // 不识别组件
         return type
       }

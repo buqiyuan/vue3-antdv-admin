@@ -1,8 +1,8 @@
-import {useCreateModal} from "@/hooks";
-import OperateModal from './operate-modal.vue'
-import {delAdminAccount} from "@/api/system/account";
+import {delAdminAccount, patchAdminAccount} from "@/api/system/account";
 import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
+import {useFormModal} from "@/hooks/useFormModal";
+import {formSchema} from "./form-schema";
 
 export const columns: TableColumn[] = [ // 账号列表
     {
@@ -69,10 +69,23 @@ export const columns: TableColumn[] = [ // 账号列表
                 props: {
                     type: 'warning'
                 },
-                func: ({record}, callback) => useCreateModal(OperateModal, {
-                    fields: record,
-                    callback
-                }),
+                func: ({record}, refreshTableData) => useFormModal({
+                    title: '编辑账号',
+                    fields: {...record,roles:record?.roles.map(item => item.id)},
+                    hiddenFields: ['password'],
+                    formSchema: formSchema,
+                    handleOk: async (modelRef, state) => {
+                        const {username, password, roles} = modelRef
+
+                        const params = {
+                            username,
+                            password,
+                            roles: roles.toString()
+                        }
+                        await patchAdminAccount(record.id, params)
+                        refreshTableData()
+                    }
+                })
             }
         ]
     },

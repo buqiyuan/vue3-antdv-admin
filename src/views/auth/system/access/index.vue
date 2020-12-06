@@ -21,11 +21,11 @@ import {defineComponent, reactive, toRefs, createVNode, render, nextTick, comput
 import {Modal} from 'ant-design-vue'
 import {QuestionCircleOutlined, LoadingOutlined} from '@ant-design/icons-vue'
 import {DynamicTable} from '@/components/dynamic-table'
-import {useCreateModal} from "@/hooks";
 import {delAdminAccess, getAdminAccess} from '@/api/system/access'
 import AddModal from './add-modal.vue'
 import {columns} from "./columns";
 import useExpandLoading from '@/components/dynamic-table/utils/useExpandLoading'
+import {useCreateModal} from "@/hooks";
 
 
 export default defineComponent({

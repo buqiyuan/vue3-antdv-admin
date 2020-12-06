@@ -1,7 +1,7 @@
 import {FormSchema} from "@/types/schema";
 import {getAdminRole, getAdminRoleAccess} from "@/api/system/role";
 
-export const addSchema: FormSchema = {
+export const formSchema: FormSchema = {
     formItem: [
         {
             type: "input",
