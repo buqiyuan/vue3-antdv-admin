@@ -49,9 +49,11 @@ export const columns: TableColumn[] = [ // 角色列表
                 props: {
                   type: 'danger'
                 },
-                func: async ({record}, callback) => {
-                    await delAdminRole(record.id)
-                    callback()
+                func: async ({record}, refreshTableData) => {
+                    const result = await delAdminRole(record.id)
+                    refreshTableData()
+                    console.log(result, '结果')
+                    return result
                 },
             },
             {

@@ -55,8 +55,9 @@ export const columns: TableColumn[] = [ // 账号列表
                   type: 'danger'
                 },
                 func: async ({record}, callback) => {
-                    await delAdminAccount(record.id)
+                    const result = await delAdminAccount(record.id)
                     callback()
+                    return result
                 },
             },
             {

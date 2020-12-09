@@ -145,12 +145,12 @@ export class VAxios {
       this.axiosInstance
           .request<any, AxiosResponse<Result>>(conf)
           .then((res: AxiosResponse<Result>) => {
-            if (transformRequestData && isFunction(transformRequestData)) {
+            if (transformRequestData && isFunction(transformRequestData) && res.constructor?.name !== 'Cancel') {
               const ret = transformRequestData(res, opt);
               // ret !== undefined ? resolve(ret) : reject(new Error('request error!'));
               return resolve(ret)
             }
-            resolve((res as unknown) as Promise<T>);
+            reject((res as unknown) as Promise<T>);
           })
           .catch((e: Error) => {
             if (requestCatch && isFunction(requestCatch)) {

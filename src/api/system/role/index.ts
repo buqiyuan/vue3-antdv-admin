@@ -38,6 +38,7 @@ export function delAdminRole(id: string) {
     url: [Api.adminRole, id].join('/'),
     method: RequestEnum.DELETE,
   }, {
+    isTransformRequestResult: false, // 不转换响应结果，保留code,message等信息用于判断
     successMessageText: '删除成功',
     errorMessageText: '删除失败'
   });
@@ -53,6 +54,7 @@ export function patchAdminRole(id, params) {
     method: RequestEnum.PATCH,
     params,
   }, {
+    isTransformRequestResult: false, // 不转换响应结果，保留code,message等信息用于判断
     successMessageText: '修改成功',
     errorMessageText: '修改失败'
   });

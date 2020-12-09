@@ -59,8 +59,9 @@ export const columns: TableColumn[] = [ // 字典表格
                   type: 'danger'
                 },
                 func: async ({record}, refreshTableData) => {
-                    await delAdminAccount(record.id)
+                    const result = await delAdminAccount(record.id)
                     refreshTableData()
+                    return result
                 },
             },
             {
