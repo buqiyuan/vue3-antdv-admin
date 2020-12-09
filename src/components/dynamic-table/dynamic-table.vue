@@ -168,7 +168,7 @@ export default defineComponent({
     // 获取表格数据
     const refreshTableData = async (params = {}) => {
       params = {
-        page: state.pageOption.current,
+        pageNumber: state.pageOption.current,
         pageSize: state.pageOption.pageSize,
         ...props.pageOption,
         ...params
