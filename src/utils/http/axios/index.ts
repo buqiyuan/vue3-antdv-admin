@@ -179,8 +179,9 @@ const transform: AxiosTransform = {
         } catch (error) {
             throw new Error(error);
         }
-        // 如果不是请求被取消
-        if (error.constructor?.name !== 'Cancel') {
+        // 请求是否被取消
+        const isCancel = (error as any).__CANCEL__
+        if (!isCancel) {
             checkStatus(error.response && error.response.status, msg);
         } else {
             console.warn(error, '请求被取消！')

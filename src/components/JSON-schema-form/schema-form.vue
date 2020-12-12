@@ -10,6 +10,7 @@
       >
         <a-spin :spinning="formItem.loading || false">
           <component
+              style="min-height: 40px"
               v-model:value="modelRef[formItem.field]"
               :form-item="formItem"
               :is="getComponent(formItem.type)"/>

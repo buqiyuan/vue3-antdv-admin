@@ -3,6 +3,7 @@ import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
 import {useFormModal} from "@/hooks/useFormModal";
 import {formSchema} from "./form-schema";
+import {ResultEnum} from "@/enums/httpEnum";
 
 export const columns: TableColumn[] = [ // 角色列表
     {
@@ -51,6 +52,9 @@ export const columns: TableColumn[] = [ // 角色列表
                 },
                 func: async ({record}, refreshTableData) => {
                     const result = await delAdminRole(record.id)
+                    if (result.code != ResultEnum.SUCCESS) {
+                        return Promise.reject()
+                    }
                     refreshTableData()
                     console.log(result, '结果')
                     return result

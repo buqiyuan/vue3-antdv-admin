@@ -2,7 +2,7 @@
   <div class="tabs-view">
     <a-tabs v-model:activeKey="activeKey" @change="changePage" hide-add type="editable-card" @edit="editTabItem"
             class="tabs">
-      <template v-for="(pageItem, index) in pageList" :key="pageItem.fullPath">
+      <template v-for="(pageItem, index) in tabsList" :key="pageItem.fullPath">
         <a-tab-pane :closable="pageItem.closable">
           <template #tab>
             <a-dropdown :trigger="['contextmenu']">
@@ -15,21 +15,21 @@
                     <reload-outlined/>
                     刷新
                   </a-menu-item>
-                  <a-menu-item @click="removeTab(pageItem.fullPath)" key="2">
+                  <a-menu-item @click="removeTab(pageItem)" key="2">
                     <close-outlined/>
                     关闭
                   </a-menu-item>
                   <a-menu-divider/>
-                  <a-menu-item @click="closeLeft(pageItem.fullPath, index)" key="3">
+                  <a-menu-item @click="closeLeft(pageItem, index)" key="3">
                     <vertical-right-outlined/>
                     关闭左侧
                   </a-menu-item>
-                  <a-menu-item @click="closeRight(pageItem.fullPath, index)" key="4">
+                  <a-menu-item @click="closeRight(pageItem, index)" key="4">
                     <vertical-left-outlined/>
                     关闭右侧
                   </a-menu-item>
                   <a-menu-divider/>
-                  <a-menu-item @click="closeOther(pageItem.fullPath)" key="5">
+                  <a-menu-item @click="closeOther(pageItem)" key="5">
                     <column-width-outlined/>
                     关闭其他
                   </a-menu-item>
@@ -56,12 +56,12 @@
                 <reload-outlined/>
                 刷新
               </a-menu-item>
-              <a-menu-item @click="removeTab(route.fullPath)" key="2">
+              <a-menu-item @click="removeTab(route)" key="2">
                 <close-outlined/>
                 关闭
               </a-menu-item>
               <a-menu-divider/>
-              <a-menu-item @click="closeOther(route.fullPath)" key="5">
+              <a-menu-item @click="closeOther(route)" key="5">
                 <column-width-outlined/>
                 关闭其他
               </a-menu-item>
@@ -83,13 +83,15 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, nextTick, toRefs, unref, watch} from 'vue'
+import {defineComponent, reactive, computed, toRefs, unref, watch} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 import components from "@/layout/tabs/components";
 import {RouterTransition} from '@/components/transition'
 import {createStorage} from '@/utils/Storage'
 import {TABS_ROUTES} from '@/store/mutation-types'
+import {createNamespacedHelpers, useStore} from 'vuex'
 
+const { mapState, mapMutations } = createNamespacedHelpers('tabs-view')
 import {message} from 'ant-design-vue'
 
 interface RouteItem {
@@ -110,7 +112,9 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const store = useStore()
     const storage = createStorage()
+    // const tabsViewMutations = mapMutations(['addTabs','closeLeftTabs','closeRightTabs','closeOtherTabs','initTabs','closeCurrentTabs','closeAllTabs'])
 
     // 获取简易的路由对象
     const getSimpleRoute = (route): RouteItem => {
@@ -127,36 +131,41 @@ export default defineComponent({
       routes = [getSimpleRoute(route)]
     }
 
+    // 初始化标签页
+    store.commit('tabs-view/initTabs', routes)
+    // tabsViewMutations.initTabs(routes)
+
     const state = reactive({
-      pageList: routes,
       activeKey: route.fullPath,
     })
+
+    const tabsList = computed(() => store.getters.tabsList)
+    console.log(tabsList.value, 'tabsList')
 
     const whiteList = ['Redirect', 'login']
 
     watch(() => route.fullPath, (to, from) => {
       if (whiteList.includes(route.name as string)) return
       state.activeKey = to
-      if (!state.pageList.find((item: RouteItem) => unref(item).fullPath == to)) {
-        state.pageList.push(getSimpleRoute(route))
-      }
+      // tabsViewMutations.addTabs(getSimpleRoute(route))
+      store.commit('tabs-view/addTabs', getSimpleRoute(route))
     }, {immediate: true})
 
     // 在页面关闭或刷新之前，保存数据
     window.addEventListener('beforeunload', () => {
-      storage.set(TABS_ROUTES, JSON.stringify(state.pageList))
+      storage.set(TABS_ROUTES, JSON.stringify(tabsList.value))
     })
 
-    // 关闭页面
-    const removeTab = (targetKey) => {
-      if (state.pageList.length === 1) {
+    // 关闭当前页面
+    const removeTab = (route) => {
+      if (tabsList.value.length === 1) {
         return message.warning('这已经是最后一页，不能再关闭了！')
       }
-      const index = state.pageList.findIndex(item => item.fullPath == targetKey)
-      state.pageList.splice(index, 1)
+      // tabsViewMutations.closeCurrentTabs(route)
+      store.commit('tabs-view/closeCurrentTabs', route)
       // 如果关闭的是当前页
-      if (state.activeKey === targetKey) {
-        const currentRoute = state.pageList[Math.max(0, state.pageList.length - 1)]
+      if (state.activeKey === route.fullPath) {
+        const currentRoute = tabsList.value[Math.max(0, tabsList.value.length - 1)]
         state.activeKey = currentRoute.fullPath
         router.push(currentRoute)
       }
@@ -181,36 +190,41 @@ export default defineComponent({
     }
 
     // 关闭左侧
-    const closeLeft = (fullPath, index) => {
-      state.pageList.splice(0, index)
-      state.activeKey = fullPath
-      router.replace(fullPath)
+    const closeLeft = (route, index) => {
+      // tabsViewMutations.closeLeftTabs(route)
+      store.commit('tabs-view/closeLeftTabs', route)
+      state.activeKey = route.fullPath
+      router.replace(route.fullPath)
     }
 
     // 关闭右侧
-    const closeRight = (fullPath, index) => {
-      state.pageList.splice(index + 1)
-      state.activeKey = fullPath
-      router.replace(fullPath)
+    const closeRight = (route, index) => {
+      // tabsViewMutations.closeRightTabs(route)
+      store.commit('tabs-view/closeRightTabs', route)
+      state.activeKey = route.fullPath
+      router.replace(route.fullPath)
     }
 
     // 关闭其他
-    const closeOther = (fullPath) => {
-      state.pageList = state.pageList.filter(item => item.fullPath == fullPath)
-      state.activeKey = fullPath
-      router.replace(fullPath)
+    const closeOther = (route) => {
+      // tabsViewMutations.closeOtherTabs(route)
+      store.commit('tabs-view/closeOtherTabs', route)
+      state.activeKey = route.fullPath
+      router.replace(route.fullPath)
     }
 
     // 关闭全部
     const closeAll = () => {
       localStorage.removeItem('routes')
-      state.pageList = []
+      // tabsViewMutations.closeAllTabs()
+      store.commit('tabs-view/closeAllTabs')
       router.replace('/')
     }
 
     return {
       ...toRefs(state),
       route,
+      tabsList,
       changePage,
       editTabItem,
       removeTab,

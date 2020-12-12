@@ -3,6 +3,7 @@ import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
 import {useFormModal} from "@/hooks/useFormModal";
 import {formSchema} from "./form-schema";
+import {ResultEnum} from "@/enums/httpEnum";
 
 export const columns: TableColumn[] = [ // 账号列表
     {
@@ -56,6 +57,9 @@ export const columns: TableColumn[] = [ // 账号列表
                 },
                 func: async ({record}, callback) => {
                     const result = await delAdminAccount(record.id)
+                    if (result.code != ResultEnum.SUCCESS) {
+                        return Promise.reject()
+                    }
                     callback()
                     return result
                 },

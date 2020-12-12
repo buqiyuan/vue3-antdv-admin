@@ -145,7 +145,9 @@ export class VAxios {
       this.axiosInstance
           .request<any, AxiosResponse<Result>>(conf)
           .then((res: AxiosResponse<Result>) => {
-            if (transformRequestData && isFunction(transformRequestData) && res.constructor?.name !== 'Cancel') {
+            // 请求是否被取消
+            const isCancel = (res as any).__CANCEL__
+            if (transformRequestData && isFunction(transformRequestData) && !isCancel) {
               const ret = transformRequestData(res, opt);
               // ret !== undefined ? resolve(ret) : reject(new Error('request error!'));
               return resolve(ret)

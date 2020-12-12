@@ -15,9 +15,9 @@ const state = {
     info: Storage.get(CURRENT_USER, {})
 }
 
-type StateType = typeof state
+type UserStateType  = typeof state
 
-const user: Module<StateType, any> = {
+const user: Module<UserStateType, any> = {
     namespaced: true,
     state,
     mutations: {
@@ -118,4 +118,5 @@ const user: Module<StateType, any> = {
     }
 }
 
+export {UserStateType, state}
 export default user

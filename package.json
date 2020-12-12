@@ -11,7 +11,7 @@
     "test prod cors": "http-server dist --cors --gzip -P http://us-la-cn2.sakurafrp.com:59660"
   },
   "dependencies": {
-    "ant-design-vue": "^2.0.0-rc.2",
+    "ant-design-vue": "^2.0.0-rc.4",
     "axios": "^0.20.0",
     "blueimp-md5": "^2.18.0",
     "core-js": "^3.6.5",
@@ -21,7 +21,7 @@
     "nprogress": "^0.2.0",
     "qs": "^6.9.4",
     "vue": "^3.0.4",
-    "vue-router": "^4.0.0-rc.6",
+    "vue-router": "^4.0.1",
     "vuex": "^4.0.0-rc.2"
   },
   "devDependencies": {

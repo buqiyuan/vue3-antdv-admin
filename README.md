@@ -33,11 +33,6 @@
 - [x] 资源管理
 - [x] 字典管理
 
-
-![Axios封装.png](http://ww1.sinaimg.cn/large/005IOlAWgy1gl8aroordlj311t0ng78r.jpg)
-![动态表格.png](http://ww1.sinaimg.cn/large/005IOlAWgy1gl8bkci8mmj30s71ipah7.jpg)
-
-
 ## Project setup
 ```
 yarn install

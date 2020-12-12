@@ -45,6 +45,8 @@ export default defineComponent({
         icon: createVNode(QuestionCircleOutlined),
         content: '您确定要删除所有选中吗？',
         onOk: async () => {
+          tableRef.value.loading = true
+          console.log(tableRef.value, '都有些啥')
           await delAdminAccount(state.rowSelection.selectedRowKeys.toString())
           tableRef.value.refreshTableData()
           state.rowSelection.selectedRowKeys = []

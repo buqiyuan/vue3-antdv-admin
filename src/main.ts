@@ -1,42 +1,24 @@
 // import './publicPath'
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router/'
-import store from '@/store'
-// import {SvgIcon} from '@/components/svg-icon'
-import {AButton} from '@/components/button/'
-
-import {Modal, Table, Menu, Button, Input, Form,Card, Checkbox, Radio} from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css'
-// 路由守卫
-import '@/router/router-guards'
-import {permission} from "@/directives/permission";
-import hasPermission from "@/utils/permission/hasPermission";
+import router, {setupRouter} from './router/'
+import {setupStore} from '@/store'
+import {setupAntd, setupDirectives, setupGlobalMethods,setupCustomComponents} from '@/plugins/'
 const app = createApp(App)
 
-// app.config.globalProperties.$message = message
-// 常用的ant-design-vue组件
-app.component(Modal.name, Modal)
-app.component(Table.name, Table)
-app.component(Input.name, Input)
-app.component(Input.Search.name, Input.Search)
-app.component(Input.TextArea.name, Input.TextArea)
-app.component('a-button', AButton)
-app.use(Form)
-app.use(Menu)
-app.use(Checkbox)
-app.use(Radio)
-app.use(Card)
-
-// 权限控制指令（演示）
-app.directive('permission', permission)
-app.use(hasPermission)
-
-app.use(router)
-app.use(store)
-
-console.log(store)
-
+// 注册全局常用的ant-design-vue组件
+setupAntd(app)
+// 注册全局自定义组件,如：<svg-icon />
+setupCustomComponents(app)
+// 注册全局自定义指令，如：v-permission权限指令
+setupDirectives(app)
+// 注册全局方法，如：app.config.globalProperties.$message = message
+setupGlobalMethods(app)
+// 挂载vuex状态管理
+setupStore(app)
+// 挂载路由
+setupRouter(app)
+// 路由准备就绪后挂载APP实例
 router.isReady().then(() => app.mount('#app'))
 
 export default app

@@ -1,7 +1,7 @@
 <template>
   <a-table
       :columns="columns"
-      :loading="tableLoading"
+      :loading="loading"
       :rowSelection="rowSelection"
       :rowKey="rowKey"
       size="middle"
@@ -158,7 +158,7 @@ export default defineComponent({
       data: [], // 表格数据
       pageOption: Object.assign(pageOption, props.pageOption), // 表格分页
       actions: props.columns.find(item => (item.dataIndex || item.key) == 'action')?.actions || [], // 表格操作（如：编辑、删除的按钮等）
-      tableLoading: false, // 表格加载
+      loading: false, // 表格加载
     })
 
     // 获取表格数据
@@ -169,8 +169,8 @@ export default defineComponent({
         ...props.pageOption,
         ...params
       }
-      state.tableLoading = true
-      const {data, pageNumber, pageSize, total} = await props.getListFunc(params).finally(() => state.tableLoading = false)
+      state.loading = true
+      const {data, pageNumber, pageSize, total} = await props.getListFunc(params).finally(() => state.loading = false)
       Object.assign(state.pageOption, {current: ~~pageNumber, pageSize: ~~pageSize, total: ~~total})
       state.data = data
     }

@@ -28,6 +28,7 @@
 import {defineComponent, PropType, reactive, toRefs, ref, computed} from 'vue'
 import {Spin} from 'ant-design-vue'
 import {ZoomInOutlined, ZoomOutOutlined, RedoOutlined, DownloadOutlined,OneToOneOutlined, CloseCircleOutlined} from '@ant-design/icons-vue'
+import {downloadByUrl} from "@/utils/downloadFile";
 
 export default defineComponent({
   name: 'preview-modal',
@@ -83,16 +84,8 @@ export default defineComponent({
       state.imgStyle.transform = `rotate(${state.rotateDeg}deg)`
     }
     // 保存图片
-    const saveImg = (Url) => {
-      const blob = new Blob([''], {type: 'application/octet-stream'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = Url;
-      a.download = Url.replace(/(.*\/)*([^.]+.*)/ig, '$2').split('?')[0];
-      const e = document.createEvent('MouseEvents');
-      e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      a.dispatchEvent(e);
-      URL.revokeObjectURL(url);
+    const saveImg = (url) => {
+      downloadByUrl({url})
     }
     // 处理图片缩放比
     const handZoom = (type = 'scale') => {
