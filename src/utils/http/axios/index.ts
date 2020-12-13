@@ -6,7 +6,6 @@ import {AxiosResponse} from 'axios';
 import qs from 'qs'
 import {checkStatus} from './checkStatus';
 import {Modal, message as Message} from "ant-design-vue";
-
 import {RequestEnum, ResultEnum, ContentTypeEnum} from '@/enums/httpEnum';
 
 import {isString} from '@/utils/is/index';
@@ -53,14 +52,11 @@ const transform: AxiosTransform = {
             return res.data;
         }
 
+        console.log(data, 'ddddd')
+
         if (!data) {
             // return '[HTTP] Request has no return value';
             return reject(data);
-        }
-
-        // 这里逻辑可以根据项目进行修改
-        if (!hasSuccess) {
-            return reject(new Error(message));
         }
 
         // 接口请求成功，直接返回结果
@@ -79,28 +75,32 @@ const transform: AxiosTransform = {
             }
             return reject();
         }
+
         // 登录超时
         if (code === ResultEnum.TIMEOUT) {
             if (router.currentRoute.value.name == 'login') return
             // 到登录页
-            const nav2login = () => {
-                router.replace({
-                    name: 'login',
-                    query: {
-                        redirect: router.currentRoute.value.fullPath
-                    }
-                })
-                storage.clear()
-            }
             const timeoutMsg = '登录超时,请重新登录!';
-            Modal.confirm({
-                title: '操作失败',
-                content: timeoutMsg,
-                onCancel: nav2login,
-                onOk: nav2login
+            Modal.warning({
+                title: '登录超时,请重新登录!',
+                onOk: () => {
+                    router.replace({
+                        name: 'login',
+                        query: {
+                            redirect: router.currentRoute.value.fullPath
+                        }
+                    })
+                    storage.clear()
+                }
             });
             return reject(new Error(timeoutMsg))
         }
+
+        // 这里逻辑可以根据项目进行修改
+        if (!hasSuccess) {
+            return reject(new Error(message));
+        }
+
         return data;
     },
 
