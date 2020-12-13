@@ -14,12 +14,16 @@ export interface RequestOptions {
   formatDate?: boolean;
   //  是否处理请求结果
   isTransformRequestResult?: boolean;
+  // 是否显示提示信息
+  isShowMessage?: boolean;
   // 是否解析成JSON
   isParseToJson?: boolean;
-  // 是否提示自定义信息
-  isShowMessage?: boolean;
   // 成功的文本信息
   successMessageText?: string;
+  // 是否显示成功信息
+  isShowSuccessMessage?: boolean;
+  // 是否显示失败信息
+  isShowErrorMessage?: boolean;
   // 错误的文本信息
   errorMessageText?: string;
   // 是否加入url

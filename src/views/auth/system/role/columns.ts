@@ -50,15 +50,7 @@ export const columns: TableColumn[] = [ // 角色列表
                 props: {
                   type: 'danger'
                 },
-                func: async ({record}, refreshTableData) => {
-                    const result = await delAdminRole(record.id)
-                    if (result.code != ResultEnum.SUCCESS) {
-                        return Promise.reject()
-                    }
-                    refreshTableData()
-                    console.log(result, '结果')
-                    return result
-                },
+                func: async ({record}, refreshTableData) => await delAdminRole(record.id).then(() => refreshTableData()),
             },
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
@@ -81,8 +73,7 @@ export const columns: TableColumn[] = [ // 角色列表
                             description, title,
                             accessIdsList: accessIdsList.toString()
                         }
-                        await patchAdminRole(record.id, params)
-                        refreshTableData()
+                        return await patchAdminRole(record.id, params).then(() => refreshTableData())
                     }
                 })
             }

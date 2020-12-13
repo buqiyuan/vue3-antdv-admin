@@ -55,14 +55,7 @@ export const columns: TableColumn[] = [ // 账号列表
                 props: {
                   type: 'danger'
                 },
-                func: async ({record}, callback) => {
-                    const result = await delAdminAccount(record.id)
-                    if (result.code != ResultEnum.SUCCESS) {
-                        return Promise.reject()
-                    }
-                    callback()
-                    return result
-                },
+                func: async ({record}, refreshTableData) => await delAdminAccount(record.id).then(() => refreshTableData()),
             },
             {
                 type: 'button', // 控制类型，默认为a,可选： select | button | text
@@ -87,8 +80,7 @@ export const columns: TableColumn[] = [ // 账号列表
                             password,
                             roles: roles.toString()
                         }
-                        await patchAdminAccount(record.id, params)
-                        refreshTableData()
+                        return await patchAdminAccount(record.id, params).then(() => refreshTableData())
                     }
                 })
             }

@@ -8,18 +8,6 @@ const error = Message.error!;
 
 export function checkStatus(status: number, msg: string): void {
     switch (status) {
-        case 10042:
-            if (router.currentRoute.value.name == 'login') return
-            router.replace({
-                name: 'login',
-                query: {
-                    redirect: router.currentRoute.value.fullPath
-                }
-            })
-            Message.destroy()
-            storage.clear()
-            error('登录身份已过期，请重新登录！');
-            break;
         case 400:
             error(`${msg}`);
             break;

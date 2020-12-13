@@ -17,7 +17,8 @@ import {RequestOptions, Result} from './types';
 const isDev = process.env.NODE_ENV === 'development'
 import router from '@/router'
 import store from '@/store'
-
+import {createStorage} from "@/utils/Storage";
+const storage = createStorage()
 /**
  * @description: 数据处理，方便区分多种处理方式
  * axios封装使用了https://github.com/anncwb/vue-vben-admin/tree/main/src/utils/http/axios
@@ -27,50 +28,39 @@ const transform: AxiosTransform = {
      * @description: 处理请求数据
      */
     transformRequestData: (res: AxiosResponse<Result>, options: RequestOptions) => {
-        const {isTransformRequestResult, isParseToJson, isShowMessage, successMessageText, errorMessageText} = options;
+        const {isTransformRequestResult, isShowMessage = true,isShowErrorMessage, isShowSuccessMessage, successMessageText, errorMessageText} = options;
+
+        const reject = Promise.reject
 
         const {data} = res;
         //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
         const {code, result, message} = data;
-
-        if (code != 0) {
-            checkStatus(code, message)
-            return res.data
+        // 请求成功
+        const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+        // 是否显示提示信息
+        if (isShowMessage) {
+            if (hasSuccess && (successMessageText || isShowSuccessMessage)) { // 是否显示自定义信息提示
+                Message.success(successMessageText || message ||  '操作成功！')
+            } else if (!hasSuccess && (errorMessageText || isShowErrorMessage)) { // 是否显示自定义信息提示
+                Message.error(message || errorMessageText || '操作失败！')
+            } else if (!hasSuccess && options.errorMessageMode === 'modal') { // errorMessageMode=‘custom-modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
+                Modal.confirm({title: '错误提示', content: message});
+            }
         }
-
         // 不进行任何处理，直接返回
         // 用于页面代码可能需要直接获取code，data，message这些信息时开启
         if (!isTransformRequestResult) {
             return res.data;
         }
-        // 错误的时候返回
-        const errorResult = undefined;
 
         if (!data) {
             // return '[HTTP] Request has no return value';
-            return errorResult;
+            return reject(data);
         }
 
         // 这里逻辑可以根据项目进行修改
-        const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
-        if (hasSuccess) {
-            // 是否显示自定义信息提示
-            if (successMessageText) {
-                Message.success(successMessageText || message)
-            }
-        } else {
-            if (message) {
-                // errorMessageMode=‘custom-modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
-                if (options.errorMessageMode === 'modal') {
-                    Modal.confirm({title: '错误提示', content: message});
-                } else {
-                    Message.error(message);
-                }
-            } else if (errorMessageText) {
-                Message.info(errorMessageText || '未知错误！')
-            }
-            Promise.reject(new Error(message));
-            return errorResult;
+        if (!hasSuccess) {
+            return reject(new Error(message));
         }
 
         // 接口请求成功，直接返回结果
@@ -87,19 +77,31 @@ const transform: AxiosTransform = {
                 Message.error(msg);
                 Promise.reject(new Error(msg));
             }
-            return errorResult;
+            return reject();
         }
         // 登录超时
         if (code === ResultEnum.TIMEOUT) {
+            if (router.currentRoute.value.name == 'login') return
+            // 到登录页
+            const nav2login = () => {
+                router.replace({
+                    name: 'login',
+                    query: {
+                        redirect: router.currentRoute.value.fullPath
+                    }
+                })
+                storage.clear()
+            }
             const timeoutMsg = '登录超时,请重新登录!';
             Modal.confirm({
                 title: '操作失败',
                 content: timeoutMsg,
+                onCancel: nav2login,
+                onOk: nav2login
             });
-            Promise.reject(new Error(timeoutMsg));
-            return errorResult;
+            return reject(new Error(timeoutMsg))
         }
-        return errorResult;
+        return data;
     },
 
     // 请求之前处理config

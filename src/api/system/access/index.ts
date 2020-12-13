@@ -39,9 +39,8 @@ export function delAdminAccess(id: string) {
     url: [Api.adminAccess, id].join('/'),
     method: RequestEnum.DELETE,
   }, {
-    isTransformRequestResult: false, // 不转换响应结果，保留code,message等信息用于判断
-    successMessageText: '删除成功',
-    errorMessageText: '删除失败'
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '删除成功'
   });
 }
 
@@ -55,9 +54,8 @@ export function patchAdminAccess(id, params) {
     method: RequestEnum.PATCH,
     params,
   }, {
-    isTransformRequestResult: false, // 不转换响应结果，保留code,message等信息用于判断
-    successMessageText: '修改成功',
-    errorMessageText: '修改失败'
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '修改成功'
   });
 }
 
@@ -72,8 +70,7 @@ export function postAdminAccess(params) {
     method: RequestEnum.POST,
     params,
   }, {
-    isTransformRequestResult: false, // 不转换响应结果，保留code,message等信息用于判断
-    successMessageText: '创建成功',
-    errorMessageText: '创建失败'
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '创建成功'
   });
 }

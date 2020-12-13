@@ -72,9 +72,7 @@ export const columns: TableColumn[] = [ // 资源管理
                     if (record.id < 6) {
                         return message.warn('系统预置菜单，不能删除！')
                     }
-                    const result = await delAdminAccess(record.id)
-                    refreshTableData()
-                    return result
+                    return await delAdminAccess(record.id).then(() => refreshTableData())
                 },
             },
             {

@@ -180,9 +180,9 @@ export default defineComponent({
     // 操作事件
     const actionEvent = async (record, func, actionType) => {
       // 将refreshTableData放入宏任务中,等待当前微任务拿到结果进行判断操作，再请求表格数据
-      const {code} = await func({record, props}, () => setTimeout(() => refreshTableData()))
+      await func({record, props}, () => setTimeout(() => refreshTableData()))
       // 如果为删除操作,并且删除成功，当前的表格数据条数小于2条,则当前页数减一,即请求前一页
-      if (actionType == 'del' && code == 0 && state.data.length < 2) {
+      if (actionType == 'del' && state.data.length < 2) {
         state.pageOption.current = Math.max(1, state.pageOption.current - 1)
       }
     }

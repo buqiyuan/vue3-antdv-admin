@@ -14,6 +14,8 @@ export function getAdminAccount(params) {
     url: Api.adminAccount,
     method: RequestEnum.GET,
     params,
+  }, {
+    isShowErrorMessage: true
   });
 }
 
@@ -26,9 +28,8 @@ export function delAdminAccount(id: string) {
     url: [Api.adminAccount, id].join('/'),
     method: RequestEnum.DELETE,
   }, {
-    isTransformRequestResult: false, // 不转换响应结果，保留code,message等信息用于判断
-    successMessageText: '删除成功',
-    errorMessageText: '删除失败'
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '删除成功'
   });
 }
 
@@ -42,9 +43,8 @@ export function patchAdminAccount(id, params) {
     method: RequestEnum.PATCH,
     params,
   }, {
-    isTransformRequestResult: false, // 不转换响应结果，保留code,message等信息用于判断
-    successMessageText: '修改成功',
-    errorMessageText: '修改失败'
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '修改成功'
   });
 }
 
@@ -59,8 +59,7 @@ export function postAdminAccount(params) {
     method: RequestEnum.POST,
     params,
   }, {
-    isTransformRequestResult: false, // 不转换响应结果，保留code,message等信息用于判断
-    successMessageText: '创建成功',
-    errorMessageText: '创建失败'
+    isShowErrorMessage: true, // 是否显示错误提示信息
+    successMessageText: '新建成功'
   });
 }
