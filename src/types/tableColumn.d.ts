@@ -1,3 +1,4 @@
+import {ColumnProps, TableProps} from 'ant-design-vue/lib/table/interface'
 
 export declare interface ActionOptions {
     type: 'select' | 'button' | 'text' | 'popconfirm'; // 控制类型，默认为a,可选： select | button | text
@@ -10,7 +11,7 @@ export declare interface ActionOptions {
     func?: ({text, record, index}, callback) => any; // 动作事件触发回调
 }
 
-export declare type TableColumn = {
+export declare interface TableColumn extends ColumnProps {
     title: string;
     dataIndex: string;
     width?: number;

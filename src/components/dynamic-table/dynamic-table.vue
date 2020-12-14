@@ -95,36 +95,30 @@
 <script lang="ts">
 import {defineComponent, reactive, PropType, toRefs} from 'vue'
 import {Card, Select, Table, Popconfirm, message} from 'ant-design-vue'
+import {ColumnProps, TableProps} from 'ant-design-vue/lib/table/interface'
+import {PaginationProps} from 'ant-design-vue/lib/pagination/Pagination'
 import {usePages} from "@/hooks";
 import useDragCol from './utils/useDragCol'
 
-interface Columns{
+interface Columns extends ColumnProps{
   actions?: any;
-
-  [key: string]: any;
+  dataIndex: string;
 }
 
-type Props = {
+type pageOption = Partial<typeof PaginationProps>
+
+interface Props extends Omit<TableProps, 'columns'>{
   columns: Columns[];
-  rowSelection: any;
   rowKey: string | ((record: any) => string);
-  pageOption: object;
+  pageOption: pageOption;
   getListFunc: (prams) => any;
-}
-
-// 分页查询参数
-interface PagePrams {
-  pageSize?: string | number;
-  page?: string | number;
-
-  [key: string]: any;
 }
 
 export default defineComponent({
   name: 'dynamic-table',
   props: {
     columns: {
-      type: Object as PropType<object[]>
+      type: Object as PropType<Columns[]>
     },
     getListFunc: { // 获取列表数据函数API
       type: Function
@@ -136,7 +130,7 @@ export default defineComponent({
       type: [String, Function] as PropType<string | ((record: any) => string)>,
     },
     pageOption: { // 分页参数
-      type: Object,
+      type: Object as PropType<pageOption>,
       default: () => ({})
     }
   },

@@ -3,12 +3,11 @@ import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
 import {useFormModal} from "@/hooks/useFormModal";
 import {formSchema} from "./form-schema";
-import {ResultEnum} from "@/enums/httpEnum";
 
 export const columns: TableColumn[] = [ // 角色列表
     {
         title: '角色名称',
-        dataIndex: 'title',
+        dataIndex: 'title'
     },
     {
         title: '描述',

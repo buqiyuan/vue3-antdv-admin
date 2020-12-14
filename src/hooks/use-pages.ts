@@ -1,6 +1,7 @@
 import {watch, toRefs, ref} from "vue"
+import {PaginationProps} from 'ant-design-vue/lib/pagination/Pagination'
 
-export interface PageOption {
+export interface PageOption extends Partial<typeof PaginationProps>{
     current?: number;
     pageSize?: number;
     total?: number;

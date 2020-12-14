@@ -81,8 +81,10 @@ const transform: AxiosTransform = {
             if (router.currentRoute.value.name == 'login') return
             // 到登录页
             const timeoutMsg = '登录超时,请重新登录!';
+            Modal.destroyAll()
             Modal.warning({
-                title: '登录超时,请重新登录!',
+                title: '提示',
+                content: '登录身份已失效,请重新登录!',
                 onOk: () => {
                     router.replace({
                         name: 'login',
