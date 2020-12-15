@@ -9,6 +9,7 @@
           :help="formItem.help"
           :extra="formItem.extra"
           v-bind="{...formItem.props,...validateInfos[formItem.field]}"
+          :name="formItem.field"
           :label="formItem.label"
       >
           <component
