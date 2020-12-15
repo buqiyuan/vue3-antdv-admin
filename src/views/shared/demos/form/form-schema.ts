@@ -1,6 +1,6 @@
 import {FormSchema} from "@/types/schema";
 
-export const formSchema = (dynamicForm): FormSchema => ({
+export const getFormSchema = (dynamicForm): FormSchema => ({
     formItemLayout: {
         labelCol: { span: 4 },
         wrapperCol: { span: 14 },
@@ -25,9 +25,9 @@ export const formSchema = (dynamicForm): FormSchema => ({
                         if (password === '') {
                             return Promise.reject('请输入密码');
                         } else {
-                            if (confirmPassword !== '') {
-                                dynamicForm.value.validateField('confirmPassword');
-                            }
+                            // if (confirmPassword !== '') {
+                            //     dynamicForm.value.validateField('confirmPassword');
+                            // }
                             return Promise.resolve();
                         }
                     }
@@ -45,7 +45,7 @@ export const formSchema = (dynamicForm): FormSchema => ({
             },
             rules: [
                 {
-                    "required": true,
+                    required: true,
                     validator: async (rule, value, callback, source, options) => {
                         // 获取第一个密码
                         const {confirmPassword, password} = dynamicForm.value.modelRef

@@ -2,8 +2,7 @@ import {delAdminAccount, patchAdminAccount} from "@/api/system/account";
 import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
 import {useFormModal} from "@/hooks/useFormModal";
-import {formSchema} from "./form-schema";
-import {ResultEnum} from "@/enums/httpEnum";
+import {getFormSchema} from "./form-schema";
 
 export const columns: TableColumn[] = [ // 账号列表
     {
@@ -71,7 +70,7 @@ export const columns: TableColumn[] = [ // 账号列表
                     title: '编辑账号',
                     fields: {...record,roles:record?.roles.map(item => item.id)},
                     hiddenFields: ['password'],
-                    formSchema: formSchema,
+                    formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
                         const {username, password, roles} = modelRef
 

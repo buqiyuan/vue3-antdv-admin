@@ -17,7 +17,7 @@ import {Modal} from 'ant-design-vue'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 import {DynamicTable} from '@/components/dynamic-table'
 import {delAdminDictConfig, getAdminDictConfig, patchAdminDictConfig, postAdminDictConfig} from '@/api/system/dict'
-import {formSchema} from "./form-schema"
+import {getFormSchema} from "./form-schema"
 import {columns} from "./columns";
 import {hasPermission} from "@/utils/permission/hasPermission";
 import {useFormModal} from "@/hooks/useFormModal/";
@@ -57,7 +57,7 @@ export default defineComponent({
     const addItem = () => {
       useFormModal({
         title: '添加字典',
-        formSchema: formSchema,
+        formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
           await postAdminDictConfig(modelRef)
           tableRef.value.refreshTableData()

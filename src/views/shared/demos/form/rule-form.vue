@@ -24,7 +24,7 @@ import {defineComponent, reactive, ref, toRefs} from 'vue'
 import {Alert,Card} from 'ant-design-vue'
 import {AButton} from '@/components/button'
 import {SchemaForm} from '@/components/JSON-schema-form'
-import {formSchema} from './form-schema'
+import {getFormSchema} from './form-schema'
 
 /**
  * @description 验证表单
@@ -41,7 +41,7 @@ export default defineComponent({
     return {
       dynamicForm,
       confirm,
-      formSchema: formSchema(dynamicForm)
+      formSchema: getFormSchema(dynamicForm)
     }
   }
 })

@@ -1,7 +1,7 @@
 import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
 import {useFormModal} from "@/hooks/useFormModal";
-import {formSchema} from "@/views/auth/system/dict/form-schema";
+import {getFormSchema} from "@/views/auth/system/dict/form-schema";
 import {delAdminDictConfig, patchAdminDictConfig} from "@/api/system/dict";
 
 export const columns: TableColumn[] = [ // 字典表格
@@ -72,7 +72,7 @@ export const columns: TableColumn[] = [ // 字典表格
                 func: ({record}, refreshTableData) => useFormModal({
                     title: '编辑字典',
                     fields: record,
-                    formSchema: formSchema,
+                    formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => await patchAdminDictConfig(record.id, modelRef).then(_ => refreshTableData())
                 })
             }

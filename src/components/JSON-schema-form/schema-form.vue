@@ -5,22 +5,24 @@
   >
     <template v-for="(formItem, index) in formSchema.formItem.filter(item => !item.hidden)"
               :key="formItem.field">
-      <a-form-item
-          :help="formItem.help"
-          :extra="formItem.extra"
-          :label="formItem.label"
-          v-bind="{...formItem.props,...validateInfos[formItem.field]}"
-      >
+      <a-spin :spinning="formItem.loading || false">
+        <a-form-item
+            :help="formItem.help"
+            :extra="formItem.extra"
+            :label="formItem.label"
+            v-bind="{...formItem.props,...validateInfos[formItem.field]}"
+        >
           <component
               style="min-height: 40px"
               v-model:value="modelRef[formItem.field]"
               :form-item="formItem"
               :is="getComponent(formItem.type)"/>
-      </a-form-item>
+        </a-form-item>
+      </a-spin>
     </template>
     <template v-if="$slots['operate-button']">
       <a-form-item :wrapper-col="{ span: formItemLayout.wrapperCol.span, offset: formItemLayout.labelCol.span,  }">
-        <slot name="operate-button" />
+        <slot name="operate-button"/>
       </a-form-item>
     </template>
   </a-form>

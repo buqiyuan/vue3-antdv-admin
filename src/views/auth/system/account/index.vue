@@ -18,7 +18,7 @@ import {DynamicTable} from '@/components/dynamic-table'
 import {delAdminAccount, getAdminAccount, postAdminAccount} from '@/api/system/account'
 import {columns} from "./columns";
 import {useFormModal} from "@/hooks/useFormModal";
-import {formSchema} from "./form-schema";
+import {getFormSchema} from "./form-schema";
 
 export default defineComponent({
   name: 'system-account',
@@ -55,7 +55,7 @@ export default defineComponent({
     const addItem = () => {
       useFormModal({
         title: '添加账号',
-        formSchema: formSchema,
+        formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
           const {username, password, roles} = modelRef
 

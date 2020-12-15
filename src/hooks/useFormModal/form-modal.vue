@@ -48,7 +48,8 @@ export default defineComponent({
     const state = reactive({
       visible: true,
       confirmLoading: false,
-      dynamicValidateForm: cloneDeep(props.formSchema)
+      // dynamicValidateForm: cloneDeep(props.formSchema)
+      dynamicValidateForm: props.formSchema
     })
 
     props.hiddenFields.forEach(field => state.dynamicValidateForm.formItem.find(item => item.field == field)!.hidden = !!props.fields)

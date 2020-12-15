@@ -2,7 +2,7 @@ import {delAdminRole, patchAdminRole} from "@/api/system/role";
 import {formatDate} from '@/utils/common'
 import {TableColumn} from "@/types/tableColumn";
 import {useFormModal} from "@/hooks/useFormModal";
-import {formSchema} from "./form-schema";
+import {getFormSchema} from "./form-schema";
 
 export const columns: TableColumn[] = [ // 角色列表
     {
@@ -64,7 +64,7 @@ export const columns: TableColumn[] = [ // 角色列表
                 func: ({record}, refreshTableData) => useFormModal({
                     title: '编辑角色',
                     fields: record,
-                    formSchema: formSchema,
+                    formSchema: getFormSchema(),
                     handleOk: async (modelRef, state) => {
                         const {description, title, accessIdsList} = modelRef
 

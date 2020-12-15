@@ -19,7 +19,7 @@ import {delAdminRole, getAdminRole, postAdminRole} from '@/api/system/role'
 import {columns} from "./columns";
 import {hasPermission} from "@/utils/permission/hasPermission";
 import {useFormModal} from "@/hooks/useFormModal";
-import {formSchema} from "./form-schema";
+import {getFormSchema} from "./form-schema";
 
 export default defineComponent({
   name: 'system-role',
@@ -56,7 +56,7 @@ export default defineComponent({
     const addItem = () => {
       useFormModal({
         title: '添加角色',
-        formSchema: formSchema,
+        formSchema: getFormSchema(),
         handleOk: async (modelRef, state) => {
           const {description, title, accessIdsList} = modelRef
 
