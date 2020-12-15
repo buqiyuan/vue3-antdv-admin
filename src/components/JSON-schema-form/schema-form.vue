@@ -8,9 +8,8 @@
       <a-form-item
           :help="formItem.help"
           :extra="formItem.extra"
-          v-bind="{...formItem.props,...validateInfos[formItem.field]}"
-          :name="formItem.field"
           :label="formItem.label"
+          v-bind="{...formItem.props,...validateInfos[formItem.field]}"
       >
           <component
               style="min-height: 40px"
