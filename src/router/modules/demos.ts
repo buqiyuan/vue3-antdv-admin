@@ -34,6 +34,15 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/button.vue')
             },
             {
+                path: 'form',
+                name: `${routeName}-form`,
+                meta: {
+                    title: '验证表单',
+                    icon: 'icon-zhuomian',
+                },
+                component: () => import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/form/rule-form.vue')
+            },
+            {
                 path: 'icons',
                 name: `${routeName}-icons`,
                 meta: {

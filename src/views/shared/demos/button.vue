@@ -26,7 +26,7 @@ import {AButton} from '@/components/button'
  * @description 扩展ant-design-vue模态框功能
  */
 export default defineComponent({
-  name: "custom-modal",
+  name: "custom-button",
   components: { [Alert.name]: Alert, [Card.name]: Card, AButton},
 })
 </script>

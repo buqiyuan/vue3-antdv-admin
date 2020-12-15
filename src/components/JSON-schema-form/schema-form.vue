@@ -1,27 +1,33 @@
 <template>
-  <a-form v-bind="formSchema.formItemLayout || formItemLayout">
+  <a-form
+      ref="schemaFormRef"
+      v-bind="formItemLayout"
+  >
     <template v-for="(formItem, index) in formSchema.formItem.filter(item => !item.hidden)"
               :key="formItem.field">
       <a-form-item
           :help="formItem.help"
           :extra="formItem.extra"
-          v-bind="validateInfos[formItem.field]"
+          v-bind="{...formItem.props,...validateInfos[formItem.field]}"
           :label="formItem.label"
       >
-        <a-spin :spinning="formItem.loading || false">
           <component
               style="min-height: 40px"
               v-model:value="modelRef[formItem.field]"
               :form-item="formItem"
               :is="getComponent(formItem.type)"/>
-        </a-spin>
+      </a-form-item>
+    </template>
+    <template v-if="$slots['operate-button']">
+      <a-form-item :wrapper-col="{ span: formItemLayout.wrapperCol.span, offset: formItemLayout.labelCol.span,  }">
+        <slot name="operate-button" />
       </a-form-item>
     </template>
   </a-form>
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, getCurrentInstance, isReactive, isRef, createVNode, watch} from 'vue'
+import {defineComponent, reactive, getCurrentInstance, isReactive, ref, isRef, createVNode, watch} from 'vue'
 import {Form, Spin} from 'ant-design-vue'
 import {useForm} from "@ant-design-vue/use";
 import {isString, isFunction, isAsyncFunction} from '@/utils/is'
@@ -47,6 +53,8 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
+    // a-form
+    const schemaFormRef = ref<any>(null)
     // 表单实例
     const formInstance = getCurrentInstance()
 
@@ -54,6 +62,7 @@ export default defineComponent({
     const formItemLayout = {
       labelCol: {span: 4},
       wrapperCol: {span: 20},
+      ...props.formSchema.formItemLayout
     }
 
     // 表单项
@@ -103,7 +112,7 @@ export default defineComponent({
     // }))
     // watch(props.formSchema.watchKeys.map(item => () => modelRef[item]), eval(props.formSchema.watchCallback))
 
-    const {resetFields, validate, validateInfos} = useForm(modelRef, rulesRef);
+    const {resetFields, validate, validateInfos, validateField} = useForm(modelRef, rulesRef);
 
     const preset = ['input', 'textarea', 'select', 'radio', 'checkbox', 'input-number', 'input-range', 'switch']
 
@@ -122,10 +131,12 @@ export default defineComponent({
     return {
       formItemLayout,
       validate,
-      isString,
-      getComponent,
+      resetFields,
+      validateField,
       validateInfos,
       modelRef,
+      schemaFormRef,
+      getComponent,
     }
   }
 })
