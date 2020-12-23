@@ -20,5 +20,3 @@ setupStore(app)
 setupRouter(app)
 // 路由准备就绪后挂载APP实例
 router.isReady().then(() => app.mount('#app'))
-
-export default app

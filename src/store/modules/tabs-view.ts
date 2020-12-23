@@ -1,5 +1,4 @@
 import {Module} from 'vuex'
-import {adminMenus} from '@/api/system/menu'
 import {TABS_ROUTES} from '@/store/mutation-types'
 
 interface RouteItem {
@@ -53,13 +52,6 @@ const menus: Module<StateType, any> = {
         closeAllTabs(state) {// 关闭全部
             state.tabsList = []
             localStorage.removeItem(TABS_ROUTES)
-        }
-    },
-    actions: {
-        // 从服务器获取当前登录用户对应权限的菜单列表
-        async getMenusList({commit}) {
-            const result = await adminMenus()
-            commit('setAuthMenuList', result || [])
         }
     }
 }

@@ -2,7 +2,7 @@
 
 import {VAxios} from './Axios';
 import {AxiosTransform} from './axiosTransform';
-import {AxiosResponse} from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import qs from 'qs'
 import {checkStatus} from './checkStatus';
 import {Modal, message as Message} from "ant-design-vue";
@@ -51,8 +51,6 @@ const transform: AxiosTransform = {
         if (!isTransformRequestResult) {
             return res.data;
         }
-
-        console.log(data, 'ddddd')
 
         if (!data) {
             // return '[HTTP] Request has no return value';
@@ -184,7 +182,7 @@ const transform: AxiosTransform = {
             throw new Error(error);
         }
         // 请求是否被取消
-        const isCancel = (error as any).__CANCEL__
+        const isCancel = axios.isCancel(error)
         if (!isCancel) {
             checkStatus(error.response && error.response.status, msg);
         } else {
@@ -194,7 +192,7 @@ const transform: AxiosTransform = {
     },
 };
 
-const axios = new VAxios({
+const Axios = new VAxios({
     timeout: 15 * 1000,
     // 基础接口地址
     // baseURL: globSetting.apiUrl,
@@ -221,4 +219,4 @@ const axios = new VAxios({
     withCredentials: false
 });
 
-export default axios;
+export default Axios;
