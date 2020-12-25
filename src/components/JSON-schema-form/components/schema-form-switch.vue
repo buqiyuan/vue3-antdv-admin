@@ -6,14 +6,14 @@
 </template>
 <script lang="ts">
 import {defineComponent, PropType, computed} from 'vue'
-import {Input} from 'ant-design-vue'
+import {Switch} from 'ant-design-vue'
 import {FormItem} from "@/types/schema";
 
 export default defineComponent({
   name: 'schema-form-textarea',
   emits: ['update:value'],
   components: {
-    [Input.TextArea.name]: Input.TextArea,
+    [Switch.name]: Switch,
   },
   props: {
     formItem: { // 表单项
