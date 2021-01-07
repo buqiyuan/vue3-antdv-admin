@@ -24,7 +24,7 @@ export const getFormSchema = (): FormSchema => ({
             label: "密码",
             field: "password",
             hidden: false, // 是否隐藏
-            value: undefined,
+            value: '',
             props: {
                 type: 'password',
                 placeholder: "请输入密码"
@@ -43,6 +43,13 @@ export const getFormSchema = (): FormSchema => ({
             value: [],
             options: [],
             loading: true,
+            rules: [
+                {
+                    required: true,
+                    message: '请选择角色',
+                    type: 'array'
+                }
+            ],
             asyncOptions: async () => { // 异步数据回调
                 // 获取角色列表
                 const {data} = await getAdminRole({})

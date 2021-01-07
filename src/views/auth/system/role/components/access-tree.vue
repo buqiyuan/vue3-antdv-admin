@@ -1,6 +1,7 @@
 <template>
   <a-spin :spinning="spinning">
     <a-tree
+        style="min-height: 40px"
         checkable
         checkStrictly
         :selectable="false"
