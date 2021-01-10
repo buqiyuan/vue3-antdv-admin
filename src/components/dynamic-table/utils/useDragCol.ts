@@ -16,7 +16,6 @@ export default (columnsProp) => {
             tableX ??= table.clientWidth
             // console.log(headerCell, 'columns')
             headerCell.onmousemove = function(event) {
-                document.body.style.userSelect = 'none'
                 if (event.offsetX > this.offsetWidth - 10) {
                     this.style.cursor = 'col-resize';
                 } else {
@@ -45,7 +44,6 @@ export default (columnsProp) => {
             }
             headerCell.onmouseup = setEventNull
             table.onmouseup = function() {
-                document.body.style.userSelect = 'unset'
                 setEventNull()
                 if (self == undefined) {
                     self = this;

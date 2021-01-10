@@ -1,4 +1,4 @@
-import {isNavigationFailure} from 'vue-router'
+import {isNavigationFailure, Router} from 'vue-router'
 import store from '@/store'
 import NProgress from 'nprogress' // progress bar
 import {ACCESS_TOKEN} from '@/store/mutation-types'
@@ -35,7 +35,7 @@ const isGetMenus = debounce(({to, from, next, hasRoute}) => {
     }).catch(() => next({path: defaultRoutePath}))
 }, 1800, {leading: true})
 
-export function createRouterGuards(router) {
+export function createRouterGuards(router: Router) {
     router.beforeEach((to, from, next) => {
         NProgress.start() // start progress bar
         const token = Storage.get(ACCESS_TOKEN)

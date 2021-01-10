@@ -173,7 +173,7 @@ export default defineComponent({
     // tabs 编辑（remove || add）
     const editTabItem = (targetKey, action: string) => {
       if (action == 'remove') {
-        removeTab(targetKey)
+        removeTab(tabsList.value.find(item => item.fullPath == targetKey))
       }
     }
     // 切换页面
