@@ -3,7 +3,7 @@
     <a-tabs v-model:activeKey="activeKey" @change="changePage" hide-add type="editable-card" @edit="editTabItem"
             class="tabs">
       <template v-for="(pageItem, index) in tabsList" :key="pageItem.fullPath">
-        <a-tab-pane :closable="pageItem.closable">
+        <a-tab-pane>
           <template #tab>
             <a-dropdown :trigger="['contextmenu']">
               <div style="display: inline-block">
@@ -76,7 +76,7 @@
     </a-tabs>
     <div class="tabs-view-content">
       <a-card>
-        <router-transition :not-need-key="true" :animate="false" />
+        <router-transition />
       </a-card>
     </div>
   </div>
@@ -253,6 +253,15 @@ export default defineComponent({
 
     .ant-tabs-tabpane {
       display: none;
+    }
+    .ant-tabs-tab:not(.ant-tabs-tab-active) {
+      .anticon-close {
+        width: 0;
+        transition: width .3s;
+      }
+      &:hover .anticon-close {
+        width: 16px;
+      }
     }
   }
 

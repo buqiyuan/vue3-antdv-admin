@@ -1,15 +1,16 @@
 <template>
-  <router-view :key="notNeedKey ? 'key' : route.fullPath" v-slot="{ Component }">
-    <transition v-if="animate" name="zoom-fade" mode="out-in" appear>
-      <component :is="Component"/>
+  <router-view v-slot="{ Component, route }">
+    <transition name="zoom-fade" mode="out-in" appear>
+      <keep-alive :include="keepAliveComponents" :max="10">
+        <component :is="Component"/>
+      </keep-alive>
     </transition>
-    <component v-else :is="Component"/>
   </router-view>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
-import {useRoute} from "vue-router";
+import {defineComponent, watch, ref} from 'vue'
+import {useRoute, useRouter} from "vue-router";
 
 export default defineComponent({
   name: "router-transition",
@@ -24,11 +25,25 @@ export default defineComponent({
     }
   },
   setup() {
-
+    const router = useRouter()
     const route = useRoute()
+    // 需要缓存的路由组件
+    const keepAliveComponents = ref<string[]>([])
+    // 获取需要缓存的组件
+    const getKeepAliveComponents = () => {
+      const comNames = router.getRoutes()
+          .filter(item => item?.meta.keepAlive)
+          .map(item => item?.meta.componentName.replace(/\B([A-Z])/g, "-$1").toLowerCase())
+      return [...new Set(comNames)]
+    }
+
+    watch(() => route.fullPath, () => keepAliveComponents.value = getKeepAliveComponents(), {immediate: true})
+
+
+    console.log(keepAliveComponents, 'keepAliveComponents')
 
     return {
-      route
+      keepAliveComponents
     }
   }
 })

@@ -40,6 +40,16 @@
       <a-form-item label="排序">
         <a-input-number v-model:value="modelRef.sort" :min="1" placeholder="排序"/>
       </a-form-item>
+      <a-form-item label="keepAlive" name="type">
+        <a-select v-model:value="modelRef.keepAlive" placeholder="是否缓存页面">
+          <a-select-option :value="0">
+            否
+          </a-select-option>
+          <a-select-option :value="1">
+            是
+          </a-select-option>
+        </a-select>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -83,6 +93,7 @@ export default defineComponent({
       url: '',
       icon: '',
       sort: 1,
+      keepAlive: 1,
     });
 
     // 如果有moduleId,则为编辑操作
