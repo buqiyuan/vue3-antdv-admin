@@ -39,7 +39,7 @@ export default defineComponent({
 
     watch(() => route.fullPath, () => {
       const currentComName = route.matched.find(item => item.name == route.name)?.components?.default.name
-      if (currentComName && !keepAliveComponents.value.includes(currentComName)) {
+      if (currentComName && !keepAliveComponents.value.includes(currentComName) && route.meta?.keepAlive) {
         keepAliveComponents.value.push(currentComName)
       } else if (!route.meta?.keepAlive) {
         const index = keepAliveComponents.value.findIndex(name => name == currentComName)

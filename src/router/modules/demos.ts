@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
         component: markRaw(RouterTransition),
         meta: {
             title: 'demo演示',
-            icon: 'icon-zhuomian'
+            icon: 'icon-zhuomian',
         },
         children: [
             {
@@ -21,6 +21,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     title: '自定义模态框',
                     icon: 'icon-zhuomian',
+                    keepAlive: true
                 },
                 component: () => import(/* webpackChunkName: "demos-custom-a-custom-modal" */ '@/views/shared/demos/custom-modal.vue')
             },
@@ -30,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     title: '按钮的扩展',
                     icon: 'icon-zhuomian',
+                    keepAlive: true
                 },
                 component: () => import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/button.vue')
             },
@@ -39,6 +41,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     title: '验证表单',
                     icon: 'icon-zhuomian',
+                    keepAlive: true
                 },
                 component: () => import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/form/rule-form.vue')
             },
@@ -48,6 +51,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     title: '自定义图标',
                     icon: 'icon-zhuomian',
+                    keepAlive: true
                 },
                 component: () => import(/* webpackChunkName: "demos-button" */ '@/views/shared/demos/icons/Iconfont.vue')
             },
