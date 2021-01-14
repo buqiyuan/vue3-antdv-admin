@@ -35,6 +35,7 @@ const list2tree = (items, parentId = -1, arr = []) => {
                 // hiddenHeaderContent: hiddenHeaderContent,
                 // permission: item.actions || []
                 keepAlive: keepAlive == 1,
+                reload: false,
                 componentName: component.name,
                 // TODO 简单模拟CRUD权限：创建（Create）、更新（Update）、读取（Retrieve）和删除（Delete）操作，可以自行修改查看页面效果
                 permission: parentId == -1

@@ -76,14 +76,14 @@
     </a-tabs>
     <div class="tabs-view-content">
       <a-card>
-        <router-transition />
+        <router-transition v-if="!reload" />
       </a-card>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, computed, toRefs, unref, watch} from 'vue'
+import {defineComponent, reactive, computed, toRefs, unref, provide, watch} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 import components from "@/layout/tabs/components";
 import {RouterTransition} from '@/components/transition'
@@ -137,6 +137,7 @@ export default defineComponent({
 
     const state = reactive({
       activeKey: route.fullPath,
+      reload: false // 刷新页面
     })
 
     const tabsList = computed(() => store.getters.tabsList)
@@ -184,10 +185,14 @@ export default defineComponent({
 
     // 刷新页面
     const reloadPage = () => {
-      router.push({
-        path: '/redirect' + unref(route).fullPath,
-      })
+      state.reload = true
+      setTimeout(() => state.reload = false)
+      // router.push({
+      //   path: '/redirect' + unref(route).fullPath,
+      // })
     }
+    // 注入刷新页面方法
+    provide('reloadPage', reloadPage)
 
     // 关闭左侧
     const closeLeft = (route, index) => {
