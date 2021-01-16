@@ -76,7 +76,7 @@
     </a-tabs>
     <div class="tabs-view-content">
       <a-card>
-        <router-transition v-if="!reload" />
+        <router-transition />
       </a-card>
     </div>
   </div>
@@ -136,8 +136,7 @@ export default defineComponent({
     // tabsViewMutations.initTabs(routes)
 
     const state = reactive({
-      activeKey: route.fullPath,
-      reload: false // 刷新页面
+      activeKey: route.fullPath
     })
 
     const tabsList = computed(() => store.getters.tabsList)
@@ -185,11 +184,9 @@ export default defineComponent({
 
     // 刷新页面
     const reloadPage = () => {
-      state.reload = true
-      setTimeout(() => state.reload = false)
-      // router.push({
-      //   path: '/redirect' + unref(route).fullPath,
-      // })
+      router.push({
+        path: '/redirect' + unref(route).fullPath,
+      })
     }
     // 注入刷新页面方法
     provide('reloadPage', reloadPage)

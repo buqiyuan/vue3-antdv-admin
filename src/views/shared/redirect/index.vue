@@ -1,6 +1,8 @@
 <script lang="tsx">
 import {defineComponent, onBeforeMount} from 'vue';
 import {useRoute, useRouter} from "vue-router";
+import {Empty} from 'ant-design-vue'
+
 export default defineComponent({
   name: 'Redirect',
   setup(props) {
@@ -17,7 +19,7 @@ export default defineComponent({
       // if (openPageLoading) {
       // }
     });
-    return () => null;
+    return () => <Empty />;
   },
 });
 </script>
