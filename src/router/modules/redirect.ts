@@ -19,6 +19,7 @@ const routes: Array<RouteRecordRaw> = [{
             meta: {
                 title: '重定向',
                 hidden: true,
+                keepAlive: false
             },
         }
     ]

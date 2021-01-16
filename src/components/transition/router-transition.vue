@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import {defineComponent, watch, ref} from 'vue'
-import {useRoute, useRouter} from "vue-router";
+import {useRoute, useRouter, onBeforeRouteLeave} from "vue-router";
 
 export default defineComponent({
   name: "router-transition",
@@ -37,17 +37,18 @@ export default defineComponent({
     //   return [...new Set(comNames)]
     // }
 
-    watch(() => route.fullPath, () => {
-      const currentComName = route.matched.find(item => item.name == route.name)?.components?.default.name
-      if (currentComName && !keepAliveComponents.value.includes(currentComName) && route.meta?.keepAlive) {
+    // 获取需要缓存的组件
+    onBeforeRouteLeave((to, from) => {
+      const currentComName = from.matched.find(item => item.name == from.name)?.components?.default.name
+      if (currentComName && !keepAliveComponents.value.includes(currentComName) && from.meta?.keepAlive) { // 需要缓存的组件
         keepAliveComponents.value.push(currentComName)
-      } else if (!route.meta?.keepAlive) {
+      } else if (!from.meta?.keepAlive || to.name == 'Redirect') { // 不需要缓存的组件
         const index = keepAliveComponents.value.findIndex(name => name == currentComName)
         if (index != -1) {
           keepAliveComponents.value.splice(index, 1)
         }
       }
-    }, {immediate: true})
+    })
 
     return {
       keepAliveComponents
