@@ -154,7 +154,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://us-la-cn2.sakurafrp.com:59660',
+                target: 'http://jp-tyo-dvm.sakurafrp.com:63922',
                 // target: 'http://localhost:8888',
                 changeOrigin: true,
                 pathRewrite: {
