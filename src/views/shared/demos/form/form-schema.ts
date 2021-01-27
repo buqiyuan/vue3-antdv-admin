@@ -2,10 +2,32 @@ import {FormSchema} from "@/types/schema";
 
 export const getFormSchema = (dynamicForm): FormSchema => ({
     formItemLayout: {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 14 },
+        labelCol: {span: 4},
+        wrapperCol: {span: 14},
     },
     formItem: [
+        {
+            type: 'input',
+            label: '账号',
+            field: 'name',
+            value: '',
+            props: {
+                placeholder: '请输入账号(长度3-5个字符)',
+                onblur: () => dynamicForm.value?.validate('name', { trigger: 'blur' }).catch(() => ({}))
+            },
+            rules: [
+                {
+                    required: true,
+                    message: '请输入账号',
+                },
+                {
+                    min: 3,
+                    max: 5,
+                    message: '账号长度为3-5个字符',
+                    trigger: 'blur',
+                },
+            ]
+        },
         {
             type: "input",
             label: "密码",
@@ -13,7 +35,7 @@ export const getFormSchema = (dynamicForm): FormSchema => ({
             value: '',
             props: {
                 'has-feedback': true,
-                placeholder: "请输入密码"
+                placeholder: "请输入密码",
             },
             rules: [
                 {
@@ -21,7 +43,7 @@ export const getFormSchema = (dynamicForm): FormSchema => ({
                     message: "密码不能为空",
                     validator: async (rule, value) => {
                         // 获取二次确认密码
-                        const {confirmPassword,password} = dynamicForm.value.modelRef
+                        const {confirmPassword, password} = dynamicForm.value.modelRef
                         if (password === '') {
                             return Promise.reject('请输入密码');
                         } else {

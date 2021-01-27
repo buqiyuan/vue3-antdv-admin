@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, reactive, toRefs, computed} from 'vue'
-import {Avatar, message} from 'ant-design-vue'
+import {Avatar, message, Modal} from 'ant-design-vue'
 import {
   LockOutlined,
   LoadingOutlined,
@@ -127,6 +127,7 @@ export default defineComponent({
       // params.password = md5(params.password)
       const result = await login(params)
       if (result.code == 0) {
+        Modal.destroyAll()
         message.success('登录成功！')
         unLockLogin(false)
         store.commit('lockscreen/setLock', false)
