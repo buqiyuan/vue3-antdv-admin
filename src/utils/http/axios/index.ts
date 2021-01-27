@@ -214,7 +214,7 @@ const Axios = new VAxios({
         // 消息提示类型
         errorMessageMode: 'none',
         // 接口地址
-        apiUrl: process.env.VUE_APP_API_URL,
+        apiUrl: process.env.VUE_APP_API_URL1,
     },
     withCredentials: false
 });

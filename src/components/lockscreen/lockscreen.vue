@@ -75,7 +75,6 @@ import {
 import {useRouter, useRoute} from "vue-router";
 import {useOnline} from '@/hooks/useOnline'
 import {useTime} from '@/hooks/useTime'
-import {login} from "@/api/system/user";
 // import md5 from 'blueimp-md5'
 import HuaweiCharge from './huawei-charge.vue'
 import XiaomiCharge from './xiaomi-charge.vue'
@@ -125,14 +124,17 @@ export default defineComponent({
       const params = {...state.loginForm}
       state.loginLoading = true
       // params.password = md5(params.password)
-      const result = await login(params)
-      if (result.code == 0) {
+      const {code, result, message: msg} = await store.dispatch('user/Login', params).finally(() => {
+        state.loginLoading = false
+        message.destroy()
+      })
+      if (code == 0) {
         Modal.destroyAll()
         message.success('登录成功！')
         unLockLogin(false)
         store.commit('lockscreen/setLock', false)
       } else {
-        message.info(result.message || '登录失败')
+        message.info(msg || '登录失败')
       }
       state.loginLoading = false
     }

@@ -2,7 +2,7 @@
 基于vue-cli / vite + vue3.0 + antd2.0 + ts4.0 的后台管理系统模板
 - 账号：admin，密码：123456
 - 在线预览：http://buqiyuan.gitee.io/vue3-antd-admin/
-- API文档：http://29135jo738.zicp.vip:31732/api/v1/docs/
+- API文档：http://29135jo738.zicp.vip/api/v1/docs/
 - 后台地址：https://github.com/buqiyuan/nestjs-mysql-api
 - vue-cli版：https://github.com/buqiyuan/vue3-antd-admin/tree/main （推荐）
 - vite踩坑版：https://github.com/buqiyuan/vue3-antd-admin/tree/vite-version 

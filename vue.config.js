@@ -154,7 +154,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://29135jo738.zicp.vip:31732',
+                target: 'http://29135jo738.zicp.vip',
                 // target: 'http://localhost:8888',
                 changeOrigin: true,
                 pathRewrite: {
