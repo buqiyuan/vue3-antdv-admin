@@ -9,8 +9,8 @@ declare interface OptionItem {
     [key: string]: any;
 }
 
-type Rule = ValidationRule & {
-
+type Rule = ValidationRule | {
+    trigger?: 'blur' | 'change' | string['blur' | 'change'];
 }
 
 declare interface FormItem extends Partial<typeof FormItemProps>{

@@ -13,7 +13,6 @@ export const getFormSchema = (dynamicForm): FormSchema => ({
             value: '',
             props: {
                 placeholder: '请输入账号(长度3-5个字符)',
-                onblur: () => dynamicForm.value?.validate('name', { trigger: 'blur' }).catch(() => ({}))
             },
             rules: [
                 {
@@ -24,7 +23,7 @@ export const getFormSchema = (dynamicForm): FormSchema => ({
                     min: 3,
                     max: 5,
                     message: '账号长度为3-5个字符',
-                    trigger: 'blur',
+                    trigger: 'blur'
                 },
             ]
         },

@@ -154,11 +154,11 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://29135jo738.zicp.vip',
+                target: process.env.VUE_APP_API_URL1,
                 // target: 'http://localhost:8888',
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/api': '/api/v1'
+                    '^/api': ''
                 }
             }
         }

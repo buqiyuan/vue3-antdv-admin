@@ -15,6 +15,7 @@
           <component
               v-model:value="modelRef[formItem.field]"
               :form-item="formItem"
+              v-on="{...getTriggerEvent(formItem)}"
               :is="getComponent(formItem.type)"/>
         </a-form-item>
       </a-spin>
@@ -129,6 +130,28 @@ export default defineComponent({
       }
     }
 
+    // 设置触发表单项验证的事件
+    const setTriggerEvent = ({field,trigger}) => () => validate(field, { trigger}).catch(() => ({}))
+
+    // 获取触发表单项验证的时机
+    const getTriggerEvent = (formItem) => {
+      const events = {}
+      const field = formItem.field
+      if (Array.isArray(formItem.rules)) { // 如果是数组
+        formItem.rules.forEach(ruleItem => {
+          if (Array.isArray(ruleItem.trigger)) {
+            ruleItem.trigger.forEach(triggerItem => events[triggerItem] = setTriggerEvent({field, trigger: triggerItem}))
+          } else if (isString(ruleItem.trigger)) {
+            events[ruleItem.trigger] = setTriggerEvent({field, trigger: ruleItem.trigger})
+          }
+        })
+      } else if (formItem.rules?.trigger) { // 如果是对象
+        const trigger = formItem.rules?.trigger
+        events[trigger] = setTriggerEvent({field, trigger})
+      }
+      return events
+    }
+
     return {
       formItemLayout,
       validate,
@@ -137,6 +160,7 @@ export default defineComponent({
       validateInfos,
       modelRef,
       schemaFormRef,
+      getTriggerEvent,
       getComponent,
     }
   }
