@@ -110,7 +110,9 @@ export const request = async <T = any>(
     if (permCode && !useUserStore().perms.includes(permCode)) {
       return $message.error('你没有访问该接口的权限，请联系管理员！');
     }
-    config.url = `${(isMock ? baseMockUrl : baseApiUrl) + config.url}`.replace(/\/{2,}/g, '/');
+    const fullUrl = `${(isMock ? baseMockUrl : baseApiUrl) + config.url}`;
+    config.url = fullUrl.replace(/(?<!:)\/{2,}/g, '/');
+
     const res = await service.request(config);
     successMsg && $message.success(successMsg);
     errorMsg && $message.error(errorMsg);
