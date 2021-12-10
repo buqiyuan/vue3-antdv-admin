@@ -21,7 +21,7 @@ export interface RequestOptions {
 const UNKNOWN_ERROR = '未知错误，请重试';
 
 /** 真实请求的路径前缀 */
-const baseApiUrl = process.env.VUE_APP_API_URL;
+const baseApiUrl = process.env.VUE_APP_BASE_API;
 /** mock请求路径前缀 */
 const baseMockUrl = process.env.VUE_APP_MOCK_API;
 
