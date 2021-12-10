@@ -1,0 +1,11 @@
+@import 'setButtonColor';
+
+// 若需要增加按钮类型，只需在这里修改这4个属性即可
+@btn-color: @white; // 按钮文字颜色
+@btn-bg: @warning-color; // 按钮背景颜色
+@btn-type: warning; //按钮类型
+@btn-border-color: @gold-5; // 按钮边框颜色
+
+body {
+  .set-button-color(@btn-type, @btn-color, @btn-bg, @btn-border-color);
+}
