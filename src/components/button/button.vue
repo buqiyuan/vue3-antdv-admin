@@ -10,40 +10,30 @@
     </template>
   </antd-button>
 </template>
-
-<script lang="ts">
+<script lang="ts" setup>
   import { Button } from 'ant-design-vue';
-  import { PropType, defineComponent, computed } from 'vue';
+  import { computed } from 'vue';
   import type { ButtonType } from 'ant-design-vue/lib/button/buttonTypes';
   // import buttonProps from 'ant-design-vue/lib/button/buttonTypes'
 
+  interface Props {
+    type: ButtonType | 'danger' | 'warning' | 'success';
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    type: 'default',
+  });
+
+  // 换个名称，避免成死递归组件
+  const AntdButton = Button;
   const buttonTypes = ['default', 'primary', 'ghost', 'dashed', 'link'];
-
-  export default defineComponent({
-    name: 'AButton',
-    components: { 'antd-button': Button },
-    inheritAttrs: false, // 换个名称，避免成死递归组件
-    props: {
-      type: {
-        type: String as PropType<ButtonType | 'danger' | 'warning' | 'success'>,
-        default: 'default',
-      },
-    },
-    setup(props) {
-      const buttonType = computed(() => {
-        const type = props.type;
-        return buttonTypes.includes(type)
-          ? (type as ButtonType)
-          : ['danger'].includes(type)
-          ? 'primary'
-          : 'default';
-      });
-
-      return {
-        buttonTypes,
-        buttonType,
-      };
-    },
+  const buttonType = computed(() => {
+    const type = props.type;
+    return buttonTypes.includes(type)
+      ? (type as ButtonType)
+      : ['danger'].includes(type)
+      ? 'primary'
+      : 'default';
   });
 </script>
 
