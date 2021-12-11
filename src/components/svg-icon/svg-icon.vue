@@ -3,11 +3,9 @@
     <use :xlink:href="iconName" />
   </svg>
 </template>
+<script lang="ts" setup>
+  import { computed } from 'vue';
 
-<script lang="ts">
-  import { defineComponent, computed } from 'vue';
-
-  // eslint-disable-next-line no-undef
   const importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
     requireContext.keys().forEach(requireContext);
   try {
@@ -16,33 +14,17 @@
     console.log(error);
   }
 
-  interface SvgIcon {
+  interface Props {
     iconClass: string;
     className?: string;
   }
 
-  export default defineComponent({
-    name: 'SvgIcon',
-    props: {
-      iconClass: {
-        type: String,
-        required: true,
-      },
-      className: {
-        type: String,
-        default: '',
-      },
-    },
-    setup(props: SvgIcon) {
-      const iconName = computed(() => `#icon-${props.iconClass}`);
-      const svgClass = computed(() => 'svg-icon');
-
-      return {
-        iconName,
-        svgClass,
-      };
-    },
+  const props = withDefaults(defineProps<Props>(), {
+    className: '',
   });
+
+  const iconName = computed(() => `#icon-${props.iconClass}`);
+  const svgClass = computed(() => 'svg-icon');
 </script>
 
 <style lang="less" scoped>

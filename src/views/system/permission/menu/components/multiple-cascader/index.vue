@@ -143,7 +143,7 @@
 </script>
 
 <style lang="less" scoped>
-  .input-box :deep {
+  .input-box {
     display: flex;
 
     .clear-icon {
@@ -157,7 +157,7 @@
     &:hover .clear-icon {
       display: block;
     }
-    .ant-input-prefix {
+    :deep(.ant-input-prefix) {
       width: 100%;
       flex-wrap: wrap;
     }

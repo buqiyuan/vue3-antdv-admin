@@ -21,43 +21,37 @@
     </a-input>
   </Popover>
 </template>
-
-<script lang="ts">
-  import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+  import { ref } from 'vue';
   import { Popover } from 'ant-design-vue';
   import { IconFont } from '@/components/iconfont';
   import icons from './icons';
   import { useVModel } from '@vueuse/core';
 
-  export default defineComponent({
-    name: 'DemoIcons',
-    components: { IconFont, Popover },
-    props: {
-      value: String,
-      placeholder: {
-        type: String,
-        default: '请选择',
-      },
-    },
-    setup(props, { emit }) {
-      const visible = ref(false);
-      const modelValue = useVModel(props, 'value', emit);
+  interface Props {
+    value: string;
+    placeholder?: string;
+  }
 
-      const selectIcon = (iconItem: typeof icons[number]) => {
-        modelValue.value = iconItem.code;
-        visible.value = false;
-      };
+  interface Emits {
+    (e: 'update:value', val: string): void;
+  }
 
-      return {
-        icons,
-        modelValue,
-        visible,
-        selectIcon,
-      };
-    },
+  const props = withDefaults(defineProps<Props>(), {
+    value: '',
+    placeholder: '请选择',
   });
-</script>
 
+  const emit = defineEmits<Emits>();
+
+  const visible = ref(false);
+  const modelValue = useVModel(props, 'value', emit);
+
+  const selectIcon = (iconItem: typeof icons[number]) => {
+    modelValue.value = iconItem.code;
+    visible.value = false;
+  };
+</script>
 <style lang="less" scoped>
   .select-box {
     @apply grid grid-cols-9 h-300px overflow-auto;
