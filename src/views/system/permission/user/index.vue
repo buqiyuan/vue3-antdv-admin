@@ -48,13 +48,13 @@
           <Alert class="w-full" type="info" show-icon>
             <template #message>
               已选 {{ isCheckRows }} 项
-              <a @click="rowSelection.selectedRowKeys = []">取消选择</a>
+              <a-button type="link" @click="rowSelection.selectedRowKeys = []">取消选择</a-button>
             </template>
           </Alert>
         </template>
         <template #toolbar>
           <a-button type="primary" @click="openUserModal({})"> <PlusOutlined /> 新增 </a-button>
-          <a-button type="success" :disabled="!isCheckRows" @click="openTransferUserModal({})">
+          <a-button type="success" :disabled="!isCheckRows" @click="openTransferUserModal">
             <SwapOutlined /> 转移
           </a-button>
           <a-button
