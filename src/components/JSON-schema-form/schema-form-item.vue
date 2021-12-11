@@ -12,6 +12,7 @@
       <component
         v-else
         :is="getComponent"
+        :ref="setItemRef"
         :key="schemaItem.field"
         v-model:[modelValueType]="modelValue[schemaItem.field]"
         v-bind="getComponentProps"
@@ -22,7 +23,7 @@
 </template>
 
 <script setup lang="tsx">
-  import type { PropType, Ref } from 'vue';
+  import { PropType, Ref } from 'vue';
   import { computed, unref, toRefs, onMounted } from 'vue';
   import { Form, Col } from 'ant-design-vue';
   import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
@@ -52,6 +53,11 @@
     setFormModel: {
       type: Function as PropType<(key: string, value: any) => void>,
       default: null,
+    },
+    /** 将表单组件实例保存起来 */
+    setItemRef: {
+      type: Function,
+      default: () => {},
     },
   });
 

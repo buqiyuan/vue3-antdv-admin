@@ -62,7 +62,7 @@
 
       .left-content {
         height: 100%;
-        padding-right: 20px;
+        padding: 12px 20px 12px 12px;
       }
 
       .separator {

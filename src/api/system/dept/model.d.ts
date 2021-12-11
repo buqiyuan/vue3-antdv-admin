@@ -7,6 +7,7 @@ declare namespace API {
     parentId: number;
     name: string;
     orderNum: number;
+    pIds?: number[];
   };
   /** 部门 */
   type MovedDeptItem = {

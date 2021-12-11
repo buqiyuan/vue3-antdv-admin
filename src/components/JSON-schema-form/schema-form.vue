@@ -9,6 +9,7 @@
           :schema="formSchemaRef"
           :set-form-model="setFormModel"
           :form-model="formModel"
+          :setItemRef="setItemRef(schemaItem)"
         >
           <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
             <slot :name="item" v-bind="data || {}"></slot>
@@ -67,6 +68,8 @@
       const schemaFormPropsRef = ref<Partial<FormSchema>>({});
       // 缓存的表单值，用于恢复form-item v-if为true后的值
       const cacheFormModel = { ...props.initialValues };
+      // 将所有的表单组件实例保存起来
+      const compRefs = {} as any;
 
       // 获取表单所有属性
       const getFormProps = computed(() => {
@@ -97,6 +100,14 @@
           cacheFormModel[item.field] = defaultValue;
         }
       });
+      // 将所有的表单组件实例保存起来
+      const setItemRef = (formItem: FormItemSchema) => {
+        return (el) => {
+          if (el) {
+            compRefs[formItem.field] = el;
+          }
+        };
+      };
 
       const getFormItemIsShow = (formItem: FormItemSchema, key: 'vIf' | 'vShow') => {
         if (Reflect.has(formItem, key)) {
@@ -283,6 +294,8 @@
         formModel,
         formSchemaRef,
         getRowConfig,
+        compRefs,
+        setItemRef,
         getFormItemIsShow,
         resetFields,
         setFieldsValue,

@@ -1,6 +1,8 @@
-import type { TreeDataItem } from 'ant-design-vue/lib/tree/Tree';
+import type { TreeDataItem as ATreeDataItem } from 'ant-design-vue/lib/tree/Tree';
 
-export type { TreeDataItem };
+interface TreeDataItem extends ATreeDataItem {
+  children: any;
+}
 
 /**
  * 渲染部门至树形控件
@@ -9,17 +11,20 @@ export type { TreeDataItem };
  */
 export const formatDept2Tree = (
   depts: API.SysDeptListResult[],
-  parentId: null | number = null,
+  parentId: number | null = null,
 ): TreeDataItem[] => {
   return depts
     .filter((item) => item.parentId === parentId)
-    .map((item) => ({
-      title: item.name,
-      key: item.id,
-      value: item.id,
-      formData: item,
-      children: formatDept2Tree(depts, item.id),
-    }));
+    .map((item) => {
+      const arr = formatDept2Tree(depts, item.id);
+      return Object.assign(item, {
+        title: item.name,
+        key: item.id,
+        value: item.id,
+        formData: item,
+        children: arr.length ? arr : null,
+      });
+    });
 };
 
 /**
@@ -27,18 +32,20 @@ export const formatDept2Tree = (
  * @param {Array} menus 所有菜单
  * @param {Number | null} parentId 父级菜单ID
  */
-export const formatMenu2Tree = (menus: API.MenuListResult, parentId: null | number = null) => {
+export const formatMenu2Tree = (
+  menus: API.MenuListResult,
+  parentId: number | null = null,
+): TreeDataItem[] => {
   return menus
-    .filter((item) => item.parentId == parentId)
+    .filter((item) => item.parentId === parentId)
     .map((item) => {
       const arr = formatMenu2Tree(menus, item.id);
-      return {
-        ...item,
+      return Object.assign(item, {
         title: item.name,
         key: item.id,
         value: item.id,
         formData: item,
         children: arr.length ? arr : null,
-      };
+      });
     });
 };

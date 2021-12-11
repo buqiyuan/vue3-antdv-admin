@@ -1,6 +1,7 @@
 import { useModal } from './index';
-import { nextTick } from 'vue';
-import { SchemaForm, FormSchema, useSchemaForm } from '@/components/JSON-schema-form';
+import { nextTick, ref } from 'vue';
+import { SchemaForm } from '@/components/JSON-schema-form';
+import type { SchemaFormRef, FormSchema } from '@/components/JSON-schema-form';
 import type { FormModalProps } from './types';
 
 interface ShowModalProps {
@@ -12,7 +13,7 @@ export const useFormModal = () => {
   const { show } = useModal();
 
   const showModal = async ({ modalProps, formSchema }: ShowModalProps) => {
-    const [formRef] = useSchemaForm();
+    const formRef = ref<SchemaFormRef>();
 
     const onCancel = (e: MouseEvent) => {
       formRef.value?.resetFields();
