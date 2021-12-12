@@ -56,12 +56,12 @@ module.exports = {
     config.resolve.alias.set('@', resolve('src'));
     // 打包分析
     if (IS_PROD) {
-      config.optimization.delete('splitChunks');
+      // config.optimization.delete('splitChunks');
       // config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
       //   {
-      //     analyzerMode: 'static'
-      //   }
-      // ])
+      //     analyzerMode: 'static',
+      //   },
+      // ]);
     }
     config.plugin('html').tap((args) => {
       args[0].title = 'vue3-antd-admin管理系统';
@@ -174,7 +174,7 @@ module.exports = {
       // },
       '^/api': {
         // target: process.env.VUE_APP_API_URL,
-        target: 'http://localhost:7001',
+        target: 'http://buqiyuan.site:7001',
         ws: true,
         changeOrigin: true,
         logLevel: 'debug',
