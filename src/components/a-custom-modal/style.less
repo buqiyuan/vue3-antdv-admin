@@ -1,0 +1,161 @@
+.custom-modal {
+  .ant-modal-wrap {
+    .ant-modal {
+      position: absolute;
+      min-width: 400px;
+      min-height: 140px;
+      padding-bottom: 0;
+
+      .ant-modal-content {
+        height: 100%;
+
+        .ant-modal-header {
+          display: flex;
+          justify-content: space-between;
+
+          .ant-modal-operate {
+            display: flex;
+
+            button,
+            button.open {
+              display: block;
+              width: 21px;
+              height: 19px;
+              margin-left: 5px;
+              line-height: 56px;
+              cursor: pointer;
+              background: url(~@/assets/images/tool.png) no-repeat;
+              border: 0;
+            }
+
+            button.open {
+              position: absolute;
+              top: 10px;
+              left: 50%;
+              margin-left: -10px;
+              background-position: 0 0;
+            }
+
+            button.open:hover {
+              background-position: 0 -29px;
+            }
+
+            button.min {
+              background-position: -29px 0;
+            }
+
+            button.min:hover {
+              background-position: -29px -29px;
+            }
+
+            button.max {
+              background-position: -60px 0;
+            }
+
+            button.max:hover {
+              background-position: -60px -29px;
+            }
+
+            button.revert {
+              display: none;
+              background-position: -149px 0;
+            }
+
+            button.revert:hover {
+              background-position: -149px -29px;
+            }
+
+            button.close {
+              background-position: -89px 0;
+            }
+
+            button.close:hover {
+              background-position: -89px -29px;
+            }
+          }
+        }
+
+        .ant-modal-body {
+          overflow: auto;
+        }
+
+        .resizeL,
+        .resizeT,
+        .resizeR,
+        .resizeB,
+        .resizeLT,
+        .resizeTR,
+        .resizeLB {
+          position: absolute;
+          overflow: hidden;
+          background: #000;
+          opacity: 0;
+          filter: alpha(opacity=0);
+        }
+
+        .resizeL,
+        .resizeR {
+          top: 0;
+          width: 5px;
+          height: 100%;
+          cursor: w-resize;
+        }
+
+        .resizeR {
+          right: 0;
+        }
+
+        .resizeT,
+        .resizeB {
+          width: 100%;
+          height: 5px;
+          cursor: n-resize;
+        }
+
+        .resizeT {
+          top: 0;
+        }
+
+        .resizeB {
+          bottom: 0;
+        }
+
+        .resizeLT,
+        .resizeTR,
+        .resizeLB {
+          width: 8px;
+          height: 8px;
+          background: #ff0;
+        }
+
+        .resizeLT {
+          top: 0;
+          left: 0;
+          cursor: nw-resize;
+        }
+
+        .resizeTR {
+          top: 0;
+          right: 0;
+          cursor: ne-resize;
+        }
+
+        .resizeLB {
+          bottom: 0;
+          left: 0;
+          cursor: ne-resize;
+        }
+
+        .resizeBR {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 14px;
+          height: 14px;
+          overflow: hidden;
+          cursor: nw-resize;
+        }
+      }
+    }
+  }
+}
