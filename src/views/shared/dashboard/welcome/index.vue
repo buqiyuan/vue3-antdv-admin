@@ -3,7 +3,7 @@
     <img src="~@/assets/analysis.svg" />
     <Descriptions title="系统信息" bordered>
       <Descriptions.Item key="IP" label="IP">
-        {{ name }}
+        {{ loginIp }}
       </Descriptions.Item>
       <Descriptions.Item v-for="(value, key) in browserInfo" :key="key" :label="key">
         {{ value }}
@@ -30,7 +30,7 @@
   import { useUserStore } from '@/store/modules/user';
   // import performanceMonitor from '@/utils/performanceMonitor'
 
-  const name = useUserStore().name;
+  const loginIp = useUserStore().userInfo?.loginIp;
   // 是否联网
   const { online } = useOnline();
   // 获取电池信息

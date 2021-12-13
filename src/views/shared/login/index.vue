@@ -81,9 +81,12 @@
   setCaptcha();
 
   const handleSubmit = async () => {
-    const { username, password } = state.formInline;
+    const { username, password, verifyCode } = state.formInline;
     if (username.trim() == '' || password.trim() == '') {
       return message.warning('用户名或密码不能为空！');
+    }
+    if (!verifyCode) {
+      return message.warning('请输入验证码！');
     }
     message.loading('登录中...', 0);
     state.loading = true;

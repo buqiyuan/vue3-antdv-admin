@@ -87,6 +87,9 @@
     "typescript"
   ],
   "license": "MIT",
+  "engines": {
+    "node": "^12 || >=14"
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",

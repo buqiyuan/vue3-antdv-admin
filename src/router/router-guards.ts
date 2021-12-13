@@ -58,7 +58,7 @@ export function createRouterGuards(router: Router) {
     }
   });
 
-  router.afterEach((to, from, failure) => {
+  router.afterEach((to, _, failure) => {
     const tabsViewStore = useTabsViewStore();
 
     document.title = (to?.meta?.title as string) || document.title;

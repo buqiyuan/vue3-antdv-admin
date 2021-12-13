@@ -18,14 +18,6 @@
 
 > 使用了 Vue3.0 全家桶、ant-design-vue2.0 和 typescript4.0，实践 vue3.0 的新特性以及玩法，不得不说 vue3.0 的 Composition API 相比于 vue2.0 的 Options API 灵活很多，让我们可以灵活地组合组件逻辑，我们可以很轻松的使用 hooks 的形式去代替以前 mixins 等的写法。更多 hooks 可以参考[vueuse](https://vueuse.org/functions.html)
 
-## 克隆项目
-
-```bash
-git clone --single-branch https://github.com/buqiyuan/vite-vue3-lowcode.git
-or
-git clone --depth=1 https://github.com/buqiyuan/vite-vue3-lowcode.git
-```
-
 ## Project setup
 
 ```shell

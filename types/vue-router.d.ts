@@ -1,30 +1,30 @@
-export {}
+export {};
 
 interface Title18n {
-  zh_CN: string
-  en_US: string
+  zh_CN: string;
+  en_US: string;
 }
 
 declare module 'vue-router' {
   interface RouteMeta extends Record<string | number | symbol, unknown> {
     /** 标题 */
-    title: string | Title18n
+    title: string | Title18n;
     /** 当前路由是否需要权限验证 */
-    isAuth?: boolean
+    isAuth?: boolean;
     /** 当前路由权限 */
-    perms?: string[]
+    perms?: string[];
     /** 是否需要缓存 */
-    keepAlive?: boolean
+    keepAlive?: boolean;
     /** 当前路由keypath */
-    keyPath?: string[]
+    keyPath?: string[];
     /** 是否固定在标签栏 */
-    affix?: boolean
+    affix?: boolean;
     /** 菜单图标 */
-    icon?: string
+    icon?: string;
     /** 当前页面切换动画 */
-    transitionName?: string
+    transitionName?: string;
     /** 不在菜单中显示 */
-    hideMenu?: boolean
-    isLink?: boolean
+    hideInMenu?: boolean;
+    isLink?: boolean;
   }
 }

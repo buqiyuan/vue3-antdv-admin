@@ -31,6 +31,7 @@ declare namespace API {
     psalt: string;
     nickName: string;
     headImg: string;
+    loginIp: string;
     email: string;
     phone: string;
     remark: string;

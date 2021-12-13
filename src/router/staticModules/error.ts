@@ -17,7 +17,7 @@ export const errorRoutes = {
   meta: {
     title: '错误页',
     icon: 'EditOutlined',
-    hideMenu: true,
+    hideInMenu: true,
   },
   children: [
     {

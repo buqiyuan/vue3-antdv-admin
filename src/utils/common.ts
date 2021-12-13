@@ -90,7 +90,7 @@ export const isBase64 = (str: string): boolean => {
 };
 // 对象转JSON
 export const toJSON = (obj) => {
-  return JSON.stringify(obj, (key, value) => {
+  return JSON.stringify(obj, (_, value) => {
     switch (true) {
       case typeof value === 'undefined':
         return 'undefined';
@@ -167,7 +167,7 @@ export const getAsyncPage = (viewPath: string, viewFileName = 'index') => {
  */
 export const toHump = (name) => {
   return name
-    .replace(/[\-\/\_](\w)/g, (all, letter) => {
+    .replace(/[\-\/\_](\w)/g, (_, letter) => {
       return letter.toUpperCase();
     })
     .replace('views', '');

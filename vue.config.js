@@ -1,3 +1,4 @@
+const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const CompressionPlugin = require('compression-webpack-plugin');
@@ -7,13 +8,15 @@ const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 const resolve = (dir) => path.join(__dirname, dir); // 路径
 
+process.env.VUE_APP_VERSION = require('./package.json').version;
+
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
-const IS_DEV = ['development'].includes(process.env.NODE_ENV);
+// const IS_DEV = ['development'].includes(process.env.NODE_ENV);
 
 // port = 8098 npm run dev OR npm run dev --port = 8098
 const port = process.env.port || process.env.npm_config_port || 8098; // dev port
 
-module.exports = {
+module.exports = defineConfig({
   // lintOnSave: false, //关闭eslint检查
   // publicPath: isDev ? '' : querystring.unescape('<%=request.getContextPath()%>'),
   publicPath: process.env.BASE_URL,
@@ -83,7 +86,13 @@ module.exports = {
       });
   },
   configureWebpack: (config) => {
+    // 开启顶级await
+    config.experiments = {
+      topLevelAwait: true,
+    };
+
     config.resolve.fallback = { path: require.resolve('path-browserify') };
+
     if (IS_PROD) {
       config.plugins.push(
         new TerserPlugin({
@@ -153,13 +162,6 @@ module.exports = {
         },
       };
     }
-    return {
-      devtool: IS_DEV ? 'source-map' : false,
-      experiments: {
-        // lazyCompilation: true,
-        topLevelAwait: true,
-      },
-    };
   },
   devServer: {
     port: port,
@@ -185,4 +187,4 @@ module.exports = {
     },
     onBeforeSetupMiddleware: require('./src/mock/mock-server.js'),
   },
-};
+});

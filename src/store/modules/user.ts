@@ -13,6 +13,7 @@ interface UserState {
   // like [ 'sys:user:add', 'sys:user:update' ]
   perms: string[];
   menus: RouteRecordRaw[];
+  userInfo: Partial<API.AdminUserInfo>;
 }
 
 export const useUserStore = defineStore({
@@ -23,6 +24,7 @@ export const useUserStore = defineStore({
     avatar: '',
     perms: [],
     menus: [],
+    userInfo: {},
   }),
   getters: {
     getToken(): string {
@@ -62,6 +64,7 @@ export const useUserStore = defineStore({
         this.perms = perms;
         this.name = userInfo.name;
         this.avatar = userInfo.headImg;
+        this.userInfo = userInfo;
         // 生成路由
         const routes = generatorDynamicRouter(menus);
         this.menus = routes;

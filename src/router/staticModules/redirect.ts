@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '重定向',
       icon: 'SettingOutlined',
-      hideMenu: true,
+      hideInMenu: true,
     },
     children: [
       {
@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/shared/redirect/index.vue'),
         meta: {
           title: '重定向',
-          hideMenu: true,
+          hideInMenu: true,
           keepAlive: false,
         },
       },

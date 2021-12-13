@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!props.menuInfo?.meta?.hideMenu">
+  <template v-if="!props.menuInfo?.meta?.hideInMenu">
     <Menu.SubMenu
       v-if="props.menuInfo?.children?.length"
       :key="props.menuInfo?.name"

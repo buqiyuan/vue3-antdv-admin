@@ -2,43 +2,40 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
     "moduleResolution": "node",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+    "strict": true,
+    "noLib": false,
+    "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "sourceMap": true,
-    "pretty": true,
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "checkJs": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "strictPropertyInitialization": false,
-    "downlevelIteration": true,
-    "noUnusedLocals": false,
-    "noImplicitAny": false,
-    "noImplicitThis": true,
-    "removeComments": false,
     "strictFunctionTypes": false,
+    "jsx": "preserve",
     "baseUrl": ".",
+    "allowJs": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "removeComments": true,
     "types": [
       "webpack-env"
     ],
-    "typeRoots": ["./node_modules/@types/", "./types"],
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./types"
+    ],
     "paths": {
       "@/*": [
         "src/*"
       ]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
   },
   "include": [
     "src/**/*.ts",

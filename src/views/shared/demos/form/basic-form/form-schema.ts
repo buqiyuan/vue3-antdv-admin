@@ -97,7 +97,7 @@ export const schemas: FormItemSchema[] = [
     rules: [
       {
         required: true,
-        validator: async (rule, value) => {
+        validator: async (_, value) => {
           if (!value) {
             return Promise.reject('值不能为空');
           }
