@@ -26,5 +26,4 @@ setupStore(app);
 // 挂载路由
 setupRouter(app);
 // 路由准备就绪后挂载APP实例
-await router.isReady();
-app.mount('#app');
+router.isReady().then(() => app.mount('#app'));
