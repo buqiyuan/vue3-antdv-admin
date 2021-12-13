@@ -1,7 +1,7 @@
 <template>
   <div class="login-box">
     <div class="login-logo">
-      <svg-icon icon-class="logo" />
+      <svg-icon name="logo" />
       <!--      <img src="~@/assets/images/logo.png" alt="">-->
       <h1 class="mb-0 ml-2 text-3xl font-bold">Antd Admin</h1>
     </div>
@@ -115,7 +115,7 @@
     width: 100vw;
     height: 100vh;
     padding-top: 240px;
-    background: url('~@/assets/login.svg');
+    background: url('@/assets/login.svg');
     background-size: 100%;
     flex-direction: column;
     align-items: center;

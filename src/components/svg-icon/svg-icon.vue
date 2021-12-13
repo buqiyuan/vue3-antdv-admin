@@ -1,30 +1,33 @@
 <template>
-  <svg :class="svgClass" aria-hidden="true">
-    <use :xlink:href="iconName" />
+  <svg class="svg-icon" aria-hidden="true">
+    <use :href="symbolId" :fill="color" />
   </svg>
 </template>
-<script lang="ts" setup>
-  import { computed } from 'vue';
 
-  const importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
-    requireContext.keys().forEach(requireContext);
-  try {
-    importAll(require.context('@/assets/icons', true, /\.svg$/));
-  } catch (error) {
-    console.log(error);
-  }
+<script>
+  import { defineComponent, computed } from 'vue';
 
-  interface Props {
-    iconClass: string;
-    className?: string;
-  }
-
-  const props = withDefaults(defineProps<Props>(), {
-    className: '',
+  export default defineComponent({
+    name: 'SvgIcon',
+    props: {
+      prefix: {
+        type: String,
+        default: 'svg-icon',
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      color: {
+        type: String,
+        default: '#333',
+      },
+    },
+    setup(props) {
+      const symbolId = computed(() => `#${props.prefix}-${props.name}`);
+      return { symbolId };
+    },
   });
-
-  const iconName = computed(() => `#icon-${props.iconClass}`);
-  const svgClass = computed(() => 'svg-icon');
 </script>
 
 <style lang="less" scoped>

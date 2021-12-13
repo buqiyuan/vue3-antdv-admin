@@ -8,18 +8,21 @@ import { resolve } from 'path';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import WindiCSS from 'vite-plugin-windicss';
+import viteSvgIcons from 'vite-plugin-svg-icons';
+
 const CWD = process.cwd();
 
 // 环境变量
-const BASE_ENV_CONFIG = loadEnv('', CWD);
-const DEV_ENV_CONFIG = loadEnv('development', CWD);
-const PROD_ENV_CONFIG = loadEnv('production', CWD);
+// const BASE_ENV_CONFIG = loadEnv('', CWD);
+// const DEV_ENV_CONFIG = loadEnv('development', CWD);
+// const PROD_ENV_CONFIG = loadEnv('production', CWD);
 
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   // 环境变量
   const { VITE_BASE_URL, VITE_DROP_CONSOLE } = loadEnv(mode, CWD);
 
-  // const isBuild = command === 'build';
+  const isBuild = command === 'build';
+  console.log('当前执行环境：', isBuild);
 
   return {
     base: VITE_BASE_URL,
@@ -42,6 +45,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       }),
       legacy({
         targets: ['defaults', 'not IE 11'],
+      }),
+      viteSvgIcons({
+        // Specify the icon folder to be cached
+        iconDirs: [resolve(CWD, 'src/assets/icons')],
+        // Specify symbolId format
+        symbolId: 'svg-icon-[dir]-[name]',
       }),
       Components({
         resolvers: [

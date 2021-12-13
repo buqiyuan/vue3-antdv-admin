@@ -119,6 +119,8 @@ export const generateTree = (items, id = 0, link = 'parent') => {
 // const decryption = (ciphertext: string) =>
 //   isBase64(ciphertext) ? window.decodeURIComponent(window.atob(ciphertext)) : ciphertext;
 
+const viewsModules = import.meta.glob('../views/**/*.vue');
+
 /**
  *
  * @param {string} viewPath 页面的路径 `@/view/${viewPath}`
@@ -126,9 +128,16 @@ export const generateTree = (items, id = 0, link = 'parent') => {
  */
 export const getAsyncPage = (viewPath: string, viewFileName = 'index') => {
   if (viewPath.endsWith('.vue')) {
-    return () => import(/* @vite-ignore */ `../views/${viewPath}`);
+    const p = `../views/${viewPath}`;
+    const pathKey = Object.keys(viewsModules).find((key) => key === p)!;
+    // console.log('viewsModules[pathKey]', viewsModules[pathKey]);
+    return viewsModules[pathKey];
   } else {
-    return () => import(/* @vite-ignore */ `../views/${viewPath}/${viewFileName}.vue`);
+    const p = `../views/${viewPath}/${viewFileName}.vue`;
+    const pathKey = Object.keys(viewsModules).find((key) => key === p)!;
+    // console.log('viewsModules[pathKey]', viewsModules[pathKey]);
+    return viewsModules[pathKey];
+    // return () => import(/* @vite-ignore */ `../views/${viewPath}/${viewFileName}.vue`);
   }
 };
 
