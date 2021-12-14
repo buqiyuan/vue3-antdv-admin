@@ -8,7 +8,12 @@ import { setupStore } from '@/store';
 // import useFormModal from '@/hooks/useFormModal'
 import useModal from '@/hooks/useModal/index';
 import { setupAntd, setupDirectives, setupGlobalMethods, setupCustomComponents } from '@/plugins';
+
+import permission from '@/core/permission/';
+
 const app = createApp(App);
+
+app.use(permission);
 
 // app.use(useFormModal)
 app.use(useModal);

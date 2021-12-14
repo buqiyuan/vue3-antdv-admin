@@ -1,6 +1,6 @@
 import { request } from '@/utils/request';
 import Api from '@/core/permission/modules/sys/user';
-import { generatePermCode } from '@/core/permission';
+import { generatePermCode } from '@/core/permission/modules';
 
 export function getUserListPage(data: API.PageParams<{ departmentIds: number[] }>) {
   return request<API.TableListResult<API.UserListPageResult>>(

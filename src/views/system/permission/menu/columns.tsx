@@ -91,10 +91,15 @@ export const getColumns = (columnParams: ColumnsParams): TableColumn<TableListIt
       actions: ({ record }) => [
         {
           label: '编辑',
+          auth: {
+            perm: 'sys/menu/delete',
+            effect: 'disable',
+          },
           onClick: () => openMenuModal(record),
         },
         {
           label: '删除',
+          auth: 'sys/menu/delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record),

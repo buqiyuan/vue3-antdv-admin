@@ -1,6 +1,7 @@
 import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
 import type { ButtonProps, TooltipProps } from 'ant-design-vue/lib/components';
 import { ColumnParams } from '../typing';
+import type { PermissionType } from '@/core/permission/modules/types';
 
 export interface ActionItem extends Omit<ButtonProps, 'onClick'> {
   onClick?: Fn<ColumnParams, any>;
@@ -15,6 +16,13 @@ export interface ActionItem extends Omit<ButtonProps, 'onClick'> {
   // 业务控制是否显示
   ifShow?: boolean | ((action: ActionItem) => boolean);
   tooltip?: string | TooltipProps;
+  /** 设置按钮权限, effect不传默认为disable */
+  auth?:
+    | PermissionType
+    | {
+        perm: PermissionType;
+        effect?: 'delete' | 'disable';
+      };
 }
 
 export interface PopConfirm extends PopconfirmProps {
