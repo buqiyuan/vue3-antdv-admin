@@ -112,14 +112,20 @@ export const getColumns = (columnParams: ColumnsParams): TableColumn<TableListIt
       actions: ({ record }) => [
         {
           label: '编辑',
+          auth: {
+            perm: 'sys/user/delete',
+            effect: 'disable',
+          },
           onClick: () => openUserModal(record),
         },
         {
           label: '改密',
+          auth: 'sys/user/update',
           onClick: () => openUpdatePasswordModal(record),
         },
         {
           label: '删除',
+          auth: 'sys/user/delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record.id),
