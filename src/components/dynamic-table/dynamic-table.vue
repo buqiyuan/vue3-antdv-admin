@@ -17,7 +17,7 @@
         @change="handleTableChange"
       >
         <template
-          v-for="slotName in defaultSlots.filter((name) => Object.hasOwnProperty($slots, name))"
+          v-for="slotName in defaultSlots.filter((name) => Reflect.has($slots, name))"
           #[slotName]="slotData"
           :key="slotName"
         >

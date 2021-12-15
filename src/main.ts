@@ -13,6 +13,9 @@ import permission from '@/core/permission/';
 
 const app = createApp(App);
 
+// 全局挂载Reflect反射对象
+app.config.globalProperties.Reflect = Reflect;
+
 app.use(permission);
 
 // app.use(useFormModal)
