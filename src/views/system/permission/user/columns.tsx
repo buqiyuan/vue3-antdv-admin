@@ -113,14 +113,14 @@ export const getColumns = (columnParams: ColumnsParams): TableColumn<TableListIt
         {
           label: '编辑',
           auth: {
-            perm: 'sys/user/delete',
+            perm: 'sys/user/update',
             effect: 'disable',
           },
           onClick: () => openUserModal(record),
         },
         {
           label: '改密',
-          auth: 'sys/user/update',
+          auth: 'sys/user/password',
           onClick: () => openUpdatePasswordModal(record),
         },
         {

@@ -34,7 +34,7 @@
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
     "@types/lodash": "^4.14.178",
-    "@types/node": "^16.11.12",
+    "@types/node": "^16.11.13",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
     "@vitejs/plugin-legacy": "^1.6.4",
