@@ -18,6 +18,7 @@ import {
 } from 'ant-design-vue';
 
 import 'ant-design-vue/dist/antd.css';
+import 'dayjs/locale/zh-cn';
 
 export function setupAntd(app: App<Element>) {
   app.component('AButton', AButton);
