@@ -13,7 +13,9 @@
       :scroll="{ x: 2000 }"
     >
       <template #toolbar>
-        <a-button type="primary" @click="openMenuModal({})"> 新增 </a-button>
+        <a-button type="primary" :disabled="!$auth('sys/menu/add')" @click="openMenuModal({})">
+          新增
+        </a-button>
       </template>
     </DynamicTable>
   </div>

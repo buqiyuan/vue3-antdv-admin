@@ -9,7 +9,7 @@
 - [swagger 文档](http://buqiyuan.site:7001/swagger-api/static/index.html#/)
 - [后台地址](https://github.com/buqiyuan/nest-admin)
 - [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
-- [vite 踩坑版](https://github.com/buqiyuan/vite-vue3-admin)
+- [vite 版](https://github.com/buqiyuan/vite-vue3-admin)
 - [gitee 地址](https://gitee.com/buqiyuan/vue3-antd-admin)
 
 ## vscode 配置
@@ -22,6 +22,14 @@
 
 `rootadmin` 默认开放多点登录，其他新建的账号默认都是单点登录。建议自己拉后端代码到本地跑，避免多人同时操作时产生冲突和误解。
 
+### todolist
+
+- [x] 动态表格(完善中)
+- [x] 动态表单(完善中)
+- [ ] 电商 SKU 功能演示
+- [ ] 纯前端导出 PDF 动态分页
+- [ ] 其他...
+
 ## Project setup
 
 ```shell
@@ -30,7 +38,7 @@ yarn install
 yarn --frozen-lockfile
 ```
 
-## 捐赠
+## 赞赏
 
 如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
 

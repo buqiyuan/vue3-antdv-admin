@@ -4,7 +4,7 @@
       <div class="flex justify-between">
         <div>组织架构</div>
         <Space>
-          <Tooltip placement="top">
+          <Tooltip v-if="$auth('sys/dept/add')" placement="top">
             <template #title>新增部门 </template>
             <PlusOutlined @click="openDeptModal({})" />
           </Tooltip>
@@ -24,12 +24,18 @@
           <Dropdown :trigger="['contextmenu']">
             <span>{{ title }}</span>
             <template #overlay>
-              <a-menu>
-                <a-menu-item key="1" @click="openDeptModal(formData)">
+              <Menu>
+                <Menu.Item
+                  key="1"
+                  :disabled="!$auth('sys/dept/update')"
+                  @click="openDeptModal(formData)"
+                >
                   编辑 <EditOutlined />
+                </Menu.Item>
+                <a-menu-item key="2" :disabled="!$auth('sys/dept/delete')" @click="delDept(key)">
+                  删除 <DeleteOutlined />
                 </a-menu-item>
-                <a-menu-item key="2" @click="delDept(key)"> 删除 <DeleteOutlined /> </a-menu-item>
-              </a-menu>
+              </Menu>
             </template>
           </Dropdown>
         </template>
@@ -53,13 +59,19 @@
           </Alert>
         </template>
         <template #toolbar>
-          <a-button type="primary" @click="openUserModal({})"> <PlusOutlined /> 新增 </a-button>
-          <a-button type="success" :disabled="!isCheckRows" @click="openTransferUserModal">
+          <a-button type="primary" :disabled="!$auth('sys/user/add')" @click="openUserModal({})">
+            <PlusOutlined /> 新增
+          </a-button>
+          <a-button
+            type="success"
+            :disabled="!isCheckRows || !$auth('sys/dept/transfer')"
+            @click="openTransferUserModal"
+          >
             <SwapOutlined /> 转移
           </a-button>
           <a-button
             type="danger"
-            :disabled="!isCheckRows"
+            :disabled="!isCheckRows || !$auth('sys/user/delete')"
             @click="delRowConfirm(rowSelection.selectedRowKeys)"
           >
             <DeleteOutlined /> 删除
@@ -76,7 +88,7 @@
 
 <script setup lang="tsx">
   import { ref, reactive, computed } from 'vue';
-  import { Tree, Dropdown, Space, Tooltip, Modal, Alert } from 'ant-design-vue';
+  import { Tree, Dropdown, Space, Tooltip, Modal, Alert, Menu } from 'ant-design-vue';
   import {
     SyncOutlined,
     PlusOutlined,

@@ -92,7 +92,7 @@ export const getColumns = (columnParams: ColumnsParams): TableColumn<TableListIt
         {
           label: '编辑',
           auth: {
-            perm: 'sys/menu/delete',
+            perm: 'sys/menu/update',
             effect: 'disable',
           },
           onClick: () => openMenuModal(record),
