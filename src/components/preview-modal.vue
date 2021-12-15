@@ -2,12 +2,12 @@
   <teleport to="body">
     <div v-if="isVisible" class="preview-modal" @click.self="isVisible = false">
       <close-circle-outlined class="close-icon" @click="isVisible = false" />
-      <div class="preview-content" :style="contentStyle">
-        <a-spin :spinning="loading">
+      <div class="preview-content" :style="state.contentStyle">
+        <Spin :spinning="state.loading">
           <img
             v-if="type === 'image'"
             ref="img"
-            :style="imgStyle"
+            :style="state.imgStyle"
             :src="url"
             alt=""
             @load.stop="imgLoaded"
@@ -18,13 +18,13 @@
             :src="url"
             controls
             autoplay
-            @canplay="loading = false"
-            @loadstart="loading = true"
+            @canplay="state.loading = false"
+            @loadstart="state.loading = true"
           ></video>
           <div ref="imgScaleMask" class="img-scale-mask">
-            {{ ~~(imgScale * 100) + '%' }}
+            {{ ~~(state.imgScale * 100) + '%' }}
           </div>
-        </a-spin>
+        </Spin>
       </div>
       <div v-if="type === 'image'" class="toolbar">
         <zoom-in-outlined title="放大" @click="zoomInImg" />
@@ -36,9 +36,8 @@
     </div>
   </teleport>
 </template>
-
-<script lang="ts">
-  import { defineComponent, PropType, reactive, toRefs, ref, computed } from 'vue';
+<script lang="ts" setup>
+  import { reactive, ref, computed } from 'vue';
   import { Spin } from 'ant-design-vue';
   import {
     ZoomInOutlined,
@@ -50,131 +49,107 @@
   } from '@ant-design/icons-vue';
   import { downloadByUrl } from '@/utils/downloadFile';
 
-  export default defineComponent({
-    name: 'PreviewModal',
-    components: {
-      ZoomInOutlined,
-      ZoomOutOutlined,
-      RedoOutlined,
-      DownloadOutlined,
-      CloseCircleOutlined,
-      OneToOneOutlined,
-      [Spin.name]: Spin,
-    },
-    props: {
-      visible: {
-        type: Boolean as PropType<boolean>,
-        default: false,
-      },
-      type: {
-        type: String as PropType<string>,
-        default: 'image',
-      },
-      url: {
-        type: String as PropType<string>,
-        default: '',
-      },
-    },
-    emits: ['update:visible'],
-    setup(props, { emit }) {
-      // 图片蒙层
-      const imgScaleMask = ref<HTMLDivElement>();
+  interface Props {
+    visible: boolean;
+    type: string;
+    url: string;
+  }
 
-      let timer;
+  interface Emits {
+    (e: 'update:visible', val: boolean): void;
+  }
 
-      const state = reactive({
-        timer: null,
-        loading: false, // 视频加载动画
-        rotateDeg: 0,
-        imgScale: 1, // 图片缩放比
-        scaleCV: 0.07, // 缩放的系数
-        initWidth: 0, // 图片初始宽高
-        initHeight: 0, // 图片初始宽高
-        contentStyle: {
-          // 默认大小
-          width: '60vw',
-          height: '60vh',
-        } as any,
-        imgStyle: {
-          width: '',
-          height: '',
-          transform: 'rotate(0)',
-        } as any,
-      });
-
-      const isVisible = computed({
-        get: () => props.visible,
-        set: (val) => emit('update:visible', val),
-      });
-
-      // 旋转图片
-      const rotateImg = () => {
-        state.rotateDeg -= 90;
-        state.imgStyle.transform = `rotate(${state.rotateDeg}deg)`;
-      };
-      // 保存图片
-      const saveImg = (url) => {
-        downloadByUrl({ url });
-      };
-      // 处理图片缩放比
-      const handZoom = (type = 'scale') => {
-        console.log(state.imgScale);
-        state.imgStyle.width = state.initWidth * state.imgScale + 'px';
-        state.imgStyle.height = state.initHeight * state.imgScale + 'px';
-        if (type === 'init') {
-          state.imgStyle.maxWidth = '';
-          state.imgStyle.maxHeight = '';
-        } else {
-          state.imgStyle.maxWidth = 'none!important';
-          state.imgStyle.maxHeight = 'none!important';
-        }
-        clearTimeout(timer);
-        timer = setTimeout(() => imgScaleMask.value?.classList.remove('active'), 1400);
-        imgScaleMask.value?.classList.add('active');
-        state.contentStyle = {};
-      };
-      // 恢复原来的比例
-      const resetImg = () => {
-        state.imgScale = 1;
-        handZoom();
-      };
-      // 图片放大
-      const zoomInImg = () => {
-        state.imgScale += state.scaleCV;
-        handZoom();
-      };
-      // 图片缩放
-      const zoomOutImg = () => {
-        state.imgScale -= state.scaleCV;
-        handZoom();
-      };
-
-      // 图片加载完成后获取初始宽高
-      const imgLoaded = (e) => {
-        if (e.currentTarget?.complete) {
-          const { width, height } = getComputedStyle(e.currentTarget);
-          state.imgStyle.width = width;
-          state.imgStyle.height = height;
-          state.initWidth = parseFloat(width);
-          state.initHeight = parseFloat(height);
-          console.log(state.imgStyle, '图片加载完毕');
-        }
-      };
-
-      return {
-        ...toRefs(state),
-        imgScaleMask,
-        isVisible,
-        rotateImg,
-        saveImg,
-        zoomInImg,
-        zoomOutImg,
-        handZoom,
-        imgLoaded,
-        resetImg,
-      };
-    },
+  const props = withDefaults(defineProps<Props>(), {
+    visible: false,
+    type: 'image',
+    url: '',
   });
+
+  const emit = defineEmits<Emits>();
+
+  // 图片蒙层
+  const imgScaleMask = ref<HTMLDivElement>();
+
+  let timer;
+
+  const state = reactive({
+    timer: null,
+    loading: false, // 视频加载动画
+    rotateDeg: 0,
+    imgScale: 1, // 图片缩放比
+    scaleCV: 0.07, // 缩放的系数
+    initWidth: 0, // 图片初始宽高
+    initHeight: 0, // 图片初始宽高
+    contentStyle: {
+      // 默认大小
+      width: '60vw',
+      height: '60vh',
+    } as any,
+    imgStyle: {
+      width: '',
+      height: '',
+      transform: 'rotate(0)',
+    } as any,
+  });
+
+  const isVisible = computed({
+    get: () => props.visible,
+    set: (val) => emit('update:visible', val),
+  });
+
+  // 旋转图片
+  const rotateImg = () => {
+    state.rotateDeg -= 90;
+    state.imgStyle.transform = `rotate(${state.rotateDeg}deg)`;
+  };
+  // 保存图片
+  const saveImg = (url) => {
+    downloadByUrl({ url });
+  };
+  // 处理图片缩放比
+  const handZoom = (type = 'scale') => {
+    console.log(state.imgScale);
+    state.imgStyle.width = state.initWidth * state.imgScale + 'px';
+    state.imgStyle.height = state.initHeight * state.imgScale + 'px';
+    if (type === 'init') {
+      state.imgStyle.maxWidth = '';
+      state.imgStyle.maxHeight = '';
+    } else {
+      state.imgStyle.maxWidth = 'none!important';
+      state.imgStyle.maxHeight = 'none!important';
+    }
+    clearTimeout(timer);
+    timer = setTimeout(() => imgScaleMask.value?.classList.remove('active'), 1400);
+    imgScaleMask.value?.classList.add('active');
+    state.contentStyle = {};
+  };
+  // 恢复原来的比例
+  const resetImg = () => {
+    state.imgScale = 1;
+    handZoom();
+  };
+  // 图片放大
+  const zoomInImg = () => {
+    state.imgScale += state.scaleCV;
+    handZoom();
+  };
+  // 图片缩放
+  const zoomOutImg = () => {
+    state.imgScale -= state.scaleCV;
+    handZoom();
+  };
+
+  // 图片加载完成后获取初始宽高
+  const imgLoaded = (e) => {
+    if (e.currentTarget?.complete) {
+      const { width, height } = getComputedStyle(e.currentTarget);
+      state.imgStyle.width = width;
+      state.imgStyle.height = height;
+      state.initWidth = parseFloat(width);
+      state.initHeight = parseFloat(height);
+      console.log(state.imgStyle, '图片加载完毕');
+    }
+  };
 </script>
 
 <style lang="less">

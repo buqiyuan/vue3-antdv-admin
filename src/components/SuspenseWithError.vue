@@ -12,18 +12,12 @@
   </Suspense>
 </template>
 
-<script lang="ts">
-  import { ref, defineComponent, onErrorCaptured } from 'vue';
-  export default defineComponent({
-    name: 'SuspenseWithError',
-    setup() {
-      const error = ref<any>(null);
-      onErrorCaptured((e) => {
-        // error.value = '(⊙o⊙)…出了点问题。'
-        console.error(e);
-        return true;
-      });
-      return { error };
-    },
+<script lang="ts" setup>
+  import { ref, onErrorCaptured } from 'vue';
+  const error = ref<any>(null);
+  onErrorCaptured((e) => {
+    // error.value = '(⊙o⊙)…出了点问题。'
+    console.error(e);
+    return true;
   });
 </script>
