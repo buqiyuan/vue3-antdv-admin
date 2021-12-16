@@ -104,7 +104,7 @@ export const getColumns = (columnParams: ColumnsParams): TableColumn<TableListIt
     },
     {
       title: '操作',
-      width: 190,
+      width: 220,
       dataIndex: '$action',
       hideInSearch: true,
       align: 'center',

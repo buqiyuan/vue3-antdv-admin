@@ -3,7 +3,7 @@
     <slot name="headerTitle">
       <div class="title">
         {{ title }}
-        <BasicHelp v-if="titleTooltip" :text="titleTooltip" />
+        <BasicHelp v-if="titleTooltip" class="ml-6px pt-3px" :text="titleTooltip" />
       </div>
     </slot>
 
