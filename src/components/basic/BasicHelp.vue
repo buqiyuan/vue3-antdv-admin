@@ -86,3 +86,9 @@
     },
   });
 </script>
+
+<style lang="less">
+  .basic-help__wrap p {
+    margin-bottom: 0;
+  }
+</style>

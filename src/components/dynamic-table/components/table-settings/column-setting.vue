@@ -12,13 +12,7 @@
     >
       <template #title>
         <div class="popover-title">
-          <Checkbox
-            :indeterminate="indeterminate"
-            v-model:checked="checkAll"
-            @change="onCheckAllChange"
-          >
-            列展示
-          </Checkbox>
+          <Checkbox :indeterminate="indeterminate" v-model:checked="checkAll"> 列展示 </Checkbox>
 
           <Checkbox v-model:checked="checkIndex" @change="handleIndexCheckChange">
             序号列
@@ -29,26 +23,42 @@
       </template>
 
       <template #content>
-        <Checkbox.Group v-model:value="checkedList" @change="onChange" ref="columnListRef">
-          <template v-for="item in plainOptions" :key="item.value">
+        <div ref="columnListRef">
+          <template v-for="item in tableColumns" :key="table.getColumnKey(item)">
             <div class="check-item">
-              <DragOutlined class="table-column-drag-icon" />
-              <Checkbox :value="item.value">
-                {{ item.label }}
-              </Checkbox>
+              <div style="padding: 4px 16px 8px 0">
+                <DragOutlined class="table-column-drag-icon pr-6px cursor-pointer" />
+                <Checkbox
+                  v-model:checked="item.hideInTable"
+                  :true-value="false"
+                  :false-value="true"
+                >
+                  {{ item.title }}
+                </Checkbox>
+              </div>
 
-              <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
-                <template #title> 固定到左侧 </template>
-                <VerticalLeftOutlined />
-              </Tooltip>
-              <Divider type="vertical" />
-              <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
-                <template #title> 固定到右侧 </template>
-                <VerticalRightOutlined />
-              </Tooltip>
+              <div class="column-fixed">
+                <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
+                  <template #title> 固定到左侧 </template>
+                  <VerticalRightOutlined
+                    class="fixed-left"
+                    :class="{ active: item.fixed === 'left' }"
+                    @click="handleColumnFixed(item, 'left')"
+                  />
+                </Tooltip>
+                <Divider type="vertical" />
+                <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
+                  <template #title> 固定到右侧 </template>
+                  <VerticalLeftOutlined
+                    class="fixed-right"
+                    :class="{ active: item.fixed === 'right' }"
+                    @click="handleColumnFixed(item, 'right')"
+                  />
+                </Tooltip>
+              </div>
             </div>
           </template>
-        </Checkbox.Group>
+        </div>
       </template>
       <SettingOutlined />
     </Popover>
@@ -56,9 +66,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, unref } from 'vue';
-  import { Tooltip, Popover, Checkbox, Divider } from 'ant-design-vue';
-  // import type { TableProps } from 'ant-design-vue';
+  import { computed, nextTick, ref, unref, watch } from 'vue';
+  import { Tooltip, Popover, Divider } from 'ant-design-vue';
   import {
     SettingOutlined,
     VerticalRightOutlined,
@@ -66,41 +75,108 @@
     DragOutlined,
   } from '@ant-design/icons-vue';
   import { useTableContext } from '../../hooks/useTableContext';
-
-  interface Options {
-    label: string;
-    value: string;
-    fixed?: boolean | 'left' | 'right';
-  }
+  import { cloneDeep } from 'lodash';
+  import Checkbox from '@/components/check-box/index.vue';
+  import type { TableColumn } from '../../typing';
+  import { useSortable } from '@/hooks/useSortable';
+  import { isNullAndUnDef } from '@/utils/is';
 
   const table = useTableContext();
+  let inited = false;
+  const defaultColumns = cloneDeep(table.columns);
+  const defaultShowIndex = !!table.showIndex;
 
-  // const cachePlainOptions = ref<Options[]>([]);
-  const plainOptions = ref<Options[]>([]);
+  const tableColumns = ref<TableColumn[]>([]);
 
-  // const plainSortOptions = ref<Options[]>([]);
-
-  const columnListRef = ref();
-  const checkedList = ref<string[]>([]);
-  const checkAll = ref<boolean>(true);
-  // const defaultCheckList = ref<string[]>([]);
-  const checkIndex = ref<boolean>(false);
-
-  const indeterminate = computed(() => {
-    const len = plainOptions.value.length;
-    let checkedLen = checkedList.value.length;
-    unref(checkIndex) && checkedLen--;
-    return checkedLen > 0 && checkedLen < len;
+  const checkAll = computed<boolean>({
+    get() {
+      return tableColumns.value.length > 0 && tableColumns.value.every((n) => !n.hideInTable);
+    },
+    set(value) {
+      tableColumns.value.forEach((item) => (item.hideInTable = !value));
+    },
   });
 
-  const handleIndexCheckChange = () => {};
+  const checkIndex = ref(defaultShowIndex);
+  const columnListRef = ref<HTMLDivElement>();
 
-  const onCheckAllChange = () => {};
+  // 初始化选中状态
+  const initCheckStatus = () => {
+    tableColumns.value = cloneDeep(defaultColumns);
+    checkIndex.value = defaultShowIndex;
+    tableColumns.value.forEach((item) => (item.hideInTable ??= false));
+  };
+  initCheckStatus();
 
-  const handleVisibleChange = () => {
-    table.setProps({});
+  const indeterminate = computed(() => {
+    return (
+      tableColumns.value.length > 0 &&
+      tableColumns.value.some((n) => n.hideInTable) &&
+      tableColumns.value.some((n) => !n.hideInTable)
+    );
+  });
+
+  watch(tableColumns.value, (columns) => {
+    table.setProps({ columns });
+  });
+
+  const handleIndexCheckChange = (e) => {
+    table.setProps({ showIndex: e.target.checked });
   };
 
-  const onChange = () => {};
-  const reset = () => {};
+  const handleColumnFixed = (columItem: TableColumn, direction: 'left' | 'right') => {
+    columItem.fixed = columItem.fixed === direction ? false : direction;
+    table.setProps({ columns: tableColumns.value });
+  };
+
+  async function handleVisibleChange() {
+    if (inited) return;
+    await nextTick();
+    const columnListEl = unref(columnListRef);
+    if (!columnListEl) return;
+
+    // Drag and drop sort
+    const { initSortable } = useSortable(columnListEl, {
+      handle: '.table-column-drag-icon',
+      onEnd: (evt) => {
+        const { oldIndex, newIndex } = evt;
+
+        if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) {
+          return;
+        }
+        // Sort column
+        const columns = tableColumns.value;
+        if (oldIndex > newIndex) {
+          columns.splice(newIndex, 0, columns[oldIndex]);
+          columns.splice(oldIndex + 1, 1);
+        } else {
+          columns.splice(newIndex + 1, 0, columns[oldIndex]);
+          columns.splice(oldIndex, 1);
+        }
+        table.setProps({ columns });
+      },
+    });
+    initSortable();
+    inited = true;
+  }
+
+  const reset = () => {
+    table.setProps({ columns: cloneDeep(defaultColumns), showIndex: defaultShowIndex });
+    initCheckStatus();
+  };
 </script>
+
+<style lang="less" scoped>
+  .check-item {
+    @apply flex justify-between;
+  }
+  .column-fixed {
+    .fixed-right,
+    .fixed-left {
+      &.active,
+      &:hover {
+        color: #1890ff;
+      }
+    }
+  }
+</style>

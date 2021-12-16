@@ -2,7 +2,12 @@
   <div>
     <QueryForm v-if="search" :columns="columns" :formProps="formProps" @query="queryTable" />
     <div class="bg-white">
-      <ToolBar v-if="showToolBar" :title="headerTitle">
+      <ToolBar
+        v-if="showToolBar"
+        :title="headerTitle"
+        :titleTooltip="titleTooltip"
+        :showTableSetting="showTableSetting"
+      >
         <template #headerTitle v-if="$slots.headerTitle">
           <slot name="headerTitle"></slot>
         </template>
@@ -37,7 +42,7 @@
           </template>
           <!-- 表格行操作end -->
           <template
-            v-for="slotItem in columns.filter((item) => item[slotName])"
+            v-for="slotItem in getBindValues.columns?.filter((item) => item[slotName])"
             :key="getColumnKey(slotItem)"
           >
             <component
@@ -52,11 +57,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
   import {
     defineComponent,
     reactive,
-    PropType,
     ref,
     toRefs,
     watch,
@@ -65,14 +69,13 @@
     unref,
   } from 'vue';
   import { Table, Space } from 'ant-design-vue';
-  import { tableProps } from 'ant-design-vue/lib/table';
-  import type { TableProps, FormProps } from 'ant-design-vue';
   import { usePagination } from './hooks/usePagination';
-  import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './typing';
-  import { isObject } from '@/utils/is';
+  import type { TableColumn, OnChangeCallbackParams } from './typing';
+  import { isBoolean, isObject } from '@/utils/is';
   import { createTableContext } from './hooks/useTableContext';
   import { omit } from 'lodash';
   import { TableAction, QueryForm, ToolBar } from './components';
+  import dynamicTableProps, { TableProps } from './props';
 
   export default defineComponent({
     name: 'DynamicTable',
@@ -84,40 +87,8 @@
       ToolBar,
     },
     inheritAttrs: false,
-    props: {
-      ...tableProps(),
-      /** 表单属性配置 */
-      formProps: {
-        type: Object as PropType<FormProps>,
-        default: () => ({}),
-      },
-      columns: {
-        type: Object as PropType<TableColumn[]>,
-        required: true,
-      },
-      dataRequest: {
-        // 获取列表数据函数API
-        type: Function as PropType<
-          (
-            params?: LoadDataParams,
-            onChangeParams?: OnChangeCallbackParams,
-          ) => Promise<API.TableListResult>
-        >,
-      },
-      /** 是否显示表格工具栏 */
-      showToolBar: {
-        type: Boolean,
-        default: true,
-      },
-      /** 表格标题 */
-      headerTitle: String,
-      /** 是否显示搜索表单 */
-      search: {
-        type: Boolean,
-        default: true,
-      },
-    },
-    emits: ['change', 'update:pageOption'],
+    props: dynamicTableProps,
+    emits: ['change'],
     setup(props, { emit, slots }) {
       createTableContext(getCurrentInstance()!);
 
@@ -187,11 +158,13 @@
           Object.is(props.dataSource, undefined) &&
           Object.prototype.toString.call(props.dataRequest).includes('Function')
         ) {
-          const _pagination = unref(paginationRef);
+          const _pagination = unref(paginationRef)!;
+          // 是否启用了分页
+          const enablePagination = isObject(_pagination);
           const queryParams = {
             ...params,
           };
-          if (isObject(_pagination)) {
+          if (enablePagination) {
             Object.assign(queryParams, {
               page: _pagination.current,
               limit: _pagination.pageSize,
@@ -203,10 +176,20 @@
             .finally(() => (state.loading = false));
 
           if (data?.pagination) {
+            const { page, size, total } = data.pagination;
+
+            if (enablePagination && _pagination?.current) {
+              // 有分页时,删除当前页最后一条数据时 往前一页查询
+              if (data?.list.length === 0 && total > 0 && page > 1) {
+                _pagination.current--;
+                return refreshTable();
+              }
+            }
+
             Object.assign(unref(paginationRef), {
-              current: ~~data?.pagination.page,
-              pageSize: ~~data?.pagination.size,
-              total: ~~data?.pagination.total,
+              current: ~~page,
+              pageSize: ~~size,
+              total: ~~total,
             });
           }
 
@@ -244,8 +227,27 @@
 
       const getBindValues = computed(() => {
         const props = unref(getProps);
+        const columns = (props.columns as TableColumn[]).filter((n) => !n.hideInTable);
+        // 是否添加序号列
+        if (props.showIndex) {
+          columns.unshift({
+            dataIndex: '$$index',
+            title: '序号',
+            width: 60,
+            align: 'center',
+            bodyCell: ({ index }) => {
+              const getPagination = unref(paginationRef);
+              if (isBoolean(getPagination)) {
+                return <>{`${index + 1}`}</>;
+              }
+              const { current = 1, pageSize = 10 } = getPagination!;
+              return <>{((current < 1 ? 1 : current) - 1) * pageSize + index + 1}</>;
+            },
+          });
+        }
         let propsData: Recordable = {
           ...props,
+          columns,
           rowKey: props.rowKey ?? 'id',
           loading: state.loading,
           tableLayout: 'fixed',
@@ -258,20 +260,6 @@
         propsData = omit(propsData, ['class', 'onChange']);
         return propsData;
       });
-
-      // 操作事件
-      // const actionEvent = async (record, func, actionType = '') => {
-      //   try {
-      //     // 将reloadTableData放入宏任务中,等待当前微任务拿到结果进行判断操作，再请求表格数据
-      //     await func({ record, props }, () => setTimeout(reloadTableData));
-      //     // 如果为删除操作,并且删除成功，当前的表格数据条数小于2条,则当前页数减一,即请求前一页
-      //     if (actionType == 'del' && state.tableData.length < 2) {
-      //       unref(paginationRef).current = Math.max(1, unref(paginationRef).current - 1);
-      //     }
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
-      // };
 
       /**
        * @description 分页改变
@@ -291,7 +279,7 @@
 
       // 获取表格列key
       const getColumnKey = (column: TableColumn) => {
-        return column.key || column.dataIndex;
+        return column?.key || column?.dataIndex;
       };
 
       return {
