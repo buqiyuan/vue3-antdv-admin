@@ -1,13 +1,13 @@
 import type { TableColumn } from '@/components/dynamic-table';
-import { Avatar, Tag } from 'ant-design-vue';
+import { Image, Tag } from 'ant-design-vue';
 
 export const columns: TableColumn[] = [
   {
     title: '头像',
     align: 'center',
     width: 100,
-    dataIndex: 'heroimg',
-    bodyCell: ({ record }) => <Avatar src={record.heroimg} />,
+    dataIndex: 'faceimg',
+    bodyCell: ({ record }) => <Image src={record.faceimg} />,
   },
   {
     title: '英雄名称',
@@ -30,8 +30,10 @@ export const columns: TableColumn[] = [
     dataIndex: 'skin_name',
     bodyCell: ({ record }) => (
       <>
-        {record.skin_name.split('|').map((name) => (
-          <Tag color={'blue'}>{name}</Tag>
+        {record.skin_name?.split('|')?.map((name) => (
+          <Tag color={'blue'} key={name}>
+            {name}
+          </Tag>
         ))}
       </>
     ),
@@ -39,6 +41,7 @@ export const columns: TableColumn[] = [
   {
     title: '操作',
     align: 'center',
+    width: 120,
     dataIndex: '$action',
     actions: ({ record }) => [
       {

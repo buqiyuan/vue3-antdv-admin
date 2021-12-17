@@ -11,6 +11,11 @@ import { setupAntd, setupDirectives, setupGlobalMethods, setupCustomComponents }
 
 import permission from '@/core/permission/';
 
+if (process.env.NODE_ENV === 'production') {
+  const { mockXHR } = require('./mock');
+  mockXHR();
+}
+
 const app = createApp(App);
 
 // 全局挂载Reflect反射对象
