@@ -195,21 +195,6 @@
 
           state.tableData = data?.list || [];
         }
-
-        // const end = Math.max(pageSize, current * pageSize)
-        // .slice(end - pageSize, end) // 这里0，10是条数
-
-        // 是否开启了合计行
-        // if (props.showSummary) {
-        //   const { pageSize, current } = unref(pagination);
-        //   const end = Math.max(pageSize, current * pageSize);
-
-        //   const data = Object.is(props.dataSource, undefined)
-        //     ? state.tableData
-        //     : state.tableData.slice(end - pageSize, end);
-        // }
-        // 是否可以拖拽行
-        // props.dragRowEnable && (state.customRow = useDragRow<any>(state.tableData)!)
       };
 
       /**

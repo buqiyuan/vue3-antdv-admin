@@ -76,7 +76,10 @@
 
       const formItemSchemas = computed<FormItemSchema[]>(() => {
         return props.columns
-          .filter((n) => !n.hideInSearch && !!getColumnKey(n))
+          .filter((n) => {
+            const field = getColumnKey(n);
+            return !n.hideInSearch && !!field && field !== '$action';
+          })
           .map((n) => {
             return {
               field: n.formItemProps?.field ?? n.searchField ?? getColumnKey(n),

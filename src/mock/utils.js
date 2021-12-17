@@ -1,3 +1,36 @@
+function resultSuccess(data, { message = 'success' } = {}) {
+  return {
+    code: 200,
+    data,
+    message,
+  };
+}
+
+function resultPageSuccess(page, pageSize, list, { message = 'success' } = {}) {
+  const pageData = pagination(page, pageSize, list);
+
+  return {
+    ...resultSuccess({
+      list: pageData,
+      pagination: {
+        page: ~~page,
+        size: ~~pageSize,
+        total: list.length,
+      },
+    }),
+    message,
+  };
+}
+
+function pagination(page, pageSize, array) {
+  const offset = (page - 1) * Number(pageSize);
+  const ret =
+    offset + Number(pageSize) >= array.length
+      ? array.slice(offset, array.length)
+      : array.slice(offset, offset + Number(pageSize));
+  return ret;
+}
+
 /**
  * @param {string} url
  * @returns {Object}
@@ -45,4 +78,7 @@ function deepClone(source) {
 module.exports = {
   param2Obj,
   deepClone,
+  resultSuccess,
+  resultPageSuccess,
+  pagination,
 };

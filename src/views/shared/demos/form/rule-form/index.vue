@@ -21,7 +21,7 @@
   import { defineComponent, ref } from 'vue';
   import { Alert, message } from 'ant-design-vue';
   import { SchemaForm } from '@/components/JSON-schema-form';
-  import { schemas } from '../rule-form/form-schema';
+  import { schemas } from './form-schema';
 
   /**
    * @description 验证表单
@@ -34,7 +34,7 @@
 
       // 点击提交
       const confirm = () => {
-        console.log('dynamicForm.value', dynamicForm.value);
+        console.log('dynamicForm.value', dynamicForm.value?.formModel);
 
         dynamicForm.value?.validate().then(() => message.success('验证通过！'));
       };

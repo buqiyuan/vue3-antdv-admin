@@ -13,18 +13,6 @@ export interface LoadDataParams extends TableProps {
   limit?: number;
 }
 
-// export interface ActionOptions {
-//   type: 'select' | 'button' | 'text' | 'popconfirm' // 控制类型，默认为a,可选： select | button | text
-//   text: string
-//   permission?: {
-//     // 权限
-//     action?: 'create' | 'delete' | 'update' | 'retrieve' // CRUD权限：创建（Create）、更新（Update）、读取（Retrieve）和删除（Delete）操作
-//     effect?: 'disabled'
-//   }
-//   props?: any // 组件属性，v-bind="props"
-//   func?: ({ text, record, index }, callback: (...rest) => any) => any // 动作事件触发回调
-// }
-
 export type ColumnParams<T = any> = {
   record: T;
   text: string;
@@ -40,7 +28,7 @@ export type OnChangeCallbackParams = TableProps['onChange'];
  */
 export interface TableColumn<T = any> extends TableColumnType {
   title: string;
-  dataIndex: string;
+  dataIndex: string | '$action';
   width?: number;
   /** 指定搜索的字段 */
   searchField?: string;
@@ -50,18 +38,7 @@ export interface TableColumn<T = any> extends TableColumnType {
   hideInTable?: boolean;
   /** 传递给 Form.Item 的配置,可以配置 rules */
   formItemProps?: Partial<FormItemSchema>;
-  bodyCell?: (params: ColumnParams<T>) => VNode | string;
+  bodyCell?: (params: ColumnParams<T>) => VNode;
+  headerCell?: (params: ColumnParams<T>) => VNode;
   actions?: (params: ColumnParams<T>) => ActionItem[];
 }
-
-// export interface ActionItem {
-//   type: 'popconfirm' | 'select' | 'button' | 'text' // 控制类型，默认为a,可选： select | button | text
-//   text: string
-//   permission: {
-//     // 权限
-//     action: 'delete'
-//     effect: 'disabled'
-//   }
-//   props: ButtonProps | any
-//   func: ({ record }, refreshTableData) => any
-// }

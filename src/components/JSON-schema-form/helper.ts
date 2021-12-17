@@ -14,6 +14,7 @@ export function createPlaceholderMessage(component: ComponentMapType, label = ''
     'Select',
     'Cascader',
     'Checkbox',
+    'CheckboxGroup',
     'Switch',
     'TreeSelect',
   ];

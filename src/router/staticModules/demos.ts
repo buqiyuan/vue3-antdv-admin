@@ -78,17 +78,30 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
       {
-        path: 'summary-table',
-        name: `${routeName}-summary-table`,
+        path: 'table',
+        name: `${routeName}-table`,
         meta: {
-          title: '合计表格',
+          title: '表格演示',
           icon: 'icon-zhuomian',
           keepAlive: true,
         },
-        component: () =>
-          import(
-            /* webpackChunkName: "summary-table" */ '@/views/shared/demos/tables/summary-table/index.vue'
-          ),
+        redirect: { name: `${routeName}-table-wzry` },
+        component: RouterTransition,
+        children: [
+          {
+            path: 'wzry',
+            name: `${routeName}-wzry-table`,
+            meta: {
+              title: '英雄列表',
+              icon: 'icon-zhuomian',
+              keepAlive: true,
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "summary-table" */ '@/views/shared/demos/tables/wzry-table/index.vue'
+              ),
+          },
+        ],
       },
       {
         path: 'icons',

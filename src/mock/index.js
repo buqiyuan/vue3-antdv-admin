@@ -1,13 +1,14 @@
 const Mock = require('mockjs');
 const { param2Obj } = require('./utils');
 
+const hero = require('./hero');
 const user = require('./user');
 const role = require('./role');
 const log = require('./log');
 const article = require('./article');
 const search = require('./remote-search');
 
-const mocks = [...user, ...role, ...log, ...article, ...search];
+const mocks = [...user, ...role, ...log, ...article, ...search, ...hero];
 
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
