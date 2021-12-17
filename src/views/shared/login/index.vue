@@ -98,7 +98,7 @@
         message.destroy();
       });
       message.success('登录成功！');
-      router.replace((route.query.redirect as string) ?? '/');
+      setTimeout(() => router.replace((route.query.redirect as string) ?? '/'));
     } catch (error: any) {
       Modal.error({
         title: () => '提示',
