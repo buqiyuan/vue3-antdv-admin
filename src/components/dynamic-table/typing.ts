@@ -40,7 +40,7 @@ export type OnChangeCallbackParams = TableProps['onChange'];
  */
 export interface TableColumn<T = any> extends TableColumnType {
   title: string;
-  dataIndex: string;
+  dataIndex: string | '$action';
   width?: number;
   /** 指定搜索的字段 */
   searchField?: string;
@@ -50,7 +50,8 @@ export interface TableColumn<T = any> extends TableColumnType {
   hideInTable?: boolean;
   /** 传递给 Form.Item 的配置,可以配置 rules */
   formItemProps?: Partial<FormItemSchema>;
-  bodyCell?: (params: ColumnParams<T>) => VNode | string;
+  bodyCell?: (params: ColumnParams<T>) => VNode;
+  headerCell?: (params: ColumnParams<T>) => VNode;
   actions?: (params: ColumnParams<T>) => ActionItem[];
 }
 

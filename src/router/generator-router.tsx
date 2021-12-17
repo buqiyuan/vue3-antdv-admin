@@ -90,13 +90,20 @@ export const generatorDynamicRouter = (menus: API.Menu[]): RouteRecordRaw[] => {
   //      后端数据, 根级树数组,  根级 PID
   // listToTree(data, childrenNav, 0)
   // rootRouter.children = childrenNav
-  const routeList = filterAsyncRoute(menus);
-  console.log(routeList, '根据后端返回的权限路由生成');
-  const layout = routes.find((item) => item.name == 'Layout')!;
-  layout.children = [...common, ...routeList, notFound];
-  // const routes = [...common,...routeList]
-  // routes.forEach(item => router.addRoute('Layout', item))
-  router.addRoute(layout);
-  // router.addRoute(notFound)
-  return layout.children;
+  try {
+    console.log('menus', menus);
+
+    const routeList = filterAsyncRoute(menus);
+    const layout = routes.find((item) => item.name == 'Layout')!;
+    console.log(routeList, '根据后端返回的权限路由生成');
+    layout.children = [...common, ...routeList, notFound];
+    // const routes = [...common,...routeList]
+    // routes.forEach(item => router.addRoute('Layout', item))
+    router.addRoute(layout);
+    // router.addRoute(notFound)
+    return layout.children;
+  } catch (error) {
+    console.error('生成路由时出错', error);
+    return [];
+  }
 };

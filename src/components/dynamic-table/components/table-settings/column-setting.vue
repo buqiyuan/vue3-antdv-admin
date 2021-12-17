@@ -1,9 +1,8 @@
 <template>
   <Tooltip placement="top">
     <template #title>
-      <span>密度</span>
+      <span>列设置</span>
     </template>
-
     <Popover
       placement="bottomLeft"
       trigger="click"
@@ -13,15 +12,15 @@
       <template #title>
         <div class="popover-title">
           <Checkbox :indeterminate="indeterminate" v-model:checked="checkAll"> 列展示 </Checkbox>
-
           <Checkbox v-model:checked="checkIndex" @change="handleIndexCheckChange">
             序号列
           </Checkbox>
-
+          <Checkbox v-model:checked="checkBordered" @change="handleBorderedCheckChange">
+            边框
+          </Checkbox>
           <a-button size="small" type="link" @click="reset"> 重置 </a-button>
         </div>
       </template>
-
       <template #content>
         <div ref="columnListRef">
           <template v-for="item in tableColumns" :key="table.getColumnKey(item)">
@@ -36,7 +35,6 @@
                   {{ item.title }}
                 </Checkbox>
               </div>
-
               <div class="column-fixed">
                 <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
                   <template #title> 固定到左侧 </template>
@@ -66,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, ref, unref, watch } from 'vue';
+  import { computed, nextTick, ref, unref, watchEffect } from 'vue';
   import { Tooltip, Popover, Divider } from 'ant-design-vue';
   import {
     SettingOutlined,
@@ -98,6 +96,7 @@
   });
 
   const checkIndex = ref(defaultShowIndex);
+  const checkBordered = ref(table.bordered);
   const columnListRef = ref<HTMLDivElement>();
 
   // 初始化选中状态
@@ -116,17 +115,20 @@
     );
   });
 
-  watch(tableColumns.value, (columns) => {
-    table.setProps({ columns });
+  watchEffect(() => {
+    table.setProps({ columns: tableColumns.value });
   });
-
+  // 设置序号列
   const handleIndexCheckChange = (e) => {
     table.setProps({ showIndex: e.target.checked });
+  };
+  // 设置边框
+  const handleBorderedCheckChange = (e) => {
+    table.setProps({ bordered: e.target.checked });
   };
 
   const handleColumnFixed = (columItem: TableColumn, direction: 'left' | 'right') => {
     columItem.fixed = columItem.fixed === direction ? false : direction;
-    table.setProps({ columns: tableColumns.value });
   };
 
   async function handleVisibleChange() {
@@ -146,14 +148,7 @@
         }
         // Sort column
         const columns = tableColumns.value;
-        if (oldIndex > newIndex) {
-          columns.splice(newIndex, 0, columns[oldIndex]);
-          columns.splice(oldIndex + 1, 1);
-        } else {
-          columns.splice(newIndex + 1, 0, columns[oldIndex]);
-          columns.splice(oldIndex, 1);
-        }
-        table.setProps({ columns });
+        columns.splice(newIndex, 0, columns.splice(oldIndex, 1)[0]);
       },
     });
     initSortable();
@@ -161,8 +156,8 @@
   }
 
   const reset = () => {
-    table.setProps({ columns: cloneDeep(defaultColumns), showIndex: defaultShowIndex });
     initCheckStatus();
+    table.setProps({ showIndex: defaultShowIndex });
   };
 </script>
 

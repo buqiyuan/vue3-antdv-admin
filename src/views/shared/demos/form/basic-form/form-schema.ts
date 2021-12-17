@@ -129,7 +129,7 @@ export const schemas: FormItemSchema[] = [
         },
       ],
     },
-    rules: [{ required: true }],
+    rules: [{ required: true, message: '请选择你的爱好' }],
   },
   {
     field: 'field7',

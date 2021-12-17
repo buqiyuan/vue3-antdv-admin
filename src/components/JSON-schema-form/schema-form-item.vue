@@ -2,11 +2,11 @@
   <Col v-bind="schemaItem.colProps">
     <Form.Item
       v-bind="{ ...schemaItem.formItemProps }"
-      :label="renderLabelHelpMessage()"
+      :label="renderLabelHelpMessage"
       :name="schemaItem.field"
       :labelCol="itemLabelWidthProp.labelCol"
       :wrapperCol="itemLabelWidthProp.wrapperCol"
-      :rules="handleRules()"
+      :rules="getRules"
     >
       <slot v-if="schemaItem.slot" :name="schemaItem.slot" v-bind="getValues"> </slot>
       <component
@@ -148,7 +148,7 @@
     }, {});
   });
 
-  function renderLabelHelpMessage() {
+  const renderLabelHelpMessage = computed(() => {
     const { label, helpMessage, helpComponentProps, subLabel } = props.schemaItem;
     const renderLabel = subLabel ? (
       <span>
@@ -167,7 +167,7 @@
         <BasicHelp placement="top" class="mx-1" text={getHelpMessage} {...helpComponentProps} />
       </span>
     );
-  }
+  });
 
   const getComponentsProps = computed(() => {
     const { schemaItem, tableAction, formModel, formActionType } = props;
@@ -192,7 +192,7 @@
     }
   }
 
-  function handleRules(): ValidationRule[] {
+  const getRules = computed(() => {
     const {
       rules: defRules = [],
       component,
@@ -200,7 +200,12 @@
       label,
       dynamicRules,
       required,
+      field,
     } = props.schemaItem;
+
+    if (field == 'field5') {
+      console.log('rules', props.schemaItem);
+    }
 
     if (isFunction(dynamicRules)) {
       return dynamicRules(unref(getValues)) as ValidationRule[];
@@ -214,10 +219,11 @@
       : globalRulesMessageJoinLabel;
     const defaultMsg = isString(component)
       ? `${createPlaceholderMessage(component, label)}${joinLabel ? label : ''}`
-      : '';
+      : undefined;
 
     function validator(rule: any, value: any) {
       const msg = rule.message || defaultMsg;
+
       if (value === undefined || isNull(value)) {
         // 空值
         return Promise.reject(msg);
@@ -277,7 +283,7 @@
     }
 
     return rules;
-  }
+  });
 
   onMounted(async () => {
     if (getComponentProps.value?.request) {
