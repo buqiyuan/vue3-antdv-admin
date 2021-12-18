@@ -57,6 +57,7 @@
     setup(props, { attrs, emit }) {
       let oldFormSchema: FormSchema;
       // TODO 将formSchema克隆一份，避免修改原有的formSchema
+      // TODO 类型为FormSchema 提示：类型实例化过深，且可能无限
       const formSchemaRef = ref<any>({});
       // 表单项数据
       const formModel = reactive({ ...props.initialValues });

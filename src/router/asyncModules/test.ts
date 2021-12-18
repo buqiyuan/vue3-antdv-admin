@@ -3,7 +3,7 @@ import { getAsyncPage } from '@/utils/common';
 const prefix = 'shared/demos/';
 
 export default {
-  'views/shared/demos/form/rule-form.vue': getAsyncPage(`${prefix}form/rule-form.vue`), // 验证表单
+  'views/shared/demos/form/rule-form.vue': getAsyncPage(`${prefix}form/rule-form/index.vue`), // 验证表单
   'views/shared/demos/icons/Iconfont.vue': getAsyncPage(`${prefix}icons/Iconfont.vue`), // 自定义图标
   [`views/${prefix}tables/summary-table/index.vue`]: getAsyncPage(`${prefix}tables/summary-table`), // 合计表格
   'views/shared/demos/button.vue': getAsyncPage(`${prefix}button.vue`), // 自定义按钮
