@@ -33,7 +33,7 @@
 
   const table = useTableContext();
 
-  const selectedKeysRef = ref<SizeType[]>([table.getProps?.size || 'large']);
+  const selectedKeysRef = ref<SizeType[]>([table.getProps?.size || 'default']);
 
   function handleMenuClick({ key }: { key: SizeType }) {
     selectedKeysRef.value = [key];

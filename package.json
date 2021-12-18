@@ -27,6 +27,7 @@
     "nprogress": "^1.0.0-1",
     "pinia": "2.0.6",
     "qs": "^6.10.2",
+    "socket.io-client": "4.4.0",
     "sortablejs": "^1.14.0",
     "vue": "^3.2.26",
     "vue-router": "^4.0.12"
@@ -51,7 +52,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "commitizen": "^4.2.4",
     "compression-webpack-plugin": "^9.2.0",
-    "eslint": "^8.4.1",
+    "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",

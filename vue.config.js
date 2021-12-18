@@ -1,5 +1,6 @@
 const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const CompressionPlugin = require('compression-webpack-plugin');
 // 去除console
@@ -84,6 +85,46 @@ module.exports = defineConfig({
       .options({
         symbolId: 'icon-[name]',
       });
+    config.when(IS_PROD, (config) => {
+      // loadsh
+      config.plugin('loadshReplace').use(new LodashModuleReplacementPlugin());
+      // gzipped
+      // config.plugin('CompressionPlugin').use(
+      //   new CompressionPlugin({
+      //     algorithm: 'gzip',
+      //     test: /\.(js|css)$/, // 匹配文件名
+      //     threshold: 10240, // 对超过10k的数据压缩
+      //     deleteOriginalAssets: false, // 不删除源文件
+      //     minRatio: 0.8, // 压缩比
+      //   }),
+      // );
+      // split
+      config.optimization.splitChunks({
+        chunks: 'all',
+        cacheGroups: {
+          libs: {
+            name: 'chunk-libs',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            chunks: 'initial', // only package third parties that are initially dependent
+          },
+          elementUI: {
+            name: 'chunk-elementUI', // split elementUI into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?ant-design-vue(.*)/, // in order to adapt to cnpm
+          },
+          commons: {
+            name: 'chunk-commons',
+            test: resolve('src/components'), // can customize your rules
+            minChunks: 3, //  minimum common number
+            priority: 5,
+            reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的。
+          },
+        },
+      });
+      // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
+      config.optimization.runtimeChunk('single');
+    });
   },
   configureWebpack: (config) => {
     // 开启顶级await
@@ -110,57 +151,7 @@ module.exports = defineConfig({
           extractComments: false, // 是否将注释提取到一个单独的文件中
           parallel: true,
         }),
-        // new CompressionPlugin({
-        //     /* [file]被替换为原始资产文件名。
-        //        [path]替换为原始资产的路径。
-        //        [dir]替换为原始资产的目录。
-        //        [name]被替换为原始资产的文件名。
-        //        [ext]替换为原始资产的扩展名。
-        //        [query]被查询替换。*/
-        //     filename: '[path].gz[query]',
-        //     //压缩算法
-        //     algorithm: 'gzip',
-        //     //匹配文件
-        //     test: /\.js$|\.css$|\.html$/,
-        //     //压缩超过此大小的文件,以字节为单位
-        //     threshold: 10240,
-        //     minRatio: 0.8,
-        //     //删除原始文件只保留压缩后的文件
-        //     deleteOriginalAssets: true
-        // })
       );
-      config.optimization = {
-        splitChunks: {
-          cacheGroups: {
-            common: {
-              name: 'chunk-common',
-              chunks: 'initial',
-              minChunks: 2,
-              maxInitialRequests: 5,
-              minSize: 0,
-              priority: 1,
-              reuseExistingChunk: true,
-              enforce: true,
-            },
-            vendors: {
-              name: 'chunk-vendors',
-              test: /[\\/]node_modules[\\/]/,
-              chunks: 'initial',
-              priority: 2,
-              reuseExistingChunk: true,
-              enforce: true,
-            },
-            antd: {
-              name: 'chunk-ant-design-vue',
-              test: /[\\/]node_modules[\\/]ant-design-vue[\\/]/,
-              chunks: 'all',
-              priority: 3,
-              reuseExistingChunk: true,
-              enforce: true,
-            },
-          },
-        },
-      };
     }
   },
   devServer: {
@@ -177,12 +168,16 @@ module.exports = defineConfig({
       '^/api': {
         // target: process.env.VUE_APP_API_URL,
         target: 'http://buqiyuan.site:7001',
-        ws: true,
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
           '^/api': '',
         },
+      },
+      '/ws-api': {
+        target: 'ws://buqiyuan.site:7002',
+        changeOrigin: true, //是否允许跨域
+        ws: true,
       },
     },
     onBeforeSetupMiddleware: require('./src/mock/mock-server.js'),

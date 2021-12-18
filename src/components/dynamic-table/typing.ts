@@ -26,9 +26,10 @@ export type OnChangeCallbackParams = TableProps['onChange'];
 /**
  * 表格属性
  */
-export interface TableColumn<T = any> extends TableColumnType {
+export interface TableColumn<T = Indexable> extends Omit<TableColumnType, 'dataIndex' | 'key'> {
   title: string;
-  dataIndex: string | '$action';
+  dataIndex: keyof T | '$action';
+  key?: keyof T | '$action';
   width?: number;
   /** 指定搜索的字段 */
   searchField?: string;

@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const app = createApp(App);
 
-// 全局挂载Reflect反射对象
+// 全局挂载Reflect反射对象,以便在vue模板中使用
 app.config.globalProperties.Reflect = Reflect;
 
 app.use(permission);

@@ -14,8 +14,8 @@ declare namespace API {
 
   /** 角色列表项 */
   type RoleListResultItem = {
-    createTime: string;
-    updateTime: string;
+    createdAt: string;
+    updatedAt: string;
     id: number;
     userId: string;
     name: string;

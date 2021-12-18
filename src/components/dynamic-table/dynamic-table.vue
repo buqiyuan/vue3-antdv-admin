@@ -144,6 +144,7 @@
        * @description 表格查询
        */
       const queryTable = (params) => {
+        params.page = 1;
         fetchTableData(params);
       };
 
@@ -168,6 +169,7 @@
             Object.assign(queryParams, {
               page: _pagination.current,
               limit: _pagination.pageSize,
+              ...queryParams,
             });
           }
           state.loading = true;
@@ -192,8 +194,13 @@
               total: ~~total,
             });
           }
-
-          state.tableData = data?.list || [];
+          if (Array.isArray(data?.list)) {
+            state.tableData = data!.list;
+          } else if (Array.isArray(data)) {
+            state.tableData = data;
+          } else {
+            state.tableData = [];
+          }
         }
       };
 
@@ -220,6 +227,7 @@
             title: '序号',
             width: 60,
             align: 'center',
+            fixed: 'left',
             bodyCell: ({ index }) => {
               const getPagination = unref(paginationRef);
               if (isBoolean(getPagination)) {
@@ -289,6 +297,10 @@
     .ant-table {
       .ant-table-title {
         display: flex;
+      }
+
+      .ant-image:hover {
+        cursor: zoom-in;
       }
 
       .ant-btn {
