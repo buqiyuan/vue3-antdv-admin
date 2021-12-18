@@ -103,6 +103,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
+        '/ws-api': {
+          target: 'ws://buqiyuan.site:7002',
+          changeOrigin: true, //是否允许跨域
+          ws: true,
+        },
       },
     },
     optimizeDeps: {

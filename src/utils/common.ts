@@ -119,27 +119,27 @@ export const generateTree = (items, id = 0, link = 'parent') => {
 // const decryption = (ciphertext: string) =>
 //   isBase64(ciphertext) ? window.decodeURIComponent(window.atob(ciphertext)) : ciphertext;
 
-const viewsModules = import.meta.glob('../views/**/*.vue');
+// const viewsModules = import.meta.glob('../views/**/*.vue');
 
-/**
- *
- * @param {string} viewPath 页面的路径 `@/view/${viewPath}`
- * @param {string} viewFileName  页面文件 默认 index.vue
- */
-export const getAsyncPage = (viewPath: string, viewFileName = 'index') => {
-  if (viewPath.endsWith('.vue')) {
-    const p = `../views/${viewPath}`;
-    const pathKey = Object.keys(viewsModules).find((key) => key === p)!;
-    // console.log('viewsModules[pathKey]', viewsModules[pathKey]);
-    return viewsModules[pathKey];
-  } else {
-    const p = `../views/${viewPath}/${viewFileName}.vue`;
-    const pathKey = Object.keys(viewsModules).find((key) => key === p)!;
-    // console.log('viewsModules[pathKey]', viewsModules[pathKey]);
-    return viewsModules[pathKey];
-    // return () => import(/* @vite-ignore */ `../views/${viewPath}/${viewFileName}.vue`);
-  }
-};
+// /**
+//  *
+//  * @param {string} viewPath 页面的路径 `@/view/${viewPath}`
+//  * @param {string} viewFileName  页面文件 默认 index.vue
+//  */
+// export const getAsyncPage = (viewPath: string, viewFileName = 'index') => {
+//   if (viewPath.endsWith('.vue')) {
+//     const p = `../views/${viewPath}`;
+//     const pathKey = Object.keys(viewsModules).find((key) => key === p)!;
+//     // console.log('viewsModules[pathKey]', viewsModules[pathKey]);
+//     return viewsModules[pathKey];
+//   } else {
+//     const p = `../views/${viewPath}/${viewFileName}.vue`;
+//     const pathKey = Object.keys(viewsModules).find((key) => key === p)!;
+//     // console.log('viewsModules[pathKey]', viewsModules[pathKey]);
+//     return viewsModules[pathKey];
+//     // return () => import(/* @vite-ignore */ `../views/${viewPath}/${viewFileName}.vue`);
+//   }
+// };
 
 /**
  * / _ - 转换成驼峰并将view替换成空字符串

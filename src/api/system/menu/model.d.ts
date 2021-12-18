@@ -1,7 +1,7 @@
 declare namespace API {
   type MenuListResultItem = {
     createTime: string;
-    updateTime: string;
+    updatedAt: string;
     id: number;
     parentId: number;
     name: string;

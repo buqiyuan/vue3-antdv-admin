@@ -5,6 +5,7 @@ import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
 import { logout, getInfo, permmenu } from '@/api/account';
 import { generatorDynamicRouter } from '@/router/generator-router';
+import { useWsStore } from './ws';
 
 interface UserState {
   token: string;
@@ -41,6 +42,14 @@ export const useUserStore = defineStore({
     },
   },
   actions: {
+    // 清空token及用户信息
+    resetToken() {
+      this.avatar = this.token = this.name = '';
+      this.perms = [];
+      this.menus = [];
+      this.userInfo = {};
+      Storage.clear();
+    },
     // 登录成功保存token
     setToken(token: string) {
       this.token = token ?? '';
@@ -60,6 +69,7 @@ export const useUserStore = defineStore({
     // 登录成功之后, 获取用户信息以及生成权限路由
     async afterLogin() {
       try {
+        const wsStore = useWsStore();
         const [userInfo, { perms, menus }] = await Promise.all([getInfo(), permmenu()]);
         this.perms = perms;
         this.name = userInfo.name;
@@ -68,17 +78,21 @@ export const useUserStore = defineStore({
         // 生成路由
         const routes = generatorDynamicRouter(menus);
         this.menus = routes;
+        wsStore.initSocket();
         console.log('routes', routes);
         // router.push('/sys/permission/role')
         return { menus, perms, userInfo };
       } catch (error) {
-        return this.logout();
+        console.error(error);
+        // return this.logout();
       }
     },
     // 登出
     async logout() {
       await logout();
-      Storage.clear();
+      const wsStore = useWsStore();
+      wsStore.closeSocket();
+      this.resetToken();
     },
   },
 });

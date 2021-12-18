@@ -13,18 +13,6 @@ export interface LoadDataParams extends TableProps {
   limit?: number;
 }
 
-// export interface ActionOptions {
-//   type: 'select' | 'button' | 'text' | 'popconfirm' // 控制类型，默认为a,可选： select | button | text
-//   text: string
-//   permission?: {
-//     // 权限
-//     action?: 'create' | 'delete' | 'update' | 'retrieve' // CRUD权限：创建（Create）、更新（Update）、读取（Retrieve）和删除（Delete）操作
-//     effect?: 'disabled'
-//   }
-//   props?: any // 组件属性，v-bind="props"
-//   func?: ({ text, record, index }, callback: (...rest) => any) => any // 动作事件触发回调
-// }
-
 export type ColumnParams<T = any> = {
   record: T;
   text: string;
@@ -38,9 +26,10 @@ export type OnChangeCallbackParams = TableProps['onChange'];
 /**
  * 表格属性
  */
-export interface TableColumn<T = any> extends TableColumnType {
+export interface TableColumn<T = Indexable> extends Omit<TableColumnType, 'dataIndex' | 'key'> {
   title: string;
-  dataIndex: string | '$action';
+  dataIndex: keyof T | '$action';
+  key?: keyof T | '$action';
   width?: number;
   /** 指定搜索的字段 */
   searchField?: string;
@@ -54,15 +43,3 @@ export interface TableColumn<T = any> extends TableColumnType {
   headerCell?: (params: ColumnParams<T>) => VNode;
   actions?: (params: ColumnParams<T>) => ActionItem[];
 }
-
-// export interface ActionItem {
-//   type: 'popconfirm' | 'select' | 'button' | 'text' // 控制类型，默认为a,可选： select | button | text
-//   text: string
-//   permission: {
-//     // 权限
-//     action: 'delete'
-//     effect: 'disabled'
-//   }
-//   props: ButtonProps | any
-//   func: ({ record }, refreshTableData) => any
-// }

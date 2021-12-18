@@ -37,8 +37,8 @@
       }
       if (isString(auth)) {
         const isValid = verifyAuth(auth);
-        item.disabled = !isValid;
-        if (item.disabled) {
+        item.disabled ??= !isValid;
+        if (item.disabled && !isValid) {
           item.title = '对不起，您没有该操作权限！';
         }
         return isValid;
@@ -46,8 +46,8 @@
       if (isObject(auth)) {
         const isValid = verifyAuth(auth.perm);
         const isDisable = auth.effect !== 'delete';
-        item.disabled = !isValid && isDisable;
-        if (item.disabled) {
+        item.disabled ??= !isValid && isDisable;
+        if (item.disabled && !isValid) {
           item.title = '对不起，您没有该操作权限！';
         }
         return isValid || isDisable;

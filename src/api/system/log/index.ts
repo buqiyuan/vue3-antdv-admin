@@ -10,7 +10,6 @@ export function getReqLogList(query: API.PageParams) {
     },
     {
       isMock: true,
-      isGetDataDirectly: false,
     },
   );
 }

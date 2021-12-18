@@ -1,4 +1,4 @@
-import type { PropType } from 'vue';
+import type { PropType, ExtractDefaultPropTypes } from 'vue';
 import { tableProps } from 'ant-design-vue/lib/table';
 import type { FormProps } from 'ant-design-vue';
 import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './typing';
@@ -11,9 +11,9 @@ export const props = {
     default: () => ({}),
   },
   columns: {
-    type: Array as PropType<TableColumn[]>,
+    type: Array as PropType<TableColumn<any>[]>,
     required: true,
-    default: () => [] as TableColumn[],
+    default: () => [],
   },
   dataRequest: {
     // 获取列表数据函数API
@@ -28,6 +28,11 @@ export const props = {
   showIndex: {
     type: Boolean as PropType<boolean>,
     default: false,
+  },
+  /** 索引列属性配置 */
+  indexColumnProps: {
+    type: Object as PropType<Partial<TableColumn>>,
+    default: () => ({}),
   },
   /** 是否显示表格工具栏 */
   showToolBar: {
@@ -50,6 +55,6 @@ export const props = {
   },
 };
 
-export type TableProps = typeof props;
+export type TableProps = ExtractDefaultPropTypes<typeof props>;
 
 export default props;

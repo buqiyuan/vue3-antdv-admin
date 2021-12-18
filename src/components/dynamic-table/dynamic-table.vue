@@ -63,7 +63,7 @@
     reactive,
     ref,
     toRefs,
-    watch,
+    watchEffect,
     getCurrentInstance,
     computed,
     unref,
@@ -114,7 +114,7 @@
         'expandedRowRender',
         'customFilterIcon',
         'customFilterDropdown',
-      ];
+      ] as const;
 
       const state = reactive({
         expandItemRefs: {},
@@ -123,18 +123,11 @@
       });
 
       // 如果外界设置了dataSource，那就直接用外界提供的数据
-      watch(
-        () => props.dataSource,
-        (val) => {
-          if (val) {
-            state.tableData = val;
-          }
-        },
-        {
-          deep: true,
-          immediate: true,
-        },
-      );
+      watchEffect(() => {
+        if (props.dataSource) {
+          state.tableData = props.dataSource;
+        }
+      });
 
       const setProps = (props: Partial<TableProps>) => {
         innerPropsRef.value = { ...unref(innerPropsRef), ...props };
@@ -144,6 +137,7 @@
        * @description 表格查询
        */
       const queryTable = (params) => {
+        params.page = 1;
         fetchTableData(params);
       };
 
@@ -168,6 +162,7 @@
             Object.assign(queryParams, {
               page: _pagination.current,
               limit: _pagination.pageSize,
+              ...queryParams,
             });
           }
           state.loading = true;
@@ -192,24 +187,14 @@
               total: ~~total,
             });
           }
-
-          state.tableData = data?.list || [];
+          if (Array.isArray(data?.list)) {
+            state.tableData = data!.list;
+          } else if (Array.isArray(data)) {
+            state.tableData = data;
+          } else {
+            state.tableData = [];
+          }
         }
-
-        // const end = Math.max(pageSize, current * pageSize)
-        // .slice(end - pageSize, end) // 这里0，10是条数
-
-        // 是否开启了合计行
-        // if (props.showSummary) {
-        //   const { pageSize, current } = unref(pagination);
-        //   const end = Math.max(pageSize, current * pageSize);
-
-        //   const data = Object.is(props.dataSource, undefined)
-        //     ? state.tableData
-        //     : state.tableData.slice(end - pageSize, end);
-        // }
-        // 是否可以拖拽行
-        // props.dragRowEnable && (state.customRow = useDragRow<any>(state.tableData)!)
       };
 
       /**
@@ -235,6 +220,8 @@
             title: '序号',
             width: 60,
             align: 'center',
+            fixed: 'left',
+            ...props.indexColumnProps,
             bodyCell: ({ index }) => {
               const getPagination = unref(paginationRef);
               if (isBoolean(getPagination)) {
@@ -304,6 +291,10 @@
     .ant-table {
       .ant-table-title {
         display: flex;
+      }
+
+      .ant-image:hover {
+        cursor: zoom-in;
       }
 
       .ant-btn {

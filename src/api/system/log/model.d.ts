@@ -32,7 +32,7 @@ declare namespace API {
     id: number;
     taskId: number;
     name: string;
-    createTime: string;
+    createdAt: string;
     consumeTime: number;
     detail: string;
     status: number;

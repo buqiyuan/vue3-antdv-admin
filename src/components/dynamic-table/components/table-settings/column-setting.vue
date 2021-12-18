@@ -83,6 +83,7 @@
   let inited = false;
   const defaultColumns = cloneDeep(table.columns);
   const defaultShowIndex = !!table.showIndex;
+  const defaultBordered = table.bordered;
 
   const tableColumns = ref<TableColumn[]>([]);
 
@@ -103,6 +104,7 @@
   const initCheckStatus = () => {
     tableColumns.value = cloneDeep(defaultColumns);
     checkIndex.value = defaultShowIndex;
+    checkBordered.value = defaultBordered;
     tableColumns.value.forEach((item) => (item.hideInTable ??= false));
   };
   initCheckStatus();
@@ -157,7 +159,7 @@
 
   const reset = () => {
     initCheckStatus();
-    table.setProps({ showIndex: defaultShowIndex });
+    table.setProps({ showIndex: defaultShowIndex, bordered: defaultBordered });
   };
 </script>
 
