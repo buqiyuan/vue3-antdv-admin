@@ -33,7 +33,7 @@
       <!--      切换全屏-->
       <component :is="fullscreenIcon" @click="toggleFullScreen" />
       <Dropdown>
-        <Avatar>{{ username }}</Avatar>
+        <Avatar :src="userInfo.headImg" :alt="userInfo.name">{{ userInfo.name }}</Avatar>
         <template #overlay>
           <Menu>
             <Menu.Item>
@@ -91,7 +91,7 @@
 
   const router = useRouter();
   const route = useRoute();
-  const username = computed(() => userStore.name);
+  const userInfo = computed(() => userStore.userInfo);
 
   // 点击菜单
   const clickMenuItem = ({ key }) => {

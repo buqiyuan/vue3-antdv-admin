@@ -1,11 +1,15 @@
 <template>
-  <div>
-    <DynamicTable ref="dynamicTableRef" :data-request="getOnlineList" :columns="columns" />
-  </div>
+  <DynamicTable
+    ref="dynamicTableRef"
+    header-title="在线用户"
+    title-tooltip="这是真实操作，请不要随意将其他用户踢下线。"
+    :data-request="getOnlineList"
+    :columns="columns"
+  />
 </template>
 
 <script lang="tsx">
-  export default { name: 'LoginLog' };
+  export default { name: 'SystemMonitorOnline' };
 </script>
 
 <script setup lang="tsx">

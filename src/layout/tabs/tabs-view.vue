@@ -131,7 +131,7 @@
   });
 
   // 标签页列表
-  const tabsList = computed(() => tabsViewStore.tabsList);
+  const tabsList = computed(() => tabsViewStore.tabsList.filter((n) => router.hasRoute(n.name!)));
 
   // 缓存的路由组件列表
   const keepAliveComponents = computed(() => tabsViewStore.keepAliveComponents);

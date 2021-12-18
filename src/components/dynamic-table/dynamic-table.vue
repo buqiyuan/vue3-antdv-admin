@@ -63,7 +63,7 @@
     reactive,
     ref,
     toRefs,
-    watch,
+    watchEffect,
     getCurrentInstance,
     computed,
     unref,
@@ -114,7 +114,7 @@
         'expandedRowRender',
         'customFilterIcon',
         'customFilterDropdown',
-      ];
+      ] as const;
 
       const state = reactive({
         expandItemRefs: {},
@@ -123,18 +123,11 @@
       });
 
       // 如果外界设置了dataSource，那就直接用外界提供的数据
-      watch(
-        () => props.dataSource,
-        (val) => {
-          if (val) {
-            state.tableData = val;
-          }
-        },
-        {
-          deep: true,
-          immediate: true,
-        },
-      );
+      watchEffect(() => {
+        if (props.dataSource) {
+          state.tableData = props.dataSource;
+        }
+      });
 
       const setProps = (props: Partial<TableProps>) => {
         innerPropsRef.value = { ...unref(innerPropsRef), ...props };
@@ -228,6 +221,7 @@
             width: 60,
             align: 'center',
             fixed: 'left',
+            ...props.indexColumnProps,
             bodyCell: ({ index }) => {
               const getPagination = unref(paginationRef);
               if (isBoolean(getPagination)) {

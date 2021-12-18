@@ -8,7 +8,7 @@
       <ColumnHeightOutlined />
       <template #overlay>
         <Menu @click="handleMenuClick" selectable v-model:selectedKeys="selectedKeysRef">
-          <Menu.Item key="default">
+          <Menu.Item key="large">
             <span>默认</span>
           </Menu.Item>
           <Menu.Item key="middle">
@@ -33,7 +33,7 @@
 
   const table = useTableContext();
 
-  const selectedKeysRef = ref<SizeType[]>([table.getProps?.size || 'default']);
+  const selectedKeysRef = ref<SizeType[]>([table.getProps?.size || 'large']);
 
   function handleMenuClick({ key }: { key: SizeType }) {
     selectedKeysRef.value = [key];

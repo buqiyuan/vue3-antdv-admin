@@ -1,25 +1,20 @@
 <template>
-  <DynamicTable :load-data="loadTableData" :columns="columns">
-    <template #method="{ record }">
-      <Tag color="processing">{{ record.method }}</Tag>
-    </template>
-  </DynamicTable>
+  <DynamicTable
+    header-title="请求日志"
+    title-tooltip="这是mock数据"
+    :data-request="getReqLogList"
+    :columns="columns"
+  />
 </template>
 
 <script lang="tsx">
-  export default { name: 'ReqLog' };
+  export default { name: 'SystemMonitorReqLog' };
 </script>
 
 <script setup lang="tsx">
-  import { DynamicTable, LoadDataParams, TableColumn } from '@/components/dynamic-table';
+  import { DynamicTable, TableColumn } from '@/components/dynamic-table';
   import { Tag } from 'ant-design-vue';
   import { getReqLogList } from '@/api/system/log';
-
-  const loadTableData = async ({ page, limit }: LoadDataParams) => {
-    // mock数据
-    const { data } = await getReqLogList({ page, limit });
-    return data;
-  };
 
   const getStatusType = (status: number) => {
     if (status >= 200 && status < 300) {
@@ -62,11 +57,7 @@
       title: '请求方式',
       dataIndex: 'method',
       align: 'center',
-      slots: {
-        customRender: 'method',
-        // 不使用render就默认开始slot，见上面模板
-        // render: ({ method }) => <Tag color="processing">{method}</Tag>
-      },
+      bodyCell: ({ record }) => <Tag color="processing">{record.method}</Tag>,
     },
     {
       title: '请求参数',
@@ -85,22 +76,16 @@
       dataIndex: 'status',
       align: 'center',
       width: 120,
-      slots: {
-        customRender: 'status',
-        render: ({ status }) => <Tag color={getStatusType(status)}>{status}</Tag>,
-      },
+      bodyCell: ({ record }) => <Tag color={getStatusType(record.status)}>{record.status}</Tag>,
     },
     {
       title: '耗时',
       dataIndex: 'consumeTime',
       align: 'center',
       width: 120,
-      slots: {
-        customRender: 'consumeTime',
-        render: ({ consumeTime }) => (
-          <Tag color={getConsumeTimeType(consumeTime)}>{`${consumeTime}ms`}</Tag>
-        ),
-      },
+      bodyCell: ({ record }) => (
+        <Tag color={getConsumeTimeType(record.consumeTime)}>{`${record.consumeTime}ms`}</Tag>
+      ),
     },
     {
       title: '操作时间',

@@ -1,9 +1,9 @@
 <template>
-  <DynamicTable :data-request="loadTableData" :columns="columns" />
+  <DynamicTable header-title="登录日志" :data-request="loadTableData" :columns="columns" />
 </template>
 
 <script lang="ts">
-  export default { name: 'LoginLog' };
+  export default { name: 'SystemMonitorLoginLog' };
 </script>
 
 <script setup lang="ts">
