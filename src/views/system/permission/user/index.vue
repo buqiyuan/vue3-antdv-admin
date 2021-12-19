@@ -101,7 +101,6 @@
   } from '@ant-design/icons-vue';
   import { SplitPanel } from '@/components/split-panel';
   import { DynamicTable, LoadDataParams, DynamicTableInstance } from '@/components/dynamic-table';
-  import { getColumns, TableListItem } from './columns';
   import {
     deleteUsers,
     getUserListPage,
@@ -114,7 +113,8 @@
   import { getDeptList, transferDept } from '@/api/system/dept';
   import { useFormModal } from '@/hooks/useModal/index';
   import { userSchemas, deptSchemas, updatePswSchemas, transferUserSchemas } from './formSchemas';
-  import { TreeDataItem, formatDept2Tree } from '@/core/permission/utils';
+  import { getColumns, TableListItem } from './columns';
+  import { TreeDataItem, formatDept2Tree, findChildById } from '@/core/permission/utils';
 
   interface State {
     expandedKeys: number[];
@@ -171,7 +171,16 @@
     formRef.value?.updateSchema([
       {
         field: 'parentId',
-        componentProps: { treeData: [{ key: -1, title: '#', children: state.deptTree }] },
+        componentProps: {
+          treeDefaultExpandedKeys: [-1].concat(record?.keyPath || []),
+          treeData: [
+            {
+              key: -1,
+              title: '#',
+              children: state.deptTree,
+            },
+          ],
+        },
       },
     ]);
     formRef.value?.setFieldsValue({
@@ -231,10 +240,15 @@
         schemas: userSchemas,
       },
     });
+
     formRef.value?.updateSchema([
       {
         field: 'departmentId',
-        componentProps: { treeData: state.deptTree },
+        componentProps: {
+          treeDefaultExpandedKeys:
+            findChildById(record?.departmentId, state.deptTree)?.keyPath || [],
+          treeData: state.deptTree,
+        },
       },
     ]);
 

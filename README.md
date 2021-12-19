@@ -11,6 +11,7 @@
 - [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
 - [vue-cli](https://github.com/buqiyuan/vite-vue3-admin)
 - [gitee 地址](https://gitee.com/buqiyuan/vite-vue3-admin)
+- 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
 
 ## vscode 配置
 

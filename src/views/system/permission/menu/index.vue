@@ -36,6 +36,7 @@
   import { getColumns, TableListItem } from './columns';
   import { menuSchemas } from './formSchemas';
   import { formatMenu2Tree } from '@/core/permission/utils';
+  import { cloneDeep } from 'lodash';
 
   const menuTree = ref<TreeSelectProps['treeData']>([]);
   const dynamicTableRef = ref<InstanceType<typeof DynamicTable>>();
@@ -45,11 +46,11 @@
   const loadTableData = async () => {
     const data = await getMenuList();
     menuTree.value = formatMenu2Tree(
-      data.filter((n) => n.type !== 2),
+      cloneDeep(data).filter((n) => n.type !== 2),
       null,
     );
 
-    return { list: formatMenu2Tree(data, null) };
+    return { list: formatMenu2Tree(cloneDeep(data), null) };
   };
 
   const openMenuModal = async (record: Partial<TableListItem>) => {
@@ -75,7 +76,10 @@
     formRef.value?.updateSchema([
       {
         field: 'parentId',
-        componentProps: { treeData: [{ key: -1, name: '一级菜单', children: menuTree.value }] },
+        componentProps: {
+          treeDefaultExpandedKeys: [-1].concat(record?.keyPath || []),
+          treeData: [{ key: -1, name: '一级菜单', children: menuTree.value }],
+        },
       },
     ]);
 

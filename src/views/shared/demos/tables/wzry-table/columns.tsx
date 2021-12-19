@@ -6,6 +6,7 @@ export const columns: TableColumn[] = [
     title: '头像',
     align: 'center',
     width: 100,
+    hideInSearch: true,
     dataIndex: 'faceimg',
     bodyCell: ({ record }) => <Image src={record.faceimg} />,
   },

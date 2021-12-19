@@ -6,6 +6,7 @@ type DynamicTableInstance = {
 } & {
   setProps(props: Partial<TableProps>): () => any;
   getProps: TableProps;
+  refreshTable: (...rest: any[]) => any;
 };
 
 const key = Symbol('dynamic-table');

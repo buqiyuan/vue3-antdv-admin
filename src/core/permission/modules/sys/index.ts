@@ -5,6 +5,7 @@ import { SysOnlinePerms } from './online';
 import { SysRolePerms } from './role';
 import { SysTaskPerms } from './task';
 import { SysUserPerms } from './user';
+import { SysServePerms } from './serve';
 
 export type SysPermissionType =
   | SysLogPerms
@@ -13,4 +14,5 @@ export type SysPermissionType =
   | SysOnlinePerms
   | SysRolePerms
   | SysTaskPerms
+  | SysServePerms
   | SysUserPerms;

@@ -4,6 +4,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
+import { viteMockServe } from 'vite-plugin-mock';
 // import styleImport from 'vite-plugin-style-import';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
@@ -51,6 +52,18 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         iconDirs: [resolve(CWD, 'src/assets/icons')],
         // Specify symbolId format
         symbolId: 'svg-icon-[dir]-[name]',
+      }),
+      viteMockServe({
+        ignore: /^\_/,
+        mockPath: 'mock',
+        localEnabled: !isBuild,
+        prodEnabled: isBuild,
+        logger: true,
+        injectCode: `
+          import { setupProdMockServer } from '../mock/_createProductionServer';
+    
+          setupProdMockServer();
+          `,
       }),
       Components({
         resolvers: [

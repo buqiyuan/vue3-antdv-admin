@@ -13,7 +13,7 @@ export function usePagination(pageOption: Pagination) {
       current: 1,
       pageSize: 10,
       total: 0,
-      pageSizeOptions: ['10', '20', '30', '40', '50'],
+      pageSizeOptions: ['10', '20', '50', '100'],
       showQuickJumper: true,
       showSizeChanger: true, // 显示可改变每页数量
       showTotal: (total) => `共 ${total} 条`, // 显示总数

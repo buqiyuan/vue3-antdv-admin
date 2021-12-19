@@ -13,7 +13,7 @@ declare namespace API {
     viewPath: string;
     keepalive: boolean;
     isShow: boolean;
-    pIds?: number[];
+    keyPath?: number[];
   };
 
   /** 获取菜单列表参数 */
