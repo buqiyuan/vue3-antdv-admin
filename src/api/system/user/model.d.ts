@@ -14,6 +14,7 @@ declare namespace API {
     username: string;
     departmentName: string;
     roleNames: string[];
+    keyPath?: number[];
   };
 
   /** 获取用户列表结果 */

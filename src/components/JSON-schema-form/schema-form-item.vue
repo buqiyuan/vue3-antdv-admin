@@ -14,9 +14,9 @@
         :is="getComponent"
         :ref="setItemRef"
         :key="schemaItem.field"
-        v-model:[modelValueType]="modelValue[schemaItem.field]"
         v-bind="getComponentProps"
         v-on="componentEvents"
+        v-model:[modelValueType]="modelValue[schemaItem.field]"
       />
     </Form.Item>
   </Col>
@@ -29,7 +29,7 @@
   import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
   import { componentMap, ComponentMapType } from './componentMap';
   import { FormItemSchema, FormSchema } from './types/form';
-  import { isFunction, isNull, isString, isObject } from '@/utils/is';
+  import { isFunction, isNull, isString } from '@/utils/is';
   import { useVModel } from '@vueuse/core';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
   import cloneDeep from 'lodash/cloneDeep';
@@ -61,9 +61,11 @@
     },
   });
 
+  const emit = defineEmits(['update:formModel']);
+
   // const currentInstance = getCurrentInstance();
 
-  const modelValue = useVModel(props, 'formModel');
+  const modelValue = useVModel(props, 'formModel', emit);
 
   const { schemaItem, schema } = toRefs(props) as {
     schemaItem: Ref<FormItemSchema>;
@@ -79,8 +81,8 @@
 
   const modelValueType = computed(() => {
     const { component, componentProps } = schemaItem.value;
-    if (isObject(componentProps) && isString(componentProps?.vModelKey)) {
-      return componentProps?.vModelKey;
+    if (typeof componentProps !== 'function' && componentProps?.vModelKey) {
+      return componentProps.vModelKey;
     }
     const isCheck = isString(component) && ['Switch', 'Checkbox'].includes(component);
     return isCheck ? 'checked' : 'value';
@@ -170,10 +172,10 @@
   });
 
   const getComponentsProps = computed(() => {
-    const { schemaItem, tableAction, formModel, formActionType } = props;
+    const { schemaItem, formModel } = props;
     let { componentProps = {} } = schemaItem;
     if (isFunction(componentProps)) {
-      componentProps = componentProps({ schemaItem, tableAction, formModel, formActionType }) ?? {};
+      componentProps = componentProps({ schemaItem, formModel }) ?? {};
     }
     return componentProps as Recordable;
   });

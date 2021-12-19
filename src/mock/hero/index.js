@@ -9,7 +9,8 @@ module.exports = [
     timeout: 700,
     response: ({ query }) => {
       const { page = 1, limit = 10 } = query;
-      return resultPageSuccess(page, limit, heroListJson);
+      const filterResult = heroListJson.filter((n) => n.cname.includes(query.cname || ''));
+      return resultPageSuccess(page, limit, filterResult);
     },
   },
 ];

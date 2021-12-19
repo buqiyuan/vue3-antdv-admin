@@ -85,7 +85,7 @@
   const defaultShowIndex = !!table.showIndex;
   const defaultBordered = table.bordered;
 
-  const tableColumns = ref<TableColumn[]>([]);
+  const tableColumns = ref<TableColumn<any>[]>([]);
 
   const checkAll = computed<boolean>({
     get() {
@@ -129,7 +129,7 @@
     table.setProps({ bordered: e.target.checked });
   };
 
-  const handleColumnFixed = (columItem: TableColumn, direction: 'left' | 'right') => {
+  const handleColumnFixed = (columItem: TableColumn<any>, direction: 'left' | 'right') => {
     columItem.fixed = columItem.fixed === direction ? false : direction;
   };
 

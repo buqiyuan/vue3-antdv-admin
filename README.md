@@ -11,6 +11,7 @@
 - [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
 - [vite 版](https://github.com/buqiyuan/vite-vue3-admin)
 - [gitee 地址](https://gitee.com/buqiyuan/vue3-antd-admin)
+- 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
 
 ## vscode 配置
 
@@ -30,7 +31,7 @@
 - [ ] 纯前端导出 PDF 自动分页
 - [ ] 其他...
 
-## Project setup
+### Project setup
 
 ```shell
 yarn install
@@ -38,7 +39,7 @@ yarn install
 yarn --frozen-lockfile
 ```
 
-## 赞赏
+### 赞赏
 
 如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
 
@@ -46,7 +47,11 @@ yarn --frozen-lockfile
 | :-: | :-: |
 | ![donate](http://buqiyuan.gitee.io/images/weixin.jpg) | ![donate](http://buqiyuan.gitee.io/images/zhifubao.jpg) |
 
-## 感谢 JetBrains 免费的开源授权
+### 致谢
+
+- [sf-vue-admin](https://github.com/hackycy/sf-vue-admin)
+
+### 感谢 JetBrains 免费的开源授权
 
 <a href="https://www.jetbrains.com/?from=Mybatis-PageHelper" target="_blank">
 <img src="https://user-images.githubusercontent.com/1787798/69898077-4f4e3d00-138f-11ea-81f9-96fb7c49da89.png" height="200"/></a>

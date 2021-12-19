@@ -10,6 +10,7 @@ export default {
   'views/system/monitor/req-log': getAsyncPage('system/monitor/req-log'),
   'views/system/monitor/online': getAsyncPage('system/monitor/online'),
   'views/system/monitor/login-log': getAsyncPage('system/monitor/login-log'),
+  'views/system/monitor/serve': getAsyncPage('system/monitor/serve'),
   'views/system/schedule/task': getAsyncPage('system/schedule/task'),
   'views/system/schedule/log': getAsyncPage('system/schedule/log'),
 };

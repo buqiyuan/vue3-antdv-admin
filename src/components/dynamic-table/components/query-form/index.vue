@@ -112,8 +112,9 @@
         return 24 - remainder;
       };
 
-      const reset = () => {
+      const reset = async () => {
         dynamicFormRef.value?.resetFields();
+        await query();
       };
       const query = async () => {
         const formModel = await dynamicFormRef.value?.validate();
