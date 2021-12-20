@@ -16,8 +16,4 @@
   import { LockScreen } from '@/components/lockscreen';
 </script>
 
-<style lang="less">
-  @import '~@/styles/global.less';
-  @import '~@/styles/common.less';
-  @import '~@/styles/antdv.override.less';
-</style>
+<style lang="less"></style>

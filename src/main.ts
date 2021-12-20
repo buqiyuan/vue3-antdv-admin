@@ -1,15 +1,15 @@
 // import './publicPath'
-import 'windi.css';
-
 import { createApp } from 'vue';
 import App from './App.vue';
-import router, { setupRouter } from './router';
+import { setupRouter } from './router';
 import { setupStore } from '@/store';
-// import useFormModal from '@/hooks/useFormModal'
-import useModal from '@/hooks/useModal/index';
-import { setupAntd, setupDirectives, setupGlobalMethods, setupCustomComponents } from '@/plugins';
-
-import permission from '@/core/permission/';
+import {
+  setupAntd,
+  setupAssets,
+  setupDirectives,
+  setupGlobalMethods,
+  setupCustomComponents,
+} from '@/plugins';
 
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('./mock');
@@ -18,26 +18,28 @@ if (process.env.NODE_ENV === 'production') {
 
 const app = createApp(App);
 
-// 全局挂载Reflect反射对象,以便在vue模板中使用
-app.config.globalProperties.Reflect = Reflect;
+function setupPlugins() {
+  // 注册全局常用的ant-design-vue组件
+  setupAntd(app);
+  // 引入静态资源
+  setupAssets();
+  // 注册全局自定义组件,如：<svg-icon />
+  setupCustomComponents(app);
+  // 注册全局自定义指令，如：v-permission权限指令
+  setupDirectives(app);
+  // 注册全局方法，如：app.config.globalProperties.$message = message
+  setupGlobalMethods(app);
+}
 
-app.use(permission);
+async function setupApp() {
+  // 挂载vuex状态管理
+  setupStore(app);
+  // 挂载路由
+  await setupRouter(app);
 
-// app.use(useFormModal)
-app.use(useModal);
+  app.mount('#app');
+}
 
-// 注册全局常用的ant-design-vue组件
-setupAntd(app);
-// 注册全局自定义组件,如：<svg-icon />
-setupCustomComponents(app);
-// 注册全局自定义指令，如：v-permission权限指令
-setupDirectives(app);
-// 注册全局方法，如：app.config.globalProperties.$message = message
-setupGlobalMethods(app);
-// 挂载vuex状态管理
-setupStore(app);
-// 挂载路由
-setupRouter(app);
-// 路由准备就绪后挂载APP实例
-await router.isReady();
-app.mount('#app');
+setupPlugins();
+
+setupApp();

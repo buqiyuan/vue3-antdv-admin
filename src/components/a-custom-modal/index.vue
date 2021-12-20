@@ -38,7 +38,7 @@
                 <div v-if="footer != null" ref="modalFooter" class="ant-modal-footer">
                   <slot name="footer">
                     <div>
-                      <a-button @click="closeModal">取 消</a-button>
+                      <a-button type="default" @click="closeModal">取 消</a-button>
                       <a-button type="primary" :loading="confirmLoading" @click="closeModal"
                         >确 认</a-button
                       >
