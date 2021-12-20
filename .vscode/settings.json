@@ -88,7 +88,7 @@
   },
   "[vue]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": false
+      "source.fixAll.eslint": true
     }
   },
   "i18n-ally.localesPaths": [

@@ -1,47 +1,34 @@
 <template>
   <div class="icons-box">
-    <a-card>
+    <Card>
       <template #title>
         菜单图标（<a :href="`${prefix}iconfont.js`">/public/iconfont.js</a>）
       </template>
       <template v-for="iconItem in icons" :key="iconItem.code">
-        <a-card-grid @click="copyIcon(iconItem)">
+        <CardGrid @click="copyIcon(iconItem)">
           <div>
             <icon-font :type="iconItem.code" size="26" />
           </div>
           <div>{{ iconItem.title }}</div>
           <div>{{ iconItem.code }}</div>
-        </a-card-grid>
+        </CardGrid>
       </template>
-    </a-card>
+    </Card>
   </div>
 </template>
-
-<script lang="ts">
-  import { defineComponent } from 'vue';
+<script lang="ts" setup>
   import { Card, message } from 'ant-design-vue';
   import { IconFont } from '@/components/iconfont';
-  import icons from './icons';
   import { copyText } from '@/utils/common';
+  import icons from './icons';
 
+  const CardGrid = Card.Grid;
   const prefix = process.env.BASE_URL;
 
-  export default defineComponent({
-    name: 'DemoIcons',
-    components: { IconFont, [Card.name]: Card, [Card.Grid.name]: Card.Grid },
-    setup() {
-      const copyIcon = async (iconItem) => {
-        await copyText(iconItem.code);
-        message.success(iconItem.code + '--复制成功！');
-      };
-
-      return {
-        icons,
-        prefix,
-        copyIcon,
-      };
-    },
-  });
+  async function copyIcon(iconItem) {
+    await copyText(iconItem.code);
+    message.success(iconItem.code + '--复制成功！');
+  }
 </script>
 
 <style lang="less" scoped>
