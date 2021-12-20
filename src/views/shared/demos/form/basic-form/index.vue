@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-alert
+    <Alert
       message="验证表单"
       description="动态验证表单"
       type="info"
@@ -17,8 +17,8 @@
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+  import { ref } from 'vue';
   import { Alert, message } from 'ant-design-vue';
   import { SchemaForm } from '@/components/JSON-schema-form';
   import { schemas } from './form-schema';
@@ -26,26 +26,15 @@
   /**
    * @description 基础表单
    */
-  export default defineComponent({
-    name: 'BasicForm',
-    components: { [Alert.name]: Alert, SchemaForm },
-    setup() {
-      const dynamicForm = ref<InstanceType<typeof SchemaForm>>();
+  const dynamicForm = ref<InstanceType<typeof SchemaForm>>();
+  const formSchema = { schemas, labelWidth: 120 };
 
-      // 点击提交
-      const confirm = () => {
-        console.log('dynamicForm.value', dynamicForm.value?.formModel);
+  // 点击提交
+  function confirm() {
+    console.log('dynamicForm.value', dynamicForm.value?.formModel);
 
-        dynamicForm.value?.validate().then(() => message.success('验证通过！'));
-      };
-
-      return {
-        dynamicForm,
-        confirm,
-        formSchema: { schemas, labelWidth: 120 },
-      };
-    },
-  });
+    dynamicForm.value?.validate().then(() => message.success('验证通过！'));
+  }
 </script>
 
 <style lang="less" scoped>
