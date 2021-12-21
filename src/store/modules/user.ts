@@ -83,7 +83,7 @@ export const useUserStore = defineStore({
         // router.push('/sys/permission/role')
         return { menus, perms, userInfo };
       } catch (error) {
-        return this.logout();
+        // return this.logout();
       }
     },
     // 登出

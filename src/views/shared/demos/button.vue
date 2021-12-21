@@ -7,29 +7,18 @@
       show-icon
       style="margin-bottom: 12px"
     />
-    <a-card>
-      <div class="btn-rows">
-        <a-button type="primary">primary</a-button>
-        <a-button type="danger">danger</a-button>
-        <a-button type="warning">warning</a-button>
-        <a-button type="success">success</a-button>
-      </div>
-    </a-card>
+    <Card>
+      <Space>
+        <AButton type="primary">primary</AButton>
+        <AButton type="danger">danger</AButton>
+        <AButton type="warning">warning</AButton>
+        <AButton type="success">success</AButton>
+      </Space>
+    </Card>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { Alert } from 'ant-design-vue';
-
-  /**
-   * @description 扩展ant-design-vue模态框功能
-   */
+  import { Alert, Space, Card } from 'ant-design-vue';
+  import { AButton } from '@/components/button';
 </script>
-
-<style lang="less" scoped>
-  .btn-rows {
-    button {
-      margin-right: 12px;
-    }
-  }
-</style>

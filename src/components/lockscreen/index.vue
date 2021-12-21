@@ -41,7 +41,7 @@
     document.addEventListener('mousedown', timekeeping);
     setTimeout(() => {
       isMouted.value = true;
-    }, 1000);
+    });
   });
 
   onUnmounted(() => document.removeEventListener('mousedown', timekeeping));
