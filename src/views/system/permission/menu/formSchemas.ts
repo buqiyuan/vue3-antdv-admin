@@ -4,7 +4,7 @@ import IconsSelect from '@/components/icons-select/index.vue';
 import MultipleCascader from './components/multiple-cascader/index.vue';
 import { constantRouterComponents } from '@/router/asyncModules';
 
-export const menuSchemas: FormItemSchema[] = [
+export const menuSchemas: FormItemSchema<API.MenuAddParams>[] = [
   {
     field: 'type',
     component: 'RadioGroup',

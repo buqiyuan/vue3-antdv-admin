@@ -1,4 +1,4 @@
-import { Modal } from 'ant-design-vue';
+import CustomAModal from '@/components/a-custom-modal/index.vue';
 import { defineComponent, reactive, watchEffect, watch, ref } from 'vue';
 import type { HookModalProps } from './types';
 import { isFunction } from '@/utils/is';
@@ -7,6 +7,7 @@ import { ConfigProvider } from 'ant-design-vue';
 import { omit } from 'lodash';
 
 export const MyModal = defineComponent({
+  components: { modal: CustomAModal },
   setup(props: HookModalProps) {
     const confirmLoading = ref<boolean>(false);
 
@@ -43,7 +44,7 @@ export const MyModal = defineComponent({
     return () => {
       return (
         <ConfigProvider locale={zhCN}>
-          <Modal
+          <modal
             {...omit(props, ['onCancel', 'onOk'])}
             v-model={[state.visible, 'visible']}
             confirmLoading={confirmLoading.value}
@@ -51,7 +52,7 @@ export const MyModal = defineComponent({
             onOk={handleConfirm}
           >
             {isFunction(props.content) ? props.content() : props.content}
-          </Modal>
+          </modal>
         </ConfigProvider>
       );
     };

@@ -1,4 +1,4 @@
-import type { PropType, ExtractDefaultPropTypes } from 'vue';
+import type { PropType, ExtractPropTypes } from 'vue';
 import { tableProps } from 'ant-design-vue/lib/table';
 import type { FormProps } from 'ant-design-vue';
 import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './typing';
@@ -55,6 +55,6 @@ export const props = {
   },
 };
 
-export type TableProps = ExtractDefaultPropTypes<typeof props>;
+export type TableProps = ExtractPropTypes<typeof props>;
 
 export default props;

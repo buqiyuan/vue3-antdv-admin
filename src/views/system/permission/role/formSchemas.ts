@@ -1,6 +1,6 @@
 import type { FormItemSchema } from '@/components/JSON-schema-form/types/form';
 
-export const roleSchemas: FormItemSchema[] = [
+export const roleSchemas: FormItemSchema<API.CreateRoleParams>[] = [
   {
     field: 'name',
     component: 'Input',

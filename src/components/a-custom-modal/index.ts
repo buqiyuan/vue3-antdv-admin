@@ -1,1 +1,1 @@
-export { default as ACustomModal } from './index.vue';
+export { default as CustomAModal } from './index.vue';

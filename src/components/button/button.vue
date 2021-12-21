@@ -1,32 +1,29 @@
 <template>
-  <antd-button
+  <Button
+    v-bind="props"
     :danger="['danger'].includes(type)"
-    v-bind="$attrs"
     :type="buttonType"
     :class="[`ant-btn-${type}`]"
   >
     <template v-for="(value, key) in $slots" #[key]>
       <slot :name="key"></slot>
     </template>
-  </antd-button>
+  </Button>
 </template>
 <script lang="ts" setup>
   import { Button } from 'ant-design-vue';
-  import { computed } from 'vue';
-  import type { ButtonType } from 'ant-design-vue/lib/button/buttonTypes';
-  // import buttonProps from 'ant-design-vue/lib/button/buttonTypes'
+  import { computed, type PropType } from 'vue';
+  import buttonProps, { type ButtonType } from 'ant-design-vue/lib/button/buttonTypes';
 
-  interface Props {
-    type: ButtonType | 'danger' | 'warning' | 'success';
-  }
-
-  const props = withDefaults(defineProps<Props>(), {
-    type: 'default',
+  const props = defineProps({
+    ...buttonProps(),
+    type: {
+      type: String as PropType<ButtonType | 'danger' | 'warning' | 'success'>,
+      default: 'default',
+    },
   });
 
-  // 换个名称，避免成死递归组件
-  const AntdButton = Button;
-  const buttonTypes = ['default', 'primary', 'ghost', 'dashed', 'link'];
+  const buttonTypes = ['default', 'primary', 'ghost', 'dashed', 'link', 'text'];
   const buttonType = computed(() => {
     const type = props.type;
     return buttonTypes.includes(type)
