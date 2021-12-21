@@ -16,7 +16,7 @@
           <slot name="closeIcon">
             <Space @click.stop class="ant-modal-operate">
               <fullscreen-outlined @click="fullscreenModel = true" v-if="!fullscreenModel" />
-              <fullscreen-exit-outlined @click="fullscreenModel = false" v-else />
+              <fullscreen-exit-outlined @click="restore" v-else />
               <close-outlined @click="closeModal" />
             </Space>
           </slot>
@@ -87,6 +87,21 @@
     emit('cancel');
   };
 
+  // 居中弹窗
+  const centerModal = async () => {
+    await nextTick();
+    const modalEl = modalWrapRef.value?.querySelector<HTMLDivElement>('.ant-modal');
+
+    if (modalEl && modalEl.getBoundingClientRect().left < 1) {
+      modalEl.style.left = (document.documentElement.clientWidth - modalEl.offsetWidth) / 2 + 'px';
+    }
+  };
+
+  const restore = async () => {
+    fullscreenModel.value = false;
+    centerModal();
+  };
+
   const registerDragTitle = (dragEl: HTMLDivElement, handleEl: HTMLDivElement) => {
     handleEl.style.cursor = 'move';
     handleEl.onmousedown = (e: MouseEvent) => {
@@ -126,10 +141,7 @@
     const modalWrapEl = modalWrapRefEl.querySelector<HTMLDivElement>('.ant-modal-wrap');
     const modalEl = modalWrapRefEl.querySelector<HTMLDivElement>('.ant-modal');
     if (modalWrapEl && modalEl) {
-      if (!modalEl.style.left) {
-        modalEl.style.left =
-          (document.documentElement.clientWidth - modalEl.offsetWidth) / 2 + 'px';
-      }
+      centerModal();
       const headerEl = modalEl.querySelector<HTMLDivElement>('.ant-modal-header');
       headerEl && registerDragTitle(modalEl, headerEl);
 

@@ -295,18 +295,32 @@
 
       .ant-tabs-tab-remove {
         display: flex;
+        padding: 0;
+        margin: 0;
+        .anticon-close {
+          padding-left: 6px;
+        }
       }
 
       .ant-tabs-tab:not(.ant-tabs-tab-active) {
+        .ant-tabs-tab-remove {
+          width: 0;
+        }
         .anticon-close {
           width: 0;
           visibility: hidden;
           transition: width 0.3s;
         }
 
-        &:hover .anticon-close {
-          width: 16px;
-          visibility: visible;
+        &:hover {
+          .anticon-close {
+            width: 16px;
+            visibility: visible;
+            padding-left: 6px;
+          }
+          .ant-tabs-tab-remove {
+            width: unset;
+          }
         }
       }
     }
