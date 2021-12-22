@@ -2,14 +2,14 @@
   <Popover v-model:visible="visible" placement="bottomLeft" trigger="focus">
     <template #content>
       <div class="select-box">
-        <template v-for="iconItem in icons" :key="iconItem.code">
+        <template v-for="iconItem in glyphs" :key="iconItem.font_class">
           <div
-            :title="iconItem.title"
+            :title="iconItem.name"
             class="select-box-item"
-            :class="{ active: modelValue == iconItem.code }"
+            :class="{ active: modelValue == iconItem.font_class }"
             @click="selectIcon(iconItem)"
           >
-            <icon-font :type="iconItem.code" size="20" />
+            <icon-font :type="iconItem.font_class" size="20" />
           </div>
         </template>
       </div>
@@ -25,8 +25,10 @@
   import { ref } from 'vue';
   import { Popover } from 'ant-design-vue';
   import { IconFont } from '@/components/iconfont';
-  import icons from './icons';
+  import icons from './icons.json';
   import { useVModel } from '@vueuse/core';
+
+  const { glyphs } = icons;
 
   interface Props {
     value: string;
@@ -47,8 +49,8 @@
   const visible = ref(false);
   const modelValue = useVModel(props, 'value', emit);
 
-  const selectIcon = (iconItem: typeof icons[number]) => {
-    modelValue.value = iconItem.code;
+  const selectIcon = (iconItem: typeof glyphs[number]) => {
+    modelValue.value = iconItem.font_class;
     visible.value = false;
   };
 </script>

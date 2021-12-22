@@ -16,10 +16,10 @@ export type Rule = RuleObject & {
   trigger?: 'blur' | 'change' | ['change', 'blur'];
 };
 
-export interface RenderCallbackParams {
+export interface RenderCallbackParams<T = string> {
   schemaItem: FormItemSchema;
-  formModel: Recordable;
-  field: string;
+  formModel: T extends string ? Recordable : T;
+  field: T extends string ? string : keyof T;
 }
 
 export interface ButtonProps {
@@ -131,7 +131,7 @@ export interface FormItemSchema<T = string> {
   helpMessage?:
     | string
     | string[]
-    | ((renderCallbackParams: RenderCallbackParams) => string | string[]);
+    | ((renderCallbackParams: RenderCallbackParams<T>) => string | string[]);
   // BaseHelp component props
   helpComponentProps?: Partial<HelpComponentProps>;
   // Label width, if it is passed, the labelCol and WrapperCol configured by itemProps will be invalid
@@ -150,15 +150,15 @@ export interface FormItemSchema<T = string> {
       }) => ComponentProps);
 
   componentSlots?:
-    | ((renderCallbackParams: RenderCallbackParams) => Recordable<(...args) => any>)
+    | ((renderCallbackParams: RenderCallbackParams<T>) => Recordable<(...args) => any>)
     | VNode
     | VNode[]
     | string
     | Recordable<(...args) => any>;
   // Required
-  required?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
+  required?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
-  suffix?: string | number | ((values: RenderCallbackParams) => string | number);
+  suffix?: string | number | ((values: RenderCallbackParams<T>) => string | number);
 
   // Validation rules
   rules?: Rule[];
@@ -178,15 +178,15 @@ export interface FormItemSchema<T = string> {
   // Matching details components
   span?: number;
 
-  vShow?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
+  vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
-  vIf?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
+  vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
   // Render the content in the form-item tag
-  render?: (renderCallbackParams: RenderCallbackParams) => VNode | VNode[] | string;
+  render?: (renderCallbackParams: RenderCallbackParams<T>) => VNode | VNode[] | string;
 
   // Rendering col content requires outer wrapper form-item
-  renderColContent?: (renderCallbackParams: RenderCallbackParams) => VNode | VNode[] | string;
+  renderColContent?: (renderCallbackParams: RenderCallbackParams<T>) => VNode | VNode[] | string;
 
   // Custom slot, in from-item
   slot?: string;
@@ -194,9 +194,9 @@ export interface FormItemSchema<T = string> {
   // Custom slot, similar to renderColContent
   colSlot?: string;
 
-  dynamicDisabled?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
+  dynamicDisabled?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
-  dynamicRules?: (renderCallbackParams: RenderCallbackParams) => Rule[];
+  dynamicRules?: (renderCallbackParams: RenderCallbackParams<T>) => Rule[];
 }
 export interface HelpComponentProps {
   maxWidth: string;
