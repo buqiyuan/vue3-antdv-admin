@@ -89,7 +89,7 @@
   import { ToolOutlined, CaretRightOutlined, PoweroffOutlined } from '@ant-design/icons-vue';
   import { DynamicTable, type DynamicTableInstance } from '@/components/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
-  import { getColumns, TableListItem } from './columns';
+  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { taskSchemas } from './formSchemas';
   import {
     getSysTaskList,
@@ -177,5 +177,32 @@
     return `${record.startTime} - ${record.endTime}`;
   };
 
-  const columns = getColumns({ openTaskModal, delRowConfirm });
+  const columns: TableColumnItem[] = [
+    ...baseColumns,
+    {
+      title: '操作',
+      width: 220,
+      dataIndex: '$action',
+      align: 'center',
+      fixed: 'right',
+      actions: ({ record }) => [
+        {
+          label: '编辑',
+          auth: {
+            perm: 'sys/task/update',
+            effect: 'disable',
+          },
+          onClick: () => openTaskModal(record),
+        },
+        {
+          label: '删除',
+          auth: 'sys/task/delete',
+          popConfirm: {
+            title: '你确定要删除吗？',
+            onConfirm: () => delRowConfirm(record.id),
+          },
+        },
+      ],
+    },
+  ];
 </script>

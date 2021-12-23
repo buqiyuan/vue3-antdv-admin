@@ -2,11 +2,7 @@ import type { TableColumn } from '@/components/dynamic-table';
 import { Badge, Tag } from 'ant-design-vue';
 
 export type TableListItem = API.SysTaskListItem;
-
-interface ColumnsParams {
-  openTaskModal: (record: TableListItem) => void;
-  delRowConfirm: (record: number) => void;
-}
+export type TableColumnItem = TableColumn<TableListItem>;
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -26,80 +22,52 @@ const getStatusInfo = (status) => {
   }
 };
 
-export const getColumns = (columnParams: ColumnsParams): TableColumn<TableListItem>[] => {
-  const { openTaskModal, delRowConfirm } = columnParams;
-  return [
-    {
-      title: '任务名称',
-      dataIndex: 'name',
-      width: 240,
-    },
-    {
-      title: '状态',
-      width: 120,
-      dataIndex: 'status',
-      align: 'center',
-      bodyCell: ({ record }) => (
-        <Badge
-          status={record.status === 1 ? 'processing' : 'default'}
-          color={getStatusColor(record.status)}
-          text={getStatusInfo(record.status)}
-        />
-      ),
-    },
-    {
-      title: '类型',
-      width: 100,
-      align: 'center',
-      dataIndex: 'type',
-      bodyCell: ({ record }) => (
-        <Tag color={'processing'}>{record.type === 1 ? 'Interval' : 'Cron'}</Tag>
-      ),
-    },
-    {
-      title: '调用服务',
-      dataIndex: 'service',
-      hideInSearch: true,
-      align: 'center',
-      width: 350,
-    },
-    {
-      title: '执行参数',
-      dataIndex: 'data',
-      align: 'center',
-      hideInSearch: true,
-      width: 450,
-    },
-    {
-      title: '备注',
-      width: 250,
-      align: 'center',
-      dataIndex: 'remark',
-    },
-    {
-      title: '操作',
-      width: 220,
-      dataIndex: '$action',
-      align: 'center',
-      fixed: 'right',
-      actions: ({ record }) => [
-        {
-          label: '编辑',
-          auth: {
-            perm: 'sys/task/update',
-            effect: 'disable',
-          },
-          onClick: () => openTaskModal(record),
-        },
-        {
-          label: '删除',
-          auth: 'sys/task/delete',
-          popConfirm: {
-            title: '你确定要删除吗？',
-            onConfirm: () => delRowConfirm(record.id),
-          },
-        },
-      ],
-    },
-  ];
-};
+export const baseColumns: TableColumnItem[] = [
+  {
+    title: '任务名称',
+    dataIndex: 'name',
+    width: 240,
+  },
+  {
+    title: '状态',
+    width: 120,
+    dataIndex: 'status',
+    align: 'center',
+    bodyCell: ({ record }) => (
+      <Badge
+        status={record.status === 1 ? 'processing' : 'default'}
+        color={getStatusColor(record.status)}
+        text={getStatusInfo(record.status)}
+      />
+    ),
+  },
+  {
+    title: '类型',
+    width: 100,
+    align: 'center',
+    dataIndex: 'type',
+    bodyCell: ({ record }) => (
+      <Tag color={'processing'}>{record.type === 1 ? 'Interval' : 'Cron'}</Tag>
+    ),
+  },
+  {
+    title: '调用服务',
+    dataIndex: 'service',
+    hideInSearch: true,
+    align: 'center',
+    width: 350,
+  },
+  {
+    title: '执行参数',
+    dataIndex: 'data',
+    align: 'center',
+    hideInSearch: true,
+    width: 450,
+  },
+  {
+    title: '备注',
+    width: 250,
+    align: 'center',
+    dataIndex: 'remark',
+  },
+];

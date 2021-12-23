@@ -44,11 +44,16 @@ export function updateUser(data: API.UpdateAdminInfoParams) {
 }
 
 export function updateUserPassword(data: API.UpdateAdminUserPassword) {
-  return request({
-    url: Api.password,
-    method: 'post',
-    data,
-  });
+  return request(
+    {
+      url: Api.password,
+      method: 'post',
+      data,
+    },
+    {
+      successMsg: '操作成功',
+    },
+  );
 }
 
 export function deleteUsers(data: { userIds: number[] }) {

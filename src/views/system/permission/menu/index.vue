@@ -33,7 +33,7 @@
   import { getMenuList, updateMenu, createMenu, deleteMenu } from '@/api/system/menu';
   import { DynamicTable } from '@/components/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
-  import { getColumns, TableListItem } from './columns';
+  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { menuSchemas } from './formSchemas';
   import { formatMenu2Tree } from '@/core/permission/utils';
   import { cloneDeep } from 'lodash';
@@ -94,5 +94,33 @@
     dynamicTableRef.value?.refreshTable();
   };
 
-  const columns = getColumns({ openMenuModal, delRowConfirm });
+  const columns: TableColumnItem[] = [
+    ...baseColumns,
+    {
+      title: '操作',
+      width: 160,
+      dataIndex: '$action',
+      hideInSearch: true,
+      align: 'center',
+      fixed: 'right',
+      actions: ({ record }) => [
+        {
+          label: '编辑',
+          auth: {
+            perm: 'sys/menu/update',
+            effect: 'disable',
+          },
+          onClick: () => openMenuModal(record),
+        },
+        {
+          label: '删除',
+          auth: 'sys/menu/delete',
+          popConfirm: {
+            title: '你确定要删除吗？',
+            onConfirm: () => delRowConfirm(record),
+          },
+        },
+      ],
+    },
+  ];
 </script>
