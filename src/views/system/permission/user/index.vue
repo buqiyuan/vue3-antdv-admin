@@ -113,7 +113,7 @@
   import { getDeptList, transferDept } from '@/api/system/dept';
   import { useFormModal } from '@/hooks/useModal/index';
   import { userSchemas, deptSchemas, updatePswSchemas, transferUserSchemas } from './formSchemas';
-  import { getColumns, TableListItem } from './columns';
+  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { TreeDataItem, formatDept2Tree, findChildById } from '@/core/permission/utils';
 
   interface State {
@@ -262,7 +262,7 @@
   const openUpdatePasswordModal = async (record: TableListItem) => {
     await showModal({
       modalProps: {
-        title: `${record.id ? '编辑' : '新增'}用户`,
+        title: `修改密码(${record.username})`,
         width: 700,
         onFinish: async (values) => {
           await updateUserPassword({
@@ -328,12 +328,6 @@
     dynamicTableRef?.value?.refreshTable?.();
   };
 
-  const columns = getColumns({
-    delRowConfirm,
-    openUserModal,
-    openUpdatePasswordModal,
-  });
-
   const loadTableData = async ({ page, limit }: LoadDataParams) => {
     const data = await getUserListPage({
       page,
@@ -343,5 +337,40 @@
     rowSelection.value.selectedRowKeys = [];
     return data;
   };
+
+  const columns: TableColumnItem[] = [
+    ...baseColumns,
+    {
+      title: '操作',
+      width: 220,
+      dataIndex: '$action',
+      align: 'center',
+      fixed: 'right',
+      actions: ({ record }) => [
+        {
+          label: '编辑',
+          auth: {
+            perm: 'sys/user/update',
+            effect: 'disable',
+          },
+          onClick: () => openUserModal(record),
+        },
+        {
+          label: '改密',
+          auth: 'sys/user/password',
+          onClick: () => openUpdatePasswordModal(record),
+        },
+        {
+          label: '删除',
+          auth: 'sys/user/delete',
+          popConfirm: {
+            title: '你确定要删除吗？',
+            onConfirm: () => delRowConfirm(record.id),
+          },
+        },
+      ],
+    },
+  ];
 </script>
+
 <style></style>

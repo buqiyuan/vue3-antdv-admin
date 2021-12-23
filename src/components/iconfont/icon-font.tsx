@@ -16,6 +16,10 @@ export default defineComponent({
       type: String as PropType<string>,
       default: '',
     },
+    prefix: {
+      type: String,
+      default: 'icon-',
+    },
     color: {
       type: String as PropType<string>,
       default: 'unset',
@@ -49,6 +53,16 @@ export default defineComponent({
       };
     });
 
-    return () => <MyIconFont type={props.type || ''} {...attrs} style={unref(wrapStyleRef)} />;
+    return () => {
+      const { type, prefix } = props;
+
+      return type ? (
+        <MyIconFont
+          type={type.startsWith(prefix) ? type : `${prefix}${type}`}
+          {...attrs}
+          style={unref(wrapStyleRef)}
+        />
+      ) : null;
+    };
   },
 });
