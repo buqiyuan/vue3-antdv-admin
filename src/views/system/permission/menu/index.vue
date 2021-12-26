@@ -43,7 +43,7 @@
 
   const [showModal] = useFormModal();
 
-  const loadTableData = async () => {
+  const loadTableData = async (e: any) => {
     const data = await getMenuList();
     menuTree.value = formatMenu2Tree(
       cloneDeep(data).filter((n) => n.type !== 2),

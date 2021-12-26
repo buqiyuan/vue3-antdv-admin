@@ -44,25 +44,6 @@ export const formarPermsToCascader = () => {
   }, []);
 };
 
-// 挂载所有权限列表到实例上
-// !Vue.prototype.$permission && (Vue.prototype.$permission = modules)
-
-// // auth
-// !Vue.prototype.$auth && Object.defineProperties(Vue.prototype, {
-//   $auth: {
-//     get() {
-//       const _this = this
-//       return (perm) => {
-//         const [pm, action] = perm.split('.')
-//         const permissionList = _this.$store.getters.perms
-//         if (_this.$permission[pm] && _this.$permission[pm][action]) {
-//           return permissionList.indexOf(_this.$permission[pm][action]) > -1
-//         }
-//         return false
-//       }
-//     }
-//   }
-// })
 /**
  * 验证权限
  * @param {PermissionType} perm  权限码

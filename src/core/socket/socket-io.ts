@@ -1,6 +1,5 @@
 import { isEmpty, isFunction } from 'lodash';
-import IO from 'socket.io-client';
-import type { Socket } from 'socket.io-client';
+import IO, { type Socket } from 'socket.io-client';
 import { useUserStore } from '@/store/modules/user';
 import { useWsStore } from '@/store/modules/ws';
 

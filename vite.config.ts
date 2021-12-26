@@ -135,7 +135,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       terserOptions: {
         compress: {
           keep_infinity: true,
-          drop_console: VITE_DROP_CONSOLE,
+          drop_console: !!VITE_DROP_CONSOLE,
         },
       },
     },
