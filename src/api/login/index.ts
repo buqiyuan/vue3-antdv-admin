@@ -27,19 +27,3 @@ export function getImageCaptcha(params?: API.CaptchaParams) {
     params,
   });
 }
-
-/**
- * @description 登出
- */
-export function logout(data: { token: string }) {
-  return request<BaseResponse>(
-    {
-      url: 'account/logout',
-      method: 'post',
-      data,
-    },
-    {
-      isGetDataDirectly: false,
-    },
-  );
-}

@@ -2,11 +2,13 @@ import { defineComponent, PropType, unref, computed } from 'vue';
 import { createFromIconfontCN } from '@ant-design/icons-vue';
 import { isString } from '@/utils/is';
 
+let scriptUrls = [`${process.env.BASE_URL}iconfont.js`];
+
 let MyIconFont = createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
   // scriptUrl: '//at.alicdn.com/t/font_2184398_zflo1kjcemp.js',
   // iconfont字体图标本地化，详见：/public/iconfont.js
-  scriptUrl: '',
+  scriptUrl: scriptUrls,
 });
 
 export default defineComponent({
@@ -30,15 +32,16 @@ export default defineComponent({
     },
     scriptUrl: {
       // 阿里图库字体图标路径
-      type: String as PropType<string>,
+      type: String as PropType<string | string[]>,
       default: '',
     },
   },
   setup(props, { attrs }) {
     // 如果外部传进来字体图标路径，则覆盖默认的
     if (props.scriptUrl) {
+      scriptUrls = [...new Set(scriptUrls.concat(props.scriptUrl))];
       MyIconFont = createFromIconfontCN({
-        scriptUrl: props.scriptUrl,
+        scriptUrl: scriptUrls,
       });
     }
 

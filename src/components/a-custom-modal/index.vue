@@ -276,6 +276,8 @@
     .ant-modal {
       position: fixed;
       padding: 0;
+      min-height: 200px;
+      min-width: 200px;
       .ant-modal-close {
         top: 6px;
         right: 6px;
@@ -308,6 +310,7 @@
         min-width: 200px;
         overflow: hidden;
         .ant-modal-body {
+          flex: auto;
           overflow: auto;
           height: 100%;
         }

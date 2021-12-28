@@ -6,7 +6,7 @@
           <div
             :title="iconItem.name"
             class="select-box-item"
-            :class="{ active: modelValue == iconItem.font_class }"
+            :class="{ active: modelValue?.replace('icon-', '') == iconItem.font_class }"
             @click="selectIcon(iconItem)"
           >
             <icon-font :type="iconItem.font_class" size="20" />

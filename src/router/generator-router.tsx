@@ -69,10 +69,12 @@ export function filterAsyncRoute(
         // 如果是页面
         const Component = constantRouterComponents[viewPath] || NotFound;
         route.component = Component;
-        const perms = routes.filter((n) => n.parentId === item.id).map((n) => n.perms?.split(','));
+        const perms = routes
+          .filter((n) => n.parentId === item.id)
+          .flatMap((n) => n.perms?.split(','));
         if (route.meta && perms) {
           // 设置当前页面所拥有的权限
-          route.meta.perms = perms.flat(Infinity) as string[];
+          route.meta.perms = perms;
         }
         return route;
       }

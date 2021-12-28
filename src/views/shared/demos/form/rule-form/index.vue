@@ -17,6 +17,12 @@
   </div>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'DemosFormRuleForm',
+  };
+</script>
+
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Alert, message } from 'ant-design-vue';

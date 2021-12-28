@@ -8,7 +8,10 @@
       style="margin-bottom: 12px"
     />
     <a-card>
-      <a-button type="primary" @click="state.visible = true">弹出弹窗</a-button>
+      <Space>
+        <a-button type="primary" @click="state.visible = true">弹出弹窗</a-button>
+        <a-button type="primary" @click="handleOpenModal">函数式调用弹窗</a-button>
+      </Space>
     </a-card>
     <CustomAModal v-model:visible="state.visible" @ok="onOk" />
   </div>
@@ -16,14 +19,25 @@
 
 <script setup lang="ts">
   import { reactive } from 'vue';
-  import { Alert } from 'ant-design-vue';
+  import { Alert, Space } from 'ant-design-vue';
   import { CustomAModal } from '@/components/a-custom-modal';
+  import { useModal } from '@/hooks/useModal/';
   /**
    * @description 扩展ant-design-vue模态框功能
    */
+
+  const fnModal = useModal();
+
   const state = reactive({
     visible: false,
   });
+
+  const handleOpenModal = () => {
+    fnModal.show({
+      title: '我是标题',
+      content: 'hello',
+    });
+  };
 
   const onOk = () => {
     state.visible = false;
