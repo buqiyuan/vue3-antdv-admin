@@ -46,6 +46,12 @@
   </Card>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'LoLHeroInfo',
+  };
+</script>
+
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { Carousel, Card } from 'ant-design-vue';

@@ -9,13 +9,14 @@ import { type WhiteNameList } from './constant';
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const loginRoutePath = '/login';
-const defaultRoutePath = '/dashboard';
+const defaultRoutePath = '/dashboard/welcome';
 
 export function createRouterGuards(router: Router, whiteNameList: WhiteNameList) {
   router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     NProgress.start(); // start progress bar
     const token = Storage.get(ACCESS_TOKEN_KEY);
+
     if (token) {
       if (to.name === 'login') {
         next({ path: defaultRoutePath });
@@ -72,7 +73,9 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
       if (componentName) {
         keepAliveStore.add(componentName);
       } else {
-        console.warn(`${to.fullPath}页面组件未设置组件名，会导致缓存失效，请检查`);
+        console.warn(
+          `${to.fullPath}页面组件的keepAlive为true但未设置组件名，会导致缓存失效，请检查`,
+        );
       }
     } else {
       // 不需要缓存的组件

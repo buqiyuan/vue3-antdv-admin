@@ -106,7 +106,6 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
     const removeRoute = router.addRoute(layout);
     // 获取所有没有包含children的路由，上面addRoute的时候，vue-router已经帮我们拍平了所有路由
     const filterRoutes = router.getRoutes().filter((item) => !item.children.length);
-    // console.log('所有路由', filterRoutes);
     // 清空所有路由
     removeRoute();
     layout.children = filterRoutes;
@@ -114,6 +113,7 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
     router.addRoute(layout);
     // 追加末尾路由
     endRoutes.forEach((item) => router.addRoute(item));
+    // console.log('所有路由', router.getRoutes());
     return {
       menus: menus,
       routes: layout.children,
