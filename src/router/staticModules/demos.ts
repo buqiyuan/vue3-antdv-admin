@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { RouterTransition } from '@/components/transition';
+import { type RouteRecordRaw } from 'vue-router';
+import RouterView from '@/layout/routerView/index.vue';
 
 const routeName = 'demos';
 
@@ -8,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/demos',
     name: routeName,
     redirect: '/demos/custom-a-custom-modal',
-    component: RouterTransition,
+    component: RouterView,
     meta: {
       title: 'demo演示',
       icon: 'icon-zhuomian',
@@ -47,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
           keepAlive: true,
         },
         redirect: { name: `${routeName}-form-rule` },
-        component: RouterTransition,
+        component: RouterView,
         children: [
           {
             path: 'basic',
@@ -86,19 +86,47 @@ const routes: Array<RouteRecordRaw> = [
           keepAlive: true,
         },
         redirect: { name: `${routeName}-table-wzry` },
-        component: RouterTransition,
+        component: RouterView,
         children: [
           {
             path: 'wzry',
             name: `${routeName}-wzry-table`,
             meta: {
-              title: '英雄列表',
+              title: '王者荣耀',
+              icon: 'icon-zhuomian',
+              keepAlive: false,
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "wzry-table" */ '@/views/shared/demos/tables/wzry-table/index.vue'
+              ),
+          },
+          {
+            path: 'lol',
+            name: `${routeName}-lol-table`,
+            meta: {
+              title: '英雄联盟',
               icon: 'icon-zhuomian',
               keepAlive: true,
             },
             component: () =>
               import(
-                /* webpackChunkName: "summary-table" */ '@/views/shared/demos/tables/wzry-table/index.vue'
+                /* webpackChunkName: "lol-table" */ '@/views/shared/demos/tables/lol-table/index.vue'
+              ),
+          },
+          {
+            path: 'lol/:id',
+            name: `${routeName}-lol-info-table`,
+            meta: {
+              title: '英雄详情',
+              icon: 'icon-zhuomian',
+              hideInMenu: true,
+              keepAlive: true,
+              activeMenu: `${routeName}-lol-table`,
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "lol-info-table" */ '@/views/shared/demos/tables/lol-table/heroInfo.vue'
               ),
           },
         ],

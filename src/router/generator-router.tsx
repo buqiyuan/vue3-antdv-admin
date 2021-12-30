@@ -1,12 +1,17 @@
 import { Result } from 'ant-design-vue';
-import { RouteRecordRaw } from 'vue-router';
+import { type RouteRecordRaw } from 'vue-router';
+import RouterView from '@/layout/routerView/index.vue';
 import { isUrl } from '@/utils/is';
 import { constantRouterComponents } from '@/router/asyncModules';
-import { RouterTransition } from '@/components/transition';
 import NotFound from '@/views/shared/error/404.vue';
 import router, { routes } from '.';
 import common from '@/router/staticModules';
-import { notFound } from './staticModules/error';
+import { notFound, errorRoutes } from './staticModules/error';
+import shared from './staticModules/besidesLayout';
+import { type PermissionType } from '@/core/permission/modules/types';
+
+// 需要放在所有路由之后的路由
+const endRoutes: RouteRecordRaw[] = [...shared, errorRoutes, notFound];
 
 export function filterAsyncRoute(
   routes: API.Menu[],
@@ -52,7 +57,7 @@ export function filterAsyncRoute(
         // 如果是目录
         const children = filterAsyncRoute(routes, item, lastKeyPath.concat(fullPath));
         if (children?.length) {
-          route.component = RouterTransition;
+          route.component = RouterView;
           route.children = children;
           route.redirect = { name: children[0].name };
         } else {
@@ -69,12 +74,13 @@ export function filterAsyncRoute(
         // 如果是页面
         const Component = constantRouterComponents[viewPath] || NotFound;
         route.component = Component;
+
         const perms = routes
           .filter((n) => n.parentId === item.id)
           .flatMap((n) => n.perms?.split(','));
         if (route.meta && perms) {
           // 设置当前页面所拥有的权限
-          route.meta.perms = perms;
+          route.meta.perms = perms as PermissionType[];
         }
         return route;
       }
@@ -88,24 +94,55 @@ export function filterAsyncRoute(
  * @param token
  * @returns {Promise<Router>}
  */
-export const generatorDynamicRouter = (menus: API.Menu[]): RouteRecordRaw[] => {
-  //      后端数据, 根级树数组,  根级 PID
-  // listToTree(data, childrenNav, 0)
-  // rootRouter.children = childrenNav
+export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
   try {
-    console.log('menus', menus);
-
-    const routeList = filterAsyncRoute(menus);
+    // console.log('asyncMenus', asyncMenus);
+    const routeList = filterAsyncRoute(asyncMenus);
     const layout = routes.find((item) => item.name == 'Layout')!;
-    console.log(routeList, '根据后端返回的权限路由生成');
-    layout.children = [...common, ...routeList, notFound];
-    // const routes = [...common,...routeList]
-    // routes.forEach(item => router.addRoute('Layout', item))
+    // console.log(routeList, '根据后端返回的权限路由生成');
+    generatorKeyPath(common);
+    const menus = [...common, ...routeList];
+    layout.children = menus;
+    const removeRoute = router.addRoute(layout);
+    // 获取所有没有包含children的路由，上面addRoute的时候，vue-router已经帮我们拍平了所有路由
+    const filterRoutes = router.getRoutes().filter((item) => !item.children.length);
+    // console.log('所有路由', filterRoutes);
+    // 清空所有路由
+    removeRoute();
+    layout.children = filterRoutes;
+    // 重新添加拍平后的路由
     router.addRoute(layout);
-    // router.addRoute(notFound)
-    return layout.children;
+    // 追加末尾路由
+    endRoutes.forEach((item) => router.addRoute(item));
+    return {
+      menus: menus,
+      routes: layout.children,
+    };
   } catch (error) {
     console.error('生成路由时出错', error);
-    return [];
+    return {
+      menus: [],
+      routes: [],
+    };
   }
+};
+
+/**
+ * 主要方便于控制a-menu的open-keys，即控制左侧菜单应当展开哪些菜单
+ * @param {RouteRecordRaw[]} routes 需要添加keyPath的路由
+ * @param {string[]} keyPath
+ */
+export const generatorKeyPath = (routes: RouteRecordRaw[], keyPath?: string[]) => {
+  routes.forEach((item) => {
+    if (item.children?.length) {
+      if (item.meta && typeof item.name === 'string') {
+        item.meta.keyPath = Array.isArray(keyPath) ? keyPath.concat(item.name) : [item.name];
+        generatorKeyPath(item.children, item.meta.keyPath);
+      }
+    } else {
+      if (item.meta && typeof item.name === 'string') {
+        item.meta.keyPath = Array.isArray(keyPath) ? keyPath.concat(item.name) : [item.name];
+      }
+    }
+  });
 };

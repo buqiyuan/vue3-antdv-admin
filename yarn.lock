@@ -2264,10 +2264,10 @@ ansi-styles@^6.0.0:
   resolved "https://registry.nlark.com/ansi-styles/download/ansi-styles-6.1.0.tgz#87313c102b8118abd57371afab34618bf7350ed3"
   integrity sha1-hzE8ECuBGKvVc3GvqzRhi/c1DtM=
 
-ant-design-vue@3.0.0-beta.3:
-  version "3.0.0-beta.3"
-  resolved "https://registry.npmmirror.com/ant-design-vue/download/ant-design-vue-3.0.0-beta.3.tgz#f621a3ae736cbb0bf06f6109f1a7433b70397231"
-  integrity sha512-filLiMc7zk+0l1AZ6nLk5nOil77Tm2M5FJZzS9Ce79z6pSX5mffWL3r8GWe/OAwr0g/SPmefHQfwtNL7/N1smg==
+ant-design-vue@3.0.0-beta.4:
+  version "3.0.0-beta.4"
+  resolved "https://registry.npmmirror.com/ant-design-vue/download/ant-design-vue-3.0.0-beta.4.tgz#e6f7861682875d77220d02ffe561b2b2022cd15b"
+  integrity sha512-WUkA8LyXw35vi1OOHTzvtcet0lEhNGCQNF85zEOHpPlA1Xf8KWCricFeiA38fgg2AHWvE1mrVw/wqB1kXBJM1Q==
   dependencies:
     "@ant-design/colors" "^6.0.0"
     "@ant-design/icons-vue" "^6.0.0"

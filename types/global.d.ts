@@ -29,7 +29,9 @@ declare global {
   export type Writable<T> = {
     -readonly [P in keyof T]: T[P];
   };
-
+  type RemoveIndex<T> = {
+    [K in keyof T as string extends K ? never : number extends K ? never : K]: T[K];
+  };
   declare type Nullable<T> = T | null;
   declare type NonNullable<T> = T extends null | undefined ? never : T;
   declare type Recordable<T = any> = Record<string, T>;

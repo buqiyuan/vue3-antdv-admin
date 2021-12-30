@@ -180,6 +180,6 @@ module.exports = defineConfig({
         ws: true,
       },
     },
-    onBeforeSetupMiddleware: require('./src/mock/mock-server.js'),
+    setupMiddlewares: require('./src/mock/mock-server.js'),
   },
 });

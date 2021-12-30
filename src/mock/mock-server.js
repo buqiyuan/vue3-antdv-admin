@@ -50,8 +50,11 @@ const responseFake = ({ url, type, response, timeout = 100 }) => {
     },
   };
 };
-
-module.exports = (devServer) => {
+// setupMiddlewares: (middlewares, devServer)
+module.exports = (middlewares, devServer) => {
+  if (!devServer) {
+    throw new Error('webpack-dev-server is not defined');
+  }
   const app = devServer.app;
   // parse app.body
   // https://expressjs.com/en/4x/api.html#req.body
@@ -87,4 +90,6 @@ module.exports = (devServer) => {
         }
       }
     });
+
+  return middlewares;
 };

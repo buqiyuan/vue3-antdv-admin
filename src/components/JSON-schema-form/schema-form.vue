@@ -83,10 +83,10 @@
 
       watchEffect(() => {
         if (Object.is(props.formSchema, oldFormSchema)) {
-          console.log('相同');
+          // console.log('相同');
           merge(formSchemaRef.value, cloneDeep(props.formSchema));
         } else {
-          console.log('不相同');
+          // console.log('不相同');
           formSchemaRef.value = cloneDeep(props.formSchema);
         }
         oldFormSchema = props.formSchema;

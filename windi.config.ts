@@ -20,5 +20,8 @@ export default defineConfig({
         pink: colors.fuchsia,
       },
     },
+    cursor: {
+      'zoom-in': 'zoom-in',
+    },
   },
 });

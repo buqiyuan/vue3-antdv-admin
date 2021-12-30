@@ -1,5 +1,6 @@
 import type { TableColumn } from '@/components/dynamic-table';
 import { Tag } from 'ant-design-vue';
+import router from '@/router';
 import ImagePreview from '@/components/image-preview/index';
 
 export const columns: TableColumn[] = [
@@ -8,33 +9,28 @@ export const columns: TableColumn[] = [
     align: 'center',
     width: 100,
     hideInSearch: true,
-    dataIndex: 'faceimg',
+    dataIndex: 'avatar',
     bodyCell: ({ record }) => (
-      <ImagePreview src={record.faceimg} preview={{ src: record.heroimg }} />
+      <ImagePreview src={record.avatar} preview={{ src: record.posters }} />
     ),
   },
   {
     title: '英雄名称',
     align: 'center',
-    dataIndex: 'cname',
+    dataIndex: 'title',
   },
   {
     title: '英雄称号',
     align: 'center',
-    dataIndex: 'title',
+    dataIndex: 'name',
   },
   {
     title: '定位',
     align: 'center',
-    dataIndex: 'occupation',
-  },
-  {
-    title: '皮肤',
-    align: 'center',
-    dataIndex: 'skin_name',
+    dataIndex: 'roles',
     bodyCell: ({ record }) => (
       <>
-        {record.skin_name?.split('|')?.map((name) => (
+        {record.roles?.map((name) => (
           <Tag color={'blue'} key={name}>
             {name}
           </Tag>
@@ -50,7 +46,7 @@ export const columns: TableColumn[] = [
     actions: ({ record }) => [
       {
         label: '查看详情',
-        onClick: () => window.open(record.infourl),
+        onClick: () => router.push({ name: 'demos-lol-info-table', params: { id: record.heroId } }),
       },
     ],
   },

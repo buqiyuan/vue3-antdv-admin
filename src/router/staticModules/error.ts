@@ -1,4 +1,4 @@
-import { RouterTransition } from '@/components/transition';
+import RouterView from '@/layout/routerView/index.vue';
 
 const routeName = 'error';
 
@@ -13,7 +13,7 @@ export const errorRoutes = {
   path: '/error',
   name: routeName,
   redirect: '/error/404',
-  component: RouterTransition,
+  component: RouterView,
   meta: {
     title: '错误页',
     icon: 'EditOutlined',

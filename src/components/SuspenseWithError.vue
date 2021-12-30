@@ -16,7 +16,7 @@
   import { ref, onErrorCaptured } from 'vue';
   const error = ref<any>(null);
   onErrorCaptured((e) => {
-    // error.value = '(⊙o⊙)…出了点问题。'
+    error.value = '(⊙o⊙)…出了点问题。';
     console.error(e);
     return true;
   });

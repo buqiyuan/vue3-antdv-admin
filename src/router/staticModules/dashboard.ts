@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { RouterTransition } from '@/components/transition';
+import { type RouteRecordRaw } from 'vue-router';
+import RouterView from '@/layout/routerView/index.vue';
 
 const routeName = 'dashboard';
 
@@ -8,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: routeName,
     redirect: '/dashboard/welcome',
-    component: RouterTransition,
+    component: RouterView,
     meta: {
       title: '系统看板',
       icon: 'icon-yibiaopan',

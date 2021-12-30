@@ -42,11 +42,11 @@
 <script lang="ts" setup>
   import { Alert, Card } from 'ant-design-vue';
   import { DynamicTable } from '@/components/dynamic-table';
-  import { getHeroList } from '@/api/demos/hero';
+  import { getWzryHeroList } from '@/api/demos/hero';
   import { columns } from './columns';
 
   const loadData = async (params) => {
-    const { data } = await getHeroList(params);
+    const { data } = await getWzryHeroList(params);
     return data;
   };
 </script>

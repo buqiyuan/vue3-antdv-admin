@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^7.4.1",
-    "ant-design-vue": "3.0.0-beta.3",
+    "ant-design-vue": "3.0.0-beta.4",
     "axios": "^0.24.0",
     "core-js": "^3.20.1",
     "dayjs": "^1.10.7",
@@ -109,7 +109,7 @@
       "stylelint --fix"
     ],
     "*.{scss,less,styl,html}": [
-      "stylelint  --allow-empty-input",
+      "stylelint --fix",
       "prettier --write"
     ],
     "*.md": [
