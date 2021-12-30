@@ -8,52 +8,49 @@
       @change="changePage"
       @edit="editTabItem"
     >
-      <template v-for="pageItem in tabsList" :key="pageItem.fullPath">
-        <Tabs.TabPane>
-          <template #tab>
-            <Dropdown :trigger="['contextmenu']">
-              <div style="display: inline-block">
-                {{ getTitle(pageItem.meta?.title) }}
-              </div>
-              <template #overlay>
-                <a-menu style="user-select: none">
-                  <a-menu-item
-                    key="1"
-                    :disabled="state.activeKey !== pageItem.fullPath"
-                    @click="reloadPage"
-                  >
-                    <reload-outlined />
-                    刷新
-                  </a-menu-item>
-                  <a-menu-item key="2" @click="removeTab(pageItem)">
-                    <close-outlined />
-                    关闭
-                  </a-menu-item>
-                  <a-menu-divider />
-                  <a-menu-item key="3" @click="closeLeft(pageItem)">
-                    <vertical-right-outlined />
-                    关闭左侧
-                  </a-menu-item>
-                  <a-menu-item key="4" @click="closeRight(pageItem)">
-                    <vertical-left-outlined />
-                    关闭右侧
-                  </a-menu-item>
-                  <a-menu-divider />
-                  <a-menu-item key="5" @click="closeOther(pageItem)">
-                    <column-width-outlined />
-                    关闭其他
-                  </a-menu-item>
-                  <a-menu-item key="6" @click="closeAll">
-                    <minus-outlined />
-                    关闭全部
-                  </a-menu-item>
-                </a-menu>
-              </template>
-            </Dropdown>
-            <!--          <span @contextmenu="rightClick" style="display: inline-block" :pagekey="pageItem.fullPath">{{pageItem.meta.title}}</span>-->
-          </template>
-        </Tabs.TabPane>
-      </template>
+      <Tabs.TabPane v-for="pageItem in tabsList" :key="pageItem.fullPath">
+        <template #tab>
+          <Dropdown :trigger="['contextmenu']">
+            <div style="display: inline-block">
+              {{ getTitle(pageItem.meta?.title) }}
+            </div>
+            <template #overlay>
+              <Menu style="user-select: none">
+                <Menu.Item
+                  key="1"
+                  :disabled="state.activeKey !== pageItem.fullPath"
+                  @click="reloadPage"
+                >
+                  <reload-outlined />
+                  刷新
+                </Menu.Item>
+                <Menu.Item key="2" @click="removeTab(pageItem)">
+                  <close-outlined />
+                  关闭
+                </Menu.Item>
+                <a-menu-divider />
+                <Menu.Item key="3" @click="closeLeft(pageItem)">
+                  <vertical-right-outlined />
+                  关闭左侧
+                </Menu.Item>
+                <Menu.Item key="4" @click="closeRight(pageItem)">
+                  <vertical-left-outlined />
+                  关闭右侧
+                </Menu.Item>
+                <a-menu-divider />
+                <Menu.Item key="5" @click="closeOther(pageItem)">
+                  <column-width-outlined />
+                  关闭其他
+                </Menu.Item>
+                <Menu.Item key="6" @click="closeAll">
+                  <minus-outlined />
+                  关闭全部
+                </Menu.Item>
+              </Menu>
+            </template>
+          </Dropdown>
+        </template>
+      </Tabs.TabPane>
 
       <template #rightExtra>
         <Dropdown :trigger="['click']">
@@ -61,40 +58,43 @@
             <down-outlined :style="{ fontSize: '20px' }" />
           </a>
           <template #overlay>
-            <a-menu style="user-select: none">
-              <a-menu-item
-                key="1"
-                :disabled="state.activeKey !== route.fullPath"
-                @click="reloadPage"
-              >
+            <Menu style="user-select: none">
+              <Menu.Item key="1" :disabled="state.activeKey !== route.fullPath" @click="reloadPage">
                 <reload-outlined />
                 刷新
-              </a-menu-item>
-              <a-menu-item key="2" @click="removeTab(route)">
+              </Menu.Item>
+              <Menu.Item key="2" @click="removeTab(route)">
                 <close-outlined />
                 关闭
-              </a-menu-item>
+              </Menu.Item>
               <a-menu-divider />
-              <a-menu-item key="5" @click="closeOther(route)">
+              <Menu.Item key="5" @click="closeOther(route)">
                 <column-width-outlined />
                 关闭其他
-              </a-menu-item>
-              <a-menu-item key="6" @click="closeAll">
+              </Menu.Item>
+              <Menu.Item key="6" @click="closeAll">
                 <minus-outlined />
                 关闭全部
-              </a-menu-item>
-            </a-menu>
+              </Menu.Item>
+            </Menu>
           </template>
         </Dropdown>
       </template>
     </Tabs>
     <div class="tabs-view-content">
       <router-view v-slot="{ Component }">
-        <keep-alive :include="keepAliveComponents">
-          <Suspense>
-            <component :is="Component" />
-          </Suspense>
-        </keep-alive>
+        <template v-if="Component">
+          <transition name="zoom-fade" mode="out-in" appear>
+            <keep-alive :include="keepAliveComponents">
+              <suspense>
+                <component :is="Component" :key="route.fullPath" />
+                <template #fallback>
+                  <div> Loading... </div>
+                </template>
+              </suspense>
+            </keep-alive>
+          </transition>
+        </template>
       </router-view>
     </div>
   </div>
@@ -106,6 +106,7 @@
   import { Storage } from '@/utils/Storage';
   import { TABS_ROUTES } from '@/enums/cacheEnum';
   import { useTabsViewStore } from '@/store/modules/tabsView';
+  import { useKeepAliveStore } from '@/store/modules/keepAlive';
   import {
     DownOutlined,
     ReloadOutlined,
@@ -115,14 +116,14 @@
     ColumnWidthOutlined,
     MinusOutlined,
   } from '@ant-design/icons-vue';
-  import { Dropdown, Tabs } from 'ant-design-vue';
-  import { message } from 'ant-design-vue';
+  import { Dropdown, Tabs, message, Menu } from 'ant-design-vue';
 
   type RouteItem = Omit<RouteLocation, 'matched' | 'redirectedFrom'>;
 
   const route = useRoute();
   const router = useRouter();
   const tabsViewStore = useTabsViewStore();
+  const keepAliveStore = useKeepAliveStore();
 
   const whiteList = ['Redirect', 'login'];
 
@@ -134,7 +135,7 @@
   const tabsList = computed(() => tabsViewStore.tabsList.filter((n) => router.hasRoute(n.name!)));
 
   // 缓存的路由组件列表
-  const keepAliveComponents = computed(() => tabsViewStore.keepAliveComponents);
+  const keepAliveComponents = computed(() => keepAliveStore.list);
 
   // 获取简易的路由对象
   const getSimpleRoute = (route): RouteItem => {
@@ -161,9 +162,7 @@
       const name = router.currentRoute.value.matched.find((item) => item.name == route.name)
         ?.components?.default.name;
       if (name) {
-        tabsViewStore.setKeepAliveComponents(
-          tabsViewStore.keepAliveComponents.filter((item) => item != name),
-        );
+        keepAliveStore.remove(name);
       }
     }
   };

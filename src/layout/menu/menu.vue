@@ -33,9 +33,20 @@
 
   const menus = computed(() => userStore.menus);
 
+  // 根据activeMenu获取指定的menu
+  const getTargetMenuByActiveMenuName = (activeMenu: string) => {
+    return router.getRoutes().find((n) => [n.name, n.path].includes(activeMenu));
+  };
+
   // 获取当前打开的子菜单
-  const getOpenKeys = () =>
-    currentRoute.meta?.keyPath ?? currentRoute.matched.slice(1).map((n) => n.name);
+  const getOpenKeys = () => {
+    const meta = currentRoute.meta;
+    if (meta?.activeMenu) {
+      const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
+      return targetMenu?.meta?.keyPath ?? meta?.activeMenu;
+    }
+    return currentRoute.meta?.keyPath ?? currentRoute.matched.slice(1).map((n) => n.name);
+  };
 
   const state = reactive({
     openKeys: getOpenKeys(),
@@ -57,7 +68,16 @@
     () => {
       if (currentRoute.name == 'login' || props.collapsed) return;
       state.openKeys = getOpenKeys();
-      state.selectedKeys = [currentRoute.name];
+      const meta = currentRoute.meta;
+      if (meta?.activeMenu) {
+        const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
+        state.selectedKeys = [targetMenu?.name ?? meta?.activeMenu];
+      } else {
+        state.selectedKeys = [currentRoute.meta?.activeMenu ?? currentRoute.name];
+      }
+    },
+    {
+      immediate: true,
     },
   );
 

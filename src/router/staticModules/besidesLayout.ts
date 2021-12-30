@@ -1,11 +1,19 @@
-import { RouteRecordRaw } from 'vue-router';
-import { RouterTransition } from '@/components/transition';
+import { type RouteRecordRaw } from 'vue-router';
+import RouterView from '@/layout/routerView/index.vue';
 
+/**
+ * 不需要展示在Layout里面的静态路由
+ */
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "login" */ '@/views/shared/login/index.vue'),
+  },
   {
     path: '/redirect/:path*',
     name: 'Redirect',
-    component: RouterTransition,
+    component: RouterView,
     meta: {
       title: '重定向',
       icon: 'SettingOutlined',

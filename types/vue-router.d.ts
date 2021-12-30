@@ -1,4 +1,4 @@
-export {};
+import { type PermissionType } from '@/core/permission/modules/types';
 
 interface Title18n {
   zh_CN: string;
@@ -12,7 +12,7 @@ declare module 'vue-router' {
     /** 当前路由是否需要权限验证 */
     isAuth?: boolean;
     /** 当前路由权限 */
-    perms?: string[];
+    perms?: PermissionType[];
     /** 是否需要缓存 */
     keepAlive?: boolean;
     /** 当前路由keypath */
@@ -25,6 +25,8 @@ declare module 'vue-router' {
     transitionName?: string;
     /** 不在菜单中显示 */
     hideInMenu?: boolean;
+    /** 设置当前路由高亮的菜单项，值为route fullPath或route name,一般用于详情页 */
+    activeMenu?: string;
     isLink?: boolean;
   }
 }

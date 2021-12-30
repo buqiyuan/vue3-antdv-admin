@@ -1,18 +1,17 @@
 import { isNavigationFailure, Router } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
-import { useTabsViewStore } from '@/store/modules/tabsView';
+import { useKeepAliveStore } from '@/store/modules/keepAlive';
 import NProgress from 'nprogress'; // progress bar
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
+import { type WhiteNameList } from './constant';
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
-
-const allowList = ['login', 'icons', 'error', 'error-404']; // no redirect whitelist
 
 const loginRoutePath = '/login';
 const defaultRoutePath = '/dashboard';
 
-export function createRouterGuards(router: Router) {
+export function createRouterGuards(router: Router, whiteNameList: WhiteNameList) {
   router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     NProgress.start(); // start progress bar
@@ -38,7 +37,7 @@ export function createRouterGuards(router: Router) {
             }
           }
 
-          if (allowList.includes(to.name as string) || hasRoute) {
+          if (whiteNameList.some((n) => n === to.name) || hasRoute) {
             // 在免登录名单，直接进入
             next();
           }
@@ -48,7 +47,7 @@ export function createRouterGuards(router: Router) {
       }
     } else {
       // not login
-      if (allowList.includes(to.name as string)) {
+      if (whiteNameList.some((n) => n === to.name)) {
         // 在免登录名单，直接进入
         next();
       } else {
@@ -59,27 +58,34 @@ export function createRouterGuards(router: Router) {
   });
 
   router.afterEach((to, _, failure) => {
-    const tabsViewStore = useTabsViewStore();
+    const keepAliveStore = useKeepAliveStore();
 
     document.title = (to?.meta?.title as string) || document.title;
     if (isNavigationFailure(failure)) {
       console.error('failed navigation', failure);
     }
     // 在这里设置需要缓存的组件名称
-    const keepAliveComponents = tabsViewStore.keepAliveComponents;
-    const currentComName = to.matched.find((item) => item.name == to.name)?.components?.default
-      .name;
-    if (currentComName && !keepAliveComponents.includes(currentComName) && to.meta?.keepAlive) {
+    const componentName = to.matched.find((item) => item.name == to.name)?.components?.default.name;
+    // 判断当前页面是否开启缓存，如果开启，则将当前页面的 componentName 信息存入 keep-alive 全局状态
+    if (to.meta?.keepAlive) {
       // 需要缓存的组件
-      keepAliveComponents.push(currentComName);
-    } else if (!to.meta?.keepAlive || to.name == 'Redirect') {
+      if (componentName) {
+        keepAliveStore.add(componentName);
+      } else {
+        console.warn(
+          `${to.fullPath}页面组件的keepAlive为true但未设置组件名，会导致缓存失效，请检查`,
+        );
+      }
+    } else {
       // 不需要缓存的组件
-      const index = tabsViewStore.keepAliveComponents.findIndex((name) => name == currentComName);
-      if (index != -1) {
-        keepAliveComponents.splice(index, 1);
+      if (componentName) {
+        keepAliveStore.remove(componentName);
       }
     }
-    tabsViewStore.setKeepAliveComponents(keepAliveComponents);
+    // 如果进入的是 Redirect 页面，则也将离开页面的缓存清空
+    if (to.name == 'Redirect') {
+      componentName && keepAliveStore.remove(componentName);
+    }
     NProgress.done(); // finish progress bar
   });
 

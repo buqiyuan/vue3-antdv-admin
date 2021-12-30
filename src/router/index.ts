@@ -1,12 +1,13 @@
+import 'nprogress/css/nprogress.css'; // 进度条样式
+import { App } from 'vue';
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
 import { createRouterGuards } from './router-guards';
-import 'nprogress/css/nprogress.css'; // 进度条样式
 
-import shared from './staticModules/shared';
-import { errorRoutes } from './staticModules/error';
 import common from '@/router/staticModules';
-import { App } from 'vue';
+import shared from './staticModules/besidesLayout';
+import { notFound, errorRoutes } from './staticModules/error';
+import { whiteNameList } from './constant';
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -20,18 +21,31 @@ export const routes: Array<RouteRecordRaw> = [
     children: [...common],
   },
   ...shared,
+  notFound,
   errorRoutes,
 ];
 
 export const router = createRouter({
-  // import.meta.env.BASE_URL
+  // process.env.BASE_URL
   history: createWebHashHistory(''),
   routes,
 });
 
-export function setupRouter(app: App) {
+// reset router
+export function resetRouter() {
+  router.getRoutes().forEach((route) => {
+    const { name } = route;
+    if (name && !whiteNameList.some((n) => n === name)) {
+      router.hasRoute(name) && router.removeRoute(name);
+    }
+  });
+}
+
+export async function setupRouter(app: App) {
   app.use(router);
   // 创建路由守卫
-  createRouterGuards(router);
+  createRouterGuards(router, whiteNameList);
+  // 路由准备就绪后挂载APP实例
+  await router.isReady();
 }
 export default router;

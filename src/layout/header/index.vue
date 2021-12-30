@@ -108,6 +108,7 @@
     Modal.confirm({
       title: '您确定要退出登录吗？',
       icon: <QuestionCircleOutlined />,
+      centered: true,
       onOk: async () => {
         // 如果不是rootadmin，则退出登录
         if (userStore.userInfo.phone !== '13553550634') {

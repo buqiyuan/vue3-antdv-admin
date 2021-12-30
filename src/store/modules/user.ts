@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import { type RouteRecordRaw } from 'vue-router';
 import { defineStore } from 'pinia';
 import { login } from '@/api/login';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
@@ -6,6 +6,7 @@ import { Storage } from '@/utils/Storage';
 import { logout, getInfo, permmenu } from '@/api/account';
 import { generatorDynamicRouter } from '@/router/generator-router';
 import { useWsStore } from './ws';
+import { resetRouter } from '@/router';
 
 interface UserState {
   token: string;
@@ -76,14 +77,12 @@ export const useUserStore = defineStore({
         this.avatar = userInfo.headImg;
         this.userInfo = userInfo;
         // 生成路由
-        const routes = generatorDynamicRouter(menus);
-        this.menus = routes;
+        const generatorResult = generatorDynamicRouter(menus);
+        this.menus = generatorResult.menus;
         wsStore.initSocket();
-        console.log('routes', routes);
-        // router.push('/sys/permission/role')
+
         return { menus, perms, userInfo };
       } catch (error) {
-        console.error(error);
         // return this.logout();
       }
     },
@@ -93,6 +92,7 @@ export const useUserStore = defineStore({
       const wsStore = useWsStore();
       wsStore.closeSocket();
       this.resetToken();
+      resetRouter();
     },
   },
 });
