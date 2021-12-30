@@ -9,13 +9,14 @@ import { type WhiteNameList } from './constant';
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const loginRoutePath = '/login';
-const defaultRoutePath = '/dashboard';
+const defaultRoutePath = '/dashboard/welcome';
 
 export function createRouterGuards(router: Router, whiteNameList: WhiteNameList) {
   router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     NProgress.start(); // start progress bar
     const token = Storage.get(ACCESS_TOKEN_KEY);
+
     if (token) {
       if (to.name === 'login') {
         next({ path: defaultRoutePath });

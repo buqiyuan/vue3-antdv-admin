@@ -6,14 +6,13 @@ import { createRouterGuards } from './router-guards';
 
 import common from '@/router/staticModules';
 import shared from './staticModules/besidesLayout';
-import { notFound, errorRoutes } from './staticModules/error';
 import { whiteNameList } from './constant';
 
 export const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Layout',
-    redirect: '/dashboard',
+    redirect: '/dashboard/welcome',
     component: () => import(/* webpackChunkName: "layout" */ '@/layout/index.vue'),
     meta: {
       title: '首页',
@@ -21,8 +20,6 @@ export const routes: Array<RouteRecordRaw> = [
     children: [...common],
   },
   ...shared,
-  notFound,
-  errorRoutes,
 ];
 
 export const router = createRouter({
@@ -42,9 +39,11 @@ export function resetRouter() {
 }
 
 export async function setupRouter(app: App) {
-  app.use(router);
   // 创建路由守卫
   createRouterGuards(router, whiteNameList);
+
+  app.use(router);
+
   // 路由准备就绪后挂载APP实例
   await router.isReady();
 }
