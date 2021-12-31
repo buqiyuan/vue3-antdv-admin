@@ -1,5 +1,5 @@
 <template>
-  <CustomAModal title="搜索菜单" v-model:visible="show" :keyboard="false">
+  <CustomAModal title="搜索菜单" v-model:visible="show" :keyboard="false" @cancel="handleClose">
     <a-input
       ref="inputRef"
       v-model:value="keyword"
@@ -79,7 +79,10 @@
   function search() {
     resultOptions.value = menusList.value.filter((menu) => {
       const title = menu.meta?.title as string;
-      return keyword.value && title.includes(keyword.value.trim());
+      return (
+        keyword.value &&
+        title.toLocaleLowerCase().includes(keyword.value.toLocaleLowerCase().trim())
+      );
     });
     if (resultOptions.value?.length > 0) {
       activePath.value = resultOptions.value[0].name as string;
@@ -103,9 +106,12 @@
   }
 
   function handleClose() {
-    resultOptions.value = [];
-    keyword.value = '';
     show.value = false;
+    /** 延时处理防止用户看到某些操作 */
+    setTimeout(() => {
+      resultOptions.value = [];
+      keyword.value = '';
+    }, 200);
   }
 
   /** key up */

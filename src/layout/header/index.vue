@@ -100,7 +100,6 @@
   const userInfo = computed(() => userStore.userInfo);
   const searchVisible = ref(false);
   const menus = computed(() => {
-    console.log('route', route, userStore.menus);
     if (route.meta?.namePath) {
       let children = userStore.menus;
       const paths = route.meta?.namePath?.map((item) => {
