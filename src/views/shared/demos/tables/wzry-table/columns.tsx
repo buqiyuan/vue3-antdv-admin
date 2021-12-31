@@ -10,7 +10,7 @@ export const columns: TableColumn[] = [
     hideInSearch: true,
     dataIndex: 'faceimg',
     bodyCell: ({ record }) => (
-      <ImagePreview src={record.faceimg} preview={{ src: record.heroimg }} />
+      <ImagePreview src={record.faceimg} preview={{ src: record.heroimg }} key={record.faceimg} />
     ),
   },
   {

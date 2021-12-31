@@ -2,6 +2,7 @@ import { Result } from 'ant-design-vue';
 import { type RouteRecordRaw } from 'vue-router';
 import RouterView from '@/layout/routerView/index.vue';
 import { isUrl } from '@/utils/is';
+import { uniqueSlash } from '@/utils/urlUtils';
 import { constantRouterComponents } from '@/router/asyncModules';
 import NotFound from '@/views/shared/error/404.vue';
 import router, { routes } from '.';
@@ -16,20 +17,20 @@ const endRoutes: RouteRecordRaw[] = [...shared, errorRoutes, notFound];
 export function filterAsyncRoute(
   routes: API.Menu[],
   parentRoute: API.Menu | null = null,
-  lastKeyPath: string[] = [],
+  lastNamePath: string[] = [],
 ): RouteRecordRaw[] {
   return routes
     .filter((item) => item.type !== 2 && item.isShow && item.parentId == parentRoute?.id)
     .map((item) => {
       const { router, viewPath, name, icon, keepalive } = item;
       let fullPath = '';
-      const pathPrefix = lastKeyPath.slice(-1)[0] || '';
+      const pathPrefix = lastNamePath.slice(-1)[0] || '';
       if (isUrl(router)) {
         fullPath = router;
       } else {
         fullPath = router.startsWith('/') ? router : '/' + router;
         fullPath = router.startsWith(pathPrefix) ? fullPath : pathPrefix + fullPath;
-        fullPath = [...new Set(fullPath.split('/'))].join('/');
+        fullPath = [...new Set(uniqueSlash(fullPath).split('/'))].join('/');
       }
       let realRoutePath = router;
       if (parentRoute) {
@@ -48,14 +49,14 @@ export function filterAsyncRoute(
           title: name,
           perms: [],
           icon: icon,
-          keyPath: lastKeyPath.concat(fullPath),
+          namePath: lastNamePath.concat(fullPath),
           keepAlive: keepalive,
         },
       };
 
       if (item.type === 0) {
         // 如果是目录
-        const children = filterAsyncRoute(routes, item, lastKeyPath.concat(fullPath));
+        const children = filterAsyncRoute(routes, item, lastNamePath.concat(fullPath));
         if (children?.length) {
           route.component = RouterView;
           route.children = children;
@@ -100,7 +101,8 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
     const routeList = filterAsyncRoute(asyncMenus);
     const layout = routes.find((item) => item.name == 'Layout')!;
     // console.log(routeList, '根据后端返回的权限路由生成');
-    generatorKeyPath(common);
+    // 给公共路由添加namePath
+    generatorNamePath(common);
     const menus = [...common, ...routeList];
     layout.children = menus;
     const removeRoute = router.addRoute(layout);
@@ -129,19 +131,31 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
 
 /**
  * 主要方便于控制a-menu的open-keys，即控制左侧菜单应当展开哪些菜单
- * @param {RouteRecordRaw[]} routes 需要添加keyPath的路由
- * @param {string[]} keyPath
+ * @param {RouteRecordRaw[]} routes 需要添加namePath的路由
+ * @param {string[]} namePath
  */
-export const generatorKeyPath = (routes: RouteRecordRaw[], keyPath?: string[]) => {
+export const generatorNamePath = (
+  routes: RouteRecordRaw[],
+  namePath?: string[],
+  parent?: RouteRecordRaw,
+) => {
   routes.forEach((item) => {
     if (item.children?.length) {
       if (item.meta && typeof item.name === 'string') {
-        item.meta.keyPath = Array.isArray(keyPath) ? keyPath.concat(item.name) : [item.name];
-        generatorKeyPath(item.children, item.meta.keyPath);
+        item.meta.namePath = Array.isArray(namePath) ? namePath.concat(item.name) : [item.name];
+        item.meta.fullPath = parent?.meta?.fullPath
+          ? [parent.meta.fullPath, item.path].join('/')
+          : item.path;
+        item.meta.fullPath = uniqueSlash(item.meta.fullPath);
+        generatorNamePath(item.children, item.meta.namePath, item);
       }
     } else {
       if (item.meta && typeof item.name === 'string') {
-        item.meta.keyPath = Array.isArray(keyPath) ? keyPath.concat(item.name) : [item.name];
+        item.meta.namePath = Array.isArray(namePath) ? namePath.concat(item.name) : [item.name];
+        item.meta.fullPath = parent?.meta?.fullPath
+          ? [parent.meta.fullPath, item.path].join('/')
+          : item.path;
+        item.meta.fullPath = uniqueSlash(item.meta.fullPath);
       }
     }
   });

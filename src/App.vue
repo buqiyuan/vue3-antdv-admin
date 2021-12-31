@@ -1,12 +1,12 @@
 <template>
-  <config-provider :locale="zhCN">
+  <ConfigProvider :locale="zhCN">
     <router-view v-slot="{ Component }">
       <Suspense>
         <component :is="Component" />
       </Suspense>
     </router-view>
     <LockScreen />
-  </config-provider>
+  </ConfigProvider>
 </template>
 
 <script setup lang="ts">

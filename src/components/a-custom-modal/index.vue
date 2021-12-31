@@ -6,6 +6,7 @@
         v-model:visible="visibleModel"
         :maskClosable="false"
         :getContainer="() => modalWrapRef"
+        :width="innerWidth || width"
         @ok="emit('ok')"
         @cancel="emit('cancel')"
       >
@@ -65,6 +66,7 @@
 
   const visibleModel = useVModel(props, 'visible');
   const fullscreenModel = ref(props.fullscreen);
+  const innerWidth = ref('');
 
   const cursorStyle = {
     top: 'n-resize',
@@ -234,6 +236,7 @@
             modalEl.style.width = event.clientX - iParentLeft + 'px';
             modalEl.style.height = event.clientY - iParentTop + 'px';
           }
+          innerWidth.value = modalEl.style.width;
         };
 
         const mouseup = () => {

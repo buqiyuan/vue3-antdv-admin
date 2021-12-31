@@ -15,8 +15,10 @@ declare module 'vue-router' {
     perms?: PermissionType[];
     /** 是否需要缓存 */
     keepAlive?: boolean;
-    /** 当前路由keypath */
-    keyPath?: string[];
+    /** 当前路由namePath 祖先name集合 */
+    namePath?: string[];
+    /** 当前路由所在的完整路径 */
+    fullPath?: string;
     /** 是否固定在标签栏 */
     affix?: boolean;
     /** 菜单图标 */

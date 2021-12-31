@@ -5,7 +5,8 @@ const prefix = 'shared/demos/';
 export default {
   'views/shared/demos/form/rule-form.vue': getAsyncPage(`${prefix}form/rule-form/index.vue`), // 验证表单
   'views/shared/demos/icons/Iconfont.vue': getAsyncPage(`${prefix}icons/Iconfont.vue`), // 自定义图标
-  [`views/${prefix}tables/summary-table/index.vue`]: getAsyncPage(`${prefix}tables/summary-table`), // 合计表格
+  [`views/${prefix}tables/lol-table/index.vue`]: getAsyncPage(`${prefix}tables/lol-table`), // lol
+  [`views/${prefix}tables/wzry-table/index.vue`]: getAsyncPage(`${prefix}tables/wzry-table`), // wzry
   'views/shared/demos/button.vue': getAsyncPage(`${prefix}button.vue`), // 自定义按钮
   'views/shared/demos/custom-modal.vue': getAsyncPage(`${prefix}custom-modal.vue`), // 自定义模态框
 };

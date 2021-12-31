@@ -11,7 +11,7 @@ export const columns: TableColumn[] = [
     hideInSearch: true,
     dataIndex: 'avatar',
     bodyCell: ({ record }) => (
-      <ImagePreview src={record.avatar} preview={{ src: record.posters }} />
+      <ImagePreview src={record.avatar} preview={{ src: record.posters }} key={record.avatar} />
     ),
   },
   {
@@ -46,7 +46,7 @@ export const columns: TableColumn[] = [
     actions: ({ record }) => [
       {
         label: '查看详情',
-        onClick: () => router.push({ name: 'demos-lol-info-table', params: { id: record.heroId } }),
+        onClick: () => router.push({ name: 'demos-table-lol-info', params: { id: record.heroId } }),
       },
     ],
   },

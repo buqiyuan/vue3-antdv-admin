@@ -1,12 +1,12 @@
 import { type RouteRecordRaw } from 'vue-router';
 import RouterView from '@/layout/routerView/index.vue';
 
-const routeName = 'dashboard';
+const moduleName = 'dashboard';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
-    name: routeName,
+    name: moduleName,
     redirect: '/dashboard/welcome',
     component: RouterView,
     meta: {
@@ -16,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'welcome',
-        name: `${routeName}-welcome`,
+        name: `${moduleName}-welcome`,
         meta: {
           title: '首页',
           icon: 'icon-shouye',

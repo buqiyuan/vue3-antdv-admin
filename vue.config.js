@@ -167,7 +167,7 @@ module.exports = defineConfig({
       // },
       '^/api': {
         // target: process.env.VUE_APP_API_URL,
-        target: 'http://175.24.200.3:7001',
+        target: 'http://buqiyuan.site:7001',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
@@ -175,7 +175,7 @@ module.exports = defineConfig({
         },
       },
       '/ws-api': {
-        target: 'ws://175.24.200.3:7002',
+        target: 'ws://buqiyuan.site:7002',
         changeOrigin: true, //是否允许跨域
         ws: true,
       },

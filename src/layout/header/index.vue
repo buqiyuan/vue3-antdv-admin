@@ -5,17 +5,21 @@
         <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
       </span>
       <Breadcrumb>
-        <template v-for="(routeItem, rotueIndex) in $route.matched" :key="routeItem.name">
+        <template v-for="(routeItem, rotueIndex) in menus" :key="routeItem.name">
           <Breadcrumb.Item>
-            <span>{{ getTitle(routeItem.meta.title) }}</span>
-            <template v-if="routeItem.children.length" #overlay>
-              <a-menu :selectedKeys="[$route.matched[rotueIndex + 1]?.name]" @click="clickMenuItem">
-                <template v-for="childItem in routeItem.children">
-                  <a-menu-item v-if="!childItem.meta?.hideInMenu" :key="childItem.name">
+            <span>{{ getTitle(routeItem?.meta?.title) }}</span>
+            <template v-if="routeItem?.children?.length" #overlay>
+              <Menu :selectedKeys="[menus[rotueIndex + 1]?.name]">
+                <template v-for="childItem in routeItem?.children" :key="childItem.name">
+                  <Menu.Item
+                    v-if="!childItem.meta?.hideInMenu"
+                    :key="childItem.name"
+                    @click="clickMenuItem(childItem)"
+                  >
                     <span>{{ getTitle(childItem.meta?.title) }}</span>
-                  </a-menu-item>
+                  </Menu.Item>
                 </template>
-              </a-menu>
+              </Menu>
             </template>
           </Breadcrumb.Item>
         </template>
@@ -52,7 +56,7 @@
 
 <script lang="tsx" setup>
   import { ref, computed } from 'vue';
-  import { useRouter, useRoute } from 'vue-router';
+  import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
   import {
     Layout,
     message,
@@ -92,14 +96,61 @@
   const router = useRouter();
   const route = useRoute();
   const userInfo = computed(() => userStore.userInfo);
+  const menus = computed(() => {
+    console.log('route', route, userStore.menus);
+    if (route.meta?.namePath) {
+      let children = userStore.menus;
+      const paths = route.meta?.namePath?.map((item) => {
+        const a = children.find((n) => n.name === item);
+        children = a?.children || [];
+        return a;
+      });
+      return [
+        {
+          name: '__index',
+          meta: {
+            title: '首页',
+          },
+          children: userStore.menus,
+        },
+        ...paths,
+      ];
+    }
+    return route.matched;
+  });
+
+  const findLastChild = (route?: RouteRecordRaw) => {
+    if (typeof route?.redirect === 'object') {
+      const redirectValues = Object.values(route.redirect);
+      if (route?.children?.length) {
+        const target = route.children.find((n) =>
+          redirectValues.some((m) => [n.name, n.path, n.meta?.fullPath].some((v) => v === m)),
+        );
+        return findLastChild(target);
+      }
+      return redirectValues.find((n) => typeof n === 'string');
+    } else if (typeof route?.redirect === 'string') {
+      if (route?.children?.length) {
+        const target = route.children.find((n) =>
+          [n.name, n.path, n.meta?.fullPath].some((m) => m === route?.redirect),
+        );
+        return findLastChild(target);
+      }
+      return route?.redirect;
+    }
+    return route;
+  };
 
   // 点击菜单
-  const clickMenuItem = ({ key }) => {
-    if (key === route.name) return;
-    if (/http(s)?:/.test(key)) {
-      window.open(key);
-    } else {
-      router.push({ name: key });
+  const clickMenuItem = (menuItem: RouteRecordRaw) => {
+    const lastChild = findLastChild(menuItem);
+    console.log('lastChild', menuItem, lastChild);
+
+    if (lastChild?.name === route.name) return;
+    if (/http(s)?:/.test(lastChild?.name)) {
+      window.open(lastChild?.name);
+    } else if (lastChild?.name) {
+      router.push({ name: lastChild.name });
     }
   };
 

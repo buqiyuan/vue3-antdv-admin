@@ -1,13 +1,13 @@
 import { type RouteRecordRaw } from 'vue-router';
 import RouterView from '@/layout/routerView/index.vue';
 
-const routeName = 'demos';
+const moduleName = 'demos';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/demos',
-    name: routeName,
-    redirect: '/demos/custom-a-custom-modal',
+    name: moduleName,
+    redirect: { name: `${moduleName}-custom-modal` },
     component: RouterView,
     meta: {
       title: 'demo演示',
@@ -16,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'custom-a-custom-modal',
-        name: `${routeName}-custom-modal`,
+        name: `${moduleName}-custom-modal`,
         meta: {
           title: '自定义模态框',
           icon: 'icon-zhuomian',
@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'button',
-        name: `${routeName}-button`,
+        name: `${moduleName}-button`,
         meta: {
           title: '按钮的扩展',
           icon: 'icon-zhuomian',
@@ -40,18 +40,18 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'form',
-        name: `${routeName}-form`,
+        name: `${moduleName}-form`,
         meta: {
           title: '表单演示',
           icon: 'icon-zhuomian',
           keepAlive: true,
         },
-        redirect: { name: `${routeName}-form-rule` },
+        redirect: { name: `${moduleName}-form-basic` },
         component: RouterView,
         children: [
           {
             path: 'basic',
-            name: `${routeName}-form-basic`,
+            name: `${moduleName}-form-basic`,
             meta: {
               title: '基本表单',
               icon: 'icon-zhuomian',
@@ -64,7 +64,7 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: 'rule',
-            name: `${routeName}-form-rule`,
+            name: `${moduleName}-form-rule`,
             meta: {
               title: '验证表单',
               icon: 'icon-zhuomian',
@@ -79,18 +79,18 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'table',
-        name: `${routeName}-table`,
+        name: `${moduleName}-table`,
         meta: {
           title: '表格演示',
           icon: 'icon-zhuomian',
           keepAlive: true,
         },
-        redirect: { name: `${routeName}-table-wzry` },
+        redirect: { name: `${moduleName}-table-wzry` },
         component: RouterView,
         children: [
           {
             path: 'wzry',
-            name: `${routeName}-wzry-table`,
+            name: `${moduleName}-table-wzry`,
             meta: {
               title: '王者荣耀',
               icon: 'icon-zhuomian',
@@ -103,7 +103,7 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: 'lol',
-            name: `${routeName}-lol-table`,
+            name: `${moduleName}-table-lol`,
             meta: {
               title: '英雄联盟',
               icon: 'icon-zhuomian',
@@ -116,13 +116,13 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: 'lol/:id',
-            name: `${routeName}-lol-info-table`,
+            name: `${moduleName}-table-lol-info`,
             meta: {
               title: '英雄详情',
               icon: 'icon-zhuomian',
               hideInMenu: true,
               keepAlive: true,
-              activeMenu: `${routeName}-lol-table`,
+              activeMenu: `${moduleName}-table-lol`,
             },
             component: () =>
               import(
@@ -133,7 +133,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'icons',
-        name: `${routeName}-icons`,
+        name: `${moduleName}-icons`,
         meta: {
           title: '自定义图标',
           icon: 'icon-zhuomian',

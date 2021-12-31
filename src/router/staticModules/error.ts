@@ -1,6 +1,6 @@
 import RouterView from '@/layout/routerView/index.vue';
 
-const routeName = 'error';
+const moduleName = 'error';
 
 export const notFound = {
   path: '/:pathMatch(.*)*',
@@ -11,7 +11,7 @@ export const notFound = {
 
 export const errorRoutes = {
   path: '/error',
-  name: routeName,
+  name: moduleName,
   redirect: '/error/404',
   component: RouterView,
   meta: {
@@ -22,7 +22,7 @@ export const errorRoutes = {
   children: [
     {
       path: '404',
-      name: `${routeName}-404`,
+      name: `${moduleName}-404`,
       meta: {
         title: '404',
         icon: 'UserOutlined',

@@ -84,7 +84,7 @@
     <div class="tabs-view-content">
       <router-view v-slot="{ Component }">
         <template v-if="Component">
-          <transition name="zoom-fade" mode="out-in" appear>
+          <transition name="fade-transform" mode="out-in" appear>
             <keep-alive :include="keepAliveComponents">
               <suspense>
                 <component :is="Component" :key="route.fullPath" />
