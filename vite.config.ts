@@ -111,13 +111,13 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 8088,
       proxy: {
         '/api': {
-          target: 'http://175.24.200.3:7001',
+          target: 'http://buqiyuan.site:7001',
           // target: 'http://localhost:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/ws-api': {
-          target: 'ws://175.24.200.3:7002',
+          target: 'ws://buqiyuan.site:7002',
           changeOrigin: true, //是否允许跨域
           ws: true,
         },
@@ -135,7 +135,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       terserOptions: {
         compress: {
           keep_infinity: true,
-          drop_console: !!VITE_DROP_CONSOLE,
+          drop_console: Object.is(VITE_DROP_CONSOLE, 'true'),
         },
       },
     },

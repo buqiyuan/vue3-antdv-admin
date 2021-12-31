@@ -6,6 +6,7 @@
         v-model:visible="visibleModel"
         :maskClosable="false"
         :getContainer="() => modalWrapRef"
+        :width="innerWidth || width"
         @ok="emit('ok')"
         @cancel="emit('cancel')"
       >
@@ -65,6 +66,7 @@
 
   const visibleModel = useVModel(props, 'visible');
   const fullscreenModel = ref(props.fullscreen);
+  const innerWidth = ref('');
 
   const cursorStyle = {
     top: 'n-resize',
@@ -234,6 +236,7 @@
             modalEl.style.width = event.clientX - iParentLeft + 'px';
             modalEl.style.height = event.clientY - iParentTop + 'px';
           }
+          innerWidth.value = modalEl.style.width;
         };
 
         const mouseup = () => {
@@ -276,6 +279,8 @@
     .ant-modal {
       position: fixed;
       padding: 0;
+      min-height: 200px;
+      min-width: 200px;
       .ant-modal-close {
         top: 6px;
         right: 6px;
@@ -308,6 +313,7 @@
         min-width: 200px;
         overflow: hidden;
         .ant-modal-body {
+          flex: auto;
           overflow: auto;
           height: 100%;
         }

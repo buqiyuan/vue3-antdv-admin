@@ -1,21 +1,23 @@
 <template>
-  <a-menu
+  <Menu
     v-model:open-keys="state.openKeys"
     v-model:selected-keys="state.selectedKeys"
     mode="inline"
     theme="dark"
-    :inline-collapsed="props.collapsed"
+    :collapsed="props.collapsed"
+    collapsible
     class="menu-container"
     @click="clickMenuItem"
   >
     <template v-for="item in menus" :key="item.name">
-      <menu-item :menu-info="item" />
+      <MenuItem :menu-info="item" />
     </template>
-  </a-menu>
+  </Menu>
 </template>
 
 <script setup lang="ts">
   import { reactive, computed, watch } from 'vue';
+  import { Menu } from 'ant-design-vue';
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
   import { useRoute, useRouter } from 'vue-router';
@@ -43,9 +45,9 @@
     const meta = currentRoute.meta;
     if (meta?.activeMenu) {
       const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
-      return targetMenu?.meta?.keyPath ?? meta?.activeMenu;
+      return targetMenu?.meta?.namePath ?? [meta?.activeMenu];
     }
-    return currentRoute.meta?.keyPath ?? currentRoute.matched.slice(1).map((n) => n.name);
+    return currentRoute.meta?.namePath ?? currentRoute.matched.slice(1).map((n) => n.name);
   };
 
   const state = reactive({

@@ -1,6 +1,8 @@
 import 'virtual:windi.css';
 import 'virtual:windi-devtools';
 import 'virtual:svg-icons-register';
+// 全局公共样式
+import '@/styles/index.less';
 
 import { createApp } from 'vue';
 import App from './App.vue';
