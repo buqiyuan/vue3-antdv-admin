@@ -51,6 +51,7 @@
         </template>
       </Dropdown>
     </div>
+    <SearchModal v-model:value="searchVisible" />
   </Layout.Header>
 </template>
 
@@ -79,6 +80,7 @@
     GithubOutlined,
     LockOutlined,
   } from '@ant-design/icons-vue';
+  import { SearchModal } from './components';
   import { useUserStore } from '@/store/modules/user';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
 
@@ -96,6 +98,7 @@
   const router = useRouter();
   const route = useRoute();
   const userInfo = computed(() => userStore.userInfo);
+  const searchVisible = ref(false);
   const menus = computed(() => {
     console.log('route', route, userStore.menus);
     if (route.meta?.namePath) {
@@ -204,6 +207,9 @@
     {
       icon: SearchOutlined,
       tips: '搜索',
+      eventObject: {
+        click: () => (searchVisible.value = true),
+      },
     },
     {
       icon: GithubOutlined,
