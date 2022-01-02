@@ -21,6 +21,7 @@
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
   import { useRoute, useRouter } from 'vue-router';
+  import { LOGIN_NAME } from '@/router/constant';
 
   const props = defineProps({
     collapsed: {
@@ -68,7 +69,7 @@
   watch(
     () => currentRoute.fullPath,
     () => {
-      if (currentRoute.name == 'login' || props.collapsed) return;
+      if (currentRoute.name === LOGIN_NAME || props.collapsed) return;
       state.openKeys = getOpenKeys();
       const meta = currentRoute.meta;
       if (meta?.activeMenu) {

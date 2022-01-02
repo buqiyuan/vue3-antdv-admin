@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-up">
-    <LockScreen v-if="isLock && isMouted && $route.name != 'login'" />
+    <LockScreen v-if="isLock && isMouted && $route.name != LOGIN_NAME" />
   </transition>
 </template>
 
@@ -9,6 +9,7 @@
   import { computed, ref, onMounted, onUnmounted } from 'vue';
   import { useRoute } from 'vue-router';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
+  import { LOGIN_NAME } from '@/router/constant';
 
   const lockscreenStore = useLockscreenStore();
   const route = useRoute();
@@ -20,7 +21,7 @@
 
   const timekeeping = () => {
     clearInterval(timer);
-    if (route.name == 'login' || isLock.value) return;
+    if (route.name === LOGIN_NAME || isLock.value) return;
     // 设置不锁屏
     lockscreenStore.setLock(false);
     // 重置锁屏时间

@@ -19,7 +19,8 @@ export interface RequestOptions {
 }
 
 const UNKNOWN_ERROR = '未知错误，请重试';
-
+// 是否生产环境
+// const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
 /** 真实请求的路径前缀 */
 const baseApiUrl = process.env.VUE_APP_BASE_API;
 /** mock请求路径前缀 */
@@ -112,7 +113,10 @@ export const request = async <T = any>(
     }
     const fullUrl = `${(isMock ? baseMockUrl : baseApiUrl) + config.url}`;
     config.url = fullUrl.replace(/(?<!:)\/{2,}/g, '/');
-
+    // if (IS_PROD) {
+    //   // 保持api请求的协议与当前访问的站点协议一致
+    //   config.url.replace(/^https?:/g, location.protocol);
+    // }
     const res = await service.request(config);
     successMsg && $message.success(successMsg);
     errorMsg && $message.error(errorMsg);

@@ -12,7 +12,7 @@
               <Menu :selectedKeys="[menus[rotueIndex + 1]?.name]">
                 <template v-for="childItem in routeItem?.children" :key="childItem.name">
                   <Menu.Item
-                    v-if="!childItem.meta?.hideInMenu"
+                    v-if="!childItem.meta?.hideInMenu && !childItem.meta?.hideInBreadcrumb"
                     :key="childItem.name"
                     @click="clickMenuItem(childItem)"
                   >
@@ -83,6 +83,7 @@
   import { SearchModal } from './components';
   import { useUserStore } from '@/store/modules/user';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
+  import { LOGIN_NAME } from '@/router/constant';
 
   defineProps({
     collapsed: {
@@ -172,7 +173,7 @@
         // 移除标签页
         localStorage.clear();
         router.replace({
-          name: 'login',
+          name: LOGIN_NAME,
           query: {
             redirect: route.fullPath,
           },

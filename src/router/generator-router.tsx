@@ -7,12 +7,13 @@ import { constantRouterComponents } from '@/router/asyncModules';
 import NotFound from '@/views/shared/error/404.vue';
 import router, { routes } from '.';
 import common from '@/router/staticModules';
-import { notFound, errorRoutes } from './staticModules/error';
-import shared from './staticModules/besidesLayout';
+import { notFound, errorRoute } from './staticModules/error';
+import { REDIRECT_ROUTE } from './staticModules/besidesLayout';
 import { type PermissionType } from '@/core/permission/modules/types';
+import outsideLayout from './outsideLayout';
 
 // 需要放在所有路由之后的路由
-const endRoutes: RouteRecordRaw[] = [...shared, errorRoutes, notFound];
+const endRoutes: RouteRecordRaw[] = [REDIRECT_ROUTE, errorRoute, notFound];
 
 export function filterAsyncRoute(
   routes: API.Menu[],
@@ -103,19 +104,20 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
     // console.log(routeList, '根据后端返回的权限路由生成');
     // 给公共路由添加namePath
     generatorNamePath(common);
-    const menus = [...common, ...routeList];
+    const menus = [...common, ...routeList, ...endRoutes];
     layout.children = menus;
     const removeRoute = router.addRoute(layout);
     // 获取所有没有包含children的路由，上面addRoute的时候，vue-router已经帮我们拍平了所有路由
-    const filterRoutes = router.getRoutes().filter((item) => !item.children.length);
+    const filterRoutes = router
+      .getRoutes()
+      .filter((item) => !item.children.length && !outsideLayout.some((n) => n.name === item.name));
     // 清空所有路由
     removeRoute();
-    layout.children = filterRoutes;
+    layout.children = [...filterRoutes];
     // 重新添加拍平后的路由
     router.addRoute(layout);
-    // 追加末尾路由
-    endRoutes.forEach((item) => router.addRoute(item));
-    // console.log('所有路由', router.getRoutes());
+
+    console.log('所有路由', filterRoutes);
     return {
       menus: menus,
       routes: layout.children,

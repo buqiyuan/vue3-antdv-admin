@@ -108,8 +108,8 @@ module.exports = defineConfig({
             priority: 10,
             chunks: 'initial', // only package third parties that are initially dependent
           },
-          elementUI: {
-            name: 'chunk-elementUI', // split elementUI into a single package
+          antdv: {
+            name: 'chunk-ant-design-vue', // split ant-design-vue into a single package
             priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
             test: /[\\/]node_modules[\\/]_?ant-design-vue(.*)/, // in order to adapt to cnpm
           },
@@ -156,6 +156,9 @@ module.exports = defineConfig({
   },
   devServer: {
     port: port,
+    client: {
+      progress: true,
+    },
     proxy: {
       // '/mock-api': {
       //   target: `http://localhost:${port}`,
@@ -167,17 +170,18 @@ module.exports = defineConfig({
       // },
       '^/api': {
         // target: process.env.VUE_APP_API_URL,
-        target: 'http://buqiyuan.site:7001',
+        target: 'https://nest-api.buqiyuan.site/api/',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
           '^/api': '',
         },
       },
-      '/ws-api': {
-        target: 'ws://buqiyuan.site:7002',
+      '^/ws-api': {
+        target: 'wss://nest-api.buqiyuan.site',
         changeOrigin: true, //是否允许跨域
-        ws: true,
+        wss: true,
+        logLevel: 'debug',
       },
     },
     setupMiddlewares: require('./src/mock/mock-server.js'),

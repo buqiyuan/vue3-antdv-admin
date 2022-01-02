@@ -27,6 +27,10 @@ declare module 'vue-router' {
     transitionName?: string;
     /** 不在菜单中显示 */
     hideInMenu?: boolean;
+    /** 不在面包屑导航中显示 */
+    hideInBreadcrumb?: boolean;
+    /** 不在tab标签页中显示 */
+    hideInTabs?: boolean;
     /** 设置当前路由高亮的菜单项，值为route fullPath或route name,一般用于详情页 */
     activeMenu?: string;
     isLink?: boolean;

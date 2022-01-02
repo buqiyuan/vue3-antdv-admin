@@ -1,15 +1,17 @@
+import { type RouteRecordRaw } from 'vue-router';
+import { PAGE_NOT_FOUND_NAME } from '@/router/constant';
 import RouterView from '@/layout/routerView/index.vue';
 
 const moduleName = 'error';
 
-export const notFound = {
+export const notFound: RouteRecordRaw = {
   path: '/:pathMatch(.*)*',
   name: 'NotFound',
   redirect: '/error/404',
   component: () => import(/* webpackChunkName: "404" */ '@/views/shared/error/404.vue'),
 };
 
-export const errorRoutes = {
+export const errorRoute: RouteRecordRaw = {
   path: '/error',
   name: moduleName,
   redirect: '/error/404',
@@ -18,11 +20,12 @@ export const errorRoutes = {
     title: '错误页',
     icon: 'EditOutlined',
     hideInMenu: true,
+    hideInTabs: true,
   },
   children: [
     {
       path: '404',
-      name: `${moduleName}-404`,
+      name: PAGE_NOT_FOUND_NAME,
       meta: {
         title: '404',
         icon: 'UserOutlined',
@@ -32,4 +35,4 @@ export const errorRoutes = {
   ],
 };
 
-export default [notFound, errorRoutes];
+export default [errorRoute, notFound];

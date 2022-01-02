@@ -4,21 +4,20 @@ import { useKeepAliveStore } from '@/store/modules/keepAlive';
 import NProgress from 'nprogress'; // progress bar
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
-import { type WhiteNameList } from './constant';
+import { type WhiteNameList, LOGIN_NAME, REDIRECT_NAME } from './constant';
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
-const loginRoutePath = '/login';
 const defaultRoutePath = '/dashboard/welcome';
 
 export function createRouterGuards(router: Router, whiteNameList: WhiteNameList) {
   router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     NProgress.start(); // start progress bar
-    const token = Storage.get(ACCESS_TOKEN_KEY);
+    const token = Storage.get(ACCESS_TOKEN_KEY, null);
 
     if (token) {
-      if (to.name === 'login') {
+      if (to.name === LOGIN_NAME) {
         next({ path: defaultRoutePath });
         NProgress.done();
       } else {
@@ -52,7 +51,7 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
         // 在免登录名单，直接进入
         next();
       } else {
-        next({ path: loginRoutePath, query: { redirect: to.fullPath }, replace: true });
+        next({ name: LOGIN_NAME, query: { redirect: to.fullPath }, replace: true });
         NProgress.done(); // if current page is login will not trigger afterEach hook, so manually handle it
       }
     }
@@ -84,7 +83,7 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
       }
     }
     // 如果进入的是 Redirect 页面，则也将离开页面的缓存清空
-    if (to.name == 'Redirect') {
+    if (to.name == REDIRECT_NAME) {
       componentName && keepAliveStore.remove(componentName);
     }
     NProgress.done(); // finish progress bar

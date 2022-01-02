@@ -96,8 +96,6 @@
 
       const innerPropsRef = ref<Partial<TableProps>>();
 
-      console.log('slots', slots);
-
       const getProps = computed(() => {
         return { ...props, ...unref(innerPropsRef) };
       });

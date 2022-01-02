@@ -85,6 +85,7 @@
   import { useBattery } from '@/hooks/useBattery';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { useUserStore } from '@/store/modules/user';
+  import { LOGIN_NAME } from '@/router/constant';
 
   const lockscreenStore = useLockscreenStore();
   const userStore = useUserStore();
@@ -137,7 +138,7 @@
     unLockLogin(false);
     lockscreenStore.setLock(false);
     router.replace({
-      path: '/login',
+      name: LOGIN_NAME,
       query: {
         redirect: route.fullPath,
       },
