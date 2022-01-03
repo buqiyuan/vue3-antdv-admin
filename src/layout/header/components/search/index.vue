@@ -75,13 +75,18 @@
       inputRef.value?.focus();
     }
   });
+
+  const getTitle = (title) => {
+    return typeof title === 'string' ? title : title?.['zh_CN'];
+  };
+
   /** 查询 */
   function search() {
     resultOptions.value = menusList.value.filter((menu) => {
-      const title = menu.meta?.title as string;
+      const title = getTitle(menu.meta?.title);
       return (
         keyword.value &&
-        title.toLocaleLowerCase().includes(keyword.value.toLocaleLowerCase().trim())
+        title?.toLocaleLowerCase().includes(keyword.value.toLocaleLowerCase().trim())
       );
     });
     if (resultOptions.value?.length > 0) {
@@ -90,6 +95,7 @@
       activePath.value = '';
     }
   }
+
   /** 将路由转换成菜单列表 */
   function transformRouteToList(routes: RouteRecordRaw[], treeMap: RouteRecordRaw[] = []) {
     if (routes && routes.length === 0) return [];
