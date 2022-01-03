@@ -29,6 +29,7 @@ export const errorRoute: RouteRecordRaw = {
       meta: {
         title: '404',
         icon: 'UserOutlined',
+        hideInMenu: true,
       },
       component: () => import(/* webpackChunkName: "404" */ '@/views/shared/error/404.vue'),
     },
