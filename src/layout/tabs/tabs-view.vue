@@ -12,7 +12,7 @@
         <template #tab>
           <Dropdown :trigger="['contextmenu']">
             <div style="display: inline-block">
-              {{ getTitle(pageItem.meta?.title) }}
+              <TitleI18n :title="pageItem.meta?.title" />
             </div>
             <template #overlay>
               <Menu style="user-select: none">
@@ -109,6 +109,7 @@
   } from '@ant-design/icons-vue';
   import { Dropdown, Tabs, message, Menu } from 'ant-design-vue';
   import { REDIRECT_NAME } from '@/router/constant';
+  import { TitleI18n } from '@/components/basic/title-i18n';
 
   type RouteItem = Omit<RouteLocation, 'matched' | 'redirectedFrom'>;
 
@@ -239,10 +240,6 @@
     // tabsViewMutations.closeAllTabs()
     tabsViewStore.closeAllTabs();
     router.replace('/');
-  };
-
-  const getTitle = (title) => {
-    return typeof title === 'string' ? title : title?.['zh_CN'];
   };
 </script>
 

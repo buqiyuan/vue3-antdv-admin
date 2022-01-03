@@ -87,7 +87,7 @@
   import { ref } from 'vue';
   import { Descriptions, Tooltip, Popconfirm, Button } from 'ant-design-vue';
   import { ToolOutlined, CaretRightOutlined, PoweroffOutlined } from '@ant-design/icons-vue';
-  import { DynamicTable, type DynamicTableInstance } from '@/components/dynamic-table';
+  import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { taskSchemas } from './formSchemas';

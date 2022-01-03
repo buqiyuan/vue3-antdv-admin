@@ -7,7 +7,7 @@
 </script>
 
 <script setup lang="ts">
-  import { DynamicTable, LoadDataParams, TableColumn } from '@/components/dynamic-table';
+  import { DynamicTable, LoadDataParams, TableColumn } from '@/components/core/dynamic-table';
   import { getLoginLogList } from '@/api/system/log';
 
   const loadTableData = async ({ page, limit }: LoadDataParams) => {

@@ -1,5 +1,6 @@
 import { IS_LOCKSCREEN } from '@/enums/cacheEnum';
 import { defineStore } from 'pinia';
+import { store } from '@/store';
 import { Storage } from '@/utils/Storage';
 
 // 长时间不操作默认锁屏时间
@@ -28,3 +29,7 @@ export const useLockscreenStore = defineStore({
     },
   },
 });
+// 在组件setup函数外使用
+export function useLockscreenStoreWithOut() {
+  return useLockscreenStore(store);
+}

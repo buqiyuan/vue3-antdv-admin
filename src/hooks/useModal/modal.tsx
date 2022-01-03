@@ -1,16 +1,16 @@
-import CustomAModal from '@/components/a-custom-modal/index.vue';
+import { DraggableModal } from '@/components/core/draggable-modal';
 import { defineComponent, reactive, watchEffect, watch, ref } from 'vue';
 import type { HookModalProps } from './types';
 import { isFunction } from '@/utils/is';
-import zhCN from 'ant-design-vue/es/locale/zh_CN';
 import { ConfigProvider } from 'ant-design-vue';
 import { omit } from 'lodash';
+import { useLocale } from '@/locales/useLocale';
 
 export const MyModal = defineComponent({
-  components: { modal: CustomAModal },
+  components: { modal: DraggableModal },
   setup(props: HookModalProps) {
     const confirmLoading = ref<boolean>(false);
-
+    const { getAntdLocale } = useLocale();
     const state = reactive({
       visible: props.visible,
     });
@@ -43,7 +43,7 @@ export const MyModal = defineComponent({
 
     return () => {
       return (
-        <ConfigProvider locale={zhCN}>
+        <ConfigProvider locale={getAntdLocale.value}>
           <modal
             {...omit(props, ['onCancel', 'onOk'])}
             v-model={[state.visible, 'visible']}

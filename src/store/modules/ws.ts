@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { store } from '@/store';
 import { EVENT_KICK } from '@/core/socket/event-type';
 import { SocketIOWrapper, SocketStatus } from '@/core/socket/socket-io';
 import type { SocketIOWrapperType, SocketStatusType } from '@/core/socket/socket-io';
@@ -60,3 +61,8 @@ export const useWsStore = defineStore({
     },
   },
 });
+
+// 在组件setup函数外使用
+export function useWsStoreWithOut() {
+  return useWsStore(store);
+}

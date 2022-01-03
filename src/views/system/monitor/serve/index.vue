@@ -83,10 +83,10 @@
 </script>
 <script lang="ts" setup>
   import { Card, Descriptions, Tag } from 'ant-design-vue';
-  import { reactive, computed, toRefs, onMounted, onBeforeMount } from 'vue';
+  import { reactive, computed, toRefs, onMounted, onBeforeUnmount } from 'vue';
   import { formatSizeUnits } from '@/utils';
   import { getServeStat } from '@/api/system/serve';
-  import Progress from '@/components/progress/index.vue';
+  import Progress from '@/components/basic/progress/index.vue';
 
   let intervalId = -1;
 
@@ -178,7 +178,7 @@
   onMounted(() => {
     intervalId = setInterval(refresh, 10000);
   });
-  onBeforeMount(() => {
+  onBeforeUnmount(() => {
     clearInterval(intervalId);
   });
 </script>

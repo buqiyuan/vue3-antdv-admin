@@ -38,6 +38,7 @@
     },
   },
   "include": [
+    "mock/**/*",
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
@@ -48,6 +49,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "**/*.js"
+    "**/*.js",
   ]
 }

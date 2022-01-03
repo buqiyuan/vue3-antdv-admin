@@ -99,8 +99,12 @@
     ExclamationCircleOutlined,
     SwapOutlined,
   } from '@ant-design/icons-vue';
-  import { SplitPanel } from '@/components/split-panel';
-  import { DynamicTable, LoadDataParams, DynamicTableInstance } from '@/components/dynamic-table';
+  import { SplitPanel } from '@/components/basic/split-panel';
+  import {
+    DynamicTable,
+    type LoadDataParams,
+    type DynamicTableInstance,
+  } from '@/components/core/dynamic-table';
   import {
     deleteUsers,
     getUserListPage,

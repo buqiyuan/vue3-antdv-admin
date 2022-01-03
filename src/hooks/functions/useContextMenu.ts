@@ -1,8 +1,8 @@
 import { createApp, h, App } from 'vue';
 
-import { Props } from '@/components/context-menu/types';
+import { Props } from '@/components/basic/context-menu/types';
 
-import ContentMenu from '@/components/context-menu/index.vue';
+import ContentMenu from '@/components/basic/context-menu/index.vue';
 
 let ContentMenuInstance: App<Element> | null = null;
 let wrapperEl: HTMLElement | null = null;

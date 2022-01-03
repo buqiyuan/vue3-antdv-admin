@@ -60,7 +60,6 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
   router.afterEach((to, _, failure) => {
     const keepAliveStore = useKeepAliveStore();
 
-    document.title = (to?.meta?.title as string) || document.title;
     if (isNavigationFailure(failure)) {
       console.error('failed navigation', failure);
     }

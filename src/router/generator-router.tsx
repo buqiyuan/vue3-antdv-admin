@@ -4,9 +4,9 @@ import RouterView from '@/layout/routerView/index.vue';
 import { isUrl } from '@/utils/is';
 import { uniqueSlash } from '@/utils/urlUtils';
 import { constantRouterComponents } from '@/router/asyncModules';
-import NotFound from '@/views/shared/error/404.vue';
-import router, { routes } from '.';
 import common from '@/router/staticModules';
+import router, { routes } from '@/router';
+import NotFound from '@/views/error/404.vue';
 import { notFound, errorRoute } from './staticModules/error';
 import { REDIRECT_ROUTE } from './staticModules/besidesLayout';
 import { type PermissionType } from '@/core/permission/modules/types';
@@ -116,8 +116,8 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
     layout.children = [...filterRoutes];
     // 重新添加拍平后的路由
     router.addRoute(layout);
+    console.log('所有路由', router.getRoutes());
 
-    console.log('所有路由', filterRoutes);
     return {
       menus: menus,
       routes: layout.children,
