@@ -1,6 +1,6 @@
 import type { App } from 'vue';
 
-import { AButton } from '@/components/button/index';
+import { AButton } from '@/components/basic/button/index';
 
 import {
   Modal,

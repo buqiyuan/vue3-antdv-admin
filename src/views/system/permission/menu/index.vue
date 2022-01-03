@@ -31,7 +31,7 @@
   import { ref } from 'vue';
   import type { TreeSelectProps } from 'ant-design-vue';
   import { getMenuList, updateMenu, createMenu, deleteMenu } from '@/api/system/menu';
-  import { DynamicTable } from '@/components/dynamic-table';
+  import { DynamicTable } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { menuSchemas } from './formSchemas';

@@ -1,5 +1,4 @@
 const { defineConfig } = require('@vue/cli-service');
-const webpack = require('webpack');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const CompressionPlugin = require('compression-webpack-plugin');
@@ -49,15 +48,14 @@ module.exports = defineConfig({
     config.plugins.delete('preload');
     // 移除 prefetch 插件
     config.plugins.delete('prefetch');
-    config
-      .plugin('ignore')
-      .use(new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn$/));
+
     config
       // https://webpack.js.org/configuration/devtool/#development
       .when(!IS_PROD, (config) => config.devtool('cheap-source-map'));
 
     // 配置相关loader，支持修改，添加和替换相关的loader
     config.resolve.alias.set('@', resolve('src'));
+
     // 打包分析
     if (IS_PROD) {
       // config.optimization.delete('splitChunks');
@@ -74,7 +72,16 @@ module.exports = defineConfig({
 
     // svg rule loader
     config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end();
-
+    // 忽略解析markdown文件
+    config.module
+      .rule('md')
+      .test(/\.md$/)
+      .use('url-loader')
+      .loader('url-loader')
+      .options({
+        limit: 10,
+        generator: () => '',
+      });
     config.module
       .rule('icons')
       .test(/\.svg$/)

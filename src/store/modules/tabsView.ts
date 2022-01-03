@@ -1,5 +1,6 @@
 import { type RouteLocationNormalized } from 'vue-router';
 import { defineStore } from 'pinia';
+import { store } from '@/store';
 import { TABS_ROUTES } from '@/enums/cacheEnum';
 import router from '@/router';
 import { useKeepAliveStore } from './keepAlive';
@@ -92,3 +93,8 @@ export const useTabsViewStore = defineStore({
     },
   },
 });
+
+// 在组件setup函数外使用
+export function useTabsViewStoreWithOut() {
+  return useTabsViewStore(store);
+}

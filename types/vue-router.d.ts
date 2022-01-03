@@ -1,9 +1,9 @@
 import { type PermissionType } from '@/core/permission/modules/types';
+import { type LocaleType } from '@/locales/config';
 
-interface Title18n {
-  zh_CN: string;
-  en_US: string;
-}
+type Title18n = {
+  [p in LocaleType]: string;
+};
 
 declare module 'vue-router' {
   interface RouteMeta extends Record<string | number | symbol, unknown> {

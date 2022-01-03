@@ -1,5 +1,6 @@
 import { type RouteRecordRaw } from 'vue-router';
 import { defineStore } from 'pinia';
+import { store } from '@/store';
 import { login } from '@/api/login';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
@@ -96,3 +97,8 @@ export const useUserStore = defineStore({
     },
   },
 });
+
+// 在组件setup函数外使用
+export function useUserStoreWithOut() {
+  return useUserStore(store);
+}

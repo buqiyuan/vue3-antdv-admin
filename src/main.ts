@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import { setupRouter } from './router';
 import { setupStore } from '@/store';
+import { setupI18n } from '@/locales';
 import {
   setupAntd,
   setupAssets,
@@ -34,6 +35,9 @@ function setupPlugins() {
 async function setupApp() {
   // 挂载vuex状态管理
   setupStore(app);
+  // Multilingual configuration
+  // Asynchronous case: language files may be obtained from the server side
+  await setupI18n(app);
   // 挂载路由
   await setupRouter(app);
 

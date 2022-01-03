@@ -39,6 +39,10 @@ yarn install
 yarn --frozen-lockfile
 ```
 
+## 更新日志
+
+[CHANGELOG](./CHANGELOG.md)
+
 ### 赞赏
 
 如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
