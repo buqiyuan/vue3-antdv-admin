@@ -50,5 +50,7 @@
     "node_modules",
     "dist",
     "**/*.js",
+    "**/*.md",
+    "src/**/*.md",
   ]
 }

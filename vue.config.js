@@ -70,18 +70,24 @@ module.exports = defineConfig({
       return args;
     });
 
+    // 忽略解析markdown文件
+    config.module.noParse(/\.md$/);
+    if (IS_PROD) {
+      config.module
+        .rule('md')
+        .test(/\.md$/)
+        .type('javascript/auto')
+        .use('asset')
+        .loader('asset')
+        .options({
+          limit: 100,
+          esModule: false,
+          generator: () => '',
+        });
+    }
+
     // svg rule loader
     config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end();
-    // 忽略解析markdown文件
-    config.module
-      .rule('md')
-      .test(/\.md$/)
-      .use('url-loader')
-      .loader('url-loader')
-      .options({
-        limit: 10,
-        generator: () => '',
-      });
     config.module
       .rule('icons')
       .test(/\.svg$/)

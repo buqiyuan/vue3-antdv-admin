@@ -45,6 +45,7 @@
   import { SearchOutlined } from '@ant-design/icons-vue';
   import SearchResult from './components/SearchResult.vue';
   import SearchFooter from './components/SearchFooter.vue';
+  import { transformI18n } from '@/hooks/useI18n';
 
   const userStore = useUserStore();
   const router = useRouter();
@@ -65,14 +66,10 @@
     }
   });
 
-  const getTitle = (title) => {
-    return typeof title === 'string' ? title : title?.['zh_CN'];
-  };
-
   /** 查询 */
   function search() {
     resultOptions.value = menusList.value.filter((menu) => {
-      const title = getTitle(menu.meta?.title);
+      const title = transformI18n(menu.meta?.title);
       return (
         keyword.value &&
         title?.toLocaleLowerCase().includes(keyword.value.toLocaleLowerCase().trim())

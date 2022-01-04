@@ -13,7 +13,7 @@
           @mouseenter="handleMouse(item)"
         >
           <BookOutlined />
-          <span class="flex-1 ml-5px">{{ item.meta?.title }}</span>
+          <TitleI18n class="flex-1 ml-5px" :title="item.meta?.title" />
           <EnterOutlined class="icon text-20px p-2px mr-3px" />
         </div>
       </template>
@@ -25,6 +25,8 @@
   import { computed } from 'vue';
   import type { RouteRecordRaw } from 'vue-router';
   import { EnterOutlined, BookOutlined } from '@ant-design/icons-vue';
+  import { TitleI18n } from '@/components/basic/title-i18n';
+
   interface Props {
     value: string;
     options: RouteRecordRaw[];
