@@ -10,6 +10,7 @@
         :data-request="loadData"
         :columns="columns"
         rowKey="heroid"
+        :customRow="customRow"
       />
     </Card>
   </div>
@@ -26,6 +27,36 @@
   import { DynamicTable } from '@/components/core/dynamic-table';
   import { getLolHeroList } from '@/api/demos/hero';
   import { columns } from './columns';
+  import { useContextMenu } from '@/hooks/functions/useContextMenu';
+  import { useRouter } from 'vue-router';
+
+  const router = useRouter();
+  const [createContextMenu] = useContextMenu();
+
+  const customRow = (record) => {
+    return {
+      onContextmenu: (e: MouseEvent) => {
+        createContextMenu({
+          event: e,
+          items: [
+            {
+              label: '查看',
+              handler: () => {
+                console.log('record', record);
+                router.push({ name: 'demos-table-lol-info', params: { id: record.heroId } });
+              },
+            },
+            {
+              label: '编辑',
+              handler: () => {
+                console.log('record', record);
+              },
+            },
+          ],
+        });
+      },
+    };
+  };
 
   const loadData = async (params) => {
     const { data } = await getLolHeroList(params);

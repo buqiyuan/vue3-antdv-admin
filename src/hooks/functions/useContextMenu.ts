@@ -1,41 +1,12 @@
-import { createApp, h, App } from 'vue';
-
-import { Props } from '@/components/basic/context-menu/types';
-
-import ContentMenu from '@/components/basic/context-menu/index.vue';
-
-let ContentMenuInstance: App<Element> | null = null;
-let wrapperEl: HTMLElement | null = null;
-
-export const useContextMenu = (props: Props) => {
-  const { event } = props;
-  props.customEvent = event;
-  props.axis = { x: event.clientX, y: event.clientY };
-
-  const bodyClick = () => {
-    ContentMenuInstance &&
-      wrapperEl &&
-      ContentMenuInstance.unmount() &&
-      document.body.removeChild(wrapperEl) &&
-      wrapperEl.remove();
-    document.body.removeEventListener('click', bodyClick);
-    document.body.removeEventListener('scroll', bodyClick);
-    ContentMenuInstance = null;
-  };
-
-  bodyClick();
-
-  if (!ContentMenuInstance) {
-    ContentMenuInstance = createApp({
-      render() {
-        return h(ContentMenu, props);
-      },
+import { onUnmounted, getCurrentInstance } from 'vue';
+import { createContextMenu, destroyContextMenu } from '@/components/basic/context-menu';
+import type { ContextMenuItem } from '@/components/basic/context-menu';
+export type { ContextMenuItem };
+export function useContextMenu(authRemove = true) {
+  if (getCurrentInstance() && authRemove) {
+    onUnmounted(() => {
+      destroyContextMenu();
     });
-    wrapperEl = document.createElement('div');
-    document.body.appendChild(wrapperEl);
-    ContentMenuInstance.mount(wrapperEl);
   }
-
-  document.body.addEventListener('click', bodyClick);
-  document.body.addEventListener('scroll', bodyClick);
-};
+  return [createContextMenu, destroyContextMenu];
+}

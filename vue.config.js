@@ -135,6 +135,14 @@ module.exports = defineConfig({
           },
         },
       });
+      config.cache({
+        // 将缓存类型设置为文件系统,默认是memory
+        type: 'filesystem',
+        buildDependencies: {
+          // 更改配置文件时，重新缓存
+          config: [__filename],
+        },
+      });
       // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
       config.optimization.runtimeChunk('single');
     });
@@ -144,7 +152,6 @@ module.exports = defineConfig({
     config.experiments = {
       topLevelAwait: true,
     };
-
     config.resolve.fallback = { path: require.resolve('path-browserify') };
 
     if (IS_PROD) {
