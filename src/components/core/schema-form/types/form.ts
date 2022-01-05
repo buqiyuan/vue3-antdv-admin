@@ -117,7 +117,7 @@ export interface FormSchema extends FormProps {
 }
 /** 表单项 */
 export interface FormItemSchema<T = string> {
-  // Field name
+  /** 字段名 */
   field: T extends string ? string : keyof T;
   // Event name triggered by internal value change, default change
   changeEvent?: string;
@@ -140,12 +140,15 @@ export interface FormItemSchema<T = string> {
   disabledLabelWidth?: boolean;
   // render component
   component: ComponentMapType | Component;
-  // Component parameters
+  // 组件参数
   componentProps?:
     | ComponentProps
     | ((opt: {
+        /** 当前表单项 */
         schemaItem: FormItemSchema;
-        formActionType?: FormActionType;
+        /** 动态表单实例 */
+        schemaFormRef: FormActionType;
+        /** 当前表单数据模型 */
         formModel: Recordable;
       }) => ComponentProps);
 
@@ -164,6 +167,8 @@ export interface FormItemSchema<T = string> {
   rules?: Rule[];
   // Check whether the information is added to the label
   rulesMessageJoinLabel?: boolean;
+  /** 组件加载状态 */
+  loading?: boolean;
 
   // Reference formModelItem
   formItemProps?: Partial<FormItemProps>;
@@ -177,9 +182,9 @@ export interface FormItemSchema<T = string> {
 
   // Matching details components
   span?: number;
-
+  /** 作用同v-show */
   vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
-
+  /** 作用同v-if */
   vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
   // Render the content in the form-item tag

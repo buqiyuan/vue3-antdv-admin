@@ -7,6 +7,7 @@ export default {
   'views/shared/demos/icons/Iconfont.vue': getAsyncPage(`${prefix}icons/Iconfont.vue`), // 自定义图标
   [`views/${prefix}tables/lol-table/index.vue`]: getAsyncPage(`${prefix}tables/lol-table`), // lol
   [`views/${prefix}tables/wzry-table/index.vue`]: getAsyncPage(`${prefix}tables/wzry-table`), // wzry
+  [`views/${prefix}tables/search-table/index.vue`]: getAsyncPage(`${prefix}tables/search-table`), // search-table
   'views/shared/demos/button.vue': getAsyncPage(`${prefix}button.vue`), // 自定义按钮
   'views/shared/demos/custom-modal.vue': getAsyncPage(`${prefix}custom-modal.vue`), // 自定义模态框
 };

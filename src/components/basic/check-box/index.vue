@@ -14,7 +14,7 @@
   import { computed } from 'vue';
   import { Checkbox } from 'ant-design-vue';
   import { checkboxProps } from 'ant-design-vue/lib/checkbox';
-  import { omit } from 'lodash';
+  import { omit } from 'lodash-es';
 
   const props = defineProps({
     ...checkboxProps(),

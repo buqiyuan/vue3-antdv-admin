@@ -1,10 +1,8 @@
 const { defineConfig } = require('@vue/cli-service');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const CompressionPlugin = require('compression-webpack-plugin');
 // 去除console
 const TerserPlugin = require('terser-webpack-plugin');
-// const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const path = require('path');
 const resolve = (dir) => path.join(__dirname, dir); // 路径
 
@@ -99,8 +97,6 @@ module.exports = defineConfig({
         symbolId: 'icon-[name]',
       });
     config.when(IS_PROD, (config) => {
-      // loadsh
-      config.plugin('loadshReplace').use(new LodashModuleReplacementPlugin());
       // gzipped
       // config.plugin('CompressionPlugin').use(
       //   new CompressionPlugin({

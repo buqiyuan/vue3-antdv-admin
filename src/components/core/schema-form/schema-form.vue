@@ -26,16 +26,27 @@
 </template>
 
 <script lang="ts">
-  import { reactive, ref, PropType, unref, defineComponent, computed, watchEffect } from 'vue';
+  import {
+    reactive,
+    ref,
+    PropType,
+    unref,
+    defineComponent,
+    computed,
+    watchEffect,
+    getCurrentInstance,
+  } from 'vue';
   import { Form, Row } from 'ant-design-vue';
   import { formProps } from 'ant-design-vue/lib/form';
-  import { isNullOrUnDef, isObject, isArray, isFunction } from '@/utils/is';
+  import { isNullOrUnDef, isObject, isArray, isFunction, isBoolean } from '@/utils/is';
+  import { deepMerge } from '@/utils/';
   import SchemaFormItem from './schema-form-item.vue';
   import type { FormItemSchema, FormSchema, FormActionType } from './types/form';
   import { NamePath } from 'ant-design-vue/lib/form/interface';
-  import { merge, uniqBy, cloneDeep, isBoolean } from 'lodash';
+  import { uniqBy, cloneDeep } from 'lodash-es';
   import { dateItemType, handleInputNumberValue } from './helper';
   import dayjs from 'dayjs';
+  import { createFormContext } from './hooks/useFormContext';
 
   export default defineComponent({
     name: 'SchemaForm',
@@ -55,6 +66,8 @@
     },
     emits: ['submit', 'reset'],
     setup(props, { attrs, emit }) {
+      // provide schemaForm instance
+      createFormContext(getCurrentInstance()!);
       let oldFormSchema: FormSchema;
       // TODO 将formSchema克隆一份，避免修改原有的formSchema
       // TODO 类型为FormSchema 提示：类型实例化过深，且可能无限
@@ -84,7 +97,7 @@
       watchEffect(() => {
         if (Object.is(props.formSchema, oldFormSchema)) {
           // console.log('相同');
-          merge(formSchemaRef.value, cloneDeep(props.formSchema));
+          deepMerge(formSchemaRef.value, cloneDeep(props.formSchema));
         } else {
           // console.log('不相同');
           formSchemaRef.value = cloneDeep(props.formSchema);
@@ -244,7 +257,7 @@
         updateData.forEach((item) => {
           unref(formSchemaRef).schemas.forEach((val) => {
             if (val.field === item.field) {
-              const newSchema = merge(val, item);
+              const newSchema = deepMerge(val, item);
               schema.push(newSchema);
             } else {
               schema.push(val);

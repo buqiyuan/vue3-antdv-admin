@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { export_json_to_excel } from '@/utils/Export2Excel';
 import { type DynamicTableInstance } from '../typing';
 import { type ComponentInternalInstance } from 'vue';

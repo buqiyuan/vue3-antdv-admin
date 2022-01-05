@@ -84,7 +84,7 @@
   import { usePagination, createTableContext, useExportData2Excel } from './hooks/';
   import type { TableColumn, OnChangeCallbackParams } from './typing';
   import { isBoolean, isObject } from '@/utils/is';
-  import { omit } from 'lodash';
+  import { omit } from 'lodash-es';
   import { TableAction, QueryForm, ToolBar } from './components';
   import dynamicTableProps, { TableProps } from './props';
   import { type SchemaFormRef } from '@/components/core/schema-form';

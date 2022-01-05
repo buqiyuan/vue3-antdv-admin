@@ -14,10 +14,15 @@
         :is="getComponent"
         :ref="setItemRef"
         :key="schemaItem.field"
+        :allowClear="true"
         v-bind="getComponentProps"
         v-on="componentEvents"
         v-model:[modelValueType]="modelValue[schemaItem.field]"
-      />
+      >
+        <template v-if="Object.is(schemaItem.loading, true)" #notFoundContent>
+          <Spin size="small" />
+        </template>
+      </component>
     </Form.Item>
   </Col>
 </template>
@@ -25,7 +30,7 @@
 <script setup lang="tsx">
   import { PropType, Ref } from 'vue';
   import { computed, unref, toRefs, onMounted } from 'vue';
-  import { Form, Col } from 'ant-design-vue';
+  import { Form, Col, Spin } from 'ant-design-vue';
   import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
   import { componentMap, ComponentMapType } from './componentMap';
   import { FormItemSchema, FormSchema } from './types/form';
@@ -36,6 +41,7 @@
   import { createPlaceholderMessage } from './helper';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
   import { AllComponentProps } from './types';
+  import { useFormContext } from './hooks/useFormContext';
 
   const props = defineProps({
     formModel: {
@@ -64,6 +70,8 @@
   const emit = defineEmits(['update:formModel']);
 
   // const currentInstance = getCurrentInstance();
+  // schemaForm组件实例
+  const schemaFormRef = useFormContext();
 
   const modelValue = useVModel(props, 'formModel', emit);
 
@@ -118,7 +126,11 @@
     const { componentProps = {}, component, label = '' } = schemaItem;
 
     if (isFunction(componentProps)) {
-      const compProps = componentProps({ formModel, schemaItem }) as AllComponentProps;
+      const compProps = componentProps({
+        formModel,
+        schemaFormRef,
+        schemaItem,
+      }) as AllComponentProps;
 
       compProps.placeholder ??= isString(component)
         ? createPlaceholderMessage(component, label)
@@ -175,7 +187,7 @@
     const { schemaItem, formModel } = props;
     let { componentProps = {} } = schemaItem;
     if (isFunction(componentProps)) {
-      componentProps = componentProps({ schemaItem, formModel }) ?? {};
+      componentProps = componentProps({ schemaItem, schemaFormRef, formModel }) ?? {};
     }
     return componentProps as Recordable;
   });
@@ -290,12 +302,17 @@
   onMounted(async () => {
     if (getComponentProps.value?.request) {
       const compProps = getComponentProps.value;
-      const compName = props.schemaItem.component;
-      if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === compName)) {
-        compProps.options = await getComponentProps.value?.request();
-        console.log('compProps.options', compProps.options);
-      } else if (['TreeSelect', 'Tree'].some((n) => n === compName)) {
-        compProps.treeData = await getComponentProps.value?.request();
+      const compName = schemaItem.value.component;
+      schemaItem.value.loading = true;
+      try {
+        if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === compName)) {
+          compProps.options = await getComponentProps.value?.request();
+          console.log('compProps.options', compProps.options);
+        } else if (['TreeSelect', 'Tree'].some((n) => n === compName)) {
+          compProps.treeData = await getComponentProps.value?.request();
+        }
+      } finally {
+        schemaItem.value.loading = false;
       }
     }
   });

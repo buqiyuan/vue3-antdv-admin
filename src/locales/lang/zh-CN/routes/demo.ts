@@ -9,6 +9,7 @@ export default {
   },
   table: {
     demo: '表格演示',
+    searchTable: '查询表格',
     wzry: '王者荣耀',
     lol: '英雄联盟',
   },

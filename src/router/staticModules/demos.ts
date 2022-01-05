@@ -87,6 +87,19 @@ const routes: Array<RouteRecordRaw> = [
         component: RouterView,
         children: [
           {
+            path: 'search-table',
+            name: `${moduleName}-query-form`,
+            meta: {
+              title: t('routes.demo.table.searchTable'),
+              icon: 'icon-zhuomian',
+              keepAlive: false,
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "search-table" */ '@/views/demos/tables/search-table/index.vue'
+              ),
+          },
+          {
             path: 'wzry',
             name: `${moduleName}-table-wzry`,
             meta: {

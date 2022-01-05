@@ -36,7 +36,7 @@
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { menuSchemas } from './formSchemas';
   import { formatMenu2Tree } from '@/core/permission/utils';
-  import { cloneDeep } from 'lodash';
+  import { cloneDeep } from 'lodash-es';
 
   const menuTree = ref<TreeSelectProps['treeData']>([]);
   const dynamicTableRef = ref<InstanceType<typeof DynamicTable>>();
