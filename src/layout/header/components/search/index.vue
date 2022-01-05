@@ -132,6 +132,8 @@
 
   /** key enter */
   function handleEnter() {
+    const { length } = resultOptions.value;
+    if (length === 0 || activePath.value === '') return;
     if (/http(s)?:/.test(activePath.value)) {
       window.open(activePath.value);
     } else {
