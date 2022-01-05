@@ -65,23 +65,23 @@
   // 展开搜索表单时更新英雄皮肤选项值
   const toggleAdvanced = (e) => {
     if (e) {
-      dynamicTableRef.value?.getQueryFormRef().updateSchema([
-        {
-          field: 'skin_name',
-          componentProps: {
-            options: [
-              {
-                label: '皮肤1',
-                value: 'aa',
-              },
-              {
-                label: '皮肤2',
-                value: 'bb',
-              },
-            ],
-          },
-        },
-      ]);
+      // dynamicTableRef.value?.getQueryFormRef().updateSchema([
+      //   {
+      //     field: 'skin_name',
+      //     componentProps: {
+      //       options: [
+      //         {
+      //           label: '皮肤1',
+      //           value: 'aa',
+      //         },
+      //         {
+      //           label: '皮肤2',
+      //           value: 'bb',
+      //         },
+      //       ],
+      //     },
+      //   },
+      // ]);
     }
   };
 
@@ -89,6 +89,23 @@
     const { data } = await getWzryHeroList(params);
 
     tableData = data.list;
+    dynamicTableRef.value?.getQueryFormRef().updateSchema([
+      {
+        field: 'skin_name',
+        componentProps: {
+          options: [
+            {
+              label: '皮肤1',
+              value: 'aa',
+            },
+            {
+              label: '皮肤2',
+              value: 'bb',
+            },
+          ],
+        },
+      },
+    ]);
     return data;
   };
 </script>

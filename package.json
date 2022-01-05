@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^7.5.1",
-    "ant-design-vue": "3.0.0-beta.5",
+    "ant-design-vue": "3.0.0-beta.4",
     "axios": "^0.24.0",
     "core-js": "^3.20.2",
     "dayjs": "^1.10.7",

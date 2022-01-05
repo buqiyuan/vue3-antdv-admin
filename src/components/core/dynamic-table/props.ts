@@ -60,7 +60,6 @@ export const props = {
   /** 导出的文件名 */
   exportFileName: {
     type: String as PropType<string>,
-    default: '导出数据',
   },
   /** xlsx的booktype */
   exportBookType: {
@@ -74,7 +73,9 @@ export const props = {
   },
   /** 自定义数据导出格式函数 */
   exportFormatter: {
-    type: Function,
+    type: Function as PropType<
+      (columns: TableColumn<any>[], tableData: any[]) => { header: Recordable; data: any[] }
+    >,
     default: null,
   },
 };
