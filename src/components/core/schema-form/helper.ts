@@ -2,13 +2,16 @@ import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
 import type { ComponentMapType } from './types';
 import { isNumber } from '@/utils/is';
 import dayjs from 'dayjs';
+import { useI18n } from '@/hooks/useI18n';
+
+const { t } = useI18n();
 
 /**
  * @description: 生成placeholder
  */
 export function createPlaceholderMessage(component: ComponentMapType, label = '') {
   if (component.includes('Input') || component.includes('Complete')) {
-    return `请输入${label}`;
+    return `${t('common.inputText')}${label}`;
   }
   const chooseTypes: ComponentMapType[] = [
     'Select',
@@ -19,10 +22,10 @@ export function createPlaceholderMessage(component: ComponentMapType, label = ''
     'TreeSelect',
   ];
   if (component.includes('Picker')) {
-    return `请选择${label}`;
+    return `${t('common.inputText')}${label}`;
   }
   if (chooseTypes.includes(component)) {
-    return `请选择${label}`;
+    return `${t('common.chooseText')}${label}`;
   }
   return '';
 }

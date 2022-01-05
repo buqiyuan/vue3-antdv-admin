@@ -3,8 +3,6 @@
     <component
       :title="actionItem.title"
       :is="actionItem.popConfirm ? Popconfirm : 'span'"
-      ok-text="确认"
-      cancel-text="取消"
       v-bind="actionItem.popConfirm"
     >
       <a-button type="link" v-bind="actionItem">{{ actionItem.label }}</a-button>

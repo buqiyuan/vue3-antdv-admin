@@ -1,7 +1,7 @@
 <template>
   <Tooltip placement="top">
     <template #title>
-      <span>刷新</span>
+      <span>{{ $t('common.redo') }}</span>
     </template>
     <RedoOutlined @click="redo" />
   </Tooltip>

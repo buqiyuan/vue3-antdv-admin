@@ -54,7 +54,7 @@
   };
 
   const openMenuModal = async (record: Partial<TableListItem>) => {
-    const [formRef] = await showModal({
+    const [formRef] = await showModal<any>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}菜单`,
         width: 700,

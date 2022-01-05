@@ -4,12 +4,14 @@
       <template #operate-button>
         <span class="search-submitButtons" :style="{ float: 'right', overflow: 'hidden' }">
           <span>
-            <a-button type="default" style="margin-right: 10px" @click="reset"> 重置 </a-button>
-            <a-button type="primary" @click="query"> 查询 </a-button>
+            <a-button type="default" style="margin-right: 10px" @click="reset">
+              {{ $t('common.resetText') }}
+            </a-button>
+            <a-button type="primary" @click="query"> {{ $t('common.queryText') }} </a-button>
           </span>
           <template v-if="formItemSchemas.length > 0 && formItemSchemas.length > defaultShowItems">
             <a style="margin-left: 8px" @click="toggleAdvanced">
-              {{ advanced ? '收起' : '展开' }}
+              {{ advanced ? $t('component.form.putAway') : $t('component.form.unfold') }}
               <DownOutlined class="collapse-icon" />
             </a>
           </template>
@@ -20,7 +22,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs, computed, ref } from 'vue';
+  import { defineComponent, reactive, toRefs, computed, ref, nextTick } from 'vue';
   import { DownOutlined } from '@ant-design/icons-vue';
   import type { TableColumn } from '../../typing';
   import SchemaForm from '@/components/core/schema-form/schema-form.vue';
@@ -45,7 +47,7 @@
         required: true,
       },
     },
-    emits: ['query', 'reset'],
+    emits: ['query', 'reset', 'toggle-advanced'],
     setup(props, { slots, emit }) {
       const state = reactive({
         advanced: false,
@@ -96,8 +98,10 @@
       /**
        * @description 切换展开/收起 状态
        */
-      const toggleAdvanced = () => {
+      const toggleAdvanced = async () => {
         state.advanced = !state.advanced;
+        await nextTick();
+        emit('toggle-advanced', state.advanced);
       };
 
       /**

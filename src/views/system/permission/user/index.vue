@@ -154,7 +154,7 @@
   const openDeptModal = async (record: Partial<API.SysDeptListResult> = {}) => {
     console.log('record', record);
 
-    const [formRef] = await showModal({
+    const [formRef] = await showModal<any>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}部门`,
         width: 700,
@@ -227,7 +227,7 @@
    * @description 打开用户弹窗
    */
   const openUserModal = async (record: Partial<TableListItem> = {}) => {
-    const [formRef] = await showModal({
+    const [formRef] = await showModal<any>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}用户`,
         width: 700,
