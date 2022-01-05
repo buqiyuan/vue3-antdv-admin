@@ -22,6 +22,7 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
       component: RouterView,
       meta: {
         title: REDIRECT_NAME,
+        hideInMenu: true,
       },
       beforeEnter: (to) => {
         const { params, query } = to;
