@@ -1,6 +1,6 @@
 {
   "name": "vue3-antd-admin",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "scripts": {
     "dev": "npm run serve",
@@ -22,7 +22,7 @@
     "test prod gzip": "npx http-server dist --cors --gzip -c-1"
   },
   "dependencies": {
-    "@vueuse/core": "^7.5.2",
+    "@vueuse/core": "^7.5.3",
     "ant-design-vue": "3.0.0-beta.4",
     "axios": "^0.24.0",
     "core-js": "^3.20.2",
