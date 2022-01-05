@@ -53,8 +53,8 @@
     }
   });
 
-  const selectItem = (options: CascaderOptionType, key) => {
-    children.value = options || [];
+  const selectItem = (options: CascaderOptionType[] = [], key) => {
+    children.value = options;
     parentKey.value = key;
   };
 

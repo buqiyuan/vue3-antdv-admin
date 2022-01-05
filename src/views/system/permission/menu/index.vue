@@ -13,7 +13,7 @@
       :scroll="{ x: 2000 }"
     >
       <template #toolbar>
-        <a-button type="primary" :disabled="!$auth('sys/menu/add')" @click="openMenuModal({})">
+        <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openMenuModal({})">
           新增
         </a-button>
       </template>
@@ -107,14 +107,14 @@
         {
           label: '编辑',
           auth: {
-            perm: 'sys/menu/update',
+            perm: 'sys.menu.update',
             effect: 'disable',
           },
           onClick: () => openMenuModal(record),
         },
         {
           label: '删除',
-          auth: 'sys/menu/delete',
+          auth: 'sys.menu.delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record),

@@ -12,7 +12,7 @@
       size="small"
     >
       <template #toolbar>
-        <a-button type="primary" :disabled="!$auth('sys/task/add')" @click="openTaskModal({})">
+        <a-button type="primary" :disabled="!$auth('sys.task.add')" @click="openTaskModal({})">
           新增
         </a-button>
       </template>
@@ -37,35 +37,35 @@
           <Descriptions.Item label="执行操作">
             <Popconfirm
               title="确认手动执行一次该任务吗?"
-              :disabled="!$auth('sys/task/once')"
+              :disabled="!$auth('sys.task.once')"
               @confirm="handleOnce(record)"
             >
-              <Button type="link" size="small" :disabled="!$auth('sys/task/once')">
+              <Button type="link" size="small" :disabled="!$auth('sys.task.once')">
                 <template #icon><ToolOutlined /></template>仅一次
               </Button>
             </Popconfirm>
             <Popconfirm
               title="确认运行该任务吗?"
-              :disabled="!$auth('sys/task/start') || !(record.status === 0)"
+              :disabled="!$auth('sys.task.start') || !(record.status === 0)"
               @confirm="handleStart(record)"
             >
               <Button
                 type="link"
                 size="small"
-                :disabled="!$auth('sys/task/start') || !(record.status === 0)"
+                :disabled="!$auth('sys.task.start') || !(record.status === 0)"
               >
                 <template #icon><CaretRightOutlined /></template>运行
               </Button>
             </Popconfirm>
             <Popconfirm
               title="确认停止该任务吗?"
-              :disabled="!$auth('sys/task/stop') || !(record.status === 1)"
+              :disabled="!$auth('sys.task.stop') || !(record.status === 1)"
               @confirm="handleStop(record)"
             >
               <Button
                 type="link"
                 size="small"
-                :disabled="!$auth('sys/task/stop') || !(record.status === 1)"
+                :disabled="!$auth('sys.task.stop') || !(record.status === 1)"
               >
                 <template #icon><PoweroffOutlined /></template>停止
               </Button>
@@ -189,14 +189,14 @@
         {
           label: '编辑',
           auth: {
-            perm: 'sys/task/update',
+            perm: 'sys.task.update',
             effect: 'disable',
           },
           onClick: () => openTaskModal(record),
         },
         {
           label: '删除',
-          auth: 'sys/task/delete',
+          auth: 'sys.task.delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record.id),

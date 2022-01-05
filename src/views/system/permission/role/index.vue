@@ -10,7 +10,7 @@
       size="small"
     >
       <template #toolbar>
-        <a-button type="primary" :disabled="!$auth('sys/role/add')" @click="openMenuModal({})">
+        <a-button type="primary" :disabled="!$auth('sys.role.add')" @click="openMenuModal({})">
           新增
         </a-button>
       </template>
@@ -137,14 +137,14 @@
         {
           label: '编辑',
           auth: {
-            perm: 'sys/role/update',
+            perm: 'sys.role.update',
             effect: 'disable',
           },
           onClick: () => openMenuModal(record),
         },
         {
           label: '删除',
-          auth: 'sys/role/delete',
+          auth: 'sys.role.delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record),
