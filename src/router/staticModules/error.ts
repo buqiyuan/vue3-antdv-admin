@@ -8,7 +8,7 @@ export const notFound: RouteRecordRaw = {
   path: '/:pathMatch(.*)*',
   name: 'NotFound',
   redirect: '/error/404',
-  component: () => import(/* webpackChunkName: "404" */ '@/views/shared/error/404.vue'),
+  component: () => import(/* webpackChunkName: "404" */ '@/views/error/404.vue'),
 };
 
 export const errorRoute: RouteRecordRaw = {
@@ -31,7 +31,7 @@ export const errorRoute: RouteRecordRaw = {
         icon: 'UserOutlined',
         hideInMenu: true,
       },
-      component: () => import(/* webpackChunkName: "404" */ '@/views/shared/error/404.vue'),
+      component: () => import(/* webpackChunkName: "404" */ '@/views/error/404.vue'),
     },
   ],
 };

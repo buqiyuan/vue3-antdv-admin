@@ -1,5 +1,4 @@
 const { defineConfig } = require('@vue/cli-service');
-const webpack = require('webpack');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const CompressionPlugin = require('compression-webpack-plugin');
@@ -49,15 +48,14 @@ module.exports = defineConfig({
     config.plugins.delete('preload');
     // 移除 prefetch 插件
     config.plugins.delete('prefetch');
-    config
-      .plugin('ignore')
-      .use(new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn$/));
+
     config
       // https://webpack.js.org/configuration/devtool/#development
       .when(!IS_PROD, (config) => config.devtool('cheap-source-map'));
 
     // 配置相关loader，支持修改，添加和替换相关的loader
     config.resolve.alias.set('@', resolve('src'));
+
     // 打包分析
     if (IS_PROD) {
       // config.optimization.delete('splitChunks');
@@ -72,9 +70,24 @@ module.exports = defineConfig({
       return args;
     });
 
+    // 忽略解析markdown文件
+    config.module.noParse(/\.md$/);
+    if (IS_PROD) {
+      config.module
+        .rule('md')
+        .test(/\.md$/)
+        .type('javascript/auto')
+        .use('asset')
+        .loader('asset')
+        .options({
+          limit: 100,
+          esModule: false,
+          generator: () => '',
+        });
+    }
+
     // svg rule loader
     config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end();
-
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -122,6 +135,14 @@ module.exports = defineConfig({
           },
         },
       });
+      config.cache({
+        // 将缓存类型设置为文件系统,默认是memory
+        type: 'filesystem',
+        buildDependencies: {
+          // 更改配置文件时，重新缓存
+          config: [__filename],
+        },
+      });
       // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
       config.optimization.runtimeChunk('single');
     });
@@ -131,7 +152,6 @@ module.exports = defineConfig({
     config.experiments = {
       topLevelAwait: true,
     };
-
     config.resolve.fallback = { path: require.resolve('path-browserify') };
 
     if (IS_PROD) {

@@ -1,54 +1,51 @@
 <template>
-  <CustomAModal title="搜索菜单" v-model:visible="show" :keyboard="false" @cancel="handleClose">
-    <a-input
-      ref="inputRef"
-      v-model:value="keyword"
-      clearable
-      placeholder="请输入关键词搜索"
-      @change="handleSearch"
+  <Tooltip :title="$t('common.searchText')" placement="bottom" :mouseEnterDelay="0.5">
+    <slot><SearchOutlined @click="visible = true" /></slot>
+    <DraggableModal
+      title="搜索菜单"
+      v-model:visible="visible"
+      :keyboard="false"
+      @cancel="handleClose"
     >
-      <template #prefix>
-        <SearchOutlined class="text-15px text-[#c2c2c2]" />
+      <a-input
+        ref="inputRef"
+        v-model:value="keyword"
+        clearable
+        placeholder="请输入关键词搜索"
+        @change="handleSearch"
+      >
+        <template #prefix>
+          <SearchOutlined class="text-15px text-[#c2c2c2]" />
+        </template>
+      </a-input>
+      <div class="mt-20px">
+        <Empty v-if="resultOptions.length === 0" description="暂无搜索结果" />
+        <search-result
+          v-else
+          v-model:value="activePath"
+          :options="resultOptions"
+          @enter="handleEnter"
+        />
+      </div>
+      <template #footer>
+        <search-footer />
       </template>
-    </a-input>
-    <div class="mt-20px">
-      <Empty v-if="resultOptions.length === 0" description="暂无搜索结果" />
-      <search-result
-        v-else
-        v-model:value="activePath"
-        :options="resultOptions"
-        @enter="handleEnter"
-      />
-    </div>
-    <template #footer>
-      <search-footer />
-    </template>
-  </CustomAModal>
+    </DraggableModal>
+  </Tooltip>
 </template>
 
 <script lang="ts" setup>
   import { ref, shallowRef, computed, watch, nextTick } from 'vue';
   import { useRouter } from 'vue-router';
   import type { RouteRecordRaw } from 'vue-router';
-  import { Empty } from 'ant-design-vue';
-  import { CustomAModal } from '@/components/a-custom-modal';
+  import { Empty, Tooltip } from 'ant-design-vue';
+  import { DraggableModal } from '@/components/core/draggable-modal';
   import { useDebounceFn, onKeyStroke } from '@vueuse/core';
   import { useUserStore } from '@/store/modules/user';
   import { SearchOutlined } from '@ant-design/icons-vue';
   import SearchResult from './components/SearchResult.vue';
   import SearchFooter from './components/SearchFooter.vue';
-
-  interface Props {
-    /** 弹窗显隐 */
-    value: boolean;
-  }
-
-  interface Emits {
-    (e: 'update:value', val: boolean): void;
-  }
-
-  const props = withDefaults(defineProps<Props>(), {});
-  const emit = defineEmits<Emits>();
+  import { transformI18n } from '@/hooks/useI18n';
 
   const userStore = useUserStore();
   const router = useRouter();
@@ -59,16 +56,9 @@
   const inputRef = ref<HTMLInputElement | null>(null);
   const handleSearch = useDebounceFn(search, 300);
 
-  const show = computed({
-    get() {
-      return props.value;
-    },
-    set(val: boolean) {
-      emit('update:value', val);
-    },
-  });
+  const visible = ref(false);
 
-  watch(show, async (val) => {
+  watch(visible, async (val) => {
     if (val) {
       /** 自动聚焦 */
       await nextTick();
@@ -76,14 +66,10 @@
     }
   });
 
-  const getTitle = (title) => {
-    return typeof title === 'string' ? title : title?.['zh_CN'];
-  };
-
   /** 查询 */
   function search() {
     resultOptions.value = menusList.value.filter((menu) => {
-      const title = getTitle(menu.meta?.title);
+      const title = transformI18n(menu.meta?.title);
       return (
         keyword.value &&
         title?.toLocaleLowerCase().includes(keyword.value.toLocaleLowerCase().trim())
@@ -112,7 +98,7 @@
   }
 
   function handleClose() {
-    show.value = false;
+    visible.value = false;
     /** 延时处理防止用户看到某些操作 */
     setTimeout(() => {
       resultOptions.value = [];

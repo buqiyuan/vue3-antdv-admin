@@ -1,5 +1,6 @@
 import { type RouteRecordRaw } from 'vue-router';
 import RouterView from '@/layout/routerView/index.vue';
+import { t } from '@/hooks/useI18n';
 
 const moduleName = 'dashboard';
 
@@ -10,7 +11,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/dashboard/welcome',
     component: RouterView,
     meta: {
-      title: '系统看板',
+      title: t('routes.dashboard.dashboard'),
       icon: 'icon-yibiaopan',
     },
     children: [
@@ -18,13 +19,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'welcome',
         name: `${moduleName}-welcome`,
         meta: {
-          title: '首页',
+          title: t('routes.dashboard.workbench'),
           icon: 'icon-shouye',
         },
         component: () =>
-          import(
-            /* webpackChunkName: "dashboard-welcome" */ '@/views/shared/dashboard/welcome/index.vue'
-          ),
+          import(/* webpackChunkName: "dashboard-welcome" */ '@/views/dashboard/welcome/index.vue'),
       },
     ],
   },
