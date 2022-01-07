@@ -24,7 +24,7 @@
                   <close-outlined />
                   {{ $t('layout.multipleTab.close') }}
                 </Menu.Item>
-                <a-menu-divider />
+                <Menu.Divider />
                 <Menu.Item key="3" @click="closeLeft(pageItem)">
                   <vertical-right-outlined />
                   {{ $t('layout.multipleTab.closeLeft') }}
@@ -33,7 +33,7 @@
                   <vertical-left-outlined />
                   {{ $t('layout.multipleTab.closeRight') }}
                 </Menu.Item>
-                <a-menu-divider />
+                <Menu.Divider />
                 <Menu.Item key="5" @click="closeOther(pageItem)">
                   <column-width-outlined />
                   {{ $t('layout.multipleTab.closeOther') }}
@@ -63,7 +63,7 @@
                 <close-outlined />
                 {{ $t('layout.multipleTab.close') }}
               </Menu.Item>
-              <a-menu-divider />
+              <Menu.Divider />
               <Menu.Item key="5" @click="closeOther(route)">
                 <column-width-outlined />
                 {{ $t('layout.multipleTab.closeOther') }}

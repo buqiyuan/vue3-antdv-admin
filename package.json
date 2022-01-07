@@ -34,7 +34,7 @@
     "nprogress": "^1.0.0-1",
     "pinia": "2.0.9",
     "qs": "^6.10.2",
-    "socket.io-client": "4.4.0",
+    "socket.io-client": "4.4.1",
     "sortablejs": "^1.14.0",
     "vue": "^3.2.26",
     "vue-i18n": "^9.2.0-beta.26",

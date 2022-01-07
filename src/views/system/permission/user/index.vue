@@ -32,9 +32,9 @@
                 >
                   编辑 <EditOutlined />
                 </Menu.Item>
-                <a-menu-item key="2" :disabled="!$auth('sys.dept.delete')" @click="delDept(key)">
+                <Menu.Item key="2" :disabled="!$auth('sys.dept.delete')" @click="delDept(key)">
                   删除 <DeleteOutlined />
-                </a-menu-item>
+                </Menu.Item>
               </Menu>
             </template>
           </Dropdown>
@@ -100,11 +100,8 @@
     SwapOutlined,
   } from '@ant-design/icons-vue';
   import { SplitPanel } from '@/components/basic/split-panel';
-  import {
-    DynamicTable,
-    type LoadDataParams,
-    type DynamicTableInstance,
-  } from '@/components/core/dynamic-table';
+  import { DynamicTable } from '@/components/core/dynamic-table';
+  import type { LoadDataParams, DynamicTableInstance } from '@/components/core/dynamic-table';
   import {
     deleteUsers,
     getUserListPage,

@@ -52,7 +52,7 @@ export type RegisterFn = (formInstance: FormActionType) => void;
 export type UseFormReturnType = [RegisterFn, FormActionType];
 
 /** 表单 */
-export interface FormSchema extends FormProps {
+export interface FormSchema<T = any> extends FormProps {
   // Form value
   model?: any;
   // The width of all items in the entire form
@@ -69,7 +69,7 @@ export interface FormSchema extends FormProps {
   baseColProps?: Partial<ColEx>;
 
   // Form configuration rules
-  schemas: FormItemSchema<any>[];
+  schemas: FormItemSchema<T>[];
   // Function values used to merge into dynamic control form items
   mergeDynamicData?: any;
   // Compact mode for search forms
@@ -116,9 +116,9 @@ export interface FormSchema extends FormProps {
   transformDateFunc?: (date: any) => string;
 }
 /** 表单项 */
-export interface FormItemSchema<T = string> {
+export interface FormItemSchema<T = any> {
   /** 字段名 */
-  field: T extends string ? string : keyof T;
+  field: T extends any ? string : keyof T;
   // Event name triggered by internal value change, default change
   changeEvent?: string;
   // Variable name bound to v-model Default value

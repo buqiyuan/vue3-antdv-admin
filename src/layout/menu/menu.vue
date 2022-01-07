@@ -1,18 +1,19 @@
 <template>
-  <Menu
-    v-model:open-keys="state.openKeys"
-    v-model:selected-keys="state.selectedKeys"
-    mode="inline"
-    theme="dark"
-    :collapsed="props.collapsed"
-    collapsible
-    class="menu-container"
-    @click="clickMenuItem"
-  >
-    <template v-for="item in menus" :key="item.name">
-      <MenuItem :menu-info="item" />
-    </template>
-  </Menu>
+  <div class="menu-container">
+    <Menu
+      v-model:open-keys="state.openKeys"
+      v-model:selected-keys="state.selectedKeys"
+      mode="inline"
+      theme="dark"
+      :collapsed="props.collapsed"
+      collapsible
+      @click="clickMenuItem"
+    >
+      <template v-for="item in menus" :key="item.name">
+        <MenuItem :menu-info="item" />
+      </template>
+    </Menu>
+  </div>
 </template>
 
 <script setup lang="ts">

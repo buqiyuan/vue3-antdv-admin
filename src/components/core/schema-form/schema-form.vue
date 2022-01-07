@@ -38,7 +38,7 @@
   } from 'vue';
   import { Form, Row } from 'ant-design-vue';
   import { formProps } from 'ant-design-vue/lib/form';
-  import { isNullOrUnDef, isObject, isArray, isFunction, isBoolean } from '@/utils/is';
+  import { isNullOrUnDef, isObject, isArray, isFunction, isBoolean, isString } from '@/utils/is';
   import { deepMerge } from '@/utils/';
   import SchemaFormItem from './schema-form-item.vue';
   import type { FormItemSchema, FormSchema, FormActionType } from './types/form';
@@ -71,7 +71,7 @@
       let oldFormSchema: FormSchema;
       // TODO 将formSchema克隆一份，避免修改原有的formSchema
       // TODO 类型为FormSchema 提示：类型实例化过深，且可能无限
-      const formSchemaRef = ref<any>({});
+      const formSchemaRef = ref<FormSchema>(cloneDeep(props.formSchema));
       // 表单项数据
       const formModel = reactive({ ...props.initialValues });
       // 表单默认数据
@@ -172,7 +172,9 @@
        */
       function itemIsDateType(key: string) {
         return unref(formSchemaRef).schemas.some((item) => {
-          return item.field === key ? dateItemType.includes(item.component) : false;
+          return item.field === key && isString(item.component)
+            ? dateItemType.includes(item.component)
+            : false;
         });
       }
 
@@ -191,7 +193,9 @@
           let value = values[key];
 
           const hasKey = Reflect.has(values, key);
-          value = handleInputNumberValue(schema?.component, value);
+          if (isString(schema?.component)) {
+            value = handleInputNumberValue(schema?.component, value);
+          }
           // 0| '' is allow
           if (hasKey && fields.includes(key)) {
             // time type
@@ -227,7 +231,7 @@
         if (isArray(data)) {
           updateData = [...data];
         }
-
+        // @ts-ignore
         unref(formSchemaRef).schemas = updateData as FormItemSchema[];
       }
 
