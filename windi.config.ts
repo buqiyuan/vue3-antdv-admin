@@ -1,6 +1,7 @@
 // @ts-check - enable TS check for js file
 import { defineConfig } from 'windicss/helpers';
 import colors from 'windicss/colors';
+import { baseConfig } from 'windicss/config';
 
 export default defineConfig({
   darkMode: 'class', // or 'media'
@@ -21,6 +22,7 @@ export default defineConfig({
       },
     },
     cursor: {
+      ...baseConfig.theme.cursor,
       'zoom-in': 'zoom-in',
     },
   },

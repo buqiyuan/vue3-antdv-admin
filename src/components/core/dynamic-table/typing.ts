@@ -39,7 +39,7 @@ export interface TableColumn<T = Indexable> extends Omit<TableColumnType, 'dataI
   /** 在 Table 中不展示此列 */
   hideInTable?: boolean;
   /** 传递给 Form.Item 的配置,可以配置 rules */
-  formItemProps?: Partial<FormItemSchema>;
+  formItemProps?: Partial<FormItemSchema<T>>;
   bodyCell?: (params: ColumnParams<T>) => VNode;
   headerCell?: (params: ColumnParams<T>) => VNode;
   actions?: (params: ColumnParams<T>) => ActionItem[];

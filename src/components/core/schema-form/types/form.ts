@@ -15,11 +15,13 @@ export type FieldMapToTime = [string, [string, string], string?][];
 export type Rule = RuleObject & {
   trigger?: 'blur' | 'change' | ['change', 'blur'];
 };
+/** 获取所有字段名 */
+export type GetFieldKeys<T> = Exclude<keyof T, symbol | number>;
 
 export interface RenderCallbackParams<T = string> {
   schemaItem: FormItemSchema;
-  formModel: T extends string ? Recordable : T;
-  field: T extends string ? string : keyof T;
+  formModel: T extends string ? Recordable : Record<GetFieldKeys<T>, any>;
+  field: T extends string ? string : GetFieldKeys<T>;
 }
 
 export interface ButtonProps {
@@ -115,10 +117,11 @@ export interface FormSchema<T = any> extends FormProps {
   submitFunc?: () => Promise<void>;
   transformDateFunc?: (date: any) => string;
 }
+
 /** 表单项 */
-export interface FormItemSchema<T = any> {
+export interface FormItemSchema<T = string> {
   /** 字段名 */
-  field: T extends any ? string : keyof T;
+  field: T extends string ? string : GetFieldKeys<T>;
   // Event name triggered by internal value change, default change
   changeEvent?: string;
   // Variable name bound to v-model Default value
@@ -145,11 +148,11 @@ export interface FormItemSchema<T = any> {
     | ComponentProps
     | ((opt: {
         /** 当前表单项 */
-        schemaItem: FormItemSchema;
+        schemaItem: FormItemSchema<T>;
         /** 动态表单实例 */
         schemaFormRef: FormActionType;
         /** 当前表单数据模型 */
-        formModel: Recordable;
+        formModel: T extends string ? Recordable : Record<GetFieldKeys<T>, any>;
       }) => ComponentProps);
 
   componentSlots?:

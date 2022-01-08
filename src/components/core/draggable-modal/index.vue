@@ -1,5 +1,5 @@
 <template>
-  <teleport to="body">
+  <teleport :to="getContainer()">
     <div ref="modalWrapRef" class="custom-modal" :class="{ fullscreen: fullscreenModel }">
       <Modal
         v-bind="{ ...$attrs, ...props }"
@@ -41,6 +41,7 @@
   import { Modal, Space } from 'ant-design-vue';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';
   import { useVModel } from '@vueuse/core';
+  import { throttle } from 'lodash-es';
 
   const props = defineProps({
     visible: {
@@ -106,7 +107,7 @@
 
   const registerDragTitle = (dragEl: HTMLDivElement, handleEl: HTMLDivElement) => {
     handleEl.style.cursor = 'move';
-    handleEl.onmousedown = (e: MouseEvent) => {
+    handleEl.onmousedown = throttle((e: MouseEvent) => {
       if (fullscreenModel.value) return;
       document.body.style.userSelect = 'none';
       const disX = e.clientX - dragEl.getBoundingClientRect().left;
@@ -134,7 +135,7 @@
 
       document.addEventListener('mousemove', mousemove);
       document.addEventListener('mouseup', mouseup);
-    };
+    }, 20);
   };
 
   const initDrag = async () => {
@@ -147,7 +148,7 @@
       const headerEl = modalEl.querySelector<HTMLDivElement>('.ant-modal-header');
       headerEl && registerDragTitle(modalEl, headerEl);
 
-      modalWrapEl.onmousemove = (event: MouseEvent) => {
+      modalWrapEl.onmousemove = throttle((event: MouseEvent) => {
         if (fullscreenModel.value) return;
         const left = event.clientX - modalEl.offsetLeft;
         const top = event.clientY - modalEl.offsetTop;
@@ -184,7 +185,7 @@
         } else {
           modalWrapEl.style.cursor = cursorStyle.auto;
         }
-      };
+      }, 20);
       modalWrapEl.onmousedown = (e: MouseEvent) => {
         if (fullscreenModel.value) return;
         const iParentTop = modalEl.getBoundingClientRect().top;
@@ -196,7 +197,7 @@
 
         const cursor = modalWrapEl.style.cursor;
 
-        const mousemove = (event: MouseEvent) => {
+        const mousemove = throttle((event: MouseEvent) => {
           if (fullscreenModel.value) return;
           if (cursor !== cursorStyle.auto) {
             document.body.style.userSelect = 'none';
@@ -237,7 +238,7 @@
             modalEl.style.height = event.clientY - iParentTop + 'px';
           }
           innerWidth.value = modalEl.style.width;
-        };
+        }, 20);
 
         const mouseup = () => {
           document.removeEventListener('mousemove', mousemove);

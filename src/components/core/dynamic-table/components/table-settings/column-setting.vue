@@ -30,7 +30,7 @@
           <template v-for="item in tableColumns" :key="table.getColumnKey(item)">
             <div class="check-item">
               <div style="padding: 4px 16px 8px 0">
-                <DragOutlined class="table-column-drag-icon pr-6px cursor-pointer" />
+                <DragOutlined class="table-column-drag-icon pr-6px cursor-move" />
                 <Checkbox
                   v-model:checked="item.hideInTable"
                   :true-value="false"

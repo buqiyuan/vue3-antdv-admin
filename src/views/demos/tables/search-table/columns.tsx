@@ -8,6 +8,7 @@ export const tableData = Array.from({ length: 30 }).map((_, i) => ({
   date: new Date().toLocaleString(),
   name: names[~~(Math.random() * 4)],
   clothes: clothes[~~(Math.random() * 4)],
+  price: ~~(Math.random() * 1000),
   gender: ~~(Math.random() * 2),
   status: ~~(Math.random() * 2),
 }));
@@ -91,6 +92,15 @@ export const columns: TableColumn<ListItemType>[] = [
     formItemProps: {
       component: 'Select',
     },
+  },
+  {
+    title: '价格',
+    align: 'center',
+    dataIndex: 'price',
+    formItemProps: {
+      component: 'Select',
+    },
+    bodyCell: ({ record }) => <>{[record.price]}元</>,
   },
   {
     title: '状态',
