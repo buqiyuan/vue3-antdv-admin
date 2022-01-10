@@ -4,7 +4,7 @@
       <div class="flex justify-between">
         <div>组织架构</div>
         <Space>
-          <Tooltip v-if="$auth('sys/dept/add')" placement="top">
+          <Tooltip v-if="$auth('sys.dept.add')" placement="top">
             <template #title>新增部门 </template>
             <PlusOutlined @click="openDeptModal({})" />
           </Tooltip>
@@ -27,14 +27,14 @@
               <Menu>
                 <Menu.Item
                   key="1"
-                  :disabled="!$auth('sys/dept/update')"
+                  :disabled="!$auth('sys.dept.update')"
                   @click="openDeptModal(formData)"
                 >
                   编辑 <EditOutlined />
                 </Menu.Item>
-                <a-menu-item key="2" :disabled="!$auth('sys/dept/delete')" @click="delDept(key)">
+                <Menu.Item key="2" :disabled="!$auth('sys.dept.delete')" @click="delDept(key)">
                   删除 <DeleteOutlined />
-                </a-menu-item>
+                </Menu.Item>
               </Menu>
             </template>
           </Dropdown>
@@ -61,19 +61,19 @@
           </Alert>
         </template>
         <template #toolbar>
-          <a-button type="primary" :disabled="!$auth('sys/user/add')" @click="openUserModal({})">
+          <a-button type="primary" :disabled="!$auth('sys.user.add')" @click="openUserModal({})">
             <PlusOutlined /> 新增
           </a-button>
           <a-button
             type="success"
-            :disabled="!isCheckRows || !$auth('sys/dept/transfer')"
+            :disabled="!isCheckRows || !$auth('sys.dept.transfer')"
             @click="openTransferUserModal"
           >
             <SwapOutlined /> 转移
           </a-button>
           <a-button
             type="danger"
-            :disabled="!isCheckRows || !$auth('sys/user/delete')"
+            :disabled="!isCheckRows || !$auth('sys.user.delete')"
             @click="delRowConfirm(rowSelection.selectedRowKeys)"
           >
             <DeleteOutlined /> 删除
@@ -99,8 +99,9 @@
     ExclamationCircleOutlined,
     SwapOutlined,
   } from '@ant-design/icons-vue';
-  import { SplitPanel } from '@/components/split-panel';
-  import { DynamicTable, LoadDataParams, DynamicTableInstance } from '@/components/dynamic-table';
+  import { SplitPanel } from '@/components/basic/split-panel';
+  import { DynamicTable } from '@/components/core/dynamic-table';
+  import type { LoadDataParams, DynamicTableInstance } from '@/components/core/dynamic-table';
   import {
     deleteUsers,
     getUserListPage,
@@ -150,7 +151,7 @@
   const openDeptModal = async (record: Partial<API.SysDeptListResult> = {}) => {
     console.log('record', record);
 
-    const [formRef] = await showModal({
+    const [formRef] = await showModal<any>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}部门`,
         width: 700,
@@ -223,7 +224,7 @@
    * @description 打开用户弹窗
    */
   const openUserModal = async (record: Partial<TableListItem> = {}) => {
-    const [formRef] = await showModal({
+    const [formRef] = await showModal<any>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}用户`,
         width: 700,
@@ -350,19 +351,19 @@
         {
           label: '编辑',
           auth: {
-            perm: 'sys/user/update',
+            perm: 'sys.user.update',
             effect: 'disable',
           },
           onClick: () => openUserModal(record),
         },
         {
           label: '改密',
-          auth: 'sys/user/password',
+          auth: 'sys.user.password',
           onClick: () => openUpdatePasswordModal(record),
         },
         {
           label: '删除',
-          auth: 'sys/user/delete',
+          auth: 'sys.user.delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record.id),

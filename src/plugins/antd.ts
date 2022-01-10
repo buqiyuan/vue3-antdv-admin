@@ -1,6 +1,6 @@
 import type { App } from 'vue';
 
-import { AButton } from '@/components/button/index';
+import { AButton } from '@/components/basic/button/index';
 
 import {
   Modal,
@@ -18,6 +18,7 @@ import {
 } from 'ant-design-vue';
 
 import 'ant-design-vue/dist/antd.css';
+import 'dayjs/locale/zh-cn';
 
 export function setupAntd(app: App<Element>) {
   app.component('AButton', AButton);

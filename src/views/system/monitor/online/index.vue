@@ -14,7 +14,7 @@
 
 <script setup lang="tsx">
   import { ref } from 'vue';
-  import { DynamicTable, TableColumn, DynamicTableInstance } from '@/components/dynamic-table';
+  import { DynamicTable, TableColumn, DynamicTableInstance } from '@/components/core/dynamic-table';
   import { getOnlineList, kickUser } from '@/api/system/online';
   import { Tag } from 'ant-design-vue';
   import { useSocket } from '@/core/socket/useSocket';
@@ -84,7 +84,7 @@
       actions: ({ record }) => [
         {
           label: '下线',
-          auth: 'sys/online/kick',
+          auth: 'sys.online.kick',
           disabled: record.disable,
           popConfirm: {
             title: '确定下线该用户吗?',

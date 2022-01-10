@@ -1,23 +1,29 @@
 <template>
-  <config-provider :locale="zhCN">
+  <ConfigProvider :locale="getAntdLocale">
     <router-view v-slot="{ Component }">
-      <Suspense>
-        <component :is="Component" />
-      </Suspense>
+      <component :is="Component" />
     </router-view>
     <LockScreen />
-  </config-provider>
+  </ConfigProvider>
 </template>
 
 <script setup lang="ts">
-  import zhCN from 'ant-design-vue/es/locale/zh_CN';
+  import { watchEffect } from 'vue';
   import { ConfigProvider } from 'ant-design-vue';
-  // import SuspenseWithError from '@/components/SuspenseWithError.vue'
-  import { LockScreen } from '@/components/lockscreen';
+  import { LockScreen } from '@/components/basic/lockscreen';
+  import { useRoute } from 'vue-router';
+  import { useLocale } from '@/locales/useLocale';
+  import { transformI18n } from './hooks/useI18n';
+
+  const route = useRoute();
+  const { getAntdLocale } = useLocale();
+
+  watchEffect(() => {
+    if (route.meta?.title) {
+      // 翻译网页标题
+      document.title = transformI18n(route.meta.title);
+    }
+  });
 </script>
 
-<style lang="less">
-  @import '@/styles/global.less';
-  @import '@/styles/common.less';
-  @import '@/styles/antdv.override.less';
-</style>
+<style lang="less"></style>

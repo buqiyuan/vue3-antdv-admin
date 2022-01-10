@@ -1,7 +1,7 @@
 import { App } from 'vue';
 
-import { SvgIcon } from '@/components/svg-icon';
-import { IconFont } from '@/components/iconfont';
+import { SvgIcon } from '@/components/basic/svg-icon';
+import { IconFont } from '@/components/basic/iconfont';
 
 /**
  * 全局注册自定义组件

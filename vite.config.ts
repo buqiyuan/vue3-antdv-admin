@@ -23,7 +23,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   const { VITE_BASE_URL, VITE_DROP_CONSOLE } = loadEnv(mode, CWD);
 
   const isBuild = command === 'build';
-  console.log('当前执行环境：', isBuild);
 
   return {
     base: VITE_BASE_URL,
@@ -32,6 +31,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     resolve: {
       alias: [
+        {
+          find: 'vue-i18n',
+          replacement: 'vue-i18n/dist/vue-i18n.cjs.js',
+        },
         {
           find: '@',
           replacement: resolve(__dirname, './src'),
@@ -111,27 +114,24 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 8088,
       proxy: {
         '/api': {
-          target: 'http://buqiyuan.site:7001',
+          target: 'https://nest-api.buqiyuan.site/api/',
           // target: 'http://localhost:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/ws-api': {
-          target: 'ws://buqiyuan.site:7002',
+          target: 'wss://nest-api.buqiyuan.site',
           changeOrigin: true, //是否允许跨域
           ws: true,
         },
       },
     },
     optimizeDeps: {
-      include: [
-        '@ant-design/icons-vue',
-        'ant-design-vue/es/locale/zh_CN',
-        'ant-design-vue/es/locale/en_US',
-      ],
+      include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
       exclude: ['vue-demi'],
     },
     build: {
+      target: ['edge90', 'chrome90', 'firefox90', 'safari15'],
       terserOptions: {
         compress: {
           keep_infinity: true,

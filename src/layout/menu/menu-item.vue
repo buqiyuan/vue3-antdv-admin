@@ -9,7 +9,7 @@
       <template #title>
         <span>
           <icon-font :type="props.menuInfo.meta?.icon" />
-          <span>{{ getTitle(props.menuInfo.meta?.title) }}</span>
+          <TitleI18n :title="props.menuInfo?.meta?.title" />
         </span>
       </template>
       <template v-for="item in props.menuInfo?.children" :key="item.name">
@@ -21,7 +21,7 @@
     <template v-else>
       <Menu.Item :key="props.menuInfo?.name">
         <icon-font :type="props.menuInfo?.meta?.icon" />
-        <span>{{ getTitle(props.menuInfo?.meta?.title) }}</span>
+        <TitleI18n :title="props.menuInfo?.meta?.title" />
       </Menu.Item>
     </template>
   </template>
@@ -37,16 +37,14 @@
   import { PropType } from 'vue';
   import { Menu } from 'ant-design-vue';
   import type { RouteRecordRaw } from 'vue-router';
-  import { IconFont } from '@/components/iconfont';
+  import { IconFont } from '@/components/basic/iconfont';
+  import { TitleI18n } from '@/components/basic/title-i18n';
 
   const props = defineProps({
     menuInfo: {
       type: Object as PropType<RouteRecordRaw>,
     },
   });
-  const getTitle = (title) => {
-    return typeof title === 'string' ? title : title?.['zh_CN'];
-  };
 </script>
 
 <style scoped></style>

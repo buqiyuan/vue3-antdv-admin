@@ -10,7 +10,7 @@
       size="small"
     >
       <template #toolbar>
-        <a-button type="primary" :disabled="!$auth('sys/role/add')" @click="openMenuModal({})">
+        <a-button type="primary" :disabled="!$auth('sys.role.add')" @click="openMenuModal({})">
           新增
         </a-button>
       </template>
@@ -36,7 +36,7 @@
   } from '@/api/system/role';
   import { getDeptList } from '@/api/system/dept';
   import { getMenuList } from '@/api/system/menu';
-  import { DynamicTable } from '@/components/dynamic-table';
+  import { DynamicTable } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { roleSchemas } from './formSchemas';
@@ -63,12 +63,12 @@
    * @description 打开新增/编辑弹窗
    */
   const openMenuModal = async (record: Partial<TableListItem>) => {
-    const [formRef] = await showModal({
+    const [formRef] = await showModal<API.UpdateRoleParams & API.CaptchaParams>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}角色`,
         width: '50%',
         onFinish: async (values) => {
-          values.roleId = record.id;
+          record.id && (values.roleId = record.id);
           const menusRef = formRef.value?.compRefs?.menus;
           const deptsRef = formRef.value?.compRefs?.depts;
           const params = {
@@ -137,14 +137,14 @@
         {
           label: '编辑',
           auth: {
-            perm: 'sys/role/update',
+            perm: 'sys.role.update',
             effect: 'disable',
           },
           onClick: () => openMenuModal(record),
         },
         {
           label: '删除',
-          auth: 'sys/role/delete',
+          auth: 'sys.role.delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record),

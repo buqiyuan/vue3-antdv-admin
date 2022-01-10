@@ -1,7 +1,7 @@
 <template>
   <div class="tabs-view">
     <Tabs
-      v-model:activeKey="state.activeKey"
+      :active-key="activeKey"
       hide-add
       type="editable-card"
       class="tabs"
@@ -12,39 +12,35 @@
         <template #tab>
           <Dropdown :trigger="['contextmenu']">
             <div style="display: inline-block">
-              {{ getTitle(pageItem.meta?.title) }}
+              <TitleI18n :title="pageItem.meta?.title" />
             </div>
             <template #overlay>
               <Menu style="user-select: none">
-                <Menu.Item
-                  key="1"
-                  :disabled="state.activeKey !== pageItem.fullPath"
-                  @click="reloadPage"
-                >
+                <Menu.Item key="1" :disabled="activeKey !== pageItem.fullPath" @click="reloadPage">
                   <reload-outlined />
-                  刷新
+                  {{ $t('layout.multipleTab.reload') }}
                 </Menu.Item>
                 <Menu.Item key="2" @click="removeTab(pageItem)">
                   <close-outlined />
-                  关闭
+                  {{ $t('layout.multipleTab.close') }}
                 </Menu.Item>
-                <a-menu-divider />
+                <Menu.Divider />
                 <Menu.Item key="3" @click="closeLeft(pageItem)">
                   <vertical-right-outlined />
-                  关闭左侧
+                  {{ $t('layout.multipleTab.closeLeft') }}
                 </Menu.Item>
                 <Menu.Item key="4" @click="closeRight(pageItem)">
                   <vertical-left-outlined />
-                  关闭右侧
+                  {{ $t('layout.multipleTab.closeRight') }}
                 </Menu.Item>
-                <a-menu-divider />
+                <Menu.Divider />
                 <Menu.Item key="5" @click="closeOther(pageItem)">
                   <column-width-outlined />
-                  关闭其他
+                  {{ $t('layout.multipleTab.closeOther') }}
                 </Menu.Item>
                 <Menu.Item key="6" @click="closeAll">
                   <minus-outlined />
-                  关闭全部
+                  {{ $t('layout.multipleTab.closeAll') }}
                 </Menu.Item>
               </Menu>
             </template>
@@ -59,22 +55,22 @@
           </a>
           <template #overlay>
             <Menu style="user-select: none">
-              <Menu.Item key="1" :disabled="state.activeKey !== route.fullPath" @click="reloadPage">
+              <Menu.Item key="1" :disabled="activeKey !== route.fullPath" @click="reloadPage">
                 <reload-outlined />
-                刷新
+                {{ $t('layout.multipleTab.reload') }}
               </Menu.Item>
               <Menu.Item key="2" @click="removeTab(route)">
                 <close-outlined />
-                关闭
+                {{ $t('layout.multipleTab.close') }}
               </Menu.Item>
-              <a-menu-divider />
+              <Menu.Divider />
               <Menu.Item key="5" @click="closeOther(route)">
                 <column-width-outlined />
-                关闭其他
+                {{ $t('layout.multipleTab.closeOther') }}
               </Menu.Item>
               <Menu.Item key="6" @click="closeAll">
                 <minus-outlined />
-                关闭全部
+                {{ $t('layout.multipleTab.closeAll') }}
               </Menu.Item>
             </Menu>
           </template>
@@ -86,12 +82,7 @@
         <template v-if="Component">
           <transition name="fade-transform" mode="out-in" appear>
             <keep-alive :include="keepAliveComponents">
-              <suspense>
-                <component :is="Component" :key="route.fullPath" />
-                <template #fallback>
-                  <div> Loading... </div>
-                </template>
-              </suspense>
+              <component :is="Component" :key="route.fullPath" />
             </keep-alive>
           </transition>
         </template>
@@ -101,11 +92,11 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, computed, unref, provide, watch } from 'vue';
+  import { computed, unref, watch } from 'vue';
   import { useRoute, useRouter, RouteLocation } from 'vue-router';
   import { Storage } from '@/utils/Storage';
   import { TABS_ROUTES } from '@/enums/cacheEnum';
-  import { useTabsViewStore } from '@/store/modules/tabsView';
+  import { useTabsViewStore, blackList } from '@/store/modules/tabsView';
   import { useKeepAliveStore } from '@/store/modules/keepAlive';
   import {
     DownOutlined,
@@ -117,6 +108,8 @@
     MinusOutlined,
   } from '@ant-design/icons-vue';
   import { Dropdown, Tabs, message, Menu } from 'ant-design-vue';
+  import { REDIRECT_NAME } from '@/router/constant';
+  import { TitleI18n } from '@/components/basic/title-i18n';
 
   type RouteItem = Omit<RouteLocation, 'matched' | 'redirectedFrom'>;
 
@@ -125,14 +118,10 @@
   const tabsViewStore = useTabsViewStore();
   const keepAliveStore = useKeepAliveStore();
 
-  const whiteList = ['Redirect', 'login'];
-
-  const state = reactive({
-    activeKey: route.fullPath,
-  });
+  const activeKey = computed(() => route.fullPath);
 
   // 标签页列表
-  const tabsList = computed(() => tabsViewStore.tabsList.filter((n) => router.hasRoute(n.name!)));
+  const tabsList = computed(() => tabsViewStore.getTabsList);
 
   // 缓存的路由组件列表
   const keepAliveComponents = computed(() => keepAliveStore.list);
@@ -154,10 +143,11 @@
 
   // 初始化标签页
   tabsViewStore.initTabs(routes);
+
   // tabsViewMutations.initTabs(routes)
 
-  // 移除缓存组件名称
-  const delKeepAliveCompName = () => {
+  // 将当前组件从keep-alive缓存中移除
+  const delCurrCompFromKeepAlive = () => {
     if (route.meta.keepAlive) {
       const name = router.currentRoute.value.matched.find((item) => item.name == route.name)
         ?.components?.default.name;
@@ -170,27 +160,7 @@
   watch(
     () => route.fullPath,
     () => {
-      // 不存在的路由
-      const notFondRoutes: string[] = [];
-      tabsList.value.forEach((item) => {
-        if (item.name && !router.hasRoute(item.name)) {
-          notFondRoutes.push(item.name as string);
-        }
-      });
-      // 过滤不存在的路由
-      if (notFondRoutes.length) {
-        tabsViewStore.initTabs(
-          tabsList.value.filter((item) => !notFondRoutes.includes(item.name as string)),
-        );
-      }
-    },
-  );
-
-  watch(
-    () => route.fullPath,
-    (to) => {
-      if (whiteList.includes(route.name as string)) return;
-      state.activeKey = to;
+      if (blackList.some((n) => n === route.name)) return;
       // tabsViewMutations.addTabs(getSimpleRoute(route))
       tabsViewStore.addTabs(getSimpleRoute(route));
     },
@@ -202,18 +172,22 @@
     Storage.set(TABS_ROUTES, JSON.stringify(tabsList.value));
   });
 
+  // 目标路由是否等于当前路由
+  const isCurrentRoute = (route) => {
+    return router.currentRoute.value.matched.some((item) => item.name === route.name);
+  };
+
   // 关闭当前页面
   const removeTab = (route) => {
     if (tabsList.value.length === 1) {
       return message.warning('这已经是最后一页，不能再关闭了！');
     }
-    delKeepAliveCompName();
+    delCurrCompFromKeepAlive();
     // tabsViewMutations.closeCurrentTabs(route)
     tabsViewStore.closeCurrentTab(route);
     // 如果关闭的是当前页
-    if (state.activeKey === route.fullPath) {
+    if (activeKey.value === route.fullPath) {
       const currentRoute = tabsList.value[Math.max(0, tabsList.value.length - 1)];
-      state.activeKey = currentRoute.fullPath;
       router.push(currentRoute);
     }
   };
@@ -225,42 +199,39 @@
   };
   // 切换页面
   const changePage = (key) => {
-    state.activeKey = key;
     router.push(key);
   };
 
   // 刷新页面
   const reloadPage = () => {
-    delKeepAliveCompName();
-    router.push({
-      path: '/redirect' + unref(route).fullPath,
+    delCurrCompFromKeepAlive();
+    router.replace({
+      name: REDIRECT_NAME,
+      params: {
+        path: unref(route).fullPath,
+      },
     });
   };
-  // 注入刷新页面方法
-  provide('reloadPage', reloadPage);
 
   // 关闭左侧
   const closeLeft = (route) => {
     // tabsViewMutations.closeLeftTabs(route)
     tabsViewStore.closeLeftTabs(route);
-    state.activeKey = route.fullPath;
-    router.replace(route.fullPath);
+    !isCurrentRoute(route) && router.replace(route.fullPath);
   };
 
   // 关闭右侧
   const closeRight = (route) => {
     // tabsViewMutations.closeRightTabs(route)
     tabsViewStore.closeRightTabs(route);
-    state.activeKey = route.fullPath;
-    router.replace(route.fullPath);
+    !isCurrentRoute(route) && router.replace(route.fullPath);
   };
 
   // 关闭其他
   const closeOther = (route) => {
     // tabsViewMutations.closeOtherTabs(route)
     tabsViewStore.closeOtherTabs(route);
-    state.activeKey = route.fullPath;
-    router.replace(route.fullPath);
+    !isCurrentRoute(route) && router.replace(route.fullPath);
   };
 
   // 关闭全部
@@ -269,10 +240,6 @@
     // tabsViewMutations.closeAllTabs()
     tabsViewStore.closeAllTabs();
     router.replace('/');
-  };
-
-  const getTitle = (title) => {
-    return typeof title === 'string' ? title : title?.['zh_CN'];
   };
 </script>
 

@@ -50,7 +50,7 @@ export const formarPermsToCascader = () => {
  * @returns {boolean} true | false
  */
 export const verifyAuth = (perm: PermissionType) => {
-  const permCode = perm.split('/').join(':');
+  const permCode = perm.split('.').join(':');
   const permissionList = useUserStore().perms;
 
   return permissionList.some((n) => n === permCode);

@@ -13,7 +13,7 @@
       :scroll="{ x: 2000 }"
     >
       <template #toolbar>
-        <a-button type="primary" :disabled="!$auth('sys/menu/add')" @click="openMenuModal({})">
+        <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openMenuModal({})">
           新增
         </a-button>
       </template>
@@ -31,19 +31,19 @@
   import { ref } from 'vue';
   import type { TreeSelectProps } from 'ant-design-vue';
   import { getMenuList, updateMenu, createMenu, deleteMenu } from '@/api/system/menu';
-  import { DynamicTable } from '@/components/dynamic-table';
+  import { DynamicTable } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { menuSchemas } from './formSchemas';
   import { formatMenu2Tree } from '@/core/permission/utils';
-  import { cloneDeep } from 'lodash';
+  import { cloneDeep } from 'lodash-es';
 
   const menuTree = ref<TreeSelectProps['treeData']>([]);
   const dynamicTableRef = ref<InstanceType<typeof DynamicTable>>();
 
   const [showModal] = useFormModal();
 
-  const loadTableData = async (e: any) => {
+  const loadTableData = async () => {
     const data = await getMenuList();
     menuTree.value = formatMenu2Tree(
       cloneDeep(data).filter((n) => n.type !== 2),
@@ -54,7 +54,7 @@
   };
 
   const openMenuModal = async (record: Partial<TableListItem>) => {
-    const [formRef] = await showModal({
+    const [formRef] = await showModal<any>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}菜单`,
         width: 700,
@@ -107,14 +107,14 @@
         {
           label: '编辑',
           auth: {
-            perm: 'sys/menu/update',
+            perm: 'sys.menu.update',
             effect: 'disable',
           },
           onClick: () => openMenuModal(record),
         },
         {
           label: '删除',
-          auth: 'sys/menu/delete',
+          auth: 'sys.menu.delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record),

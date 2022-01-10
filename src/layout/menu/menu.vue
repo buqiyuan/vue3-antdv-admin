@@ -1,18 +1,19 @@
 <template>
-  <Menu
-    v-model:open-keys="state.openKeys"
-    v-model:selected-keys="state.selectedKeys"
-    mode="inline"
-    theme="dark"
-    :collapsed="props.collapsed"
-    collapsible
-    class="menu-container"
-    @click="clickMenuItem"
-  >
-    <template v-for="item in menus" :key="item.name">
-      <MenuItem :menu-info="item" />
-    </template>
-  </Menu>
+  <div class="menu-container">
+    <Menu
+      v-model:open-keys="state.openKeys"
+      v-model:selected-keys="state.selectedKeys"
+      mode="inline"
+      theme="dark"
+      :collapsed="props.collapsed"
+      collapsible
+      @click="clickMenuItem"
+    >
+      <template v-for="item in menus" :key="item.name">
+        <MenuItem :menu-info="item" />
+      </template>
+    </Menu>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -21,6 +22,7 @@
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
   import { useRoute, useRouter } from 'vue-router';
+  import { LOGIN_NAME } from '@/router/constant';
 
   const props = defineProps({
     collapsed: {
@@ -68,7 +70,7 @@
   watch(
     () => currentRoute.fullPath,
     () => {
-      if (currentRoute.name == 'login' || props.collapsed) return;
+      if (currentRoute.name === LOGIN_NAME || props.collapsed) return;
       state.openKeys = getOpenKeys();
       const meta = currentRoute.meta;
       if (meta?.activeMenu) {

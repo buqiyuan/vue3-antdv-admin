@@ -1,15 +1,12 @@
-// import { getAsyncPage } from '@/utils/common';
-
-const prefix = 'shared/demos/';
-
 export default {
-  'views/shared/demos/form/rule-form.vue': () =>
-    import('@/views/shared/demos/form/rule-form/index.vue'), // 验证表单
-  'views/shared/demos/icons/Iconfont.vue': () => import('@/views/shared/demos/icons/Iconfont.vue'), // 自定义图标
-  [`views/${prefix}tables/wzry-table/index.vue`]: () =>
-    import('@/views/shared/demos/tables/wzry-table/index.vue'), // wzry
-  [`views/${prefix}tables/lol-table/index.vue`]: () =>
-    import('@/views/shared/demos/tables/lol-table/index.vue'), // lol
-  'views/shared/demos/button.vue': () => import('@/views/shared/demos/button.vue'), // 自定义按钮
-  'views/shared/demos/custom-modal.vue': () => import('@/views/shared/demos/custom-modal.vue'), // 自定义模态框
+  'views/demos/form/rule-form.vue': () => import('@/views/demos/form/rule-form/index.vue'), // 验证表单
+  'views/demos/icons/Iconfont.vue': () => import('@/views/demos/icons/Iconfont.vue'), // 自定义图标
+  'views/demos/tables/lol-table/index.vue': () =>
+    import('@/views/demos/tables/lol-table/index.vue'), // lol
+  'views/demos/tables/wzry-table/index.vue': () =>
+    import('@/views/demos/tables/wzry-table/index.vue'), // wzry
+  'views/demos/tables/search-table/index.vue': () =>
+    import('@/views/demos/tables/search-table/index.vue'), // search-table
+  'views/demos/button.vue': import('@/views/demos/button.vue'), // 自定义按钮
+  'views/demos/custom-modal.vue': import('@/views/demos/custom-modal.vue'), // 自定义模态框
 };
