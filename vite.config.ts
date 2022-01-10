@@ -111,6 +111,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     server: {
+      host: '0.0.0.0',
       port: 8088,
       proxy: {
         '/api': {
@@ -127,11 +128,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     optimizeDeps: {
-      include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
+      include: ['ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
       exclude: ['vue-demi'],
     },
     build: {
-      target: ['edge90', 'chrome90', 'firefox90', 'safari15'],
+      // target: 'esnext',
       terserOptions: {
         compress: {
           keep_infinity: true,

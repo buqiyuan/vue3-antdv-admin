@@ -6,6 +6,8 @@
     "serve": "npm run dev",
     "dev": "vite",
     "build": "cross-env NODE_ENV=production vite build",
+    "preview": "npm run build && vite preview",
+    "preview:dist": "vite preview",
     "deploy": "gh-pages -d dist",
     "lint:eslint": "eslint --cache --max-warnings 0 \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
     "lint:lint-staged": "lint-staged",

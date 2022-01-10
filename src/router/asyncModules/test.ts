@@ -7,6 +7,6 @@ export default {
     import('@/views/demos/tables/wzry-table/index.vue'), // wzry
   'views/demos/tables/search-table/index.vue': () =>
     import('@/views/demos/tables/search-table/index.vue'), // search-table
-  'views/demos/button.vue': import('@/views/demos/button.vue'), // 自定义按钮
-  'views/demos/custom-modal.vue': import('@/views/demos/custom-modal.vue'), // 自定义模态框
+  'views/demos/button.vue': () => import('@/views/demos/button.vue'), // 自定义按钮
+  'views/demos/custom-modal.vue': () => import('@/views/demos/custom-modal.vue'), // 自定义模态框
 };
