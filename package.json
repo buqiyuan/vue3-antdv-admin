@@ -42,7 +42,7 @@
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^16.0.1",
+    "@commitlint/cli": "^16.0.2",
     "@commitlint/config-conventional": "^16.0.0",
     "@types/lodash-es": "^4.17.5",
     "@types/node": "^17.0.8",

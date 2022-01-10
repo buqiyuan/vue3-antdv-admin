@@ -1,9 +1,11 @@
 import { type PermissionType } from '@/core/permission/modules/types';
 import { type LocaleType } from '@/locales/config';
 
-type Title18n = {
-  [p in LocaleType]: string;
-};
+declare global {
+  type Title18n = {
+    [p in LocaleType]: string;
+  };
+}
 
 declare module 'vue-router' {
   interface RouteMeta extends Record<string | number | symbol, unknown> {

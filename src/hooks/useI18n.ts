@@ -1,6 +1,5 @@
 import { type Composer } from 'vue-i18n';
 import { i18n } from '@/locales';
-import { Title18n } from 'types/vue-router';
 
 type I18nGlobalTranslation = Composer['t'];
 type I18nTranslationRestParameters = [string, any];
