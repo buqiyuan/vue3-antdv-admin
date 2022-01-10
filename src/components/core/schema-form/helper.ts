@@ -2,14 +2,13 @@ import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
 import type { ComponentMapType } from './types';
 import { isNumber } from '@/utils/is';
 import dayjs from 'dayjs';
-import { useI18n } from '@/hooks/useI18n';
-
-const { t } = useI18n();
+import { useI18n } from 'vue-i18n';
 
 /**
  * @description: 生成placeholder
  */
 export function createPlaceholderMessage(component: ComponentMapType, label = '') {
+  const { t } = useI18n();
   if (component.includes('Input') || component.includes('Complete')) {
     return `${t('common.inputText')}${label}`;
   }
