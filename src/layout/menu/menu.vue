@@ -35,7 +35,10 @@
   const currentRoute = useRoute();
   const router = useRouter();
 
-  const menus = computed(() => userStore.menus);
+  const menus = computed(() =>
+    [...userStore.menus].sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0)),
+  );
+  console.log('menus', menus.value);
 
   // 根据activeMenu获取指定的menu
   const getTargetMenuByActiveMenuName = (activeMenu: string) => {

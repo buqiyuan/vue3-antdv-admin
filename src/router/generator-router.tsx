@@ -23,7 +23,7 @@ export function filterAsyncRoute(
   return routes
     .filter((item) => item.type !== 2 && item.isShow && item.parentId == parentRoute?.id)
     .map((item) => {
-      const { router, viewPath, name, icon, keepalive } = item;
+      const { router, viewPath, name, icon, orderNum, keepalive } = item;
       let fullPath = '';
       const pathPrefix = lastNamePath.slice(-1)[0] || '';
       if (isUrl(router)) {
@@ -47,6 +47,7 @@ export function filterAsyncRoute(
         // name: `${viewPath ? toHump(viewPath) : fullPath}-${item.id}`,
         name: fullPath,
         meta: {
+          orderNum,
           title: name,
           perms: [],
           icon: icon,

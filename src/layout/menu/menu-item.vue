@@ -12,7 +12,7 @@
           <TitleI18n :title="props.menuInfo?.meta?.title" />
         </span>
       </template>
-      <template v-for="item in props.menuInfo?.children" :key="item.name">
+      <template v-for="item in menuChildren" :key="item.name">
         <!-- 递归生成菜单 -->
         <MyMenuItem :menuInfo="item" />
       </template>
@@ -34,7 +34,7 @@
 </script>
 
 <script setup lang="ts">
-  import { PropType } from 'vue';
+  import { type PropType, computed } from 'vue';
   import { Menu } from 'ant-design-vue';
   import type { RouteRecordRaw } from 'vue-router';
   import { IconFont } from '@/components/basic/iconfont';
@@ -45,6 +45,12 @@
       type: Object as PropType<RouteRecordRaw>,
     },
   });
+
+  const menuChildren = computed(() =>
+    [...(props.menuInfo?.children || [])].sort(
+      (a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0),
+    ),
+  );
 </script>
 
 <style scoped></style>
