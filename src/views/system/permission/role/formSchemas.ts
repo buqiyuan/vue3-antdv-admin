@@ -35,7 +35,7 @@ export const roleSchemas: FormItemSchema<API.CreateRoleParams>[] = [
       checkable: true,
       vModelKey: 'checkedKeys',
       style: {
-        height: '300px',
+        height: '350px',
         paddingTop: '5px',
         overflow: 'auto',
         borderRadius: '6px',
@@ -54,7 +54,7 @@ export const roleSchemas: FormItemSchema<API.CreateRoleParams>[] = [
       checkable: true,
       vModelKey: 'checkedKeys',
       style: {
-        height: '300px',
+        height: '350px',
         paddingTop: '5px',
         overflow: 'auto',
         borderRadius: '6px',

@@ -176,7 +176,7 @@
           treeDefaultExpandedKeys: [-1].concat(record?.keyPath || []),
           treeData: [
             {
-              key: -1,
+              value: -1,
               title: '#',
               children: state.deptTree,
             },

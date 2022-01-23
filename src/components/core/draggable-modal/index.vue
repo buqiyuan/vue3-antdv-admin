@@ -271,6 +271,7 @@
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
+        max-width: 100vw !important;
       }
       .ant-modal-content {
         width: 100% !important;
@@ -305,7 +306,7 @@
         }
       }
       .ant-modal-content {
-        // width: ~'v-bind("props.width")px';
+        /* width: ~'v-bind("props.width")px'; */
         display: flex;
         flex-direction: column;
         width: 100%;
