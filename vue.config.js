@@ -1,18 +1,38 @@
 const { defineConfig } = require('@vue/cli-service');
+const webpack = require('webpack');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const CompressionPlugin = require('compression-webpack-plugin');
 // 去除console
+const dayjs = require('dayjs');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 const resolve = (dir) => path.join(__dirname, dir); // 路径
+const pkg = require('./package.json');
 
-process.env.VUE_APP_VERSION = require('./package.json').version;
+process.env.VUE_APP_VERSION = pkg.version;
 
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
 // const IS_DEV = ['development'].includes(process.env.NODE_ENV);
 
 // port = 8098 npm run dev OR npm run dev --port = 8098
 const port = process.env.port || process.env.npm_config_port || 8098; // dev port
+// 获取所有依赖地址
+['dependencies', 'devDependencies'].forEach((name) => {
+  Object.keys(pkg[name]).forEach((key) => {
+    const devPkg = require(`./node_modules/${key}/package.json`);
+    pkg[name][key] = {
+      url: devPkg.repository?.url || devPkg.repository || devPkg.homepage,
+      version: pkg[name][key],
+    };
+  });
+});
+
+const __APP_INFO__ = {
+  pkg,
+  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+};
+
+process.env.VUE_APP_APP_INFO = JSON.stringify(__APP_INFO__);
 
 module.exports = defineConfig({
   // lintOnSave: false, //关闭eslint检查
@@ -53,6 +73,7 @@ module.exports = defineConfig({
 
     // 配置相关loader，支持修改，添加和替换相关的loader
     config.resolve.alias.set('@', resolve('src'));
+    config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js');
 
     // 打包分析
     if (IS_PROD) {
@@ -149,6 +170,13 @@ module.exports = defineConfig({
       topLevelAwait: true,
     };
     config.resolve.fallback = { path: require.resolve('path-browserify') };
+
+    config.plugins.push(
+      // 定义全局变量
+      new webpack.DefinePlugin({
+        __APP_INFO__: JSON.stringify(__APP_INFO__),
+      }),
+    );
 
     if (IS_PROD) {
       config.plugins.push(

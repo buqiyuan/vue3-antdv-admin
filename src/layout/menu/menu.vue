@@ -52,7 +52,10 @@
       const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
       return targetMenu?.meta?.namePath ?? [meta?.activeMenu];
     }
-    return currentRoute.meta?.namePath ?? currentRoute.matched.slice(1).map((n) => n.name);
+
+    return meta?.hideInMenu
+      ? state?.openKeys || []
+      : currentRoute.meta?.namePath ?? currentRoute.matched.slice(1).map((n) => n.name);
   };
 
   const state = reactive({
