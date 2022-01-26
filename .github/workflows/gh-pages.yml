@@ -6,11 +6,16 @@ env:
 on:
   push:
     branches: [main]
+
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      # 设置服务器时区为东八区
+      - name: Set time zone
+        run: sudo timedatectl set-timezone 'Asia/Shanghai'
 
       - name: Setup Node.js v14.x
         uses: actions/setup-node@v1

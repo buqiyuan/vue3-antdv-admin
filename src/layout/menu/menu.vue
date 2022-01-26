@@ -21,7 +21,7 @@
   import { Menu } from 'ant-design-vue';
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
-  import { useRoute, useRouter } from 'vue-router';
+  import { type RouteRecordName, useRoute, useRouter } from 'vue-router';
   import { LOGIN_NAME } from '@/router/constant';
 
   const props = defineProps({
@@ -34,8 +34,15 @@
   // 当前路由
   const currentRoute = useRoute();
   const router = useRouter();
+  const state = reactive({
+    openKeys: [] as (RouteRecordName | undefined)[],
+    selectedKeys: [currentRoute.name],
+  });
 
-  const menus = computed(() => userStore.menus);
+  const menus = computed(() =>
+    [...userStore.menus].sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0)),
+  );
+  console.log('menus', menus.value);
 
   // 根据activeMenu获取指定的menu
   const getTargetMenuByActiveMenuName = (activeMenu: string) => {
@@ -43,19 +50,17 @@
   };
 
   // 获取当前打开的子菜单
-  const getOpenKeys = () => {
+  function getOpenKeys() {
     const meta = currentRoute.meta;
     if (meta?.activeMenu) {
       const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
       return targetMenu?.meta?.namePath ?? [meta?.activeMenu];
     }
-    return currentRoute.meta?.namePath ?? currentRoute.matched.slice(1).map((n) => n.name);
-  };
 
-  const state = reactive({
-    openKeys: getOpenKeys(),
-    selectedKeys: [currentRoute.name],
-  });
+    return meta?.hideInMenu
+      ? state?.openKeys || []
+      : currentRoute.meta?.namePath ?? currentRoute.matched.slice(1).map((n) => n.name);
+  }
 
   // 监听菜单收缩状态
   watch(

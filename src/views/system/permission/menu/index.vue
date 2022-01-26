@@ -78,7 +78,7 @@
         field: 'parentId',
         componentProps: {
           treeDefaultExpandedKeys: [-1].concat(record?.keyPath || []),
-          treeData: [{ key: -1, name: '一级菜单', children: menuTree.value }],
+          treeData: ref([{ id: -1, name: '一级菜单', children: menuTree.value }]),
         },
       },
     ]);

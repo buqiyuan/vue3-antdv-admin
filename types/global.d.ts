@@ -6,14 +6,18 @@ import type {
   FunctionalComponent,
   PropType as VuePropType,
 } from 'vue';
+import packageJSON from '../package.json';
+
+type DepInfo = {
+  url: string;
+  version: string;
+};
 
 declare global {
   const __APP_INFO__: {
-    pkg: {
-      name: string;
-      version: string;
-      dependencies: Recordable<string>;
-      devDependencies: Recordable<string>;
+    pkg: typeof packageJSON & {
+      dependencies: Record<string, DepInfo>;
+      devDependencies: Record<string, DepInfo>;
     };
     lastBuildTime: string;
   };

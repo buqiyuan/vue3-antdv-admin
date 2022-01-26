@@ -10,6 +10,8 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import WindiCSS from 'vite-plugin-windicss';
 import viteSvgIcons from 'vite-plugin-svg-icons';
+import pkg from './package.json';
+import dayjs from 'dayjs';
 
 const CWD = process.cwd();
 
@@ -17,6 +19,21 @@ const CWD = process.cwd();
 // const BASE_ENV_CONFIG = loadEnv('', CWD);
 // const DEV_ENV_CONFIG = loadEnv('development', CWD);
 // const PROD_ENV_CONFIG = loadEnv('production', CWD);
+// 获取所有依赖地址
+['dependencies', 'devDependencies'].forEach((name) => {
+  Object.keys(pkg[name]).forEach((key) => {
+    const devPkg = require(`./node_modules/${key}/package.json`);
+    pkg[name][key] = {
+      url: devPkg.repository?.url || devPkg.repository || devPkg.homepage,
+      version: pkg[name][key],
+    };
+  });
+});
+
+const __APP_INFO__ = {
+  pkg,
+  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+};
 
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   // 环境变量
@@ -28,6 +45,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     base: VITE_BASE_URL,
     esbuild: {
       // target: 'es2015'
+    },
+    define: {
+      __APP_INFO__: JSON.stringify(__APP_INFO__),
     },
     resolve: {
       alias: [
@@ -74,6 +94,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             exclude: ['AButton'],
           }),
         ],
+        directoryAsNamespace: true,
       }),
       // styleImport({
       //   libs: [
@@ -128,7 +149,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     optimizeDeps: {
-      include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
+      include: ['lodash-es', 'ant-design-vue'],
       exclude: ['vue-demi'],
     },
     build: {

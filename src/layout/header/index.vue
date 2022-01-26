@@ -36,8 +36,11 @@
         <Avatar :src="userInfo.headImg" :alt="userInfo.name">{{ userInfo.name }}</Avatar>
         <template #overlay>
           <Menu>
-            <Menu.Item>
-              <div>个人中心</div>
+            <Menu.Item @click="$router.push({ name: 'account-about' })">
+              {{ $t('routes.account.about') }}
+            </Menu.Item>
+            <Menu.Item @click="$router.push({ name: 'account-settings' })">
+              {{ $t('routes.account.settings') }}
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item>

@@ -23,28 +23,33 @@
     ],
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "removeComments": true,
-    "typeRoots": [
-      "./node_modules/@types/",
-      "./types"
+    "types": [
+      "vite/client"
     ],
+    "removeComments": true,
     "paths": {
       "@/*": [
         "src/*"
-      ]
-    },
+      ],
+    }
   },
   "include": [
+    "tests/**/*.ts",
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "types/**/*.d.ts",
     "types/**/*.ts",
+    "build/**/*.ts",
+    "build/**/*.d.ts",
     "mock/**/*.ts",
+    "vite.config.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "tests/server/**/*.ts",
+    "dist",
+    "**/*.js"
   ]
 }
