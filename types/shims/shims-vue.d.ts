@@ -1,9 +1,11 @@
 import type { PermissionType } from '@/core/permission/modules/types';
+
 declare module '*.vue' {
-  import { DefineComponent } from 'vue';
-  const Component: DefineComponent<{}, {}, any>;
-  export default Component;
+  import { defineComponent } from 'vue';
+  const component: ReturnType<typeof defineComponent>;
+  export default component;
 }
+
 // declare module '*.vue' {
 //     import * as vue from 'vue';
 //     export declare const render: vue.RootRenderFunction<Element | DocumentFragment>

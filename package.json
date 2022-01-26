@@ -26,7 +26,7 @@
     "test:br": "npx http-server dist --cors --brotli -c-1"
   },
   "dependencies": {
-    "@vueuse/core": "^7.5.4",
+    "@vueuse/core": "^7.5.5",
     "ant-design-vue": "3.0.0-beta.8",
     "axios": "^0.25.0",
     "core-js": "^3.20.3",
@@ -41,7 +41,7 @@
     "socket.io-client": "4.4.1",
     "sortablejs": "^1.14.0",
     "vue": "^3.2.29",
-    "vue-i18n": "^9.2.0-beta.28",
+    "vue-i18n": "^9.2.0-beta.29",
     "vue-router": "^4.0.12",
     "xlsx": "^0.17.5"
   },
@@ -49,10 +49,10 @@
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
     "@types/lodash-es": "^4.17.5",
-    "@types/node": "^17.0.10",
+    "@types/node": "^17.0.12",
     "@types/webpack-env": "^1.16.3",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
     "@vue/cli-plugin-babel": "^5.0.0-rc.2",
     "@vue/cli-plugin-eslint": "^5.0.0-rc.2",
     "@vue/cli-plugin-router": "^5.0.0-rc.2",

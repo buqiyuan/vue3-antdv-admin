@@ -32,8 +32,6 @@ const __APP_INFO__ = {
   lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
 
-process.env.VUE_APP_APP_INFO = JSON.stringify(__APP_INFO__);
-
 module.exports = defineConfig({
   // lintOnSave: false, //关闭eslint检查
   // publicPath: isDev ? '' : querystring.unescape('<%=request.getContextPath()%>'),
