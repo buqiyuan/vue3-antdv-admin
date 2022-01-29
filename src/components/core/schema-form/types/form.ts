@@ -1,12 +1,12 @@
-import type { NamePath, RuleObject } from 'ant-design-vue/lib/form/interface';
+import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from './formItem';
 import type { Component, VNode } from 'vue';
 // import type { ButtonProps as AntdButtonProps } from '/@/components/Button'
 import type { ColEx, ComponentMapType, ComponentProps } from './index';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
 import type { CSSProperties } from 'vue';
-import type { RowProps } from 'ant-design-vue/lib/grid/Row';
-import type { FormProps } from 'ant-design-vue/lib/form';
+import type { RowProps } from 'ant-design-vue/es/grid/Row';
+import type { FormProps } from 'ant-design-vue/es/form';
 
 export type { FormProps, RowProps };
 

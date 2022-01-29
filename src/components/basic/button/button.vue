@@ -13,7 +13,7 @@
 <script lang="ts" setup>
   import { Button } from 'ant-design-vue';
   import { computed, type PropType } from 'vue';
-  import buttonProps, { type ButtonType } from 'ant-design-vue/lib/button/buttonTypes';
+  import buttonProps, { type ButtonType } from 'ant-design-vue/es/button/buttonTypes';
 
   const props = defineProps({
     ...buttonProps(),

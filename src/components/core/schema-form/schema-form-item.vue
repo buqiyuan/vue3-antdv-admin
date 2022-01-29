@@ -31,13 +31,13 @@
   import { PropType, Ref } from 'vue';
   import { computed, unref, toRefs, onMounted } from 'vue';
   import { Form, Col, Spin } from 'ant-design-vue';
-  import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
+  import type { ValidationRule } from 'ant-design-vue/es/form/Form';
   import { componentMap, ComponentMapType } from './componentMap';
   import { FormItemSchema, FormSchema } from './types/form';
   import { isFunction, isNull, isString } from '@/utils/is';
   import { useVModel } from '@vueuse/core';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
-  import cloneDeep from 'lodash/cloneDeep';
+  import { cloneDeep } from 'lodash-es';
   import { createPlaceholderMessage } from './helper';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
   import { AllComponentProps } from './types';

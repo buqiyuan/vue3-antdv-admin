@@ -39,6 +39,7 @@
 <script lang="ts" setup>
   import { ref, watch, nextTick } from 'vue';
   import { Modal, Space } from 'ant-design-vue';
+  // import { modalProps } from 'ant-design-vue/es/modal/Modal';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';
   import { useVModel } from '@vueuse/core';
   import { throttle } from 'lodash-es';
