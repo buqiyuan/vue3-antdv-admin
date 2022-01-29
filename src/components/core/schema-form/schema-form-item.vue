@@ -31,7 +31,7 @@
   import { PropType, Ref } from 'vue';
   import { computed, unref, toRefs, onMounted } from 'vue';
   import { Form, Col, Spin } from 'ant-design-vue';
-  import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
+  import type { ValidationRule } from 'ant-design-vue/es/form/Form';
   import { componentMap, ComponentMapType } from './componentMap';
   import { FormItemSchema, FormSchema } from './types/form';
   import { isFunction, isNull, isString } from '@/utils/is';

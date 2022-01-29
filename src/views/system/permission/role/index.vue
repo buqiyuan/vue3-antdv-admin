@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import type { TreeDataItem } from 'ant-design-vue/lib/tree/Tree';
+  import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
   import {
     getRoleListByPage,
     updateRole,

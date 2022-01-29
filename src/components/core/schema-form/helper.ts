@@ -1,4 +1,4 @@
-import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
+import type { ValidationRule } from 'ant-design-vue/es/form/Form';
 import type { ComponentMapType } from './types';
 import { isNumber } from '@/utils/is';
 import dayjs from 'dayjs';

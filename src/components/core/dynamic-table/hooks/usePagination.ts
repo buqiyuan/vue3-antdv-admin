@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-// import Pagination from 'ant-design-vue/lib/pagination/Pagination'
+// import Pagination from 'ant-design-vue/es/pagination/Pagination'
 import type { TableProps } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 

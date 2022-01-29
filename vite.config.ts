@@ -9,7 +9,7 @@ import { viteMockServe } from 'vite-plugin-mock';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import WindiCSS from 'vite-plugin-windicss';
-import viteSvgIcons from 'vite-plugin-svg-icons';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import pkg from './package.json';
 import dayjs from 'dayjs';
 
@@ -70,7 +70,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       legacy({
         targets: ['defaults', 'not IE 11'],
       }),
-      viteSvgIcons({
+      createSvgIconsPlugin({
         // Specify the icon folder to be cached
         iconDirs: [resolve(CWD, 'src/assets/icons')],
         // Specify symbolId format

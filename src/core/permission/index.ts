@@ -5,7 +5,7 @@
  * path -> ./modules/sys/user
  * <a-button v-if="$auth('sysUser.add')">Button</a-button>
  */
-// import type { DataNode } from 'rc-tree-select/lib/interface'
+// import type { DataNode } from 'rc-tree-select/es/interface'
 
 import type { TreeSelectProps } from 'ant-design-vue';
 import type { App } from 'vue';

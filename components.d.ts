@@ -5,8 +5,6 @@
 declare module 'vue' {
   export interface GlobalComponents {
     ACard: typeof import('ant-design-vue/es')['Card'];
-    AForm: typeof import('ant-design-vue/es')['Form'];
-    AFormItem: typeof import('ant-design-vue/es')['FormItem'];
     AInput: typeof import('ant-design-vue/es')['Input'];
     AInputSearch: typeof import('ant-design-vue/es')['InputSearch'];
     ALayout: typeof import('ant-design-vue/es')['Layout'];

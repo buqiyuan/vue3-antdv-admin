@@ -1,7 +1,7 @@
 import { type PropType, defineComponent, ref, computed, watchEffect } from 'vue';
 import { Image, type ImageProps } from 'ant-design-vue';
-import { imageProps } from 'ant-design-vue/lib/image';
-import { type ImagePreviewType } from 'ant-design-vue/lib/vc-image/src/Image';
+import { imageProps } from 'ant-design-vue/es/image';
+import { type ImagePreviewType } from 'ant-design-vue/es/vc-image/src/Image';
 import { omit } from 'lodash-es';
 
 interface PreviewType extends ImagePreviewType {

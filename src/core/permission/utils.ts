@@ -1,4 +1,4 @@
-import type { TreeDataItem as ATreeDataItem } from 'ant-design-vue/lib/tree/Tree';
+import type { TreeDataItem as ATreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
 export interface TreeDataItem extends ATreeDataItem {
   children: any;

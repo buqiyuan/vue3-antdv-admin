@@ -37,12 +37,12 @@
     getCurrentInstance,
   } from 'vue';
   import { Form, Row } from 'ant-design-vue';
-  import { formProps } from 'ant-design-vue/lib/form';
+  import { formProps } from 'ant-design-vue/es/form';
   import { isNullOrUnDef, isObject, isArray, isFunction, isBoolean, isString } from '@/utils/is';
   import { deepMerge } from '@/utils/';
   import SchemaFormItem from './schema-form-item.vue';
   import type { FormItemSchema, FormSchema, FormActionType } from './types/form';
-  import { NamePath } from 'ant-design-vue/lib/form/interface';
+  import { NamePath } from 'ant-design-vue/es/form/interface';
   import { uniqBy, cloneDeep } from 'lodash-es';
   import { dateItemType, handleInputNumberValue } from './helper';
   import dayjs from 'dayjs';
