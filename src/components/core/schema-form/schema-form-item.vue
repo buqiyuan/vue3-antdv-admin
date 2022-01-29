@@ -37,7 +37,7 @@
   import { isFunction, isNull, isString } from '@/utils/is';
   import { useVModel } from '@vueuse/core';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
-  import cloneDeep from 'lodash/cloneDeep';
+  import { cloneDeep } from 'lodash-es';
   import { createPlaceholderMessage } from './helper';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
   import { AllComponentProps } from './types';

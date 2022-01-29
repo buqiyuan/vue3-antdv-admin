@@ -1,4 +1,4 @@
-import { isEmpty, isFunction } from 'lodash';
+import { isEmpty, isFunction } from 'lodash-es';
 import IO, { type Socket } from 'socket.io-client';
 import { useUserStore } from '@/store/modules/user';
 import { useWsStore } from '@/store/modules/ws';

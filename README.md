@@ -1,17 +1,46 @@
 # vite-vue3-admin
 
-> 基于 vue-cli5.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
+> 基于 vite2.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
 
-基于 vue-cli5.x / vite2.x + vue3.x + antd-design-vue3.x + typescript4.x 的后台管理系统模板
+基于 vite2.x + vue3.x + antd-design-vue3.x + typescript4.x 的后台管理系统模板
 
 - 账号：rootadmin，密码：123456
 - [在线预览](http://buqiyuan.gitee.io/vite-vue3-admin/)
-- [swagger 文档](http://buqiyuan.site:7001/swagger-api/static/index.html#/)
+- [swagger 文档](https://nest-api.buqiyuan.site/api/swagger-api/static/index.html#/)
 - [后台地址](https://github.com/buqiyuan/nest-admin)
 - [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
 - [vue-cli](https://github.com/buqiyuan/vite-vue3-admin)
 - [gitee 地址](https://gitee.com/buqiyuan/vite-vue3-admin)
 - 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
+
+## 安装使用
+
+- 获取项目代码
+
+```bash
+git clone https://github.com/buqiyuan/vite-vue3-admin
+```
+
+- 安装依赖
+
+```bash
+cd vite-vue3-admin
+
+pnpm install
+
+```
+
+- 运行
+
+```bash
+pnpm serve
+```
+
+- 打包
+
+```bash
+pnpm build
+```
 
 ## vscode 配置
 
@@ -31,13 +60,23 @@
 - [ ] 纯前端导出 PDF 动态分页
 - [ ] 其他...
 
-## Project setup
+## Git 贡献提交规范
 
-```shell
-yarn install
-# 或
-yarn --frozen-lockfile
-```
+- 参考 [vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) 规范 ([Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
+
+  - `feat` 增加新功能
+  - `fix` 修复问题/BUG
+  - `style` 代码风格相关无影响运行结果的
+  - `perf` 优化/性能提升
+  - `refactor` 重构
+  - `revert` 撤销修改
+  - `test` 测试相关
+  - `docs` 文档/注释
+  - `chore` 依赖更新/脚手架配置修改等
+  - `workflow` 工作流改进
+  - `ci` 持续集成
+  - `types` 类型定义文件更改
+  - `wip` 开发中
 
 ## 赞赏
 

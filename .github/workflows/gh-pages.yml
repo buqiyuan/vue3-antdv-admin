@@ -17,10 +17,10 @@ jobs:
       - name: Set time zone
         run: sudo timedatectl set-timezone 'Asia/Shanghai'
 
-      - name: Setup Node.js v14.x
+      - name: Setup Node.js v16.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '16.x'
 
       - name: Install
         run: yarn install --frozen-lockfile
