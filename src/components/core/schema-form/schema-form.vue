@@ -134,9 +134,7 @@
             show = isShow({ schemaItem: formItem, formModel, field: formItem.field });
           }
           if (Object.is(show, false) && key === 'vIf') {
-            formModel[formItem.field] = undefined;
-          } else if (Object.is(show, true) && key === 'vIf') {
-            formModel[formItem.field] = cacheFormModel[formItem.field];
+            Reflect.deleteProperty(formModel, formItem.field);
           }
           return show;
         } else {

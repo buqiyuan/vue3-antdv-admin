@@ -214,12 +214,7 @@
       label,
       dynamicRules,
       required,
-      field,
     } = props.schemaItem;
-
-    if (field == 'field5') {
-      console.log('rules', props.schemaItem);
-    }
 
     if (isFunction(dynamicRules)) {
       return dynamicRules(unref(getValues)) as ValidationRule[];
