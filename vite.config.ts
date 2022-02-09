@@ -5,9 +5,8 @@ import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import { viteMockServe } from 'vite-plugin-mock';
-// import styleImport from 'vite-plugin-style-import';
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
-import Components from 'unplugin-vue-components/vite';
+import styleImport from 'vite-plugin-style-import';
+// import Components from 'unplugin-vue-components/vite';
 import WindiCSS from 'vite-plugin-windicss';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import pkg from './package.json';
@@ -88,25 +87,25 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           setupProdMockServer();
           `,
       }),
-      Components({
-        resolvers: [
-          AntDesignVueResolver({
-            exclude: ['AButton'],
-          }),
-        ],
-        directoryAsNamespace: true,
-      }),
-      // styleImport({
-      //   libs: [
-      //     {
-      //       libraryName: 'ant-design-vue',
-      //       esModule: true,
-      //       resolveStyle: (name) => {
-      //         return `ant-design-vue/es/${name}/style/index`;
-      //       },
-      //     },
+      // Components({
+      //   resolvers: [
+      //     AntDesignVueResolver({
+      //       exclude: ['AButton'],
+      //     }),
       //   ],
+      //   directoryAsNamespace: true,
       // }),
+      styleImport({
+        libs: [
+          {
+            libraryName: 'ant-design-vue',
+            esModule: true,
+            resolveStyle: (name) => {
+              return `ant-design-vue/es/${name}/style/index`;
+            },
+          },
+        ],
+      }),
     ],
     css: {
       preprocessorOptions: {
@@ -149,8 +148,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     optimizeDeps: {
-      include: ['lodash-es', 'ant-design-vue'],
-      exclude: ['vue-demi'],
+      include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
     },
     build: {
       // target: 'esnext',
