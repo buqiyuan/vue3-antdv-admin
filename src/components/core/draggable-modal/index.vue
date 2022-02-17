@@ -38,6 +38,7 @@
 
 <script lang="ts" setup>
   import { ref, watch, nextTick } from 'vue';
+  import { useRoute } from 'vue-router';
   import { Modal, Space } from 'ant-design-vue';
   // import { modalProps } from 'ant-design-vue/es/modal/Modal';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';
@@ -66,6 +67,7 @@
 
   const emit = defineEmits(['update:visible', 'update:fullscreen', 'ok', 'cancel']);
 
+  const route = useRoute();
   const visibleModel = useVModel(props, 'visible');
   const fullscreenModel = ref(props.fullscreen);
   const innerWidth = ref('');
@@ -260,6 +262,8 @@
       initDrag();
     }
   });
+
+  watch(() => route.fullPath, closeModal);
 </script>
 
 <style lang="less">

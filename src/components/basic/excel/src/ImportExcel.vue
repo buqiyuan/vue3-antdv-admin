@@ -14,7 +14,8 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, unref } from 'vue';
-  import XLSX from 'xlsx';
+  import { read, utils } from 'xlsx';
+  import type { WorkSheet, WorkBook } from 'xlsx';
   import { dateUtil } from '@/utils/dateUtil';
 
   import type { ExcelData } from './typing';
@@ -40,20 +41,20 @@
       /**
        * @description: 第一行作为头部
        */
-      function getHeaderRow(sheet: XLSX.WorkSheet) {
+      function getHeaderRow(sheet: WorkSheet) {
         if (!sheet || !sheet['!ref']) return [];
         const headers: string[] = [];
         // A3:B7=>{s:{c:0, r:2}, e:{c:1, r:6}}
-        const range = XLSX.utils.decode_range(sheet['!ref']);
+        const range = utils.decode_range(sheet['!ref']);
 
         const R = range.s.r;
         /* start in the first row */
         for (let C = range.s.c; C <= range.e.c; ++C) {
           /* walk every column in the range */
-          const cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })];
+          const cell = sheet[utils.encode_cell({ c: C, r: R })];
           /* find the cell in the first row */
           let hdr = 'UNKNOWN ' + C; // <-- replace with your desired default
-          if (cell && cell.t) hdr = XLSX.utils.format_cell(cell);
+          if (cell && cell.t) hdr = utils.format_cell(cell);
           headers.push(hdr);
         }
         return headers;
@@ -62,13 +63,13 @@
       /**
        * @description: 获得excel数据
        */
-      function getExcelData(workbook: XLSX.WorkBook) {
+      function getExcelData(workbook: WorkBook) {
         const excelData: ExcelData[] = [];
         const { dateFormat, timeZone } = props;
         for (const sheetName of workbook.SheetNames) {
           const worksheet = workbook.Sheets[sheetName];
           const header: string[] = getHeaderRow(worksheet);
-          let results = XLSX.utils.sheet_to_json(worksheet, {
+          let results = utils.sheet_to_json(worksheet, {
             raw: true,
             dateNF: dateFormat, //Not worked
           }) as object[];
@@ -107,7 +108,7 @@
           reader.onload = async (e) => {
             try {
               const data = e.target && e.target.result;
-              const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+              const workbook = read(data, { type: 'array', cellDates: true });
               // console.log(workbook);
               /* DO SOMETHING WITH workbook HERE */
               const excelData = getExcelData(workbook);
