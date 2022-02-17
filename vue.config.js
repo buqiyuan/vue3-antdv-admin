@@ -44,13 +44,9 @@ module.exports = defineConfig({
       less: {
         lessOptions: {
           javascriptEnabled: true,
-          strictMath: false,
-          noIeCompat: true,
-          modifyVars: {
-            '@header-height': '64px',
-            '@footer-height': '70px',
-          },
+          modifyVars: {},
         },
+        additionalData: `@import "~@/styles/variables.less";`,
       },
       // sass: {
       //   additionalData: `
