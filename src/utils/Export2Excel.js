@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { saveAs } from 'file-saver';
-import XLSX from 'xlsx';
+import { SSF, utils, write } from 'xlsx';
 
 function generateArray(table) {
   var out = [];
@@ -84,7 +84,7 @@ function sheet_from_array_of_arrays(data, opts) {
         v: data[R][C],
       };
       if (cell.v == null) continue;
-      var cell_ref = XLSX.utils.encode_cell({
+      var cell_ref = utils.encode_cell({
         c: C,
         r: R,
       });
@@ -93,14 +93,14 @@ function sheet_from_array_of_arrays(data, opts) {
       else if (typeof cell.v === 'boolean') cell.t = 'b';
       else if (cell.v instanceof Date) {
         cell.t = 'n';
-        cell.z = XLSX.SSF._table[14];
+        cell.z = SSF._table[14];
         cell.v = datenum(cell.v);
       } else cell.t = 's';
 
       ws[cell_ref] = cell;
     }
   }
-  if (range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
+  if (range.s.c < 10000000) ws['!ref'] = utils.encode_range(range);
   return ws;
 }
 
@@ -137,7 +137,7 @@ export function export_table_to_excel(id) {
   wb.SheetNames.push(ws_name);
   wb.Sheets[ws_name] = ws;
 
-  var wbout = XLSX.write(wb, {
+  var wbout = write(wb, {
     bookType: 'xlsx',
     bookSST: false,
     type: 'binary',
@@ -176,7 +176,7 @@ export function export_json_to_excel({
   if (merges.length > 0) {
     if (!ws['!merges']) ws['!merges'] = [];
     merges.forEach((item) => {
-      ws['!merges'].push(XLSX.utils.decode_range(item));
+      ws['!merges'].push(utils.decode_range(item));
     });
   }
 
@@ -217,7 +217,7 @@ export function export_json_to_excel({
   wb.SheetNames.push(ws_name);
   wb.Sheets[ws_name] = ws;
 
-  var wbout = XLSX.write(wb, {
+  var wbout = write(wb, {
     bookType: bookType,
     bookSST: false,
     type: 'binary',

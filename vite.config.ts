@@ -115,12 +115,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         // },
         less: {
           javascriptEnabled: true,
-          strictMath: false,
-          noIeCompat: true,
-          modifyVars: {
-            '@header-height': '64px',
-            '@footer-height': '70px',
-          },
+          modifyVars: {},
+          additionalData: `@import "@/styles/variables.less";`,
         },
         // scss: {
         //   additionalData: `
