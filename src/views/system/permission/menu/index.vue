@@ -13,7 +13,7 @@
       :scroll="{ x: 2000 }"
     >
       <template #toolbar>
-        <a-button type="primary" :disabled="!$auth('sys/menu/add')" @click="openMenuModal({})">
+        <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openMenuModal({})">
           新增
         </a-button>
       </template>
@@ -36,7 +36,7 @@
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { menuSchemas } from './formSchemas';
   import { formatMenu2Tree } from '@/core/permission/utils';
-  import { cloneDeep } from 'lodash';
+  import { cloneDeep } from 'lodash-es';
 
   const menuTree = ref<TreeSelectProps['treeData']>([]);
   const dynamicTableRef = ref<InstanceType<typeof DynamicTable>>();
@@ -54,7 +54,7 @@
   };
 
   const openMenuModal = async (record: Partial<TableListItem>) => {
-    const [formRef] = await showModal({
+    const [formRef] = await showModal<any>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}菜单`,
         width: 700,
@@ -78,7 +78,7 @@
         field: 'parentId',
         componentProps: {
           treeDefaultExpandedKeys: [-1].concat(record?.keyPath || []),
-          treeData: [{ key: -1, name: '一级菜单', children: menuTree.value }],
+          treeData: ref([{ id: -1, name: '一级菜单', children: menuTree.value }]),
         },
       },
     ]);
@@ -107,14 +107,14 @@
         {
           label: '编辑',
           auth: {
-            perm: 'sys/menu/update',
+            perm: 'sys.menu.update',
             effect: 'disable',
           },
           onClick: () => openMenuModal(record),
         },
         {
           label: '删除',
-          auth: 'sys/menu/delete',
+          auth: 'sys.menu.delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record),

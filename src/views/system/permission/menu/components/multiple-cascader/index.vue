@@ -22,7 +22,7 @@
   import NodePanel from './node-panel.vue';
   import { useVModel } from '@vueuse/core';
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
-  // import { cloneDeep } from 'lodash';
+  // import { cloneDeep } from 'lodash-es';
   import { updateNodeCheckStatus, CascaderOptionType, Key } from './utils';
 
   type TagItem = {

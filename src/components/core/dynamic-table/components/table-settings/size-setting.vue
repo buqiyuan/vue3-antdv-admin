@@ -1,7 +1,7 @@
 <template>
   <Tooltip placement="top">
     <template #title>
-      <span>密度</span>
+      <span>{{ $t('component.table.settingDens') }}</span>
     </template>
 
     <Dropdown placement="bottomCenter" :trigger="['click']">
@@ -9,13 +9,13 @@
       <template #overlay>
         <Menu @click="handleMenuClick" selectable v-model:selectedKeys="selectedKeysRef">
           <Menu.Item key="large">
-            <span>默认</span>
+            <span>{{ $t('component.table.settingDensDefault') }}</span>
           </Menu.Item>
           <Menu.Item key="middle">
-            <span>中等</span>
+            <span>{{ $t('component.table.settingDensMiddle') }}</span>
           </Menu.Item>
           <Menu.Item key="small">
-            <span>紧凑</span>
+            <span>{{ $t('component.table.settingDensSmall') }}</span>
           </Menu.Item>
         </Menu>
       </template>
@@ -25,7 +25,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Tooltip, Dropdown, Menu } from 'ant-design-vue';
-  import type { TableProps } from 'ant-design-vue/lib/table/Table';
+  import type { TableProps } from 'ant-design-vue/es/table/Table';
   import { ColumnHeightOutlined } from '@ant-design/icons-vue';
   import { useTableContext } from '../../hooks/useTableContext';
 

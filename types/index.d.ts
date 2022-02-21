@@ -22,13 +22,6 @@ declare interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
   $el: T;
 }
 
-/** 将联合类型转为交叉类型 */
-declare type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I,
-) => void
-  ? I
-  : never;
-
 declare type ComponentRef<T extends HTMLElement = HTMLDivElement> = ComponentElRef<T> | null;
 
 declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>;

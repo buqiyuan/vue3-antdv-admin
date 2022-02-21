@@ -1,6 +1,13 @@
 <template>
   <div>
-    <QueryForm v-if="search" :columns="columns" :formProps="formProps" @query="queryTable" />
+    <QueryForm
+      v-if="search"
+      ref="queryFormRef"
+      :columns="columns"
+      :formProps="formProps"
+      @toggle-advanced="(e) => $emit('toggle-advanced', e)"
+      @query="queryTable"
+    />
     <div class="bg-white">
       <ToolBar
         v-if="showToolBar"
@@ -11,6 +18,11 @@
         <template #headerTitle v-if="$slots.headerTitle">
           <slot name="headerTitle"></slot>
         </template>
+        <span v-if="exportFileName" class="ml-6px" @click="exportData2Excel">
+          <slot name="export-button">
+            <a-button type="primary">导出</a-button>
+          </slot>
+        </span>
         <template #toolbar v-if="$slots.toolbar">
           <Space><slot name="toolbar"></slot></Space>
         </template>
@@ -69,13 +81,13 @@
     unref,
   } from 'vue';
   import { Table, Space } from 'ant-design-vue';
-  import { usePagination } from './hooks/usePagination';
+  import { usePagination, createTableContext, useExportData2Excel } from './hooks/';
   import type { TableColumn, OnChangeCallbackParams } from './typing';
   import { isBoolean, isObject } from '@/utils/is';
-  import { createTableContext } from './hooks/useTableContext';
-  import { omit } from 'lodash';
+  import { omit } from 'lodash-es';
   import { TableAction, QueryForm, ToolBar } from './components';
   import dynamicTableProps, { TableProps } from './props';
+  import { type SchemaFormRef } from '@/components/core/schema-form';
 
   export default defineComponent({
     name: 'DynamicTable',
@@ -88,19 +100,22 @@
     },
     inheritAttrs: false,
     props: dynamicTableProps,
-    emits: ['change'],
+    emits: ['change', 'toggle-advanced'],
     setup(props, { emit, slots }) {
       createTableContext(getCurrentInstance()!);
 
+      const { exportData2Excel } = useExportData2Excel(getCurrentInstance()!);
+
+      const { paginationRef } = usePagination(props.pagination);
+
       const tableRef = ref<InstanceType<typeof Table>>();
+      const queryFormRef = ref<InstanceType<typeof QueryForm>>();
 
       const innerPropsRef = ref<Partial<TableProps>>();
 
       const getProps = computed(() => {
         return { ...props, ...unref(innerPropsRef) };
       });
-
-      const { paginationRef } = usePagination(props.pagination);
 
       // 默认支持的插槽
       const defaultSlots = [
@@ -259,6 +274,13 @@
         emit('change', ...rest);
       };
 
+      /**
+       * 当外部需要动态改变搜索表单的值或选项时，需要调用此方法获取dynamicFormRef实例
+       */
+      const getQueryFormRef = () => {
+        return queryFormRef.value?.dynamicFormRef as SchemaFormRef;
+      };
+
       // dataIndex 可以为 a.b.c
       // const getDataIndexVal = (dataIndex, record) => dataIndex.split('.').reduce((pre, curr) => pre[curr], record)
 
@@ -270,9 +292,12 @@
       return {
         ...toRefs(state),
         tableRef,
+        queryFormRef,
         defaultSlots,
         getProps,
         getBindValues,
+        getQueryFormRef,
+        exportData2Excel,
         queryTable,
         setProps,
         getColumnKey,

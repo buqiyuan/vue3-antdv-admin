@@ -17,7 +17,7 @@ import {
   DatePicker,
 } from 'ant-design-vue';
 
-import 'ant-design-vue/dist/antd.css';
+// import 'ant-design-vue/dist/antd.css';
 import 'dayjs/locale/zh-cn';
 
 export function setupAntd(app: App<Element>) {

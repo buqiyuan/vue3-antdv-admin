@@ -5,7 +5,7 @@
 <script lang="ts" setup>
   import { computed, PropType } from 'vue';
   import { Progress } from 'ant-design-vue';
-  import { progressProps, type ProgressProps } from 'ant-design-vue/lib/progress/props';
+  import { progressProps, type ProgressProps } from 'ant-design-vue/es/progress/props';
 
   type StrokeColorType = ProgressProps['strokeColor'];
   type StrokeColorFn = (percent) => StrokeColorType;

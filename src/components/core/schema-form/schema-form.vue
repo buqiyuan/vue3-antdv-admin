@@ -26,16 +26,27 @@
 </template>
 
 <script lang="ts">
-  import { reactive, ref, PropType, unref, defineComponent, computed, watchEffect } from 'vue';
+  import {
+    reactive,
+    ref,
+    PropType,
+    unref,
+    defineComponent,
+    computed,
+    watchEffect,
+    getCurrentInstance,
+  } from 'vue';
   import { Form, Row } from 'ant-design-vue';
-  import { formProps } from 'ant-design-vue/lib/form';
-  import { isNullOrUnDef, isObject, isArray, isFunction } from '@/utils/is';
+  import { formProps } from 'ant-design-vue/es/form';
+  import { isNullOrUnDef, isObject, isArray, isFunction, isBoolean, isString } from '@/utils/is';
+  import { deepMerge } from '@/utils/';
   import SchemaFormItem from './schema-form-item.vue';
   import type { FormItemSchema, FormSchema, FormActionType } from './types/form';
-  import { NamePath } from 'ant-design-vue/lib/form/interface';
-  import { merge, uniqBy, cloneDeep, isBoolean } from 'lodash';
+  import { NamePath } from 'ant-design-vue/es/form/interface';
+  import { uniqBy, cloneDeep } from 'lodash-es';
   import { dateItemType, handleInputNumberValue } from './helper';
   import dayjs from 'dayjs';
+  import { createFormContext } from './hooks/useFormContext';
 
   export default defineComponent({
     name: 'SchemaForm',
@@ -55,10 +66,12 @@
     },
     emits: ['submit', 'reset'],
     setup(props, { attrs, emit }) {
+      // provide schemaForm instance
+      createFormContext(getCurrentInstance()!);
       let oldFormSchema: FormSchema;
       // TODO 将formSchema克隆一份，避免修改原有的formSchema
       // TODO 类型为FormSchema 提示：类型实例化过深，且可能无限
-      const formSchemaRef = ref<any>({});
+      const formSchemaRef = ref<FormSchema>(cloneDeep(props.formSchema));
       // 表单项数据
       const formModel = reactive({ ...props.initialValues });
       // 表单默认数据
@@ -84,7 +97,7 @@
       watchEffect(() => {
         if (Object.is(props.formSchema, oldFormSchema)) {
           // console.log('相同');
-          merge(formSchemaRef.value, cloneDeep(props.formSchema));
+          deepMerge(formSchemaRef.value, cloneDeep(props.formSchema));
         } else {
           // console.log('不相同');
           formSchemaRef.value = cloneDeep(props.formSchema);
@@ -121,9 +134,7 @@
             show = isShow({ schemaItem: formItem, formModel, field: formItem.field });
           }
           if (Object.is(show, false) && key === 'vIf') {
-            formModel[formItem.field] = undefined;
-          } else if (Object.is(show, true) && key === 'vIf') {
-            formModel[formItem.field] = cacheFormModel[formItem.field];
+            Reflect.deleteProperty(formModel, formItem.field);
           }
           return show;
         } else {
@@ -159,7 +170,9 @@
        */
       function itemIsDateType(key: string) {
         return unref(formSchemaRef).schemas.some((item) => {
-          return item.field === key ? dateItemType.includes(item.component) : false;
+          return item.field === key && isString(item.component)
+            ? dateItemType.includes(item.component)
+            : false;
         });
       }
 
@@ -178,7 +191,9 @@
           let value = values[key];
 
           const hasKey = Reflect.has(values, key);
-          value = handleInputNumberValue(schema?.component, value);
+          if (isString(schema?.component)) {
+            value = handleInputNumberValue(schema?.component, value);
+          }
           // 0| '' is allow
           if (hasKey && fields.includes(key)) {
             // time type
@@ -214,7 +229,7 @@
         if (isArray(data)) {
           updateData = [...data];
         }
-
+        // @ts-ignore
         unref(formSchemaRef).schemas = updateData as FormItemSchema[];
       }
 
@@ -244,7 +259,7 @@
         updateData.forEach((item) => {
           unref(formSchemaRef).schemas.forEach((val) => {
             if (val.field === item.field) {
-              const newSchema = merge(val, item);
+              const newSchema = deepMerge(val, item);
               schema.push(newSchema);
             } else {
               schema.push(val);

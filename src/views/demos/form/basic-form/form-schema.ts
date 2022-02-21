@@ -2,6 +2,45 @@ import type { FormItemSchema } from '@/components/core/schema-form/types/form';
 
 export const schemas: FormItemSchema[] = [
   {
+    field: 'type',
+    component: 'RadioGroup',
+    label: '类型',
+    defaultValue: 1,
+    colProps: {
+      span: 8,
+    },
+    componentProps: {
+      options: [
+        {
+          label: '类型一',
+          value: 1,
+        },
+        {
+          label: '类型二',
+          value: 2,
+        },
+      ],
+    },
+  },
+  {
+    field: 'isExtenal',
+    component: 'Switch',
+    label: '是否外链',
+    colProps: {
+      span: 8,
+    },
+    vIf: ({ formModel }) => formModel['type'] === 2,
+  },
+  {
+    field: 'isEbed',
+    component: 'Switch',
+    label: '是否内嵌',
+    colProps: {
+      span: 8,
+    },
+    vIf: ({ formModel }) => formModel['type'] === 2 && formModel['isExtenal'],
+  },
+  {
     field: 'field1',
     component: 'Input',
     label: '字段1',

@@ -18,29 +18,29 @@
               <Menu style="user-select: none">
                 <Menu.Item key="1" :disabled="activeKey !== pageItem.fullPath" @click="reloadPage">
                   <reload-outlined />
-                  刷新
+                  {{ $t('layout.multipleTab.reload') }}
                 </Menu.Item>
                 <Menu.Item key="2" @click="removeTab(pageItem)">
                   <close-outlined />
-                  关闭
+                  {{ $t('layout.multipleTab.close') }}
                 </Menu.Item>
-                <a-menu-divider />
+                <Menu.Divider />
                 <Menu.Item key="3" @click="closeLeft(pageItem)">
                   <vertical-right-outlined />
-                  关闭左侧
+                  {{ $t('layout.multipleTab.closeLeft') }}
                 </Menu.Item>
                 <Menu.Item key="4" @click="closeRight(pageItem)">
                   <vertical-left-outlined />
-                  关闭右侧
+                  {{ $t('layout.multipleTab.closeRight') }}
                 </Menu.Item>
-                <a-menu-divider />
+                <Menu.Divider />
                 <Menu.Item key="5" @click="closeOther(pageItem)">
                   <column-width-outlined />
-                  关闭其他
+                  {{ $t('layout.multipleTab.closeOther') }}
                 </Menu.Item>
                 <Menu.Item key="6" @click="closeAll">
                   <minus-outlined />
-                  关闭全部
+                  {{ $t('layout.multipleTab.closeAll') }}
                 </Menu.Item>
               </Menu>
             </template>
@@ -57,20 +57,20 @@
             <Menu style="user-select: none">
               <Menu.Item key="1" :disabled="activeKey !== route.fullPath" @click="reloadPage">
                 <reload-outlined />
-                刷新
+                {{ $t('layout.multipleTab.reload') }}
               </Menu.Item>
               <Menu.Item key="2" @click="removeTab(route)">
                 <close-outlined />
-                关闭
+                {{ $t('layout.multipleTab.close') }}
               </Menu.Item>
-              <a-menu-divider />
+              <Menu.Divider />
               <Menu.Item key="5" @click="closeOther(route)">
                 <column-width-outlined />
-                关闭其他
+                {{ $t('layout.multipleTab.closeOther') }}
               </Menu.Item>
               <Menu.Item key="6" @click="closeAll">
                 <minus-outlined />
-                关闭全部
+                {{ $t('layout.multipleTab.closeAll') }}
               </Menu.Item>
             </Menu>
           </template>

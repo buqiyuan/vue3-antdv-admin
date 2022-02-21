@@ -1,3 +1,16 @@
+## [0.1.4](https://github.com/buqiyuan/vue3-antd-admin/compare/v0.1.3...v0.1.4) (2022-01-05)
+
+### Bug Fixes
+
+- app search support i18 ([34c35ce](https://github.com/buqiyuan/vue3-antd-admin/commit/34c35ce4b05ad83ba3aec1f6487aad8cadde1538))
+- revert antdv version ([d5804ee](https://github.com/buqiyuan/vue3-antd-admin/commit/d5804ee4200da0144bdcc5aae4a082e622e56c59))
+
+### Features
+
+- 表格导出功能 ([2cdcb71](https://github.com/buqiyuan/vue3-antd-admin/commit/2cdcb7153c48f7c70ef12951a97b7b65abe94861))
+- 当搜索菜单结果为空时不触发 enter 事件 ([75c9f55](https://github.com/buqiyuan/vue3-antd-admin/commit/75c9f557b19b00bfd8516246b56e9eeec127dd24))
+- **page:** 新增查询表格使用示例 ([1b5e258](https://github.com/buqiyuan/vue3-antd-admin/commit/1b5e25846133b88a78becca3747bfb55a765b8b1))
+
 ## 0.1.3 (2022-01-03)
 
 ### Bug Fixes

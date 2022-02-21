@@ -1,16 +1,14 @@
-import { getAsyncPage } from '@/utils/common';
-
 /**
  * system module
  */
 export default {
-  'views/system/permission/user': getAsyncPage('system/permission/user'),
-  'views/system/permission/menu': getAsyncPage('system/permission/menu'),
-  'views/system/permission/role': getAsyncPage('system/permission/role'),
-  'views/system/monitor/req-log': getAsyncPage('system/monitor/req-log'),
-  'views/system/monitor/online': getAsyncPage('system/monitor/online'),
-  'views/system/monitor/login-log': getAsyncPage('system/monitor/login-log'),
-  'views/system/monitor/serve': getAsyncPage('system/monitor/serve'),
-  'views/system/schedule/task': getAsyncPage('system/schedule/task'),
-  'views/system/schedule/log': getAsyncPage('system/schedule/log'),
+  'views/system/permission/user': () => import('@/views/system/permission/user/index.vue'),
+  'views/system/permission/menu': () => import('@/views/system/permission/menu/index.vue'),
+  'views/system/permission/role': () => import('@/views/system/permission/role/index.vue'),
+  'views/system/monitor/req-log': () => import('@/views/system/monitor/req-log/index.vue'),
+  'views/system/monitor/online': () => import('@/views/system/monitor/online/index.vue'),
+  'views/system/monitor/login-log': () => import('@/views/system/monitor/login-log/index.vue'),
+  'views/system/monitor/serve': () => import('@/views/system/monitor/serve/index.vue'),
+  'views/system/schedule/task': () => import('@/views/system/schedule/task/index.vue'),
+  'views/system/schedule/log': () => import('@/views/system/schedule/log/index.vue'),
 };

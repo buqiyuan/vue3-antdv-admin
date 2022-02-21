@@ -32,6 +32,9 @@ export const columns: TableColumn[] = [
     title: '皮肤',
     align: 'center',
     dataIndex: 'skin_name',
+    formItemProps: {
+      component: 'Select',
+    },
     bodyCell: ({ record }) => (
       <>
         {record.skin_name?.split('|')?.map((name) => (

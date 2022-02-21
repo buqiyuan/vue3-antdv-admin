@@ -1,6 +1,7 @@
 import type { PropType, ExtractPropTypes } from 'vue';
-import { tableProps } from 'ant-design-vue/lib/table';
+import { tableProps } from 'ant-design-vue/es/table';
 import type { FormProps } from 'ant-design-vue';
+import type { BookType } from 'xlsx';
 import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './typing';
 
 export const props = {
@@ -10,11 +11,13 @@ export const props = {
     type: Object as PropType<FormProps>,
     default: () => ({}),
   },
+  /** 表格列配置 */
   columns: {
     type: Array as PropType<TableColumn<any>[]>,
     required: true,
     default: () => [],
   },
+  /** 表格数据请求函数 */
   dataRequest: {
     // 获取列表数据函数API
     type: Function as PropType<
@@ -52,6 +55,28 @@ export const props = {
   search: {
     type: Boolean as PropType<boolean>,
     default: true,
+  },
+  // excel导出配置
+  /** 导出的文件名 */
+  exportFileName: {
+    type: String as PropType<string>,
+  },
+  /** xlsx的booktype */
+  exportBookType: {
+    type: String as PropType<BookType>,
+    default: 'xlsx',
+  },
+  /** 自动宽度 */
+  exportAutoWidth: {
+    type: Boolean as PropType<boolean>,
+    default: true,
+  },
+  /** 自定义数据导出格式函数 */
+  exportFormatter: {
+    type: Function as PropType<
+      (columns: TableColumn<any>[], tableData: any[]) => { header: Recordable; data: any[] }
+    >,
+    default: null,
   },
 };
 

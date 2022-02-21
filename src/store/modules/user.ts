@@ -79,7 +79,7 @@ export const useUserStore = defineStore({
         this.userInfo = userInfo;
         // 生成路由
         const generatorResult = generatorDynamicRouter(menus);
-        this.menus = generatorResult.menus;
+        this.menus = generatorResult.menus.filter((item) => !item.meta?.hideInMenu);
         wsStore.initSocket();
 
         return { menus, perms, userInfo };

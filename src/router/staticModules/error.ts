@@ -7,6 +7,11 @@ const moduleName = 'error';
 export const notFound: RouteRecordRaw = {
   path: '/:pathMatch(.*)*',
   name: 'NotFound',
+  meta: {
+    title: 'NotFound',
+    hideInMenu: true,
+    hideInTabs: true,
+  },
   redirect: '/error/404',
   component: () => import(/* webpackChunkName: "404" */ '@/views/error/404.vue'),
 };

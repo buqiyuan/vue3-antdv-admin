@@ -1,5 +1,5 @@
 <template>
-  <teleport to="body">
+  <teleport :to="getContainer()">
     <div ref="modalWrapRef" class="custom-modal" :class="{ fullscreen: fullscreenModel }">
       <Modal
         v-bind="{ ...$attrs, ...props }"
@@ -38,9 +38,12 @@
 
 <script lang="ts" setup>
   import { ref, watch, nextTick } from 'vue';
+  import { useRoute } from 'vue-router';
   import { Modal, Space } from 'ant-design-vue';
+  // import { modalProps } from 'ant-design-vue/es/modal/Modal';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';
   import { useVModel } from '@vueuse/core';
+  import { throttle } from 'lodash-es';
 
   const props = defineProps({
     visible: {
@@ -64,6 +67,7 @@
 
   const emit = defineEmits(['update:visible', 'update:fullscreen', 'ok', 'cancel']);
 
+  const route = useRoute();
   const visibleModel = useVModel(props, 'visible');
   const fullscreenModel = ref(props.fullscreen);
   const innerWidth = ref('');
@@ -106,7 +110,7 @@
 
   const registerDragTitle = (dragEl: HTMLDivElement, handleEl: HTMLDivElement) => {
     handleEl.style.cursor = 'move';
-    handleEl.onmousedown = (e: MouseEvent) => {
+    handleEl.onmousedown = throttle((e: MouseEvent) => {
       if (fullscreenModel.value) return;
       document.body.style.userSelect = 'none';
       const disX = e.clientX - dragEl.getBoundingClientRect().left;
@@ -134,7 +138,7 @@
 
       document.addEventListener('mousemove', mousemove);
       document.addEventListener('mouseup', mouseup);
-    };
+    }, 20);
   };
 
   const initDrag = async () => {
@@ -147,7 +151,7 @@
       const headerEl = modalEl.querySelector<HTMLDivElement>('.ant-modal-header');
       headerEl && registerDragTitle(modalEl, headerEl);
 
-      modalWrapEl.onmousemove = (event: MouseEvent) => {
+      modalWrapEl.onmousemove = throttle((event: MouseEvent) => {
         if (fullscreenModel.value) return;
         const left = event.clientX - modalEl.offsetLeft;
         const top = event.clientY - modalEl.offsetTop;
@@ -184,7 +188,7 @@
         } else {
           modalWrapEl.style.cursor = cursorStyle.auto;
         }
-      };
+      }, 20);
       modalWrapEl.onmousedown = (e: MouseEvent) => {
         if (fullscreenModel.value) return;
         const iParentTop = modalEl.getBoundingClientRect().top;
@@ -196,7 +200,7 @@
 
         const cursor = modalWrapEl.style.cursor;
 
-        const mousemove = (event: MouseEvent) => {
+        const mousemove = throttle((event: MouseEvent) => {
           if (fullscreenModel.value) return;
           if (cursor !== cursorStyle.auto) {
             document.body.style.userSelect = 'none';
@@ -237,7 +241,7 @@
             modalEl.style.height = event.clientY - iParentTop + 'px';
           }
           innerWidth.value = modalEl.style.width;
-        };
+        }, 20);
 
         const mouseup = () => {
           document.removeEventListener('mousemove', mousemove);
@@ -258,6 +262,8 @@
       initDrag();
     }
   });
+
+  watch(() => route.fullPath, closeModal);
 </script>
 
 <style lang="less">
@@ -270,6 +276,7 @@
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
+        max-width: 100vw !important;
       }
       .ant-modal-content {
         width: 100% !important;
@@ -304,7 +311,7 @@
         }
       }
       .ant-modal-content {
-        // width: ~'v-bind("props.width")px';
+        /* width: ~'v-bind("props.width")px'; */
         display: flex;
         flex-direction: column;
         width: 100%;

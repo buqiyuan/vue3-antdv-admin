@@ -1,13 +1,5 @@
-import { provide, inject, ComponentInternalInstance } from 'vue';
-import type { TableProps } from '../props';
-
-type DynamicTableInstance = {
-  [P in keyof TableProps]: TableProps[P];
-} & {
-  setProps(props: Partial<TableProps>): () => any;
-  getProps: TableProps;
-  refreshTable: (...rest: any[]) => any;
-};
+import type { DynamicTableInstance } from './../typing';
+import { provide, inject, type ComponentInternalInstance } from 'vue';
 
 const key = Symbol('dynamic-table');
 

@@ -84,7 +84,7 @@
       actions: ({ record }) => [
         {
           label: '下线',
-          auth: 'sys/online/kick',
+          auth: 'sys.online.kick',
           disabled: record.disable,
           popConfirm: {
             title: '确定下线该用户吗?',

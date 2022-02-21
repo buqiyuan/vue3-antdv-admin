@@ -3,7 +3,7 @@ import { defineComponent, reactive, watchEffect, watch, ref } from 'vue';
 import type { HookModalProps } from './types';
 import { isFunction } from '@/utils/is';
 import { ConfigProvider } from 'ant-design-vue';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 import { useLocale } from '@/locales/useLocale';
 
 export const MyModal = defineComponent({

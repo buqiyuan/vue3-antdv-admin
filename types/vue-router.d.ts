@@ -1,12 +1,15 @@
 import { type PermissionType } from '@/core/permission/modules/types';
 import { type LocaleType } from '@/locales/config';
+import { type RouteMeta as VRouteMeta } from 'vue-router';
 
-type Title18n = {
-  [p in LocaleType]: string;
-};
+declare global {
+  type Title18n = {
+    [p in LocaleType]: string;
+  };
+}
 
 declare module 'vue-router' {
-  interface RouteMeta extends Record<string | number | symbol, unknown> {
+  interface RouteMeta extends VRouteMeta {
     /** 标题 */
     title: string | Title18n;
     /** 当前路由是否需要权限验证 */
@@ -33,6 +36,8 @@ declare module 'vue-router' {
     hideInTabs?: boolean;
     /** 设置当前路由高亮的菜单项，值为route fullPath或route name,一般用于详情页 */
     activeMenu?: string;
+    /** 菜单排序号 */
+    orderNum?: number;
     isLink?: boolean;
   }
 }

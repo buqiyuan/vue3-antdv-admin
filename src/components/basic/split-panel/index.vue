@@ -15,7 +15,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
 
-  import { throttle } from 'lodash';
+  import { throttle } from 'lodash-es';
 
   const scalable = ref<HTMLDivElement>();
 

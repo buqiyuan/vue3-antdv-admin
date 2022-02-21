@@ -1,10 +1,12 @@
 import { ref } from 'vue';
-// import Pagination from 'ant-design-vue/lib/pagination/Pagination'
+// import Pagination from 'ant-design-vue/es/pagination/Pagination'
 import type { TableProps } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 export type Pagination = TableProps['pagination'];
 
 export function usePagination(pageOption: Pagination) {
+  const { t } = useI18n();
   // 分页配置参数
   const paginationRef = ref<Pagination>(false);
 
@@ -16,7 +18,7 @@ export function usePagination(pageOption: Pagination) {
       pageSizeOptions: ['10', '20', '50', '100'],
       showQuickJumper: true,
       showSizeChanger: true, // 显示可改变每页数量
-      showTotal: (total) => `共 ${total} 条`, // 显示总数
+      showTotal: (total) => t('component.table.total', { total }), // 显示总数
       // onChange: (current, pageSize) => pageOption?.pageChange?.(current, pageSize),
       // onShowSizeChange: (current, pageSize) => pageOption?.pageChange?.(current, pageSize),
       ...pageOption,

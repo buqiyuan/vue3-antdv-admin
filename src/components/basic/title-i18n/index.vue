@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-  import { Title18n } from 'types/vue-router';
   import { type PropType, computed } from 'vue';
   import { useLocaleStore } from '@/store/modules/locale';
 

@@ -9,8 +9,9 @@
 
     <div>
       <slot name="toolbar"></slot>
+      <slot></slot>
       <Divider type="vertical" v-if="$slots.toolbar && showTableSetting" />
-      <TableSetting />
+      <TableSetting v-if="showTableSetting" />
     </div>
   </div>
 </template>

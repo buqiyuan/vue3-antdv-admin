@@ -1,12 +1,12 @@
-import type { NamePath, RuleObject } from 'ant-design-vue/lib/form/interface';
+import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from './formItem';
 import type { Component, VNode } from 'vue';
 // import type { ButtonProps as AntdButtonProps } from '/@/components/Button'
 import type { ColEx, ComponentMapType, ComponentProps } from './index';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
 import type { CSSProperties } from 'vue';
-import type { RowProps } from 'ant-design-vue/lib/grid/Row';
-import type { FormProps } from 'ant-design-vue/lib/form';
+import type { RowProps } from 'ant-design-vue/es/grid/Row';
+import type { FormProps } from 'ant-design-vue/es/form';
 
 export type { FormProps, RowProps };
 
@@ -15,11 +15,13 @@ export type FieldMapToTime = [string, [string, string], string?][];
 export type Rule = RuleObject & {
   trigger?: 'blur' | 'change' | ['change', 'blur'];
 };
+/** 获取所有字段名 */
+export type GetFieldKeys<T> = Exclude<keyof T, symbol | number>;
 
 export interface RenderCallbackParams<T = string> {
   schemaItem: FormItemSchema;
-  formModel: T extends string ? Recordable : T;
-  field: T extends string ? string : keyof T;
+  formModel: T extends string ? Recordable : Record<GetFieldKeys<T>, any>;
+  field: T extends string ? string : GetFieldKeys<T>;
 }
 
 export interface ButtonProps {
@@ -52,7 +54,7 @@ export type RegisterFn = (formInstance: FormActionType) => void;
 export type UseFormReturnType = [RegisterFn, FormActionType];
 
 /** 表单 */
-export interface FormSchema extends FormProps {
+export interface FormSchema<T = any> extends FormProps {
   // Form value
   model?: any;
   // The width of all items in the entire form
@@ -69,7 +71,7 @@ export interface FormSchema extends FormProps {
   baseColProps?: Partial<ColEx>;
 
   // Form configuration rules
-  schemas: FormItemSchema<any>[];
+  schemas: FormItemSchema<T>[];
   // Function values used to merge into dynamic control form items
   mergeDynamicData?: any;
   // Compact mode for search forms
@@ -115,10 +117,11 @@ export interface FormSchema extends FormProps {
   submitFunc?: () => Promise<void>;
   transformDateFunc?: (date: any) => string;
 }
+
 /** 表单项 */
 export interface FormItemSchema<T = string> {
-  // Field name
-  field: T extends string ? string : keyof T;
+  /** 字段名 */
+  field: T extends string ? string : GetFieldKeys<T>;
   // Event name triggered by internal value change, default change
   changeEvent?: string;
   // Variable name bound to v-model Default value
@@ -140,13 +143,16 @@ export interface FormItemSchema<T = string> {
   disabledLabelWidth?: boolean;
   // render component
   component: ComponentMapType | Component;
-  // Component parameters
+  // 组件参数
   componentProps?:
     | ComponentProps
     | ((opt: {
-        schemaItem: FormItemSchema;
-        formActionType?: FormActionType;
-        formModel: Recordable;
+        /** 当前表单项 */
+        schemaItem: FormItemSchema<T>;
+        /** 动态表单实例 */
+        schemaFormRef: FormActionType;
+        /** 当前表单数据模型 */
+        formModel: T extends string ? Recordable : Record<GetFieldKeys<T>, any>;
       }) => ComponentProps);
 
   componentSlots?:
@@ -164,6 +170,8 @@ export interface FormItemSchema<T = string> {
   rules?: Rule[];
   // Check whether the information is added to the label
   rulesMessageJoinLabel?: boolean;
+  /** 组件加载状态 */
+  loading?: boolean;
 
   // Reference formModelItem
   formItemProps?: Partial<FormItemProps>;
@@ -177,9 +185,9 @@ export interface FormItemSchema<T = string> {
 
   // Matching details components
   span?: number;
-
+  /** 作用同v-show */
   vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
-
+  /** 作用同v-if */
   vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
   // Render the content in the form-item tag

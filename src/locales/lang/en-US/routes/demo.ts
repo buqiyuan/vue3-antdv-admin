@@ -9,6 +9,7 @@ export default {
   },
   table: {
     demo: 'Table Demo',
+    searchTable: 'Search Table',
     wzry: 'Honor of Kings',
     lol: 'League of Legends',
   },

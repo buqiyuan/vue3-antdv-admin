@@ -1,7 +1,7 @@
 <template>
   <Tooltip placement="top">
     <template #title>
-      <span>列设置</span>
+      <span>{{ $t('component.table.settingColumn') }}</span>
     </template>
     <Popover
       placement="bottomLeft"
@@ -11,14 +11,18 @@
     >
       <template #title>
         <div class="popover-title">
-          <Checkbox :indeterminate="indeterminate" v-model:checked="checkAll"> 列展示 </Checkbox>
+          <Checkbox :indeterminate="indeterminate" v-model:checked="checkAll">
+            {{ $t('component.table.settingColumnShow') }}
+          </Checkbox>
           <Checkbox v-model:checked="checkIndex" @change="handleIndexCheckChange">
-            序号列
+            {{ $t('component.table.settingIndexColumnShow') }}
           </Checkbox>
           <Checkbox v-model:checked="checkBordered" @change="handleBorderedCheckChange">
-            边框
+            {{ $t('component.table.settingBordered') }}
           </Checkbox>
-          <a-button size="small" type="link" @click="reset"> 重置 </a-button>
+          <a-button size="small" type="link" @click="reset">
+            {{ $t('common.resetText') }}
+          </a-button>
         </div>
       </template>
       <template #content>
@@ -26,7 +30,7 @@
           <template v-for="item in tableColumns" :key="table.getColumnKey(item)">
             <div class="check-item">
               <div style="padding: 4px 16px 8px 0">
-                <DragOutlined class="table-column-drag-icon pr-6px cursor-pointer" />
+                <DragOutlined class="table-column-drag-icon pr-6px cursor-move" />
                 <Checkbox
                   v-model:checked="item.hideInTable"
                   :true-value="false"
@@ -37,7 +41,7 @@
               </div>
               <div class="column-fixed">
                 <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
-                  <template #title> 固定到左侧 </template>
+                  <template #title> {{ $t('component.table.settingFixedLeft') }} </template>
                   <VerticalRightOutlined
                     class="fixed-left"
                     :class="{ active: item.fixed === 'left' }"
@@ -46,7 +50,7 @@
                 </Tooltip>
                 <Divider type="vertical" />
                 <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
-                  <template #title> 固定到右侧 </template>
+                  <template #title> {{ $t('component.table.settingFixedRight') }} </template>
                   <VerticalLeftOutlined
                     class="fixed-right"
                     :class="{ active: item.fixed === 'right' }"
@@ -73,7 +77,7 @@
     DragOutlined,
   } from '@ant-design/icons-vue';
   import { useTableContext } from '../../hooks/useTableContext';
-  import { cloneDeep } from 'lodash';
+  import { cloneDeep } from 'lodash-es';
   import Checkbox from '@/components/basic/check-box/index.vue';
   import type { TableColumn } from '../../typing';
   import { useSortable } from '@/hooks/useSortable';
