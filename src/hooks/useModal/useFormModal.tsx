@@ -1,5 +1,5 @@
 import { nextTick, ref } from 'vue';
-import { useModal } from './index';
+import { useModal } from './useModal';
 import type { SchemaFormRef, FormSchema } from '@/components/core/schema-form';
 import type { FormModalProps } from './types';
 import { SchemaForm } from '@/components/core/schema-form';
