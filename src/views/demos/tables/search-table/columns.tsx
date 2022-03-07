@@ -1,5 +1,5 @@
-import type { TableColumn } from '@/components/core/dynamic-table';
 import { Tag } from 'ant-design-vue';
+import type { TableColumn } from '@/components/core/dynamic-table';
 
 const names = ['王路飞', '王大蛇', '李白', '刺客伍六七'];
 const clothes = ['西装', '领带', '裙子', '包包'];

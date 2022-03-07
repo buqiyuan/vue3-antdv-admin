@@ -25,9 +25,9 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Tooltip, Dropdown, Menu } from 'ant-design-vue';
-  import type { TableProps } from 'ant-design-vue/es/table/Table';
   import { ColumnHeightOutlined } from '@ant-design/icons-vue';
   import { useTableContext } from '../../hooks/useTableContext';
+  import type { TableProps } from 'ant-design-vue/es/table/Table';
 
   type SizeType = NonNullable<TableProps['size']>;
 

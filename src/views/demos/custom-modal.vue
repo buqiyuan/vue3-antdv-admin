@@ -17,17 +17,16 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'CustomModal',
-  };
-</script>
-
 <script setup lang="ts">
   import { reactive } from 'vue';
   import { Alert, Space } from 'ant-design-vue';
   import { DraggableModal } from '@/components/core/draggable-modal';
   import { useModal } from '@/hooks/useModal/';
+
+  defineOptions({
+    name: 'CustomModal',
+  });
+
   /**
    * @description 扩展ant-design-vue模态框功能
    */

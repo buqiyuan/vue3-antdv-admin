@@ -1,5 +1,5 @@
-import type { TableColumn } from '@/components/core/dynamic-table';
 import { Badge, Tag } from 'ant-design-vue';
+import type { TableColumn } from '@/components/core/dynamic-table';
 
 export type TableListItem = API.SysTaskListItem;
 export type TableColumnItem = TableColumn<TableListItem>;

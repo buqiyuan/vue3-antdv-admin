@@ -17,17 +17,15 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'DemosFormBasicForm',
-  };
-</script>
-
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Alert, message } from 'ant-design-vue';
-  import { SchemaForm } from '@/components/core/schema-form';
   import { schemas } from './form-schema';
+  import { SchemaForm } from '@/components/core/schema-form';
+
+  defineOptions({
+    name: 'DemosFormBasicForm',
+  });
 
   /**
    * @description 基础表单

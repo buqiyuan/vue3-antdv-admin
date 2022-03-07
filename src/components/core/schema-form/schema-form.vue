@@ -38,15 +38,15 @@
   } from 'vue';
   import { Form, Row } from 'ant-design-vue';
   import { formProps } from 'ant-design-vue/es/form';
-  import { isNullOrUnDef, isObject, isArray, isFunction, isBoolean, isString } from '@/utils/is';
-  import { deepMerge } from '@/utils/';
-  import SchemaFormItem from './schema-form-item.vue';
-  import type { FormItemSchema, FormSchema, FormActionType } from './types/form';
   import { NamePath } from 'ant-design-vue/es/form/interface';
   import { uniqBy, cloneDeep } from 'lodash-es';
-  import { dateItemType, handleInputNumberValue } from './helper';
   import dayjs from 'dayjs';
+  import { dateItemType, handleInputNumberValue } from './helper';
+  import SchemaFormItem from './schema-form-item.vue';
   import { createFormContext } from './hooks/useFormContext';
+  import type { FormItemSchema, FormSchema, FormActionType } from './types/form';
+  import { deepMerge } from '@/utils/';
+  import { isNullOrUnDef, isObject, isArray, isFunction, isBoolean, isString } from '@/utils/is';
 
   export default defineComponent({
     name: 'SchemaForm',
@@ -70,7 +70,6 @@
       createFormContext(getCurrentInstance()!);
       let oldFormSchema: FormSchema;
       // TODO 将formSchema克隆一份，避免修改原有的formSchema
-      // TODO 类型为FormSchema 提示：类型实例化过深，且可能无限
       const formSchemaRef = ref<FormSchema>(cloneDeep(props.formSchema));
       // 表单项数据
       const formModel = reactive({ ...props.initialValues });

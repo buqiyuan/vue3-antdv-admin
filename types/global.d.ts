@@ -1,3 +1,4 @@
+import packageJSON from '../package.json';
 import type {
   ComponentRenderProxy,
   VNode,
@@ -6,7 +7,6 @@ import type {
   FunctionalComponent,
   PropType as VuePropType,
 } from 'vue';
-import packageJSON from '../package.json';
 
 type DepInfo = {
   url: string;

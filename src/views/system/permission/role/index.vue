@@ -18,14 +18,10 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'SystemPermissionRole',
-  };
-</script>
-
 <script lang="ts" setup>
   import { ref } from 'vue';
+  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
+  import { roleSchemas } from './formSchemas';
   import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
   import {
     getRoleListByPage,
@@ -36,13 +32,15 @@
   } from '@/api/system/role';
   import { getDeptList } from '@/api/system/dept';
   import { getMenuList } from '@/api/system/menu';
-  import { DynamicTable } from '@/components/core/dynamic-table';
+  import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
-  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
-  import { roleSchemas } from './formSchemas';
   import { formatDept2Tree, formatMenu2Tree } from '@/core/permission/utils';
 
-  const dynamicTableRef = ref<InstanceType<typeof DynamicTable>>();
+  defineOptions({
+    name: 'SystemPermissionRole',
+  });
+
+  const dynamicTableRef = ref<DynamicTableInstance>();
 
   const [showModal] = useFormModal();
 

@@ -1,5 +1,5 @@
-import type { FormActionType } from '../types/form';
 import { provide, inject, type ComponentInternalInstance } from 'vue';
+import type { FormActionType } from '../types/form';
 
 const key = Symbol('schema-form');
 

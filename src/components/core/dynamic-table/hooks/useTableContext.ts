@@ -1,5 +1,5 @@
-import type { DynamicTableInstance } from './../typing';
 import { provide, inject, type ComponentInternalInstance } from 'vue';
+import type { DynamicTableInstance } from './../typing';
 
 const key = Symbol('dynamic-table');
 

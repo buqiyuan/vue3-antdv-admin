@@ -25,7 +25,8 @@
     "skipLibCheck": true,
     "removeComments": true,
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "unplugin-vue-define-options"
     ],
     "paths": {
       "@/*": [

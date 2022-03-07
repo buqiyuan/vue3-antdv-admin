@@ -1,6 +1,6 @@
-import type { App, ComponentInternalInstance } from 'vue';
 import { createVNode, render, getCurrentInstance, nextTick } from 'vue';
 import { MyModal } from './modal';
+import type { App, ComponentInternalInstance } from 'vue';
 import type { HookModalProps } from './types';
 export { useFormModal } from './useFormModal';
 

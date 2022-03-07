@@ -1,3 +1,4 @@
+const path = require('path');
 const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -5,7 +6,6 @@ const webpack = require('webpack');
 // 去除console
 const dayjs = require('dayjs');
 const TerserPlugin = require('terser-webpack-plugin');
-const path = require('path');
 const resolve = (dir) => path.join(__dirname, dir); // 路径
 const pkg = require('./package.json');
 
@@ -164,6 +164,8 @@ module.exports = defineConfig({
       topLevelAwait: true,
     };
     config.resolve.fallback = { path: require.resolve('path-browserify') };
+    // use defineOptions https://github.com/sxzz/unplugin-vue-define-options
+    config.plugins.push(require('unplugin-vue-define-options/webpack')());
 
     config.plugins.push(
       // 定义全局变量

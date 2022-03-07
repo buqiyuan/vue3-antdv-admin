@@ -25,8 +25,8 @@
   import { defineComponent, reactive, toRefs, computed, ref, nextTick } from 'vue';
   import { DownOutlined } from '@ant-design/icons-vue';
   import type { TableColumn } from '../../typing';
-  import SchemaForm from '@/components/core/schema-form/schema-form.vue';
   import type { FormItemSchema, FormProps } from '@/components/core/schema-form/types/form';
+  import SchemaForm from '@/components/core/schema-form/schema-form.vue';
 
   export default defineComponent({
     name: 'QueryForm',

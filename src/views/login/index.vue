@@ -52,10 +52,10 @@
   import { reactive } from 'vue';
   import { message, Modal } from 'ant-design-vue';
   import { UserOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons-vue';
+  import { useRoute, useRouter } from 'vue-router';
   import { useUserStore } from '@/store/modules/user';
   import { getImageCaptcha } from '@/api/login';
   import { SvgIcon } from '@/components/basic/svg-icon';
-  import { useRoute, useRouter } from 'vue-router';
 
   const state = reactive({
     loading: false,

@@ -1,5 +1,5 @@
-import type { PropType, ExtractPropTypes } from 'vue';
 import { tableProps } from 'ant-design-vue/es/table';
+import type { PropType, ExtractPropTypes } from 'vue';
 import type { FormProps } from 'ant-design-vue';
 import type { BookType } from 'xlsx';
 import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './typing';

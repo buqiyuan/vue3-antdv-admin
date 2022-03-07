@@ -46,19 +46,17 @@
   </Card>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'LoLHeroInfo',
-  };
-</script>
-
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { Carousel, Card } from 'ant-design-vue';
   import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
-  import { getLolHeroInfo } from '@/api/demos/hero';
   import { useRoute } from 'vue-router';
+  import { getLolHeroInfo } from '@/api/demos/hero';
   import { useTabsViewStore } from '@/store/modules/tabsView';
+
+  defineOptions({
+    name: 'LoLHeroInfo',
+  });
 
   const route = useRoute();
   const tabsViewStore = useTabsViewStore();

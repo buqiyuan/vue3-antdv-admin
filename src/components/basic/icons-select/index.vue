@@ -24,9 +24,9 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Popover } from 'ant-design-vue';
-  import { IconFont } from '@/components/basic/iconfont';
-  import icons from './icons.json';
   import { useVModel } from '@vueuse/core';
+  import icons from './icons.json';
+  import { IconFont } from '@/components/basic/iconfont';
 
   const { glyphs } = icons;
 

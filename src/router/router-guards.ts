@@ -1,10 +1,10 @@
 import { isNavigationFailure, Router } from 'vue-router';
+import NProgress from 'nprogress'; // progress bar
+import { type WhiteNameList, LOGIN_NAME, REDIRECT_NAME } from './constant';
 import { useUserStore } from '@/store/modules/user';
 import { useKeepAliveStore } from '@/store/modules/keepAlive';
-import NProgress from 'nprogress'; // progress bar
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
-import { type WhiteNameList, LOGIN_NAME, REDIRECT_NAME } from './constant';
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 

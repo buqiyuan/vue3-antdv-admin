@@ -23,13 +23,13 @@
 </template>
 
 <script lang="ts" setup>
+  import { ref } from 'vue';
   import { Alert, Card } from 'ant-design-vue';
+  import { columns } from './columns';
   import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
   import { jsonToSheetXlsx } from '@/components/basic/excel';
 
   import { getWzryHeroList } from '@/api/demos/hero';
-  import { columns } from './columns';
-  import { ref } from 'vue';
 
   let tableData = [];
 

@@ -21,25 +21,23 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'SysMenu',
-  };
-</script>
-
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import type { TreeSelectProps } from 'ant-design-vue';
-  import { getMenuList, updateMenu, createMenu, deleteMenu } from '@/api/system/menu';
-  import { DynamicTable } from '@/components/core/dynamic-table';
-  import { useFormModal } from '@/hooks/useModal/useFormModal';
+  import { cloneDeep } from 'lodash-es';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { menuSchemas } from './formSchemas';
+  import type { TreeSelectProps } from 'ant-design-vue';
+  import { getMenuList, updateMenu, createMenu, deleteMenu } from '@/api/system/menu';
+  import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
+  import { useFormModal } from '@/hooks/useModal/useFormModal';
   import { formatMenu2Tree } from '@/core/permission/utils';
-  import { cloneDeep } from 'lodash-es';
+
+  defineOptions({
+    name: 'SysMenu',
+  });
 
   const menuTree = ref<TreeSelectProps['treeData']>([]);
-  const dynamicTableRef = ref<InstanceType<typeof DynamicTable>>();
+  const dynamicTableRef = ref<DynamicTableInstance>();
 
   const [showModal] = useFormModal();
 

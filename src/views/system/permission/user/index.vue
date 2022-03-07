@@ -84,10 +84,6 @@
   </SplitPanel>
 </template>
 
-<script lang="tsx">
-  export default { name: 'SystemUser' };
-</script>
-
 <script setup lang="tsx">
   import { ref, reactive, computed } from 'vue';
   import { Tree, Dropdown, Space, Tooltip, Modal, Alert, Menu } from 'ant-design-vue';
@@ -99,9 +95,11 @@
     ExclamationCircleOutlined,
     SwapOutlined,
   } from '@ant-design/icons-vue';
+  import { userSchemas, deptSchemas, updatePswSchemas, transferUserSchemas } from './formSchemas';
+  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
+  import type { LoadDataParams, DynamicTableInstance } from '@/components/core/dynamic-table';
   import { SplitPanel } from '@/components/basic/split-panel';
   import { DynamicTable } from '@/components/core/dynamic-table';
-  import type { LoadDataParams, DynamicTableInstance } from '@/components/core/dynamic-table';
   import {
     deleteUsers,
     getUserListPage,
@@ -110,12 +108,13 @@
     updateUser,
     updateUserPassword,
   } from '@/api/system/user';
-  import { createDept, deleteDept, updateDept } from '@/api/system/dept';
-  import { getDeptList, transferDept } from '@/api/system/dept';
+  import { createDept, deleteDept, updateDept, getDeptList, transferDept } from '@/api/system/dept';
   import { useFormModal } from '@/hooks/useModal/index';
-  import { userSchemas, deptSchemas, updatePswSchemas, transferUserSchemas } from './formSchemas';
-  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { TreeDataItem, formatDept2Tree, findChildById } from '@/core/permission/utils';
+
+  defineOptions({
+    name: 'SystemUser',
+  });
 
   interface State {
     expandedKeys: number[];

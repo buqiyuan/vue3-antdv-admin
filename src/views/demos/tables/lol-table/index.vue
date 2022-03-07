@@ -23,20 +23,18 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'DemosTablesLolTable',
-  };
-</script>
-
 <script lang="ts" setup>
   import { Alert, Card } from 'ant-design-vue';
+  import { useRouter } from 'vue-router';
+  import { columns } from './columns';
   import { DynamicTable } from '@/components/core/dynamic-table';
   import { getLolHeroList } from '@/api/demos/hero';
-  import { columns } from './columns';
   import { useContextMenu } from '@/hooks/functions/useContextMenu';
-  import { useRouter } from 'vue-router';
   import { useExportExcelModal, jsonToSheetXlsx, aoaToSheetXlsx } from '@/components/basic/excel';
+
+  defineOptions({
+    name: 'DemosTablesLolTable',
+  });
 
   const router = useRouter();
   const [createContextMenu] = useContextMenu();

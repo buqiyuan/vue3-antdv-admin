@@ -1,5 +1,5 @@
-import type { TableColumn } from '@/components/core/dynamic-table';
 import { Tag } from 'ant-design-vue';
+import type { TableColumn } from '@/components/core/dynamic-table';
 import ImagePreview from '@/components/basic/image-preview/index';
 
 export const columns: TableColumn[] = [
