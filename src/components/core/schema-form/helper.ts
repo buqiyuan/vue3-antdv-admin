@@ -21,10 +21,7 @@ export function createPlaceholderMessage(component: ComponentMapType, label = ''
     'Switch',
     'TreeSelect',
   ];
-  if (component.includes('Picker')) {
-    return `${t('common.inputText')}${label}`;
-  }
-  if (chooseTypes.includes(component)) {
+  if (component.includes('Picker') || chooseTypes.includes(component)) {
     return `${t('common.chooseText')}${label}`;
   }
   return '';

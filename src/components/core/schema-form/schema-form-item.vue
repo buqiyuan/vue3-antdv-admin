@@ -35,7 +35,6 @@
   import { useItemLabelWidth } from './hooks/useLabelWidth';
   import { componentMap, ComponentMapType } from './componentMap';
   import { createPlaceholderMessage } from './helper';
-  import { AllComponentProps } from './types';
   import { useFormContext } from './hooks/useFormContext';
   import type { Ref } from 'vue';
   import type { FormItemSchema, FormSchema } from './types/form';
@@ -131,26 +130,18 @@
     const { formModel, schemaItem } = props;
     const { componentProps = {}, component, label = '' } = schemaItem;
 
-    if (isFunction(componentProps)) {
-      const compProps = componentProps({
-        formModel,
-        schemaFormRef,
-        schemaItem,
-      }) as AllComponentProps;
+    const _componentProps = isFunction(componentProps)
+      ? componentProps({
+          formModel,
+          schemaFormRef,
+          schemaItem,
+        })
+      : { ...componentProps };
 
-      compProps.placeholder ??= isString(component)
-        ? createPlaceholderMessage(component, label)
-        : undefined;
-      return compProps;
-    }
     if (component !== 'RangePicker' && isString(component)) {
-      (componentProps as AllComponentProps).placeholder ??= createPlaceholderMessage(
-        component,
-        label,
-      );
+      _componentProps.placeholder ??= createPlaceholderMessage(component, label);
     }
-
-    return componentProps as AllComponentProps;
+    return _componentProps;
   });
 
   /**
