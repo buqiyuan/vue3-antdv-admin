@@ -78,13 +78,19 @@ pnpm build
   - `types` 类型定义文件更改
   - `wip` 开发中
 
+### QQ 交流群（2022-3-8）
+
+[![加入QQ群](https://img.shields.io/badge/570108996-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi)
+
+<div><img src="https://s1.ax1x.com/2022/03/08/bgfl0e.png" width="300" /></div>
+
 ## 赞赏
 
 如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
 
 | 微信 | 支付宝 |
 | :-: | :-: |
-| ![donate](http://buqiyuan.gitee.io/images/weixin.jpg) | ![donate](http://buqiyuan.gitee.io/images/zhifubao.jpg) |
+| <img src="https://s1.ax1x.com/2022/03/08/bgLZQJ.jpg" height="200" /> | <img src="http://buqiyuan.gitee.io/images/zhifubao.jpg" height="200" /> |
 
 ## 感谢 JetBrains 免费的开源授权
 
