@@ -167,7 +167,7 @@ export const getAsyncPage = (viewPath: string, viewFileName = 'index') => {
  */
 export const toHump = (name) => {
   return name
-    .replace(/[\-\/\_](\w)/g, (_, letter) => {
+    .replace(/[-/_](\w)/g, (_, letter) => {
       return letter.toUpperCase();
     })
     .replace('views', '');

@@ -16,9 +16,9 @@
   import { defineComponent, ref, unref } from 'vue';
   import { read, utils } from 'xlsx';
   import type { WorkSheet, WorkBook } from 'xlsx';
+  import type { ExcelData } from './typing';
   import { dateUtil } from '@/utils/dateUtil';
 
-  import type { ExcelData } from './typing';
   export default defineComponent({
     name: 'ImportExcel',
     props: {

@@ -1,12 +1,10 @@
 import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from './formItem';
-import type { Component, VNode } from 'vue';
+import type { Component, CSSProperties, VNode } from 'vue';
 // import type { ButtonProps as AntdButtonProps } from '/@/components/Button'
 import type { ColEx, ComponentMapType, ComponentProps } from './index';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
-import type { CSSProperties } from 'vue';
-import type { RowProps } from 'ant-design-vue/es/grid/Row';
-import type { FormProps } from 'ant-design-vue/es/form';
+import type { RowProps, FormProps } from 'ant-design-vue';
 
 export type { FormProps, RowProps };
 
@@ -54,7 +52,8 @@ export type RegisterFn = (formInstance: FormActionType) => void;
 export type UseFormReturnType = [RegisterFn, FormActionType];
 
 /** 表单 */
-export interface FormSchema<T = any> extends FormProps {
+// TODO extends FormProps 会导致 类型实例化过深，且可能无限 暂用Recordable
+export interface FormSchema<T = any> extends Recordable {
   // Form value
   model?: any;
   // The width of all items in the entire form

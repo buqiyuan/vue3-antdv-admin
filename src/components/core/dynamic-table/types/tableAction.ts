@@ -1,6 +1,6 @@
+import { ColumnParams } from '../typing';
 import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
 import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
-import { ColumnParams } from '../typing';
 import type { PermissionType } from '@/core/permission/modules/types';
 
 export interface ActionItem extends Omit<ButtonProps, 'onClick'> {

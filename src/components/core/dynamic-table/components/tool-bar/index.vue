@@ -18,8 +18,8 @@
 
 <script lang="ts" setup>
   import { Divider } from 'ant-design-vue';
-  import BasicHelp from '@/components/basic/basic-help/index.vue';
   import TableSetting from '../table-settings/index.vue';
+  import BasicHelp from '@/components/basic/basic-help/index.vue';
 
   defineProps({
     title: {

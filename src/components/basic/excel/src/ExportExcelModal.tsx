@@ -1,9 +1,8 @@
+import { useI18n } from 'vue-i18n';
 import type { ExportModalResult } from './typing';
 import type { FormItemSchema } from '@/components/core/schema-form/types/form';
 
 import { useFormModal } from '@/hooks/useModal/useFormModal';
-
-import { useI18n } from 'vue-i18n';
 
 export type OpenModalOptions = {
   onOk: (val: ExportModalResult) => any;

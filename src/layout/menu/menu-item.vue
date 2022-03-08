@@ -27,18 +27,16 @@
   </template>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'MyMenuItem',
-  };
-</script>
-
 <script setup lang="ts">
   import { type PropType, computed } from 'vue';
   import { Menu } from 'ant-design-vue';
   import type { RouteRecordRaw } from 'vue-router';
   import { IconFont } from '@/components/basic/iconfont';
   import { TitleI18n } from '@/components/basic/title-i18n';
+
+  defineOptions({
+    name: 'MyMenuItem',
+  });
 
   const props = defineProps({
     menuInfo: {

@@ -10,10 +10,10 @@
 <script setup lang="ts">
   import { watchEffect } from 'vue';
   import { ConfigProvider } from 'ant-design-vue';
-  import { LockScreen } from '@/components/basic/lockscreen';
   import { useRoute } from 'vue-router';
-  import { useLocale } from '@/locales/useLocale';
   import { transformI18n } from './hooks/useI18n';
+  import { LockScreen } from '@/components/basic/lockscreen';
+  import { useLocale } from '@/locales/useLocale';
 
   const route = useRoute();
   const { getAntdLocale } = useLocale();

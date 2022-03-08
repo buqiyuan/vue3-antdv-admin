@@ -1,7 +1,7 @@
+import { computed, unref } from 'vue';
 import type { Ref } from 'vue';
 import type { FormItemSchema, FormSchema } from '../types/form';
 
-import { computed, unref } from 'vue';
 import { isNumber } from '@/utils/is';
 
 export function useItemLabelWidth(schemaItemRef: Ref<FormItemSchema>, schemaRef: Ref<FormSchema>) {

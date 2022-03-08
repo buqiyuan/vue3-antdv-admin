@@ -44,16 +44,14 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'CustomIcon',
-  };
-</script>
-
 <script lang="ts" setup>
   import { reactive } from 'vue';
   import { Alert, Descriptions, Image } from 'ant-design-vue';
   import { IconFont } from '@/components/basic/iconfont';
+
+  defineOptions({
+    name: 'CustomIcon',
+  });
 
   /**
    * @description ant-design-vue配置阿里巴巴矢量图标库使用

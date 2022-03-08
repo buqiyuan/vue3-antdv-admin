@@ -77,11 +77,11 @@
   } from '@ant-design/icons-vue';
 
   import { useRouter, useRoute } from 'vue-router';
+  import HuaweiCharge from './huawei-charge.vue';
+  import XiaomiCharge from './xiaomi-charge.vue';
   import { useOnline } from '@/hooks/useOnline';
   import { useTime } from '@/hooks/useTime';
   // import md5 from 'blueimp-md5'
-  import HuaweiCharge from './huawei-charge.vue';
-  import XiaomiCharge from './xiaomi-charge.vue';
   import { useBattery } from '@/hooks/useBattery';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { useUserStore } from '@/store/modules/user';

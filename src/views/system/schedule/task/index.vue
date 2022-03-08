@@ -77,20 +77,14 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'SystemScheduleTask',
-  };
-</script>
-
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Descriptions, Tooltip, Popconfirm, Button } from 'ant-design-vue';
   import { ToolOutlined, CaretRightOutlined, PoweroffOutlined } from '@ant-design/icons-vue';
-  import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
-  import { useFormModal } from '@/hooks/useModal/useFormModal';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { taskSchemas } from './formSchemas';
+  import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
+  import { useFormModal } from '@/hooks/useModal/useFormModal';
   import {
     getSysTaskList,
     sysTaskUpdate,
@@ -101,6 +95,10 @@
     sysTaskStart,
     sysTaskStop,
   } from '@/api/system/task';
+
+  defineOptions({
+    name: 'SystemScheduleTask',
+  });
 
   const dynamicTableRef = ref<DynamicTableInstance>();
 

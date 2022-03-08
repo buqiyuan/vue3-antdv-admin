@@ -76,17 +76,16 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'SystemMonitorServe',
-  };
-</script>
 <script lang="ts" setup>
-  import { Card, Descriptions, Tag } from 'ant-design-vue';
   import { reactive, computed, toRefs, onMounted, onBeforeUnmount } from 'vue';
+  import { Card, Descriptions, Tag } from 'ant-design-vue';
   import { formatSizeUnits } from '@/utils';
   import { getServeStat } from '@/api/system/serve';
   import Progress from '@/components/basic/progress/index.vue';
+
+  defineOptions({
+    name: 'SystemMonitorServe',
+  });
 
   let intervalId = -1;
 

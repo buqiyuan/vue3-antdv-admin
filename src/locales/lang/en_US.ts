@@ -1,5 +1,5 @@
-import { genMessage } from '../helper';
 import antdLocale from 'ant-design-vue/es/locale/en_US';
+import { genMessage } from '../helper';
 
 const modulesFiles = require.context('./en-US', true, /\.ts$/);
 

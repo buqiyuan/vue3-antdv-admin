@@ -76,10 +76,10 @@
     VerticalLeftOutlined,
     DragOutlined,
   } from '@ant-design/icons-vue';
-  import { useTableContext } from '../../hooks/useTableContext';
   import { cloneDeep } from 'lodash-es';
-  import Checkbox from '@/components/basic/check-box/index.vue';
+  import { useTableContext } from '../../hooks/useTableContext';
   import type { TableColumn } from '../../typing';
+  import Checkbox from '@/components/basic/check-box/index.vue';
   import { useSortable } from '@/hooks/useSortable';
   import { isNullAndUnDef } from '@/utils/is';
 

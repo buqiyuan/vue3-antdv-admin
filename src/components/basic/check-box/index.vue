@@ -4,17 +4,15 @@
   </Checkbox>
 </template>
 
-<script lang="ts">
-  export default {
-    inheritAttrs: false,
-  };
-</script>
-
 <script lang="ts" setup>
   import { computed } from 'vue';
   import { Checkbox } from 'ant-design-vue';
   import { checkboxProps } from 'ant-design-vue/es/checkbox';
   import { omit } from 'lodash-es';
+
+  defineOptions({
+    inheritAttrs: false,
+  });
 
   const props = defineProps({
     ...checkboxProps(),

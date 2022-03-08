@@ -18,13 +18,11 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'DemoButton',
-  };
-</script>
-
 <script setup lang="ts">
   import { Alert, Space, Card } from 'ant-design-vue';
   import { AButton } from '@/components/basic/button';
+
+  defineOptions({
+    name: 'DemoButton',
+  });
 </script>
