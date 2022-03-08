@@ -84,22 +84,19 @@ yarn build
 
 ### QQ 交流群（2022-3-8）
 
-<div><a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="vue3+ts学习交流群" title="vue3+ts学习交流群"></a></div>
-<div><img src="https://buqiyuan.gitee.io/images/qq_group.jpg" width="300" /></div>
+[![加入QQ群](https://img.shields.io/badge/570108996-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi)
 
-### 赞赏
+<div><img src="https://s1.ax1x.com/2022/03/08/bgfl0e.png" height="280" /></div>
+
+## 赞赏
 
 如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
 
 | 微信 | 支付宝 |
 | :-: | :-: |
-| ![donate](http://buqiyuan.gitee.io/images/weixin.jpg) | ![donate](http://buqiyuan.gitee.io/images/zhifubao.jpg) |
+| <img src="https://s1.ax1x.com/2022/03/08/bgLZQJ.jpg" height="220" /> | <img src="https://s1.ax1x.com/2022/03/08/bgOVtf.jpg" height="220" /> |
 
-### 致谢
-
-- [sf-vue-admin](https://github.com/hackycy/sf-vue-admin)
-
-### 感谢 JetBrains 免费的开源授权
+## 感谢 JetBrains 免费的开源授权
 
 <a href="https://www.jetbrains.com/?from=Mybatis-PageHelper" target="_blank">
 <img src="https://user-images.githubusercontent.com/1787798/69898077-4f4e3d00-138f-11ea-81f9-96fb7c49da89.png" height="200"/></a>
