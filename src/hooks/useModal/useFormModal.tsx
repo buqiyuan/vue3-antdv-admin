@@ -1,8 +1,8 @@
-import { useModal } from './index';
 import { nextTick, ref } from 'vue';
-import { SchemaForm } from '@/components/core/schema-form';
+import { useModal } from './useModal';
 import type { SchemaFormRef, FormSchema } from '@/components/core/schema-form';
 import type { FormModalProps } from './types';
+import { SchemaForm } from '@/components/core/schema-form';
 
 interface ShowModalProps<T = Recordable> {
   modalProps: FormModalProps<T>;

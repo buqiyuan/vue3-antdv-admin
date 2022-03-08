@@ -1,5 +1,5 @@
-import { genMessage } from '../helper';
 import antdLocale from 'ant-design-vue/es/locale/en_US';
+import { genMessage } from '../helper';
 
 const modulesFiles = import.meta.globEager('./en-US/**/*.ts');
 

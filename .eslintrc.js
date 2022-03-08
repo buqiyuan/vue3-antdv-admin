@@ -1,6 +1,4 @@
-// @ts-check
-const { defineConfig } = require('eslint-define-config');
-module.exports = defineConfig({
+module.exports = {
   root: true,
   env: {
     browser: true,
@@ -17,12 +15,28 @@ module.exports = defineConfig({
       jsx: true,
     },
   },
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   extends: [
-    'plugin:vue/vue3-recommended',
+    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:vue/vue3-recommended',
     'prettier',
-    'plugin:prettier/recommended',
   ],
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx', '*.vue'],
+      rules: {
+        'no-undef': 'off',
+      },
+    },
+  ],
+  // plugins: ['@typescript-eslint', 'prettier', 'import'],
+  // extends: [
+  //   'plugin:vue/vue3-recommended',
+  //   'plugin:@typescript-eslint/recommended',
+  //   'prettier',
+  //   'plugin:prettier/recommended',
+  // ],
   rules: {
     'vue/script-setup-uses-vars': 'error',
     '@typescript-eslint/ban-ts-ignore': 'off',
@@ -75,5 +89,28 @@ module.exports = defineConfig({
       },
     ],
     'vue/multi-word-component-names': 'off',
+    // import
+    'import/first': 'error',
+    'import/no-duplicates': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
+
+        pathGroups: [
+          {
+            pattern: 'vue',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '@vue/**',
+            group: 'external',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['type'],
+      },
+    ],
   },
-});
+};

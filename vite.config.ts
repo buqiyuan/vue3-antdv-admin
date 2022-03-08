@@ -1,16 +1,17 @@
-import type { UserConfig, ConfigEnv } from 'vite';
+import { resolve } from 'path';
 import { loadEnv } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
-import { resolve } from 'path';
 import { viteMockServe } from 'vite-plugin-mock';
 import styleImport from 'vite-plugin-style-import';
 // import Components from 'unplugin-vue-components/vite';
 import WindiCSS from 'vite-plugin-windicss';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
-import pkg from './package.json';
 import dayjs from 'dayjs';
+import DefineOptions from 'unplugin-vue-define-options/vite';
+import pkg from './package.json';
+import type { UserConfig, ConfigEnv } from 'vite';
 
 const CWD = process.cwd();
 
@@ -42,9 +43,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
 
   return {
     base: VITE_BASE_URL,
-    esbuild: {
-      // target: 'es2015'
-    },
     define: {
       __APP_INFO__: JSON.stringify(__APP_INFO__),
     },
@@ -62,10 +60,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     plugins: [
       vue(),
+      DefineOptions(), // https://github.com/sxzz/unplugin-vue-define-options
       WindiCSS(),
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
+
       legacy({
         targets: ['defaults', 'not IE 11'],
       }),
@@ -76,7 +76,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         symbolId: 'svg-icon-[dir]-[name]',
       }),
       viteMockServe({
-        ignore: /^\_/,
+        ignore: /^_/,
         mockPath: 'mock',
         localEnabled: !isBuild,
         prodEnabled: isBuild,
@@ -146,14 +146,17 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     optimizeDeps: {
       include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
     },
+    esbuild: {
+      pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
+    },
     build: {
-      // target: 'esnext',
-      terserOptions: {
-        compress: {
-          keep_infinity: true,
-          drop_console: Object.is(VITE_DROP_CONSOLE, 'true'),
-        },
-      },
+      target: 'es2015',
+      cssTarget: 'chrome79',
+      brotliSize: false,
+      chunkSizeWarningLimit: 2000,
+      // rollupOptions: {
+      //   experimentalTopLevelAwait: true,
+      // },
     },
   };
 };

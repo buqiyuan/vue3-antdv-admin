@@ -28,20 +28,24 @@
 </template>
 
 <script setup lang="tsx">
-  import { PropType, Ref } from 'vue';
-  import { computed, unref, toRefs, onMounted } from 'vue';
+  import { PropType, computed, unref, toRefs, onMounted } from 'vue';
   import { Form, Col, Spin } from 'ant-design-vue';
-  import type { ValidationRule } from 'ant-design-vue/es/form/Form';
-  import { componentMap, ComponentMapType } from './componentMap';
-  import { FormItemSchema, FormSchema } from './types/form';
-  import { isFunction, isNull, isString } from '@/utils/is';
   import { useVModel } from '@vueuse/core';
-  import { useItemLabelWidth } from './hooks/useLabelWidth';
   import { cloneDeep } from 'lodash-es';
+  import { useItemLabelWidth } from './hooks/useLabelWidth';
+  import { componentMap, ComponentMapType } from './componentMap';
   import { createPlaceholderMessage } from './helper';
-  import BasicHelp from '@/components/basic/basic-help/index.vue';
-  import { AllComponentProps } from './types';
   import { useFormContext } from './hooks/useFormContext';
+  import type { Ref } from 'vue';
+  import type { FormItemSchema, FormSchema } from './types/form';
+  import type { ValidationRule } from 'ant-design-vue/es/form/Form';
+  import { isFunction, isNull, isString } from '@/utils/is';
+  import BasicHelp from '@/components/basic/basic-help/index.vue';
+  import { useI18n } from '@/hooks/useI18n';
+
+  defineOptions({
+    name: 'SchemaFormItem',
+  });
 
   const props = defineProps({
     formModel: {
@@ -74,6 +78,7 @@
   const schemaFormRef = useFormContext();
 
   const modelValue = useVModel(props, 'formModel', emit);
+  const { t } = useI18n();
 
   const { schemaItem, schema } = toRefs(props) as {
     schemaItem: Ref<FormItemSchema>;
@@ -125,26 +130,18 @@
     const { formModel, schemaItem } = props;
     const { componentProps = {}, component, label = '' } = schemaItem;
 
-    if (isFunction(componentProps)) {
-      const compProps = componentProps({
-        formModel,
-        schemaFormRef,
-        schemaItem,
-      }) as AllComponentProps;
+    const _componentProps = isFunction(componentProps)
+      ? componentProps({
+          formModel,
+          schemaFormRef,
+          schemaItem,
+        })
+      : { ...componentProps };
 
-      compProps.placeholder ??= isString(component)
-        ? createPlaceholderMessage(component, label)
-        : undefined;
-      return compProps;
-    }
     if (component !== 'RangePicker' && isString(component)) {
-      (componentProps as AllComponentProps).placeholder ??= createPlaceholderMessage(
-        component,
-        label,
-      );
+      _componentProps.placeholder ??= createPlaceholderMessage(component, label);
     }
-
-    return componentProps as AllComponentProps;
+    return _componentProps;
   });
 
   /**
@@ -214,12 +211,7 @@
       label,
       dynamicRules,
       required,
-      field,
     } = props.schemaItem;
-
-    if (field == 'field5') {
-      console.log('rules', props.schemaItem);
-    }
 
     if (isFunction(dynamicRules)) {
       return dynamicRules(unref(getValues)) as ValidationRule[];
@@ -293,7 +285,9 @@
     // Maximum input length rule check
     const characterInx = rules.findIndex((val) => val.max);
     if (characterInx !== -1 && !rules[characterInx].validator) {
-      rules[characterInx].message = rules[characterInx].message;
+      rules[characterInx].message =
+        rules[characterInx].message ||
+        t('component.form.maxTip', [rules[characterInx].max] as Recordable);
     }
 
     return rules;

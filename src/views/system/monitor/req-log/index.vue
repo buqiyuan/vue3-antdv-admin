@@ -7,14 +7,14 @@
   />
 </template>
 
-<script lang="tsx">
-  export default { name: 'SystemMonitorReqLog' };
-</script>
-
 <script setup lang="tsx">
-  import { DynamicTable, TableColumn } from '@/components/core/dynamic-table';
   import { Tag } from 'ant-design-vue';
+  import { DynamicTable, TableColumn } from '@/components/core/dynamic-table';
   import { getReqLogList } from '@/api/system/log';
+
+  defineOptions({
+    name: 'SystemMonitorReqLog',
+  });
 
   const getStatusType = (status: number) => {
     if (status >= 200 && status < 300) {

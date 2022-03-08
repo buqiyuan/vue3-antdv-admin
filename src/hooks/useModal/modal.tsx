@@ -1,9 +1,9 @@
-import { DraggableModal } from '@/components/core/draggable-modal';
 import { defineComponent, reactive, watchEffect, watch, ref } from 'vue';
-import type { HookModalProps } from './types';
-import { isFunction } from '@/utils/is';
 import { ConfigProvider } from 'ant-design-vue';
 import { omit } from 'lodash-es';
+import type { HookModalProps } from './types';
+import { isFunction } from '@/utils/is';
+import { DraggableModal } from '@/components/core/draggable-modal';
 import { useLocale } from '@/locales/useLocale';
 
 export const MyModal = defineComponent({
@@ -32,6 +32,7 @@ export const MyModal = defineComponent({
         await props?.onOk?.(e);
         state.visible = false;
       } catch (error) {
+        console.error(error);
       } finally {
         confirmLoading.value = false;
       }

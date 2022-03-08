@@ -1,10 +1,8 @@
 import { type App } from 'vue';
+import { createI18n } from 'vue-i18n';
 import { localeMap } from './config';
-import { createI18n, type I18n } from 'vue-i18n';
 import { setHtmlPageLang, setLoadLocalePool } from './helper';
 import { useLocaleStoreWithOut } from '@/store/modules/locale';
-
-export let i18n: ReturnType<typeof createI18n>;
 
 async function createI18nOptions() {
   const localeStore = useLocaleStoreWithOut();
@@ -31,9 +29,14 @@ async function createI18nOptions() {
   };
 }
 
+export const getI18n = (async () => createI18n(await createI18nOptions()))();
+
+export let i18n: Awaited<typeof getI18n>;
+
+getI18n.then((res) => (i18n = res));
+
 // setup i18n instance with global
 export async function setupI18n(app: App) {
-  const options = await createI18nOptions();
-  i18n = createI18n(options) as I18n;
+  await getI18n;
   app.use(i18n);
 }

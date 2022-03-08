@@ -1,8 +1,8 @@
 <script lang="tsx">
-  import type { CSSProperties, PropType } from 'vue';
   import { defineComponent, computed, unref } from 'vue';
   import { Tooltip } from 'ant-design-vue';
   import { InfoCircleOutlined } from '@ant-design/icons-vue';
+  import type { CSSProperties, PropType } from 'vue';
   import { isString, isArray } from '@/utils/is';
   import { getSlot } from '@/utils/helper/tsxHelper';
 

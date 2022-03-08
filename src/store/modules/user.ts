@@ -1,12 +1,12 @@
 import { type RouteRecordRaw } from 'vue-router';
 import { defineStore } from 'pinia';
+import { useWsStore } from './ws';
 import { store } from '@/store';
 import { login } from '@/api/login';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
 import { logout, getInfo, permmenu } from '@/api/account';
 import { generatorDynamicRouter } from '@/router/generator-router';
-import { useWsStore } from './ws';
 import { resetRouter } from '@/router';
 
 interface UserState {
@@ -79,7 +79,7 @@ export const useUserStore = defineStore({
         this.userInfo = userInfo;
         // 生成路由
         const generatorResult = generatorDynamicRouter(menus);
-        this.menus = generatorResult.menus;
+        this.menus = generatorResult.menus.filter((item) => !item.meta?.hideInMenu);
         wsStore.initSocket();
 
         return { menus, perms, userInfo };

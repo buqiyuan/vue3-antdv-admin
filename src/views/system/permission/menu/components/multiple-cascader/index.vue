@@ -16,14 +16,14 @@
   </Popover>
 </template>
 <script lang="ts" setup>
-  import { Form, Input, Popover, Tag } from 'ant-design-vue';
   import { watch, computed, ref } from 'vue';
-  import { formarPermsToCascader } from '@/core/permission';
-  import NodePanel from './node-panel.vue';
+  import { Form, Input, Popover, Tag } from 'ant-design-vue';
   import { useVModel } from '@vueuse/core';
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
+  import NodePanel from './node-panel.vue';
   // import { cloneDeep } from 'lodash-es';
   import { updateNodeCheckStatus, CascaderOptionType, Key } from './utils';
+  import { formarPermsToCascader } from '@/core/permission';
 
   type TagItem = {
     label: Key;

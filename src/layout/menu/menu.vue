@@ -19,9 +19,9 @@
 <script setup lang="ts">
   import { reactive, computed, watch } from 'vue';
   import { Menu } from 'ant-design-vue';
+  import { type RouteRecordName, useRoute, useRouter } from 'vue-router';
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
-  import { type RouteRecordName, useRoute, useRouter } from 'vue-router';
   import { LOGIN_NAME } from '@/router/constant';
 
   const props = defineProps({

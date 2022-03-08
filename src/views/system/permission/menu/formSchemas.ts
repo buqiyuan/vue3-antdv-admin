@@ -1,7 +1,7 @@
 import { shallowRef } from 'vue';
+import MultipleCascader from './components/multiple-cascader/index.vue';
 import type { FormItemSchema } from '@/components/core/schema-form/types/form';
 import IconsSelect from '@/components/basic/icons-select/index.vue';
-import MultipleCascader from './components/multiple-cascader/index.vue';
 import { constantRouterComponents } from '@/router/asyncModules';
 
 export const menuSchemas: FormItemSchema<API.MenuAddParams>[] = [
@@ -62,19 +62,20 @@ export const menuSchemas: FormItemSchema<API.MenuAddParams>[] = [
     rules: [{ required: true, type: 'array', message: '请选择权限' }],
   },
   {
-    field: 'icon',
-    component: shallowRef(IconsSelect),
-    label: '节点图标',
-    vIf: ({ formModel }) => formModel['type'] !== 2,
-  },
-  {
     field: 'viewPath',
     component: 'Select',
-    label: '节点路径',
+    label: '文件路径',
     vIf: ({ formModel }) => formModel['type'] === 1,
     componentProps: {
       options: Object.keys(constantRouterComponents).map((n) => ({ label: n, value: n })),
     },
+    rules: [{ required: true, type: 'string' }],
+  },
+  {
+    field: 'icon',
+    component: shallowRef(IconsSelect),
+    label: '节点图标',
+    vIf: ({ formModel }) => formModel['type'] !== 2,
   },
   {
     field: 'keepalive',

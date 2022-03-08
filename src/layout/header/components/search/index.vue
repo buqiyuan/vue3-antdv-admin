@@ -37,14 +37,14 @@
 <script lang="ts" setup>
   import { ref, shallowRef, computed, watch, nextTick } from 'vue';
   import { useRouter } from 'vue-router';
-  import type { RouteRecordRaw } from 'vue-router';
   import { Empty, Tooltip } from 'ant-design-vue';
-  import { DraggableModal } from '@/components/core/draggable-modal';
   import { useDebounceFn, onKeyStroke } from '@vueuse/core';
-  import { useUserStore } from '@/store/modules/user';
   import { SearchOutlined } from '@ant-design/icons-vue';
   import SearchResult from './components/SearchResult.vue';
   import SearchFooter from './components/SearchFooter.vue';
+  import type { RouteRecordRaw } from 'vue-router';
+  import { useUserStore } from '@/store/modules/user';
+  import { DraggableModal } from '@/components/core/draggable-modal';
   import { transformI18n } from '@/hooks/useI18n';
 
   const userStore = useUserStore();

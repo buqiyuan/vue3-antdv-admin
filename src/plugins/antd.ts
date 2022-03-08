@@ -1,7 +1,3 @@
-import type { App } from 'vue';
-
-import { AButton } from '@/components/basic/button/index';
-
 import {
   Modal,
   Table,
@@ -16,6 +12,9 @@ import {
   Select,
   DatePicker,
 } from 'ant-design-vue';
+import type { App } from 'vue';
+
+import { AButton } from '@/components/basic/button/index';
 
 // import 'ant-design-vue/dist/antd.css';
 import 'dayjs/locale/zh-cn';

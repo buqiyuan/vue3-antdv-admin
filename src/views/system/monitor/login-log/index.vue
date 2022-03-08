@@ -2,13 +2,13 @@
   <DynamicTable header-title="登录日志" :data-request="loadTableData" :columns="columns" />
 </template>
 
-<script lang="ts">
-  export default { name: 'SystemMonitorLoginLog' };
-</script>
-
 <script setup lang="ts">
   import { DynamicTable, LoadDataParams, TableColumn } from '@/components/core/dynamic-table';
   import { getLoginLogList } from '@/api/system/log';
+
+  defineOptions({
+    name: 'SystemMonitorLoginLog',
+  });
 
   const loadTableData = async ({ page, limit }: LoadDataParams) => {
     const data = await getLoginLogList({ page, limit });

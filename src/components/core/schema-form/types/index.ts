@@ -1,7 +1,5 @@
 import type { CSSProperties } from 'vue';
 
-export type { ComponentMapType } from '../componentMap';
-
 import type {
   InputNumberProps,
   SelectProps,
@@ -13,6 +11,8 @@ import type {
   TreeProps,
   TreeSelectProps,
 } from 'ant-design-vue';
+
+export type { ComponentMapType } from '../componentMap';
 
 type ColSpanType = number | string;
 

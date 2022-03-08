@@ -6,7 +6,6 @@
 
 <script lang="ts" setup>
   import { computed, type CSSProperties } from 'vue';
-
   const props = defineProps({
     prefix: {
       type: String,
@@ -21,9 +20,7 @@
       default: 16,
     },
   });
-
   const symbolId = computed(() => `#${props.prefix}-${props.name}`);
-
   const getStyle = computed((): CSSProperties => {
     const { size } = props;
     const s = `${size}`.replace('px', '').concat('px');

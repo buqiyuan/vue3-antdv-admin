@@ -7,9 +7,9 @@
  */
 // import type { DataNode } from 'rc-tree-select/es/interface'
 
+import { permissions } from './modules/';
 import type { TreeSelectProps } from 'ant-design-vue';
 import type { App } from 'vue';
-import { permissions } from './modules/';
 import type { PermissionType } from './modules/types';
 import { useUserStore } from '@/store/modules/user';
 

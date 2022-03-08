@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-  import LockScreen from './lockscreen.vue';
   import { computed, ref, onMounted, onUnmounted } from 'vue';
   import { useRoute } from 'vue-router';
+  import LockScreen from './lockscreen.vue';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { LOGIN_NAME } from '@/router/constant';
 

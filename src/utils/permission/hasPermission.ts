@@ -1,5 +1,5 @@
-import router from '@/router';
 import { App } from 'vue';
+import router from '@/router';
 
 /**
  * 第一种权限验证形式

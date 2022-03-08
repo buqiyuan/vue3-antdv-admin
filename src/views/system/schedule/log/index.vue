@@ -7,14 +7,14 @@
   />
 </template>
 
-<script lang="tsx">
-  export default { name: 'SystemScheduleTaskLog' };
-</script>
-
 <script setup lang="tsx">
+  import { Tag } from 'ant-design-vue';
   import { DynamicTable, TableColumn } from '@/components/core/dynamic-table';
   import { getTaskLogList } from '@/api/system/log';
-  import { Tag } from 'ant-design-vue';
+
+  defineOptions({
+    name: 'SystemScheduleTaskLog',
+  });
 
   type TableListItem = API.TaskLogListItemResult;
 

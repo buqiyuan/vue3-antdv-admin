@@ -2,7 +2,7 @@ import { defineComponent, PropType, unref, computed } from 'vue';
 import { createFromIconfontCN } from '@ant-design/icons-vue';
 import { isString } from '@/utils/is';
 
-let scriptUrls = [`${import.meta.env.VITE_BASE_URL}iconfont.js`];
+let scriptUrls = [`${import.meta.env.BASE_URL}iconfont.js`];
 
 let MyIconFont = createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',

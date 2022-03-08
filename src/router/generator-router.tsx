@@ -1,5 +1,8 @@
 import { Result } from 'ant-design-vue';
 import { type RouteRecordRaw } from 'vue-router';
+import { notFound, errorRoute } from './staticModules/error';
+import { REDIRECT_ROUTE } from './staticModules/besidesLayout';
+import outsideLayout from './outsideLayout';
 import RouterView from '@/layout/routerView/index.vue';
 import { isUrl } from '@/utils/is';
 import { uniqueSlash } from '@/utils/urlUtils';
@@ -7,10 +10,7 @@ import { constantRouterComponents } from '@/router/asyncModules';
 import common from '@/router/staticModules';
 import router, { routes } from '@/router';
 import NotFound from '@/views/error/404.vue';
-import { notFound, errorRoute } from './staticModules/error';
-import { REDIRECT_ROUTE } from './staticModules/besidesLayout';
 import { type PermissionType } from '@/core/permission/modules/types';
-import outsideLayout from './outsideLayout';
 
 // 需要放在所有路由之后的路由
 const endRoutes: RouteRecordRaw[] = [REDIRECT_ROUTE, errorRoute, notFound];
@@ -23,7 +23,7 @@ export function filterAsyncRoute(
   return routes
     .filter((item) => item.type !== 2 && item.isShow && item.parentId == parentRoute?.id)
     .map((item) => {
-      const { router, viewPath, name, icon, keepalive } = item;
+      const { router, viewPath, name, icon, orderNum, keepalive } = item;
       let fullPath = '';
       const pathPrefix = lastNamePath.slice(-1)[0] || '';
       if (isUrl(router)) {
@@ -47,6 +47,7 @@ export function filterAsyncRoute(
         // name: `${viewPath ? toHump(viewPath) : fullPath}-${item.id}`,
         name: fullPath,
         meta: {
+          orderNum,
           title: name,
           perms: [],
           icon: icon,

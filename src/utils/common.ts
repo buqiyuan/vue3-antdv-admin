@@ -147,7 +147,7 @@ export const generateTree = (items, id = 0, link = 'parent') => {
  */
 export const toHump = (name) => {
   return name
-    .replace(/[\-\/\_](\w)/g, (_, letter) => {
+    .replace(/[-/_](\w)/g, (_, letter) => {
       return letter.toUpperCase();
     })
     .replace('views', '');

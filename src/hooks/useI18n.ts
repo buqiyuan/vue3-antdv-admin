@@ -1,5 +1,5 @@
 import { type Composer } from 'vue-i18n';
-import { i18n } from '@/locales';
+import * as locales from '@/locales';
 
 type I18nGlobalTranslation = Composer['t'];
 type I18nTranslationRestParameters = [string, any];
@@ -17,6 +17,7 @@ function getKey(namespace: string | undefined, key: string) {
 export function useI18n(namespace?: string): {
   t: I18nGlobalTranslation;
 } {
+  const i18n = locales.i18n;
   const normalFn = {
     t: (key: string) => {
       return getKey(namespace, key);
@@ -47,6 +48,7 @@ export function transformI18n(message: string | Title18n = '', isI18n = true) {
   if (!message) {
     return '';
   }
+  const i18n = locales.i18n;
 
   // 处理动态路由的title, 格式 {zh_CN:"",en_US:""}
   if (typeof message === 'object') {

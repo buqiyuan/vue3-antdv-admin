@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <img src="@/assets/analysis.svg" />
+    <img src="~@/assets/analysis.svg" />
     <Descriptions title="系统信息" bordered>
       <Descriptions.Item key="IP" label="IP">
         {{ loginIp }}
@@ -15,12 +15,6 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'DashboardWelcome',
-  };
-</script>
-
 <script lang="ts" setup>
   import { ref, watchEffect } from 'vue';
   import { Descriptions, Badge } from 'ant-design-vue';
@@ -28,6 +22,11 @@
   import { useBattery } from '@/hooks/useBattery';
   import { useOnline } from '@/hooks/useOnline';
   import { useUserStore } from '@/store/modules/user';
+
+  defineOptions({
+    name: 'DashboardWelcome',
+  });
+
   // import performanceMonitor from '@/utils/performanceMonitor'
 
   const loginIp = useUserStore().userInfo?.loginIp;

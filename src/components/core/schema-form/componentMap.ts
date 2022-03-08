@@ -19,14 +19,6 @@ import {
   Divider,
 } from 'ant-design-vue';
 
-// import RadioButtonGroup from './components/RadioButtonGroup.vue';
-// import ApiSelect from './components/ApiSelect.vue';
-// import ApiTreeSelect from './components/ApiTreeSelect.vue';
-// import { BasicUpload } from '/@/components/Upload';
-// import { StrengthMeter } from '/@/components/StrengthMeter';
-// import { IconPicker } from '/@/components/Icon';
-// import { CountdownInput } from '/@/components/CountDown';
-
 const componentMap = {
   Input: Input,
   InputGroup: Input.Group,
@@ -35,15 +27,6 @@ const componentMap = {
   InputTextArea: Input.TextArea,
   InputNumber: InputNumber,
   AutoComplete: AutoComplete,
-
-  // ApiSelect: ApiSelect,
-  // ApiTreeSelect: ApiTreeSelect,
-  // RadioButtonGroup: RadioButtonGroup,
-  // StrengthMeter: StrengthMeter,
-  // IconPicker: IconPicker,
-  // InputCountDown: CountdownInput,
-
-  // Upload: BasicUpload,
   Select: Select,
   TreeSelect: TreeSelect,
   Tree: Tree,
@@ -54,7 +37,6 @@ const componentMap = {
   Cascader: Cascader,
   Slider: Slider,
   Rate: Rate,
-
   DatePicker: DatePicker,
   MonthPicker: DatePicker.MonthPicker,
   RangePicker: DatePicker.RangePicker,

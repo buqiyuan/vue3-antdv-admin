@@ -1,14 +1,15 @@
+import dayjs from 'dayjs';
 import type { ValidationRule } from 'ant-design-vue/es/form/Form';
 import type { ComponentMapType } from './types';
 import { isNumber } from '@/utils/is';
-import dayjs from 'dayjs';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from '@/hooks/useI18n';
 
 /**
  * @description: 生成placeholder
  */
 export function createPlaceholderMessage(component: ComponentMapType, label = '') {
   const { t } = useI18n();
+
   if (component.includes('Input') || component.includes('Complete')) {
     return `${t('common.inputText')}${label}`;
   }
@@ -20,10 +21,7 @@ export function createPlaceholderMessage(component: ComponentMapType, label = ''
     'Switch',
     'TreeSelect',
   ];
-  if (component.includes('Picker')) {
-    return `${t('common.inputText')}${label}`;
-  }
-  if (chooseTypes.includes(component)) {
+  if (component.includes('Picker') || chooseTypes.includes(component)) {
     return `${t('common.chooseText')}${label}`;
   }
   return '';
