@@ -82,6 +82,11 @@ yarn build
   - `types` 类型定义文件更改
   - `wip` 开发中
 
+### QQ 交流群（2022-3-8）
+
+<div><a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="vue3+ts学习交流群" title="vue3+ts学习交流群"></a></div>
+<div><img src="https://buqiyuan.gitee.io/images/qq_group.jpg" width="300" /></div>
+
 ### 赞赏
 
 如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
