@@ -4,7 +4,6 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
 import { createRouterGuards } from './router-guards';
 
-import staticModules from './staticModules/';
 import outsideLayout from './outsideLayout';
 import { whiteNameList } from './constant';
 
@@ -17,7 +16,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '首页',
     },
-    children: [...staticModules],
+    children: [],
   },
   // Layout之外的路由
   ...outsideLayout,
