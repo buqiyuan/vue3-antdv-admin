@@ -10,7 +10,7 @@
     <div>
       <slot name="toolbar"></slot>
       <slot></slot>
-      <Divider type="vertical" v-if="$slots.toolbar && showTableSetting" />
+      <Divider v-if="$slots.toolbar && showTableSetting" type="vertical" />
       <TableSetting v-if="showTableSetting" />
     </div>
   </div>

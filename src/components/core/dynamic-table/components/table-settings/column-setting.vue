@@ -6,12 +6,12 @@
     <Popover
       placement="bottomLeft"
       trigger="click"
+      overlay-class-name="cloumn-list"
       @visible-change="handleVisibleChange"
-      overlayClassName="cloumn-list"
     >
       <template #title>
         <div class="popover-title">
-          <Checkbox :indeterminate="indeterminate" v-model:checked="checkAll">
+          <Checkbox v-model:checked="checkAll" :indeterminate="indeterminate">
             {{ $t('component.table.settingColumnShow') }}
           </Checkbox>
           <Checkbox v-model:checked="checkIndex" @change="handleIndexCheckChange">
@@ -40,7 +40,7 @@
                 </Checkbox>
               </div>
               <div class="column-fixed">
-                <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
+                <Tooltip placement="bottomLeft" :mouse-leave-delay="0.4">
                   <template #title> {{ $t('component.table.settingFixedLeft') }} </template>
                   <VerticalRightOutlined
                     class="fixed-left"
@@ -49,7 +49,7 @@
                   />
                 </Tooltip>
                 <Divider type="vertical" />
-                <Tooltip placement="bottomLeft" :mouseLeaveDelay="0.4">
+                <Tooltip placement="bottomLeft" :mouse-leave-delay="0.4">
                   <template #title> {{ $t('component.table.settingFixedRight') }} </template>
                   <VerticalLeftOutlined
                     class="fixed-right"
@@ -69,7 +69,6 @@
 
 <script lang="ts" setup>
   import { computed, nextTick, ref, unref, watchEffect } from 'vue';
-  import { Tooltip, Popover, Divider } from 'ant-design-vue';
   import {
     SettingOutlined,
     VerticalRightOutlined,
@@ -77,6 +76,7 @@
     DragOutlined,
   } from '@ant-design/icons-vue';
   import { cloneDeep } from 'lodash-es';
+  import { Tooltip, Popover, Divider } from 'ant-design-vue';
   import { useTableContext } from '../../hooks/useTableContext';
   import type { TableColumn } from '../../typing';
   import Checkbox from '@/components/basic/check-box/index.vue';

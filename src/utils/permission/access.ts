@@ -79,7 +79,7 @@ export default {
      *    <element v-access.every="['admin.device.read']" />
      */
     app.directive('access', {
-      mounted: function (el: HTMLElement, { value, modifiers }) {
+      mounted(el: HTMLElement, { value, modifiers }) {
         if (value === undefined) throw new Error('[v-access]: should input an access list.');
         let isVerified = hasAccess(value);
 

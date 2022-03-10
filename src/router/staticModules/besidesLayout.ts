@@ -26,14 +26,14 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
       },
       beforeEnter: (to) => {
         const { params, query } = to;
-        const { path, _redirect_type = 'path' } = params;
+        const { path, redirectType = 'path' } = params;
 
         Reflect.deleteProperty(params, '_redirect_type');
         Reflect.deleteProperty(params, 'path');
 
         const _path = Array.isArray(path) ? path.join('/') : path;
         setTimeout(() => {
-          if (_redirect_type === 'name') {
+          if (redirectType === 'name') {
             router.replace({
               name: _path,
               query,
@@ -41,7 +41,7 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
             });
           } else {
             router.replace({
-              path: _path.startsWith('/') ? _path : '/' + _path,
+              path: _path.startsWith('/') ? _path : `/${_path}`,
               query,
             });
           }

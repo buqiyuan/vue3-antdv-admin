@@ -14,13 +14,10 @@ export const hasPermission = (action: string) => {
   const currentRoute = router.currentRoute.value;
 
   // 下面只是为了方便演示，不建议这么做
-  action =
-    currentRoute.path
-      .split('/')
-      .filter((m) => m.trim() != '')
-      .join('.') +
-    '.' +
-    action;
+  action = `${currentRoute.path
+    .split('/')
+    .filter((m) => m.trim() != '')
+    .join('.')}.${action}`;
   // console.log(action, currentRoute.meta.permission, '当前路由权限')
   // @ts-ignore
   return currentRoute.meta?.permission?.includes(action);

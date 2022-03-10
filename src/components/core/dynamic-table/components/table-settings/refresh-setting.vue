@@ -7,8 +7,8 @@
   </Tooltip>
 </template>
 <script lang="ts" setup>
-  import { Tooltip } from 'ant-design-vue';
   import { RedoOutlined } from '@ant-design/icons-vue';
+  import { Tooltip } from 'ant-design-vue';
   import { useTableContext } from '../../hooks/useTableContext';
 
   const table = useTableContext();

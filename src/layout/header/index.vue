@@ -9,7 +9,7 @@
           <Breadcrumb.Item>
             <TitleI18n :title="routeItem?.meta?.title" />
             <template v-if="routeItem?.children?.length" #overlay>
-              <Menu :selectedKeys="[menus[rotueIndex + 1]?.name]">
+              <Menu :selected-keys="[menus[rotueIndex + 1]?.name]">
                 <template v-for="childItem in routeItem?.children" :key="childItem.name">
                   <Menu.Item
                     v-if="!childItem.meta?.hideInMenu && !childItem.meta?.hideInBreadcrumb"
@@ -60,6 +60,14 @@
   import { computed } from 'vue';
   import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
   import {
+    QuestionCircleOutlined,
+    SettingOutlined,
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    PoweroffOutlined,
+    LockOutlined,
+  } from '@ant-design/icons-vue';
+  import {
     Layout,
     message,
     Modal,
@@ -70,14 +78,6 @@
     Avatar,
     Tooltip,
   } from 'ant-design-vue';
-  import {
-    QuestionCircleOutlined,
-    SettingOutlined,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    PoweroffOutlined,
-    LockOutlined,
-  } from '@ant-design/icons-vue';
   import { Search, FullScreen } from './components';
   import { LocalePicker } from '@/components/basic/locale-picker';
   import { useUserStore } from '@/store/modules/user';

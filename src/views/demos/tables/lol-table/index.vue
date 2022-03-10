@@ -9,9 +9,9 @@
         bordered
         :data-request="loadData"
         :columns="columns"
-        rowKey="heroid"
+        row-key="heroid"
         export-file-name="表格自带导出"
-        :customRow="customRow"
+        :custom-row="customRow"
       >
         <template #export-button> <a-button type="primary">表格自带导出</a-button> </template>
         <template #toolbar>
@@ -24,8 +24,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { Alert, Card } from 'ant-design-vue';
   import { useRouter } from 'vue-router';
+  import { Alert, Card } from 'ant-design-vue';
   import { columns } from './columns';
   import { DynamicTable } from '@/components/core/dynamic-table';
   import { getLolHeroList } from '@/api/demos/hero';

@@ -22,7 +22,7 @@
             :percent="
               formarPercentage(cpu.rawCurrentLoad, cpu.rawCurrentLoadIdle + cpu.rawCurrentLoad)
             "
-            :strokeColor="customProgressColor"
+            :stroke-color="customProgressColor"
           />
         </Descriptions.Item>
         <Descriptions.Item
@@ -32,7 +32,7 @@
         >
           <Progress
             :percent="formarPercentage(item.rawLoad, item.rawLoad + item.rawLoadIdle)"
-            :strokeColor="customProgressColor"
+            :stroke-color="customProgressColor"
           />
         </Descriptions.Item>
       </Descriptions>
@@ -50,7 +50,7 @@
             type="dashboard"
             :percent="parseDiskPercentage"
             :width="100"
-            :strokeColor="customProgressColor"
+            :stroke-color="customProgressColor"
           />
         </div>
       </div>
@@ -68,7 +68,7 @@
             type="dashboard"
             :percent="parseMemoryPercentage"
             :width="100"
-            :strokeColor="customProgressColor"
+            :stroke-color="customProgressColor"
           />
         </div>
       </div>

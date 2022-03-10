@@ -1,6 +1,6 @@
+import { type RouteMeta as VRouteMeta } from 'vue-router';
 import { type PermissionType } from '@/core/permission/modules/types';
 import { type LocaleType } from '@/locales/config';
-import { type RouteMeta as VRouteMeta } from 'vue-router';
 
 declare global {
   type Title18n = {

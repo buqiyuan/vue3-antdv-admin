@@ -9,9 +9,10 @@ declare module 'mitt' {
   export default mitt;
 }
 
-declare module 'blueimp-md5' {
-  import md5 from 'blueimp-md5';
-  export default md5;
+declare module 'ant-design-vue/es/locale/*' {
+  import { Locale } from 'ant-design-vue/types/locale-provider';
+  const locale: Locale & ReadonlyRecordable;
+  export default locale as Locale & ReadonlyRecordable;
 }
 
 declare module 'virtual:*' {

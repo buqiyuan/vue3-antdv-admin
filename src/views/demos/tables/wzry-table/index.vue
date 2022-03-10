@@ -10,7 +10,7 @@
         bordered
         :data-request="loadData"
         :columns="columns"
-        rowKey="heroid"
+        row-key="heroid"
         @toggle-advanced="toggleAdvanced"
       >
         <template #toolbar>

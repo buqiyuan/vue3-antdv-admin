@@ -4,7 +4,7 @@
       v-if="search"
       ref="queryFormRef"
       :columns="columns"
-      :formProps="formProps"
+      :form-props="formProps"
       @toggle-advanced="(e) => $emit('toggle-advanced', e)"
       @query="queryTable"
     />
@@ -12,10 +12,10 @@
       <ToolBar
         v-if="showToolBar"
         :title="headerTitle"
-        :titleTooltip="titleTooltip"
-        :showTableSetting="showTableSetting"
+        :title-tooltip="titleTooltip"
+        :show-table-setting="showTableSetting"
       >
-        <template #headerTitle v-if="$slots.headerTitle">
+        <template v-if="$slots.headerTitle" #headerTitle>
           <slot name="headerTitle"></slot>
         </template>
         <span v-if="exportFileName" class="ml-6px" @click="exportData2Excel">
@@ -23,14 +23,14 @@
             <a-button type="primary">导出</a-button>
           </slot>
         </span>
-        <template #toolbar v-if="$slots.toolbar">
+        <template v-if="$slots.toolbar" #toolbar>
           <Space><slot name="toolbar"></slot></Space>
         </template>
       </ToolBar>
       <Table
         ref="tableRef"
         v-bind="getBindValues"
-        :dataSource="tableData"
+        :data-source="tableData"
         @change="handleTableChange"
       >
         <template
@@ -80,8 +80,8 @@
     computed,
     unref,
   } from 'vue';
-  import { Table, Space } from 'ant-design-vue';
   import { omit } from 'lodash-es';
+  import { Table, Space } from 'ant-design-vue';
   import { usePagination, createTableContext, useExportData2Excel } from './hooks/';
   import { TableAction, QueryForm, ToolBar } from './components';
   import dynamicTableProps, { TableProps } from './props';

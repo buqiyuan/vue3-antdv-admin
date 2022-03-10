@@ -1,7 +1,7 @@
 import { type ComponentInternalInstance } from 'vue';
 import { isEmpty } from 'lodash-es';
 import { type DynamicTableInstance } from '../typing';
-import { export_json_to_excel } from '@/utils/Export2Excel';
+import { exportJson2Excel } from '@/utils/Export2Excel';
 
 /**
  * 导出表格Excel
@@ -19,7 +19,7 @@ export const useExportData2Excel = (_tableInstance: ComponentInternalInstance) =
       if (isEmpty(header) || isEmpty(data)) {
         return;
       } else {
-        export_json_to_excel({
+        exportJson2Excel({
           header,
           data,
           filename: tableInstance.exportFileName,
@@ -28,7 +28,7 @@ export const useExportData2Excel = (_tableInstance: ComponentInternalInstance) =
         });
       }
     } else {
-      export_json_to_excel({
+      exportJson2Excel({
         header: theaders.map((n) => n.title),
         data: tableData.map((v) => theaders.map((header) => v[getColumnKey(header)!])),
         filename: tableInstance.exportFileName,

@@ -10,7 +10,7 @@
     "strictFunctionTypes": false,
     "jsx": "preserve",
     "baseUrl": ".",
-    "allowJs": false,
+    "allowJs": true,
     "sourceMap": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -23,31 +23,32 @@
     ],
     "noImplicitAny": false,
     "skipLibCheck": true,
+    "removeComments": true,
     "types": [
       "node",
       "vite/client",
       "unplugin-vue-define-options"
     ],
-    "removeComments": true,
     "paths": {
       "@/*": [
         "src/*"
-      ],
-    }
+      ]
+    },
   },
   "include": [
+    "mock/**/*",
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "types/**/*.d.ts",
-    "types/**/*.ts",
-    "mock/**/*.ts",
-    "vite.config.ts"
+    "types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "**/*.js"
+    "**/*.js",
+    "**/*.md",
+    "src/**/*.md",
   ]
 }

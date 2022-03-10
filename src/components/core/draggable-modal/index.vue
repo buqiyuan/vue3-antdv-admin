@@ -4,8 +4,8 @@
       <Modal
         v-bind="{ ...$attrs, ...props }"
         v-model:visible="visibleModel"
-        :maskClosable="false"
-        :getContainer="() => modalWrapRef"
+        :mask-closable="false"
+        :get-container="() => modalWrapRef"
         :width="innerWidth || width"
         @ok="emit('ok')"
         @cancel="emit('cancel')"
@@ -15,9 +15,9 @@
         </template>
         <template #closeIcon>
           <slot name="closeIcon">
-            <Space @click.stop class="ant-modal-operate">
-              <fullscreen-outlined @click="fullscreenModel = true" v-if="!fullscreenModel" />
-              <fullscreen-exit-outlined @click="restore" v-else />
+            <Space class="ant-modal-operate" @click.stop>
+              <fullscreen-outlined v-if="!fullscreenModel" @click="fullscreenModel = true" />
+              <fullscreen-exit-outlined v-else @click="restore" />
               <close-outlined @click="closeModal" />
             </Space>
           </slot>
@@ -39,11 +39,11 @@
 <script lang="ts" setup>
   import { ref, watch, nextTick } from 'vue';
   import { useRoute } from 'vue-router';
-  import { Modal, Space } from 'ant-design-vue';
   // import { modalProps } from 'ant-design-vue/es/modal/Modal';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';
   import { useVModel } from '@vueuse/core';
   import { throttle } from 'lodash-es';
+  import { Modal, Space } from 'ant-design-vue';
 
   const props = defineProps({
     visible: {
@@ -99,7 +99,7 @@
     const modalEl = modalWrapRef.value?.querySelector<HTMLDivElement>('.ant-modal');
 
     if (modalEl && modalEl.getBoundingClientRect().left < 1) {
-      modalEl.style.left = (document.documentElement.clientWidth - modalEl.offsetWidth) / 2 + 'px';
+      modalEl.style.left = `${(document.documentElement.clientWidth - modalEl.offsetWidth) / 2}px`;
     }
   };
 
@@ -127,8 +127,8 @@
         iL >= maxL && (iL = maxL);
         iT >= maxT && (iT = maxT);
 
-        dragEl.style.left = iL + 'px';
-        dragEl.style.top = iT + 'px';
+        dragEl.style.left = `${iL}px`;
+        dragEl.style.top = `${iT}px`;
       };
       const mouseup = () => {
         document.removeEventListener('mousemove', mousemove);
@@ -207,38 +207,38 @@
           }
           // 向左边拖拽
           if (cursor === cursorStyle.left) {
-            modalEl.style.left = event.clientX - disX + 'px';
-            modalEl.style.width = iParentWidth + iParentLeft - event.clientX + 'px';
+            modalEl.style.left = `${event.clientX - disX}px`;
+            modalEl.style.width = `${iParentWidth + iParentLeft - event.clientX}px`;
             // 向上边拖拽
           } else if (cursor === cursorStyle.top) {
-            modalEl.style.top = event.clientY - disY + 'px';
-            modalEl.style.height = iParentHeight + iParentTop - event.clientY + 'px';
+            modalEl.style.top = `${event.clientY - disY}px`;
+            modalEl.style.height = `${iParentHeight + iParentTop - event.clientY}px`;
             // 向右边拖拽
           } else if (cursor === cursorStyle.right) {
-            modalEl.style.width = event.clientX - iParentLeft + 'px';
+            modalEl.style.width = `${event.clientX - iParentLeft}px`;
             // 向下拖拽
           } else if (cursor === cursorStyle.bottom) {
-            modalEl.style.height = event.clientY - iParentTop + 'px';
+            modalEl.style.height = `${event.clientY - iParentTop}px`;
             // 左上角拖拽
           } else if (cursor === cursorStyle.topLeft) {
-            modalEl.style.left = event.clientX - disX + 'px';
-            modalEl.style.top = event.clientY - disY + 'px';
-            modalEl.style.height = iParentHeight + iParentTop - event.clientY + 'px';
-            modalEl.style.width = iParentWidth + iParentLeft - event.clientX + 'px';
+            modalEl.style.left = `${event.clientX - disX}px`;
+            modalEl.style.top = `${event.clientY - disY}px`;
+            modalEl.style.height = `${iParentHeight + iParentTop - event.clientY}px`;
+            modalEl.style.width = `${iParentWidth + iParentLeft - event.clientX}px`;
             // 右上角拖拽
           } else if (cursor === cursorStyle.topright) {
-            modalEl.style.top = event.clientY - disY + 'px';
-            modalEl.style.width = event.clientX - iParentLeft + 'px';
-            modalEl.style.height = iParentHeight + iParentTop - event.clientY + 'px';
+            modalEl.style.top = `${event.clientY - disY}px`;
+            modalEl.style.width = `${event.clientX - iParentLeft}px`;
+            modalEl.style.height = `${iParentHeight + iParentTop - event.clientY}px`;
             // 左下角拖拽
           } else if (cursor === cursorStyle.bottomLeft) {
-            modalEl.style.left = event.clientX - disX + 'px';
-            modalEl.style.width = iParentWidth + iParentLeft - event.clientX + 'px';
-            modalEl.style.height = event.clientY - iParentTop + 'px';
+            modalEl.style.left = `${event.clientX - disX}px`;
+            modalEl.style.width = `${iParentWidth + iParentLeft - event.clientX}px`;
+            modalEl.style.height = `${event.clientY - iParentTop}px`;
             // 右下角拖拽
           } else if (cursor === cursorStyle.bottomRight) {
-            modalEl.style.width = event.clientX - iParentLeft + 'px';
-            modalEl.style.height = event.clientY - iParentTop + 'px';
+            modalEl.style.width = `${event.clientX - iParentLeft}px`;
+            modalEl.style.height = `${event.clientY - iParentTop}px`;
           }
           innerWidth.value = modalEl.style.width;
         }, 20);

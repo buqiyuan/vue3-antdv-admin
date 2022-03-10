@@ -16,7 +16,7 @@
       </div>
       <Tree
         v-model:expandedKeys="state.expandedKeys"
-        autoExpandParent
+        auto-expand-parent
         :tree-data="state.deptTree"
         @select="onTreeSelect"
       >
@@ -46,13 +46,13 @@
         ref="dynamicTableRef"
         header-title="用户管理"
         show-index
-        titleTooltip="请不要随意删除用户，避免到影响其他用户的使用。"
+        title-tooltip="请不要随意删除用户，避免到影响其他用户的使用。"
         :data-request="loadTableData"
         :columns="columns"
         :scroll="{ x: 2000 }"
         :row-selection="rowSelection"
       >
-        <template #title v-if="isCheckRows">
+        <template v-if="isCheckRows" #title>
           <Alert class="w-full" type="info" show-icon>
             <template #message>
               已选 {{ isCheckRows }} 项
@@ -86,7 +86,6 @@
 
 <script setup lang="tsx">
   import { ref, reactive, computed } from 'vue';
-  import { Tree, Dropdown, Space, Tooltip, Modal, Alert, Menu } from 'ant-design-vue';
   import {
     SyncOutlined,
     PlusOutlined,
@@ -95,6 +94,7 @@
     ExclamationCircleOutlined,
     SwapOutlined,
   } from '@ant-design/icons-vue';
+  import { Tree, Dropdown, Space, Tooltip, Modal, Alert, Menu } from 'ant-design-vue';
   import { userSchemas, deptSchemas, updatePswSchemas, transferUserSchemas } from './formSchemas';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import type { LoadDataParams, DynamicTableInstance } from '@/components/core/dynamic-table';

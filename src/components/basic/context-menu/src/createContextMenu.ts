@@ -8,7 +8,7 @@ const menuManager: {
   resolve: Fn;
 } = {
   domList: [],
-  resolve: () => {},
+  resolve: () => ({}),
 };
 
 export const createContextMenu = function (options: CreateContextOptions) {
