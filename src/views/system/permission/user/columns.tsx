@@ -37,9 +37,10 @@ export const baseColumns: TableColumnItem[] = [
     align: 'center',
     hideInSearch: true,
     width: 220,
-    bodyCell: ({ record }) => (
+    //or bodyCell
+    customRender: ({ text }) => (
       <Space>
-        {record.roleNames.map((item) => (
+        {text.map((item) => (
           <Tag color={'success'} key={item}>
             {item}
           </Tag>
