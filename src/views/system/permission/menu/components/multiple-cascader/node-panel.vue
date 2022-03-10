@@ -3,8 +3,8 @@
     <div class="ant-cascader-menu min-w-150px">
       <template v-for="item in options" :key="item.value">
         <div
-          @click="selectItem(item.children, item.value)"
           class="check-row ant-cascader-menu-item ant-cascader-menu-item-expand"
+          @click="selectItem(item.children, item.value)"
         >
           <div>
             <Checkbox
@@ -19,8 +19,8 @@
       </template>
     </div>
     <node-panel
-      ref="nodePanelRef"
       v-if="children?.length && isChildrenInParent"
+      ref="nodePanelRef"
       :options="children"
     />
   </div>
@@ -29,7 +29,8 @@
   import { ref, computed, watch } from 'vue';
   import { RightOutlined } from '@ant-design/icons-vue';
   import { Checkbox } from 'ant-design-vue';
-  import { updateNodeCheckStatus, CascaderOptionType, Key } from './utils';
+  import { updateNodeCheckStatus } from './utils';
+  import type { CascaderOptionType, Key } from './utils';
 
   const props = defineProps({
     options: {

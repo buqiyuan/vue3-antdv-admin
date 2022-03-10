@@ -1,5 +1,5 @@
-import { Result } from 'ant-design-vue';
 import { type RouteRecordRaw } from 'vue-router';
+import { Result } from 'ant-design-vue';
 import { notFound, errorRoute } from './staticModules/error';
 import { REDIRECT_ROUTE } from './staticModules/besidesLayout';
 import outsideLayout from './outsideLayout';
@@ -29,7 +29,7 @@ export function filterAsyncRoute(
       if (isUrl(router)) {
         fullPath = router;
       } else {
-        fullPath = router.startsWith('/') ? router : '/' + router;
+        fullPath = router.startsWith('/') ? router : `/${router}`;
         fullPath = router.startsWith(pathPrefix) ? fullPath : pathPrefix + fullPath;
         fullPath = [...new Set(uniqueSlash(fullPath).split('/'))].join('/');
       }
@@ -50,7 +50,7 @@ export function filterAsyncRoute(
           orderNum,
           title: name,
           perms: [],
-          icon: icon,
+          icon,
           namePath: lastNamePath.concat(fullPath),
           keepAlive: keepalive,
         },
@@ -120,7 +120,7 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
     console.log('所有路由', router.getRoutes());
 
     return {
-      menus: menus,
+      menus,
       routes: layout.children,
     };
   } catch (error) {

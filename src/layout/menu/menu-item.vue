@@ -14,7 +14,7 @@
       </template>
       <template v-for="item in menuChildren" :key="item.name">
         <!-- 递归生成菜单 -->
-        <MyMenuItem :menuInfo="item" />
+        <MyMenuItem :menu-info="item" />
       </template>
     </Menu.SubMenu>
     <!-- 菜单 -->

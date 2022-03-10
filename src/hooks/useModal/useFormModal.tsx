@@ -1,6 +1,6 @@
 import { nextTick, ref } from 'vue';
 import { useModal } from './useModal';
-import type { SchemaFormRef, FormSchema } from '@/components/core/schema-form';
+import type { SchemaFormInstance, FormSchema } from '@/components/core/schema-form';
 import type { FormModalProps } from './types';
 import { SchemaForm } from '@/components/core/schema-form';
 
@@ -13,7 +13,7 @@ export function useFormModal<T extends Recordable>() {
   const { show } = useModal();
 
   const showModal = async <P extends T>({ modalProps, formSchema }: ShowModalProps<P>) => {
-    const formRef = ref<SchemaFormRef>();
+    const formRef = ref<SchemaFormInstance>();
 
     const onCancel = (e: MouseEvent) => {
       formRef.value?.resetFields();

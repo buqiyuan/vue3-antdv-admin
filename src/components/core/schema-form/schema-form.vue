@@ -9,7 +9,7 @@
           :schema="formSchemaRef"
           :set-form-model="setFormModel"
           :form-model="formModel"
-          :setItemRef="setItemRef(schemaItem)"
+          :set-item-ref="setItemRef(schemaItem)"
         >
           <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
             <slot :name="item" v-bind="data || {}"></slot>
@@ -29,21 +29,21 @@
   import {
     reactive,
     ref,
-    PropType,
     unref,
     defineComponent,
     computed,
     watchEffect,
     getCurrentInstance,
   } from 'vue';
-  import { Form, Row } from 'ant-design-vue';
   import { formProps } from 'ant-design-vue/es/form';
-  import { NamePath } from 'ant-design-vue/es/form/interface';
   import { uniqBy, cloneDeep } from 'lodash-es';
   import dayjs from 'dayjs';
+  import { Form, Row } from 'ant-design-vue';
   import { dateItemType, handleInputNumberValue } from './helper';
   import SchemaFormItem from './schema-form-item.vue';
   import { createFormContext } from './hooks/useFormContext';
+  import type { NamePath } from 'ant-design-vue/es/form/interface';
+  import type { PropType } from 'vue';
   import type { FormItemSchema, FormSchema, FormActionType } from './types/form';
   import { deepMerge } from '@/utils/';
   import { isNullOrUnDef, isObject, isArray, isFunction, isBoolean, isString } from '@/utils/is';
@@ -152,7 +152,7 @@
         cacheFormModel[key] = value;
         const { validateTrigger } = unref(getFormProps);
         if (!validateTrigger || validateTrigger === 'change') {
-          schemaFormRef.value?.validateFields([key]).catch((_) => {});
+          schemaFormRef.value?.validateFields([key]);
         }
       };
       // 获取栅栏Row配置
@@ -217,7 +217,7 @@
             validKeys.push(key);
           }
         });
-        validateFields(validKeys).catch((_) => {});
+        validateFields(validKeys);
       }
 
       async function resetSchema(data: Partial<FormItemSchema> | Partial<FormItemSchema>[]) {

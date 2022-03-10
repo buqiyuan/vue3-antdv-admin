@@ -1,20 +1,32 @@
-/* eslint-disable */
 import { saveAs } from 'file-saver';
 import { SSF, utils, write } from 'xlsx';
+import type { WorkBook, WorkSheet, BookType } from 'xlsx';
+
+interface ICell {
+  v: Date | number | boolean | string;
+  t: string;
+  z: string;
+}
+
+class Workbook implements WorkBook {
+  SheetNames: string[] = [];
+
+  Sheets: { [sheet: string]: WorkSheet } = {};
+}
 
 function generateArray(table) {
-  var out = [];
-  var rows = table.querySelectorAll('tr');
-  var ranges = [];
-  for (var R = 0; R < rows.length; ++R) {
-    var outRow = [];
-    var row = rows[R];
-    var columns = row.querySelectorAll('td');
-    for (var C = 0; C < columns.length; ++C) {
-      var cell = columns[C];
-      var colspan = cell.getAttribute('colspan');
-      var rowspan = cell.getAttribute('rowspan');
-      var cellValue = cell.innerText;
+  const out: any[] = [];
+  const rows = table.querySelectorAll('tr');
+  const ranges: any[] = [];
+  for (let R = 0; R < rows.length; ++R) {
+    const outRow: any[] = [];
+    const row = rows[R];
+    const columns = row.querySelectorAll('td');
+    for (let C = 0; C < columns.length; ++C) {
+      const cell = columns[C];
+      let colspan = cell.getAttribute('colspan');
+      let rowspan = cell.getAttribute('rowspan');
+      let cellValue = cell.innerText;
       if (cellValue !== '' && cellValue == +cellValue) cellValue = +cellValue;
 
       //Skip ranges
@@ -25,7 +37,7 @@ function generateArray(table) {
           outRow.length >= range.s.c &&
           outRow.length <= range.e.c
         ) {
-          for (var i = 0; i <= range.e.c - range.s.c; ++i) outRow.push(null);
+          for (let i = 0; i <= range.e.c - range.s.c; ++i) outRow.push(null);
         }
       });
 
@@ -49,22 +61,22 @@ function generateArray(table) {
       outRow.push(cellValue !== '' ? cellValue : null);
 
       //Handle Colspan
-      if (colspan) for (var k = 0; k < colspan - 1; ++k) outRow.push(null);
+      if (colspan) for (let k = 0; k < colspan - 1; ++k) outRow.push(null);
     }
     out.push(outRow);
   }
   return [out, ranges];
 }
 
-function datenum(v, date1904) {
+function datenum(v, date1904?) {
   if (date1904) v += 1462;
-  var epoch = Date.parse(v);
-  return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
+  const epoch = Date.parse(v);
+  return (epoch - new Date(Date.UTC(1899, 11, 30)).getTime()) / (24 * 60 * 60 * 1000);
 }
 
-function sheet_from_array_of_arrays(data, opts) {
-  var ws = {};
-  var range = {
+function sheetFromArrayOfArrays(data) {
+  const ws = {};
+  const range = {
     s: {
       c: 10000000,
       r: 10000000,
@@ -74,17 +86,19 @@ function sheet_from_array_of_arrays(data, opts) {
       r: 0,
     },
   };
-  for (var R = 0; R != data.length; ++R) {
-    for (var C = 0; C != data[R].length; ++C) {
+  for (let R = 0; R != data.length; ++R) {
+    for (let C = 0; C != data[R].length; ++C) {
       if (range.s.r > R) range.s.r = R;
       if (range.s.c > C) range.s.c = C;
       if (range.e.r < R) range.e.r = R;
       if (range.e.c < C) range.e.c = C;
-      var cell = {
+      const cell: ICell = {
         v: data[R][C],
+        t: '',
+        z: '',
       };
       if (cell.v == null) continue;
-      var cell_ref = utils.encode_cell({
+      const cellRef = utils.encode_cell({
         c: C,
         r: R,
       });
@@ -97,47 +111,41 @@ function sheet_from_array_of_arrays(data, opts) {
         cell.v = datenum(cell.v);
       } else cell.t = 's';
 
-      ws[cell_ref] = cell;
+      ws[cellRef] = cell;
     }
   }
   if (range.s.c < 10000000) ws['!ref'] = utils.encode_range(range);
   return ws;
 }
 
-function Workbook() {
-  if (!(this instanceof Workbook)) return new Workbook();
-  this.SheetNames = [];
-  this.Sheets = {};
-}
-
 function s2ab(s) {
-  var buf = new ArrayBuffer(s.length);
-  var view = new Uint8Array(buf);
-  for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
+  const buf = new ArrayBuffer(s.length);
+  const view = new Uint8Array(buf);
+  for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
   return buf;
 }
 
-export function export_table_to_excel(id) {
-  var theTable = document.getElementById(id);
-  var oo = generateArray(theTable);
-  var ranges = oo[1];
+export function exportTableToExcel(id) {
+  const theTable = document.getElementById(id);
+  const oo = generateArray(theTable);
+  const ranges = oo[1];
 
   /* original data */
-  var data = oo[0];
-  var ws_name = 'SheetJS';
+  const data = oo[0];
+  const wsName = 'SheetJS';
 
-  var wb = new Workbook(),
-    ws = sheet_from_array_of_arrays(data);
+  const wb = new Workbook(),
+    ws = sheetFromArrayOfArrays(data);
 
   /* add ranges to worksheet */
   // ws['!cols'] = ['apple', 'banan'];
   ws['!merges'] = ranges;
 
   /* add worksheet to workbook */
-  wb.SheetNames.push(ws_name);
-  wb.Sheets[ws_name] = ws;
+  wb.SheetNames.push(wsName);
+  wb.Sheets[wsName] = ws;
 
-  var wbout = write(wb, {
+  const wbout = write(wb, {
     bookType: 'xlsx',
     bookSST: false,
     type: 'binary',
@@ -151,14 +159,14 @@ export function export_table_to_excel(id) {
   );
 }
 
-export function export_json_to_excel({
-  multiHeader = [],
-  header,
-  data,
-  filename,
-  merges = [],
+export function exportJson2Excel({
+  multiHeader = [] as string[][],
+  header = [] as string[],
+  data = [] as any[],
+  filename = 'excel-list',
+  merges = [] as any[],
   autoWidth = true,
-  bookType = 'xlsx',
+  bookType = 'xlsx' as BookType,
 } = {}) {
   /* original data */
   filename = filename || 'excel-list';
@@ -169,9 +177,9 @@ export function export_json_to_excel({
     data.unshift(multiHeader[i]);
   }
 
-  var ws_name = 'SheetJS';
-  var wb = new Workbook(),
-    ws = sheet_from_array_of_arrays(data);
+  const wsName = 'SheetJS';
+  const wb = new Workbook(),
+    ws = sheetFromArrayOfArrays(data);
 
   if (merges.length > 0) {
     if (!ws['!merges']) ws['!merges'] = [];
@@ -202,7 +210,7 @@ export function export_json_to_excel({
       }),
     );
     /*以第一行为初始值*/
-    let result = colWidth[0];
+    const result = colWidth[0];
     for (let i = 1; i < colWidth.length; i++) {
       for (let j = 0; j < colWidth[i].length; j++) {
         if (result[j]['wch'] < colWidth[i][j]['wch']) {
@@ -214,11 +222,11 @@ export function export_json_to_excel({
   }
 
   /* add worksheet to workbook */
-  wb.SheetNames.push(ws_name);
-  wb.Sheets[ws_name] = ws;
+  wb.SheetNames.push(wsName);
+  wb.Sheets[wsName] = ws;
 
-  var wbout = write(wb, {
-    bookType: bookType,
+  const wbout = write(wb, {
+    bookType,
     bookSST: false,
     type: 'binary',
   });

@@ -1,9 +1,9 @@
 <template>
   <div>
     <input
+      v-show="false"
       ref="inputRef"
       type="file"
-      v-show="false"
       accept=".xlsx, .xls"
       @change="handleInputClick"
     />
@@ -36,7 +36,7 @@
     emits: ['success', 'error'],
     setup(props, { emit }) {
       const inputRef = ref<HTMLInputElement | null>(null);
-      const loadingRef = ref<Boolean>(false);
+      const loadingRef = ref<boolean>(false);
 
       /**
        * @description: 第一行作为头部
@@ -53,7 +53,7 @@
           /* walk every column in the range */
           const cell = sheet[utils.encode_cell({ c: C, r: R })];
           /* find the cell in the first row */
-          let hdr = 'UNKNOWN ' + C; // <-- replace with your desired default
+          let hdr = `UNKNOWN ${C}`; // <-- replace with your desired default
           if (cell && cell.t) hdr = utils.format_cell(cell);
           headers.push(hdr);
         }
@@ -74,7 +74,7 @@
             dateNF: dateFormat, //Not worked
           }) as object[];
           results = results.map((row: object) => {
-            for (let field in row) {
+            for (const field in row) {
               if (row[field] instanceof Date) {
                 if (timeZone === 8) {
                   row[field].setSeconds(row[field].getSeconds() + 43);

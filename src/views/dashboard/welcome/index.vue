@@ -48,7 +48,7 @@
           ? calcDischargingTime.value
           : '未知',
       电池状态: batteryStatus.value,
-      当前电量: battery.value.level + '%',
+      当前电量: `${battery.value.level}%`,
     });
   });
 

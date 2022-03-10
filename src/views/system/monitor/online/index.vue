@@ -11,7 +11,8 @@
 <script setup lang="tsx">
   import { ref } from 'vue';
   import { Tag } from 'ant-design-vue';
-  import { DynamicTable, TableColumn, DynamicTableInstance } from '@/components/core/dynamic-table';
+  import type { TableColumn, DynamicTableInstance } from '@/components/core/dynamic-table';
+  import { DynamicTable } from '@/components/core/dynamic-table';
   import { getOnlineList, kickUser } from '@/api/system/online';
   import { useSocket } from '@/core/socket/useSocket';
 

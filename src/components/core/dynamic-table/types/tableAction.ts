@@ -1,4 +1,4 @@
-import { ColumnParams } from '../typing';
+import type { ColumnParams } from '../typing';
 import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
 import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
 import type { PermissionType } from '@/core/permission/modules/types';

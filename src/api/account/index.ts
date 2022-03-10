@@ -1,4 +1,5 @@
-import { request, BaseResponse } from '@/utils/request';
+import type { BaseResponse } from '@/utils/request';
+import { request } from '@/utils/request';
 
 export function updateAccountInfo(data: any) {
   return request<BaseResponse<any>>({

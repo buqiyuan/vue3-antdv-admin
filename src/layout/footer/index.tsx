@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue';
 
-import { Layout } from 'ant-design-vue';
 import { GithubOutlined, CopyrightOutlined } from '@ant-design/icons-vue';
+import { Layout } from 'ant-design-vue';
 import styles from './index.module.less';
 
 const { Footer: ALayoutFooter } = Layout;

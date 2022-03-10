@@ -3,7 +3,8 @@
 </template>
 
 <script setup lang="ts">
-  import { DynamicTable, LoadDataParams, TableColumn } from '@/components/core/dynamic-table';
+  import type { LoadDataParams, TableColumn } from '@/components/core/dynamic-table';
+  import { DynamicTable } from '@/components/core/dynamic-table';
   import { getLoginLogList } from '@/api/system/log';
 
   defineOptions({

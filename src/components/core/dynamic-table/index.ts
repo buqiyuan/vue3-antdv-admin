@@ -1,6 +1,6 @@
-import { Ref } from 'vue';
 import DynamicTable from './dynamic-table.vue';
 import TableQueryHeader from './components/query-form/index.vue';
+import type { Ref } from 'vue';
 export { DynamicTable, TableQueryHeader };
 
 export type { LoadDataParams, TableColumn } from './typing';

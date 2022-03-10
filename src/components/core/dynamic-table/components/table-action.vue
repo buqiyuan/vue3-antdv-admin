@@ -1,8 +1,8 @@
 <template>
   <template v-for="(actionItem, index) in actionFilters" :key="`${index}-${actionItem.label}`">
     <component
-      :title="actionItem.title"
       :is="actionItem.popConfirm ? Popconfirm : 'span'"
+      :title="actionItem.title"
       v-bind="actionItem.popConfirm"
     >
       <a-button type="link" v-bind="actionItem">{{ actionItem.label }}</a-button>

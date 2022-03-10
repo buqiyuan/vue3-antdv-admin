@@ -6,4 +6,6 @@ export * from './types/formItem';
 
 export { SchemaForm };
 
-export type SchemaFormRef = InstanceType<typeof SchemaForm>;
+export default SchemaForm;
+
+export type SchemaFormInstance = InstanceType<typeof SchemaForm>;

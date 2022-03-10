@@ -4,7 +4,7 @@
 function formatParams(data = {}) {
   const arr: any[] = [];
   for (const name in data) {
-    arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+    arr.push(`${encodeURIComponent(name)}=${encodeURIComponent(data[name])}`);
   }
   return arr.join('&');
 }

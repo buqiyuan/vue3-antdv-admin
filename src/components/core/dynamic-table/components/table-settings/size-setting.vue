@@ -7,7 +7,7 @@
     <Dropdown placement="bottomCenter" :trigger="['click']">
       <ColumnHeightOutlined />
       <template #overlay>
-        <Menu @click="handleMenuClick" selectable v-model:selectedKeys="selectedKeysRef">
+        <Menu v-model:selectedKeys="selectedKeysRef" selectable @click="handleMenuClick">
           <Menu.Item key="large">
             <span>{{ $t('component.table.settingDensDefault') }}</span>
           </Menu.Item>
@@ -24,8 +24,8 @@
 </template>
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { Tooltip, Dropdown, Menu } from 'ant-design-vue';
   import { ColumnHeightOutlined } from '@ant-design/icons-vue';
+  import { Tooltip, Dropdown, Menu } from 'ant-design-vue';
   import { useTableContext } from '../../hooks/useTableContext';
   import type { TableProps } from 'ant-design-vue/es/table/Table';
 

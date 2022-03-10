@@ -74,7 +74,7 @@ export const props = {
   /** 自定义数据导出格式函数 */
   exportFormatter: {
     type: Function as PropType<
-      (columns: TableColumn<any>[], tableData: any[]) => { header: Recordable; data: any[] }
+      (columns: TableColumn<any>[], tableData: any[]) => { header: string[]; data: any[] }
     >,
     default: null,
   },

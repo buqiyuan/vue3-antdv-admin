@@ -25,7 +25,7 @@
   // 拖拽中
   // @throttle(20)
   const onDrag = throttle(function (e: MouseEvent) {
-    scalable.value && (scalable.value.style.width = startWidth + e.clientX - startX + 'px');
+    scalable.value && (scalable.value.style.width = `${startWidth + e.clientX - startX}px`);
   }, 20);
 
   // 拖拽结束

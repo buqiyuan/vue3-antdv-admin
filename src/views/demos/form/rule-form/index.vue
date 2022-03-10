@@ -21,7 +21,7 @@
   import { ref } from 'vue';
   import { Alert, message } from 'ant-design-vue';
   import { schemas } from './form-schema';
-  import { SchemaForm } from '@/components/core/schema-form';
+  import { SchemaForm, type SchemaFormInstance } from '@/components/core/schema-form';
 
   defineOptions({
     name: 'DemosFormRuleForm',
@@ -30,7 +30,7 @@
   /**
    * @description 验证表单
    */
-  const dynamicForm = ref<InstanceType<typeof SchemaForm>>();
+  const dynamicForm = ref<SchemaFormInstance>();
   const formSchema = { schemas, labelWidth: 120 };
 
   // 点击提交

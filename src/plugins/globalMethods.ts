@@ -1,6 +1,5 @@
-import { App } from 'vue';
+import type { App } from 'vue';
 
-import hasPermission from '@/utils/permission/hasPermission';
 // import useFormModal from '@/hooks/useFormModal'
 import useModal from '@/hooks/useModal/index';
 import permission from '@/core/permission/';
@@ -9,7 +8,6 @@ import permission from '@/core/permission/';
  * @param app
  */
 export function setupGlobalMethods(app: App) {
-  app.use(hasPermission);
   app.use(permission);
   // app.use(useFormModal)
   app.use(useModal);

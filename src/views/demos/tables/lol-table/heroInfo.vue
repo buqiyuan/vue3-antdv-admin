@@ -48,9 +48,9 @@
 
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
-  import { Carousel, Card } from 'ant-design-vue';
   import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
   import { useRoute } from 'vue-router';
+  import { Carousel, Card } from 'ant-design-vue';
   import { getLolHeroInfo } from '@/api/demos/hero';
   import { useTabsViewStore } from '@/store/modules/tabsView';
 

@@ -1,6 +1,7 @@
-import { isNavigationFailure, Router } from 'vue-router';
+import { isNavigationFailure } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
 import { type WhiteNameList, LOGIN_NAME, REDIRECT_NAME } from './constant';
+import type { Router } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
 import { useKeepAliveStore } from '@/store/modules/keepAlive';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';

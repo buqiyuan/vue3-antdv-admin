@@ -32,7 +32,7 @@ export const formarPermsToCascader = () => {
             // key: k,
             title: k,
             label: k,
-            value: value,
+            value,
             children: [],
           };
           p.push(item);

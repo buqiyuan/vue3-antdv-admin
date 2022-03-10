@@ -1,6 +1,6 @@
 import { defineComponent, reactive, watchEffect, watch, ref } from 'vue';
-import { ConfigProvider } from 'ant-design-vue';
 import { omit } from 'lodash-es';
+import { ConfigProvider } from 'ant-design-vue';
 import type { HookModalProps } from './types';
 import { isFunction } from '@/utils/is';
 import { DraggableModal } from '@/components/core/draggable-modal';

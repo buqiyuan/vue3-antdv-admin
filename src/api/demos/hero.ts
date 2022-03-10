@@ -1,4 +1,5 @@
-import { request, BaseResponse } from '@/utils/request';
+import type { BaseResponse } from '@/utils/request';
+import { request } from '@/utils/request';
 
 /**
  * @description 获取王者荣耀英雄列表

@@ -65,7 +65,6 @@
 
 <script setup lang="ts">
   import { reactive } from 'vue';
-  import { Avatar, message } from 'ant-design-vue';
   import {
     LockOutlined,
     LoadingOutlined,
@@ -77,6 +76,7 @@
   } from '@ant-design/icons-vue';
 
   import { useRouter, useRoute } from 'vue-router';
+  import { Avatar, message } from 'ant-design-vue';
   import HuaweiCharge from './huawei-charge.vue';
   import XiaomiCharge from './xiaomi-charge.vue';
   import { useOnline } from '@/hooks/useOnline';

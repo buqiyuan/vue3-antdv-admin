@@ -9,8 +9,8 @@
 
 <script setup lang="ts">
   import { watchEffect } from 'vue';
-  import { ConfigProvider } from 'ant-design-vue';
   import { useRoute } from 'vue-router';
+  import { ConfigProvider } from 'ant-design-vue';
   import { transformI18n } from './hooks/useI18n';
   import { LockScreen } from '@/components/basic/lockscreen';
   import { useLocale } from '@/locales/useLocale';

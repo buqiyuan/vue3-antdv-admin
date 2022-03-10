@@ -50,9 +50,9 @@
 
 <script setup lang="ts">
   import { reactive } from 'vue';
-  import { message, Modal } from 'ant-design-vue';
   import { UserOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons-vue';
   import { useRoute, useRouter } from 'vue-router';
+  import { message, Modal } from 'ant-design-vue';
   import { useUserStore } from '@/store/modules/user';
   import { getImageCaptcha } from '@/api/login';
   import { SvgIcon } from '@/components/basic/svg-icon';

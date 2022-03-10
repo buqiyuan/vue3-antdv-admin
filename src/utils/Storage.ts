@@ -115,7 +115,7 @@ export const createStorage = ({ prefixKey = '', storage = localStorage } = {}) =
       const keys = document.cookie.match(/[^ =;]+(?==)/g);
       if (keys) {
         for (let i = keys.length; i--; ) {
-          document.cookie = keys[i] + '=0;expire=' + new Date(0).toUTCString();
+          document.cookie = `${keys[i]}=0;expire=${new Date(0).toUTCString()}`;
         }
       }
     }

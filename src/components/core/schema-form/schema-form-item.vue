@@ -4,20 +4,20 @@
       v-bind="{ ...schemaItem.formItemProps }"
       :label="renderLabelHelpMessage"
       :name="schemaItem.field"
-      :labelCol="itemLabelWidthProp.labelCol"
-      :wrapperCol="itemLabelWidthProp.wrapperCol"
+      :label-col="itemLabelWidthProp.labelCol"
+      :wrapper-col="itemLabelWidthProp.wrapperCol"
       :rules="getRules"
     >
       <slot v-if="schemaItem.slot" :name="schemaItem.slot" v-bind="getValues"> </slot>
       <component
-        v-else
         :is="getComponent"
+        v-else
         :ref="setItemRef"
         :key="schemaItem.field"
-        :allowClear="true"
         v-bind="getComponentProps"
-        v-on="componentEvents"
         v-model:[modelValueType]="modelValue[schemaItem.field]"
+        :allow-clear="true"
+        v-on="componentEvents"
       >
         <template v-if="Object.is(schemaItem.loading, true)" #notFoundContent>
           <Spin size="small" />
@@ -28,15 +28,16 @@
 </template>
 
 <script setup lang="tsx">
-  import { PropType, computed, unref, toRefs, onMounted } from 'vue';
-  import { Form, Col, Spin } from 'ant-design-vue';
+  import { computed, unref, toRefs, onMounted } from 'vue';
   import { useVModel } from '@vueuse/core';
   import { cloneDeep } from 'lodash-es';
+  import { Form, Col, Spin } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
-  import { componentMap, ComponentMapType } from './componentMap';
+  import { componentMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
-  import type { Ref } from 'vue';
+  import type { ComponentMapType } from './componentMap';
+  import type { Ref, PropType } from 'vue';
   import type { FormItemSchema, FormSchema } from './types/form';
   import type { ValidationRule } from 'ant-design-vue/es/form/Form';
   import { isFunction, isNull, isString } from '@/utils/is';
@@ -67,7 +68,7 @@
     /** 将表单组件实例保存起来 */
     setItemRef: {
       type: Function,
-      default: () => {},
+      default: () => ({}),
     },
   });
 
@@ -87,10 +88,10 @@
 
   const itemLabelWidthProp = useItemLabelWidth(schemaItem, schema);
   // eslint-disable-next-line
-  const valuesRef = computed(() => {
-    const { formModel, schemaItem } = props;
-    return { formModel, schemaItem, field: schemaItem.field };
-  });
+  // const valuesRef = computed(() => {
+  //   const { formModel, schemaItem } = props;
+  //   return { formModel, schemaItem, field: schemaItem.field };
+  // });
 
   const modelValueType = computed(() => {
     const { component, componentProps } = schemaItem.value;
@@ -106,12 +107,12 @@
     const { mergeDynamicData } = props.schema;
     return {
       field: schemaItem.field,
-      formModel: formModel,
+      formModel,
       values: {
         ...mergeDynamicData,
         ...formModel,
       } as Recordable,
-      schemaItem: schemaItem,
+      schemaItem,
     };
   });
 

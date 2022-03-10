@@ -5,7 +5,7 @@
     </template>
     <div class="input-box">
       <Input placeholder="请选择">
-        <template #prefix v-if="getTags.length">
+        <template v-if="getTags.length" #prefix>
           <template v-for="tag in getTags" :key="tag.value">
             <Tag class="tag-item" closable @close.prevent="delTag(tag)">{{ tag.label }}</Tag>
           </template>
@@ -17,12 +17,13 @@
 </template>
 <script lang="ts" setup>
   import { watch, computed, ref } from 'vue';
-  import { Form, Input, Popover, Tag } from 'ant-design-vue';
   import { useVModel } from '@vueuse/core';
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
+  import { Form, Input, Popover, Tag } from 'ant-design-vue';
   import NodePanel from './node-panel.vue';
   // import { cloneDeep } from 'lodash-es';
-  import { updateNodeCheckStatus, CascaderOptionType, Key } from './utils';
+  import { updateNodeCheckStatus } from './utils';
+  import type { CascaderOptionType, Key } from './utils';
   import { formarPermsToCascader } from '@/core/permission';
 
   type TagItem = {
