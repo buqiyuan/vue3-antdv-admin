@@ -6,6 +6,7 @@ export default {
     demo: '表单演示',
     basic: '基础表单',
     rule: '表单校验',
+    dynamic: '动态表单',
   },
   table: {
     demo: '表格演示',

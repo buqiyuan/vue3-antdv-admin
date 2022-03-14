@@ -1,9 +1,12 @@
 // export { default as SchemaForm } from './schema-form.vue'
-import SchemaForm from './schema-form.vue';
+import SchemaForm from './src/schema-form.vue';
 
-export * from './types/form';
-export * from './types/formItem';
+export * from './src/types/form';
+export * from './src/types/formItem';
+export * from './src/schema-form';
+
+export * from './src/hooks/';
 
 export { SchemaForm };
 
-export type SchemaFormRef = InstanceType<typeof SchemaForm>;
+export default SchemaForm;

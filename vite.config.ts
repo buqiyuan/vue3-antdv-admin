@@ -20,16 +20,6 @@ const CWD = process.cwd();
 // const BASE_ENV_CONFIG = loadEnv('', CWD);
 // const DEV_ENV_CONFIG = loadEnv('development', CWD);
 // const PROD_ENV_CONFIG = loadEnv('production', CWD);
-// 获取所有依赖地址
-['dependencies', 'devDependencies'].forEach((name) => {
-  Object.keys(pkg[name]).forEach((key) => {
-    const devPkg = require(`./node_modules/${key}/package.json`);
-    pkg[name][key] = {
-      url: devPkg.repository?.url || devPkg.repository || devPkg.homepage,
-      version: pkg[name][key],
-    };
-  });
-});
 
 const __APP_INFO__ = {
   pkg,

@@ -60,7 +60,7 @@ export const columns: TableColumn<ListItemType>[] = [
     dataIndex: 'gender',
     formItemProps: {
       component: 'Select',
-      componentProps: ({ schemaFormRef, formModel }) => ({
+      componentProps: ({ formInstance, formModel }) => ({
         options: [
           {
             label: '男',
@@ -73,7 +73,7 @@ export const columns: TableColumn<ListItemType>[] = [
         ],
         onChange() {
           // 根据当前选择的性别，更新衣服可选项
-          schemaFormRef.updateSchema({
+          formInstance?.updateSchema({
             field: 'clothes',
             componentProps: {
               options: getClothesByGender(formModel.gender),

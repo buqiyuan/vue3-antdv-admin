@@ -70,8 +70,27 @@ const routes: Array<RouteRecordRaw> = [
               icon: 'icon-zhuomian',
               keepAlive: true,
             },
-            component: () =>
-              import(/* webpackChunkName: "rule-form" */ '@/views/demos/form/rule-form/index.vue'),
+            component: () => import('@/views/demos/form/rule-form/index.vue'),
+          },
+          {
+            path: 'dynamic',
+            name: `${moduleName}-form-dynamic`,
+            meta: {
+              title: t('routes.demo.form.dynamic'),
+              icon: 'icon-zhuomian',
+              keepAlive: true,
+            },
+            component: () => import('@/views/demos/form/dynamic-form/index.vue'),
+          },
+          {
+            path: 'useForm',
+            name: `${moduleName}-form-use`,
+            meta: {
+              title: 'useForm',
+              icon: 'icon-zhuomian',
+              keepAlive: true,
+            },
+            component: () => import('@/views/demos/form/use-form/index.vue'),
           },
         ],
       },

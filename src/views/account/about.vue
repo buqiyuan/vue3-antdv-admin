@@ -24,13 +24,21 @@
         <Descriptions.Item label="预览地址">
           <BlankLink :url="pkg.homepage" text="预览地址" />
         </Descriptions.Item>
+        <Descriptions.Item label="QQ交流群" label-align="left" align="left">
+          <a
+            href="https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi"
+            target="_blank"
+          >
+            点击链接加入群聊
+          </a>
+        </Descriptions.Item>
       </Descriptions>
     </Card>
     <Card class="mt-3">
       <Descriptions title="生产环境依赖" bordered>
         <template v-for="(value, key) in pkg.dependencies" :key="key">
           <Descriptions.Item :label="key">
-            <BlankLink :url="value.url" :text="value.version" />
+            <BlankLink :url="key" :text="value" />
           </Descriptions.Item>
         </template>
       </Descriptions>
@@ -39,7 +47,7 @@
       <Descriptions title="开发环境依赖" bordered>
         <template v-for="(value, key) in pkg.devDependencies" :key="key">
           <Descriptions.Item :label="key">
-            <BlankLink :url="value.url" :text="value.version" />
+            <BlankLink :url="key" :text="value" />
           </Descriptions.Item>
         </template>
       </Descriptions>
@@ -52,7 +60,7 @@
   const { pkg, lastBuildTime } = __APP_INFO__;
 
   const BlankLink = ({ url = '', text }) => (
-    <a href={url.replace('git+', '')} target="_blank">
+    <a href={`https://www.npmjs.com/package/${url}`} target="_blank">
       {text}
     </a>
   );

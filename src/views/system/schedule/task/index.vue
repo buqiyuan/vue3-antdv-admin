@@ -124,9 +124,8 @@
           refreshTable();
         },
       },
-      formSchema: {
+      formProps: {
         labelWidth: 100,
-        layout: 'vertical',
         schemas: taskSchemas,
       },
     });

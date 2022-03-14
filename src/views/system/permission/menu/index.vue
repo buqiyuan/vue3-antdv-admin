@@ -64,9 +64,8 @@
           dynamicTableRef.value?.refreshTable();
         },
       },
-      formSchema: {
+      formProps: {
         labelWidth: 100,
-        layout: 'vertical',
         schemas: menuSchemas,
       },
     });
@@ -83,6 +82,7 @@
 
     formRef.value?.setFieldsValue({
       ...record,
+      icon: record.icon ?? '',
       perms: record.perms?.split(','),
       parentId: record.parentId ?? -1,
     });

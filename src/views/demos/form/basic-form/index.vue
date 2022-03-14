@@ -8,7 +8,7 @@
       style="margin-bottom: 12px"
     />
     <a-card>
-      <schema-form ref="dynamicForm" :form-schema="formSchema">
+      <schema-form ref="dynamicForm" v-bind="formProps">
         <template #operate-button>
           <a-button type="primary" @click="confirm"> 确定 </a-button>
         </template>
@@ -21,6 +21,7 @@
   import { ref } from 'vue';
   import { Alert, message } from 'ant-design-vue';
   import { schemas } from './form-schema';
+  import type { SchemaFormProps } from '@/components/core/schema-form';
   import { SchemaForm } from '@/components/core/schema-form';
 
   defineOptions({
@@ -31,7 +32,7 @@
    * @description 基础表单
    */
   const dynamicForm = ref<InstanceType<typeof SchemaForm>>();
-  const formSchema = { schemas, labelWidth: 120 };
+  const formProps: SchemaFormProps = { schemas, labelWidth: 120, actionColOptions: { span: 24 } };
 
   // 点击提交
   function confirm() {

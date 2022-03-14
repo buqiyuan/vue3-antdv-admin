@@ -161,9 +161,8 @@
           fetchDeptList();
         },
       },
-      formSchema: {
+      formProps: {
         labelWidth: 100,
-        layout: 'vertical',
         schemas: deptSchemas,
       },
     });
@@ -183,6 +182,7 @@
         },
       },
     ]);
+
     formRef.value?.setFieldsValue({
       ...record,
       parentId: record.parentId ?? -1,
@@ -204,9 +204,8 @@
           });
         },
       },
-      formSchema: {
+      formProps: {
         labelWidth: 100,
-        layout: 'vertical',
         schemas: transferUserSchemas,
       },
     });
@@ -234,9 +233,8 @@
           dynamicTableRef.value?.refreshTable();
         },
       },
-      formSchema: {
+      formProps: {
         labelWidth: 100,
-        layout: 'vertical',
         schemas: userSchemas,
       },
     });
@@ -271,9 +269,8 @@
           });
         },
       },
-      formSchema: {
+      formProps: {
         labelWidth: 100,
-        layout: 'vertical',
         schemas: updatePswSchemas,
       },
     });

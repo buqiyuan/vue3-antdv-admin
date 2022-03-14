@@ -8,17 +8,9 @@ import type {
   PropType as VuePropType,
 } from 'vue';
 
-type DepInfo = {
-  url: string;
-  version: string;
-};
-
 declare global {
   const __APP_INFO__: {
-    pkg: typeof packageJSON & {
-      dependencies: Record<string, DepInfo>;
-      devDependencies: Record<string, DepInfo>;
-    };
+    pkg: typeof packageJSON;
     lastBuildTime: string;
   };
   // declare interface Window {
@@ -62,6 +54,21 @@ declare global {
   declare function parseInt(s: string | number, radix?: number): number;
 
   declare function parseFloat(string: string | number): number;
+
+  declare type EmitFn<
+    Options = ObjectEmitsOptions,
+    Event extends keyof Options = keyof Options,
+  > = Options extends Array<infer V>
+    ? (event: V, ...args: any[]) => void
+    : {} extends Options
+    ? (event: string, ...args: any[]) => void
+    : UnionToIntersection<
+        {
+          [key in Event]: Options[key] extends (...args: infer Args) => any
+            ? (event: key, ...args: Args) => void
+            : (event: key, ...args: any[]) => void;
+        }[Event]
+      >;
 
   namespace JSX {
     // tslint:disable no-empty-interface

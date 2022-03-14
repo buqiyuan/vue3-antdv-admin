@@ -1,10 +1,10 @@
 import { Ref } from 'vue';
-import DynamicTable from './dynamic-table.vue';
-import TableQueryHeader from './components/query-form/index.vue';
-export { DynamicTable, TableQueryHeader };
+import DynamicTable from './src/dynamic-table.vue';
+import type { DynamicTableInstance } from './src/dynamic-table';
+export { DynamicTable };
 
-export type { LoadDataParams, TableColumn } from './typing';
-
-export type DynamicTableInstance = InstanceType<typeof DynamicTable>;
+export * from './types/';
+export * from './src/hooks/';
+export * from './src/dynamic-table';
 
 export type DynamicTableRef = Ref<DynamicTableInstance>;

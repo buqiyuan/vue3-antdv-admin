@@ -1,10 +1,10 @@
 import { shallowRef } from 'vue';
 import MultipleCascader from './components/multiple-cascader/index.vue';
-import type { FormItemSchema } from '@/components/core/schema-form/types/form';
+import type { FormSchema } from '@/components/core/schema-form/';
 import IconsSelect from '@/components/basic/icons-select/index.vue';
 import { constantRouterComponents } from '@/router/asyncModules';
 
-export const menuSchemas: FormItemSchema<API.MenuAddParams>[] = [
+export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
   {
     field: 'type',
     component: 'RadioGroup',

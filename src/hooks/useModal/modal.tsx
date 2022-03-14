@@ -32,7 +32,7 @@ export const MyModal = defineComponent({
         await props?.onOk?.(e);
         state.visible = false;
       } catch (error) {
-        console.error(error);
+        return Promise.reject(error);
       } finally {
         confirmLoading.value = false;
       }

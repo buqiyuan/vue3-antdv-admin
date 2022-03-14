@@ -1,6 +1,6 @@
-import type { FormItemSchema } from '@/components/core/schema-form/types/form';
+import type { FormSchema } from '@/components/core/schema-form/';
 
-export const taskSchemas: FormItemSchema<API.SysTaskAddParams>[] = [
+export const taskSchemas: FormSchema<API.SysTaskAddParams>[] = [
   {
     field: 'type',
     component: 'RadioGroup',

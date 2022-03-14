@@ -6,6 +6,7 @@ export default {
     demo: 'Form Demo',
     basic: 'Basic Form',
     rule: 'Rule Form',
+    dynamic: 'Dynamic Form',
   },
   table: {
     demo: 'Table Demo',
