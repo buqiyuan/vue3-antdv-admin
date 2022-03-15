@@ -1,3 +1,20 @@
+## [1.0.1](https://github.com/buqiyuan/vue3-antd-admin/compare/v0.1.4...v1.0.1) (2022-03-15)
+
+### Bug Fixes
+
+- 左侧菜单超出屏幕不能滚动问题 ([076dc79](https://github.com/buqiyuan/vue3-antd-admin/commit/076dc79896496776701b158950960a08a4490707))
+- add menu sort ([6309089](https://github.com/buqiyuan/vue3-antd-admin/commit/630908988286d062bdce9a433ea5e785dbf8659d))
+- **component:** fix schema-form vIf logic [#83](https://github.com/buqiyuan/vue3-antd-admin/issues/83) ([ab5dfc1](https://github.com/buqiyuan/vue3-antd-admin/commit/ab5dfc1daf7a2f32c97159c1724281bd86d945ca))
+- **components:** [draggable-modal] close after route switch ([6101460](https://github.com/buqiyuan/vue3-antd-admin/commit/6101460370627338c82bdc88f0e817bcfa07c830))
+- **components:** [schema-form] placeholder typo ([3d9ea50](https://github.com/buqiyuan/vue3-antd-admin/commit/3d9ea507de1104f87aa199a07950b118cbd9522a))
+- fix schema-form type tip ([3bbc9e5](https://github.com/buqiyuan/vue3-antd-admin/commit/3bbc9e546dba3719b987d2a9d9c82d35183ab67c))
+- some route file path error ([9d21419](https://github.com/buqiyuan/vue3-antd-admin/commit/9d2141921027f398e55202c07ea5a83cc340ef7f))
+- **useModal:** fix circular dependency ([3fc4ae8](https://github.com/buqiyuan/vue3-antd-admin/commit/3fc4ae801736383b16fbe4d4590794fb79755202))
+
+### Features
+
+- **views:** add about page ([b320ed8](https://github.com/buqiyuan/vue3-antd-admin/commit/b320ed8aa30ccbff87fc87d944cbf7cc2f003259))
+
 ## [0.1.4](https://github.com/buqiyuan/vue3-antd-admin/compare/v0.1.3...v0.1.4) (2022-01-05)
 
 ### Bug Fixes
