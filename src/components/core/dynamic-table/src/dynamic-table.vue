@@ -1,11 +1,12 @@
 <template>
-  <div class="p-5">
+  <div>
     <SchemaForm
       v-if="search"
       ref="queryFormRef"
       class="bg-white mb-16px pt-24px pr-24px"
       submit-on-reset
       v-bind="getFormProps"
+      :table-instance="tableAction"
       @toggle-advanced="(e) => $emit('toggle-advanced', e)"
       @submit="queryTable"
     >
@@ -86,6 +87,7 @@
   } from './hooks';
   import { TableAction, ToolBar } from './components';
   import { dynamicTableProps, defaultSlots, dynamicTableEmits } from './dynamic-table';
+  import { TableActionType } from './types';
   import { SchemaForm } from '@/components/core/schema-form';
 
   defineOptions({
@@ -99,19 +101,18 @@
 
   // 表格内部状态
   const tableState = useTableState({ props, slots });
-  const { tableData, getProps, queryFormRef, loadingRef, getBindValues } = tableState;
+  const { tableData, queryFormRef, getBindValues } = tableState;
   // 表格内部方法
   const tableMethods = useTableMethods({ state: tableState, props, emit });
-  const { getColumnKey, fetchTableData, queryTable, handleTableChange, getComponent } =
+  const { getColumnKey, setProps, fetchData, queryTable, reload, handleTableChange, getComponent } =
     tableMethods;
 
   // 搜索表单
-  const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = useTableForm(
-    getProps,
+  const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = useTableForm({
+    tableState,
+    tableMethods,
     slots,
-    getColumnKey,
-    loadingRef,
-  );
+  });
 
   // 当前组件所有的状态和方法
   const instance = {
@@ -121,11 +122,21 @@
   };
 
   // 表单导出
-  const { exportData2Excel } = useExportData2Excel(instance);
+  const { exportData2Excel } = useExportData2Excel({
+    props,
+    state: tableState,
+    methods: tableMethods,
+  });
+
+  const tableAction: TableActionType = {
+    setProps,
+    reload,
+    fetchData,
+  };
 
   createTableContext(instance);
 
-  fetchTableData();
+  fetchData();
 
   defineExpose(instance);
 </script>

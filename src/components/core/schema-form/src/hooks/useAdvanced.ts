@@ -1,26 +1,20 @@
 import { computed, unref, watch } from 'vue';
 import type { SchemaFormEmitFn } from '../schema-form';
 import type { ColEx } from '../types';
-import type { FormState } from './useFormState';
+import type { SchemaFormType } from './';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 
 const BASIC_COL_LEN = 24;
 
-type UseAdvancedContext = FormState & {
+type UseAdvancedContext = {
+  instance: SchemaFormType;
   emit: SchemaFormEmitFn;
 };
 
-export const useAdvanced = ({
-  advanceState,
-  emit,
-  getFormProps,
-  formSchemasRef,
-  formModel,
-  defaultFormValues,
-}: UseAdvancedContext) => {
+export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
   const { realWidthRef, screenEnum, screenRef } = useBreakpoint();
-
+  const { advanceState, getFormProps, formSchemasRef, formModel, defaultFormValues } = instance;
   const getEmptySpan = computed((): number => {
     if (!advanceState.isAdvanced) {
       return 0;
@@ -120,6 +114,7 @@ export const useAdvanced = ({
           schema,
           formModel,
           field: schema.field,
+          formInstance: instance,
           values: {
             ...unref(defaultFormValues),
             ...formModel,

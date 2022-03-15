@@ -14,6 +14,6 @@
   const table = useTableContext();
 
   function redo() {
-    table.refreshTable();
+    table.reload();
   }
 </script>

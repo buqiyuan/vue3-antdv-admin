@@ -4,7 +4,7 @@
       <span>{{ $t('component.table.settingDens') }}</span>
     </template>
 
-    <Dropdown placement="bottomCenter" :trigger="['click']">
+    <Dropdown placement="bottom" :trigger="['click']">
       <ColumnHeightOutlined />
       <template #overlay>
         <Menu v-model:selectedKeys="selectedKeysRef" selectable @click="handleMenuClick">
@@ -23,19 +23,20 @@
   </Tooltip>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, unref } from 'vue';
   import { ColumnHeightOutlined } from '@ant-design/icons-vue';
   import { Tooltip, Dropdown, Menu } from 'ant-design-vue';
   import { useTableContext } from '../../hooks/useTableContext';
   import type { TableProps } from 'ant-design-vue/es/table/Table';
+  import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface';
 
   type SizeType = NonNullable<TableProps['size']>;
 
   const table = useTableContext();
 
-  const selectedKeysRef = ref<SizeType[]>([table.getProps?.size || 'large']);
+  const selectedKeysRef = ref<SizeType[]>([unref(table.getProps)?.size || 'large']);
 
-  function handleMenuClick({ key }: { key: SizeType }) {
+  function handleMenuClick({ key }: MenuInfo & { key: SizeType }) {
     selectedKeysRef.value = [key];
     table.setProps({
       size: key,

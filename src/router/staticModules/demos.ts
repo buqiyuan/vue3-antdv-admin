@@ -92,6 +92,16 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: () => import('@/views/demos/form/use-form/index.vue'),
           },
+          {
+            path: 'custom-form',
+            name: `${moduleName}-form-custom`,
+            meta: {
+              title: t('routes.demo.form.customForm'),
+              icon: 'icon-zhuomian',
+              keepAlive: true,
+            },
+            component: () => import('@/views/demos/form/custom-form/index.vue'),
+          },
         ],
       },
       {

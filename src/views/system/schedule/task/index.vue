@@ -1,15 +1,12 @@
 <template>
   <div>
     <DynamicTable
-      ref="dynamicTableRef"
       row-key="id"
       header-title="定时任务"
-      :search="false"
       :data-request="getSysTaskList"
       :columns="columns"
       :scroll="{ x: 2000 }"
       bordered
-      size="small"
     >
       <template #toolbar>
         <a-button type="primary" :disabled="!$auth('sys.task.add')" @click="openTaskModal({})">
@@ -78,12 +75,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
   import { ToolOutlined, CaretRightOutlined, PoweroffOutlined } from '@ant-design/icons-vue';
   import { Descriptions, Tooltip, Popconfirm, Button } from 'ant-design-vue';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { taskSchemas } from './formSchemas';
-  import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
   import {
     getSysTaskList,
@@ -100,11 +96,14 @@
     name: 'SystemScheduleTask',
   });
 
-  const dynamicTableRef = ref<DynamicTableInstance>();
+  const [DynamicTable, dynamicTableInstance] = useTable({
+    search: false,
+    size: 'small',
+  });
 
   const [showModal] = useFormModal();
 
-  const refreshTable = () => dynamicTableRef.value?.refreshTable();
+  const reload = () => dynamicTableInstance?.reload();
 
   /**
    * @description 打开新增/编辑弹窗
@@ -121,7 +120,7 @@
           };
           console.log('新增/编辑任务', params);
           await (record.id ? sysTaskUpdate : sysTaskAdd)(params);
-          refreshTable();
+          reload();
         },
       },
       formProps: {
@@ -134,7 +133,7 @@
     if (record.id) {
       const data = await getSysTaskInfo({ id: record.id });
 
-      formRef.value?.setFieldsValue({
+      formRef?.setFieldsValue({
         ...record,
         ...data,
       });
@@ -143,22 +142,22 @@
 
   const delRowConfirm = async (id: number) => {
     await sysTaskDelete({ id });
-    refreshTable();
+    reload();
   };
 
   const handleOnce = async (record: TableListItem) => {
     await sysTaskOnce({ id: record.id });
-    refreshTable();
+    reload();
   };
 
   const handleStart = async (record: TableListItem) => {
     await sysTaskStart({ id: record.id });
-    refreshTable();
+    reload();
   };
 
   const handleStop = async (record: TableListItem) => {
     await sysTaskStop({ id: record.id });
-    refreshTable();
+    reload();
   };
 
   const parseExecTime = (record: TableListItem) => {

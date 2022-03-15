@@ -1,4 +1,4 @@
-import { defineComponent, reactive, watchEffect, watch, ref } from 'vue';
+import { defineComponent, watch, ref, computed, unref } from 'vue';
 import { omit } from 'lodash-es';
 import { ConfigProvider } from 'ant-design-vue';
 import type { HookModalProps } from './types';
@@ -6,31 +6,62 @@ import { isFunction } from '@/utils/is';
 import { DraggableModal } from '@/components/core/draggable-modal';
 import { useLocale } from '@/locales/useLocale';
 
+export type MyModalInstance = InstanceType<typeof MyModal>;
+
 export const MyModal = defineComponent({
-  components: { modal: DraggableModal },
-  setup(props: HookModalProps) {
+  props: {
+    content: {
+      type: [String, Function] as PropType<string | JSX.Element | (() => JSX.Element)>,
+    },
+    closeModal: Function,
+    visible: Boolean,
+    isAppChild: Boolean,
+  },
+  setup(props, { attrs, expose }) {
     const confirmLoading = ref<boolean>(false);
     const { getAntdLocale } = useLocale();
-    const state = reactive({
-      visible: props.visible,
+
+    const propsRef = ref({ ...attrs, ...props });
+
+    const getProps = computed(() => {
+      return { ...attrs, ...props, ...unref(propsRef) };
     });
 
-    watchEffect(() => {
-      state.visible = props.visible;
+    const bindValues = computed(() => {
+      const _props = unref(getProps);
+
+      return {
+        ...omit(_props, ['onCancel', 'onOk']),
+        visible: _props.visible,
+        confirmLoading: confirmLoading.value,
+        onCancel: handleCancel,
+        onOk: handleConfirm,
+      };
     });
+
+    const setVisible = (visible: boolean) => {
+      propsRef.value.visible = visible;
+    };
+
+    const setProps = (props: HookModalProps) => {
+      propsRef.value = {
+        ...unref(getProps),
+        ...props,
+      };
+    };
 
     watch(
-      () => state.visible,
+      () => propsRef.value.visible,
       (val) => {
-        Object.is(val, false) && props._closeModal?.();
+        Object.is(val, false) && props.closeModal?.();
       },
     );
 
     const handleConfirm = async (e: MouseEvent) => {
       confirmLoading.value = true;
       try {
-        await props?.onOk?.(e);
-        state.visible = false;
+        await unref(getProps)?.onOk?.(e);
+        setVisible(false);
       } catch (error) {
         return Promise.reject(error);
       } finally {
@@ -38,22 +69,25 @@ export const MyModal = defineComponent({
       }
     };
     const handleCancel = async (e: MouseEvent) => {
-      await props?.onCancel?.(e);
-      state.visible = false;
+      await unref(getProps)?.onCancel?.(e);
+      setVisible(false);
     };
 
+    expose({
+      setProps,
+    });
+
     return () => {
-      return (
+      const _props = unref(getProps);
+      const { content, isAppChild } = _props;
+
+      const Content = isFunction(content) ? content() : content;
+
+      return isAppChild ? (
+        <DraggableModal {...unref(bindValues)}>{Content}</DraggableModal>
+      ) : (
         <ConfigProvider locale={getAntdLocale.value}>
-          <modal
-            {...omit(props, ['onCancel', 'onOk'])}
-            v-model={[state.visible, 'visible']}
-            confirmLoading={confirmLoading.value}
-            onCancel={handleCancel}
-            onOk={handleConfirm}
-          >
-            {isFunction(props.content) ? props.content() : props.content}
-          </modal>
+          <DraggableModal {...unref(bindValues)}>{Content}</DraggableModal>
         </ConfigProvider>
       );
     };

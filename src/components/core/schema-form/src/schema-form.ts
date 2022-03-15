@@ -4,6 +4,7 @@ import { ColEx } from './types';
 import type { ExtractPropTypes, ComponentInternalInstance, CSSProperties } from 'vue';
 import type { FieldMapToTime, FormSchema, RowProps } from './types/form';
 import type { ButtonProps } from '@/components/basic/button';
+import type { TableActionType } from '@/components/core/dynamic-table';
 import { isObject } from '@/utils/is';
 
 export const aFormPropKeys = Object.keys(formProps);
@@ -95,10 +96,10 @@ export const schemaFormProps = {
   // 自定义重置函数
   resetFunc: Function as PropType<() => Promise<void>>,
   submitFunc: Function as PropType<() => Promise<void>>,
-
-  // tableAction: {
-  //   type: Object as PropType<TableActionType>,
-  // },
+  // 动态表格实例
+  tableInstance: {
+    type: Object as PropType<TableActionType>,
+  },
 
   rowProps: Object as PropType<RowProps>,
 };

@@ -3,6 +3,7 @@
     <template #left-content>
       <div class="flex justify-between">
         <div>组织架构</div>
+        <ModalRender @update-dd="fetchDeptList"></ModalRender>
         <Space>
           <Tooltip v-if="$auth('sys.dept.add')" placement="top">
             <template #title>新增部门 </template>
@@ -43,7 +44,6 @@
     </template>
     <template #right-content>
       <DynamicTable
-        ref="dynamicTableRef"
         header-title="用户管理"
         show-index
         title-tooltip="请不要随意删除用户，避免到影响其他用户的使用。"
@@ -97,9 +97,9 @@
   import { Tree, Dropdown, Space, Tooltip, Modal, Alert, Menu } from 'ant-design-vue';
   import { userSchemas, deptSchemas, updatePswSchemas, transferUserSchemas } from './formSchemas';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
-  import type { LoadDataParams, DynamicTableInstance } from '@/components/core/dynamic-table';
+  import type { LoadDataParams } from '@/components/core/dynamic-table';
   import { SplitPanel } from '@/components/basic/split-panel';
-  import { DynamicTable } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import {
     deleteUsers,
     getUserListPage,
@@ -122,10 +122,10 @@
     deptTree: TreeDataItem[];
   }
 
-  const [showModal] = useFormModal();
+  const [DynamicTable, dynamicTableInstance] = useTable();
+  const [showModal, ModalRender] = useFormModal();
 
   const deptListLoading = ref(false);
-  const dynamicTableRef = ref<DynamicTableInstance>();
 
   const state = reactive<State>({
     expandedKeys: [],
@@ -167,7 +167,7 @@
       },
     });
 
-    formRef.value?.updateSchema([
+    formRef?.updateSchema([
       {
         field: 'parentId',
         componentProps: {
@@ -183,7 +183,7 @@
       },
     ]);
 
-    formRef.value?.setFieldsValue({
+    formRef?.setFieldsValue({
       ...record,
       parentId: record.parentId ?? -1,
     });
@@ -210,7 +210,7 @@
       },
     });
 
-    formRef.value?.updateSchema([
+    formRef?.updateSchema([
       {
         field: 'departmentId',
         componentProps: { treeData: state.deptTree },
@@ -230,7 +230,7 @@
           console.log('新增/编辑用户', values);
           values.id = record.id;
           await (record.id ? updateUser : createUser)(values);
-          dynamicTableRef.value?.refreshTable();
+          dynamicTableInstance?.reload();
         },
       },
       formProps: {
@@ -239,7 +239,7 @@
       },
     });
 
-    formRef.value?.updateSchema([
+    formRef?.updateSchema([
       {
         field: 'departmentId',
         componentProps: {
@@ -250,10 +250,10 @@
       },
     ]);
 
-    formRef.value?.setFieldsValue(record);
+    formRef?.setFieldsValue(record);
     if (record?.id) {
       const { roles } = await getUserInfo({ userId: record.id });
-      formRef.value?.setFieldsValue({ roles });
+      formRef?.setFieldsValue({ roles });
     }
   };
 
@@ -313,7 +313,7 @@
         },
       });
     } else {
-      await deleteUsers({ userIds: [userId] }).finally(dynamicTableRef.value?.refreshTable);
+      await deleteUsers({ userIds: [userId] }).finally(dynamicTableInstance?.reload);
     }
   };
 
@@ -322,7 +322,7 @@
    */
   const onTreeSelect = (selectedKeys: number[]) => {
     state.departmentIds = selectedKeys;
-    dynamicTableRef?.value?.refreshTable?.();
+    dynamicTableInstance?.reload?.();
   };
 
   const loadTableData = async ({ page, limit }: LoadDataParams) => {
@@ -339,7 +339,7 @@
     ...baseColumns,
     {
       title: '操作',
-      width: 220,
+      width: 230,
       dataIndex: '$action',
       align: 'center',
       fixed: 'right',

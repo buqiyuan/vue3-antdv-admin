@@ -23,25 +23,36 @@
         <template v-if="Object.is(schema.loading, true)" #notFoundContent>
           <Spin size="small" />
         </template>
+        <template
+          v-for="(slotFn, slotName) in getComponentSlots"
+          #[slotName]="slotData"
+          :key="slotName"
+        >
+          <component
+            :is="slotFn?.({ ...getValues, slotData }) ?? slotFn"
+            :key="slotName"
+          ></component>
+        </template>
       </component>
     </Form.Item>
   </Col>
 </template>
 
 <script setup lang="tsx">
-  import { computed, unref, toRefs, onMounted } from 'vue';
-  import { useVModel } from '@vueuse/core';
+  import { computed, unref, toRefs, onMounted, isVNode } from 'vue';
+  import { useVModel, isFunction } from '@vueuse/core';
   import { cloneDeep } from 'lodash-es';
   import { Form, Col, Spin } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
   import { componentMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
-  import type { ComponentMapType } from './componentMap';
   import type { PropType } from 'vue';
-  import type { FormSchema, RenderCallbackParams } from './types/form';
+  import type { ComponentMapType } from './componentMap';
+  import type { CustomRenderFn, FormSchema, RenderCallbackParams } from './types/form';
   import type { ValidationRule } from 'ant-design-vue/es/form/Form';
-  import { isBoolean, isFunction, isNull, isString } from '@/utils/is';
+  import type { TableActionType } from '@/components/core/dynamic-table';
+  import { isBoolean, isNull, isObject, isString } from '@/utils/is';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
   import { useI18n } from '@/hooks/useI18n';
 
@@ -61,6 +72,10 @@
     setFormModel: {
       type: Function as PropType<(key: string, value: any) => void>,
       default: null,
+    },
+    // 动态表格实例
+    tableInstance: {
+      type: Object as PropType<TableActionType>,
     },
     /** 将表单组件实例保存起来 */
     setItemRef: {
@@ -98,11 +113,13 @@
   });
 
   const getValues = computed<RenderCallbackParams>(() => {
-    const { formModel, schema } = props;
+    const { formModel, schema, tableInstance } = props;
+
     const { mergeDynamicData } = unref(formPropsRef);
     return {
       field: schema.field,
       formInstance: formContext,
+      tableInstance,
       formModel,
       values: {
         ...mergeDynamicData,
@@ -151,12 +168,44 @@
     return disabled;
   });
 
+  const vnodeFactory = (
+    component: FormSchema['componentSlots'] | FormSchema['component'],
+    values = unref(getValues),
+  ) => {
+    if (isString(component)) {
+      return componentMap[component] ?? <>{component}</>;
+    } else if (isVNode(component)) {
+      return component;
+    } else if (isFunction(component)) {
+      return vnodeFactory((component as CustomRenderFn)(values));
+    } else if (isObject(component)) {
+      const compKeys = Object.keys(component);
+      // 如果是组件对象直接return
+      if (compKeys.some((n) => n.startsWith('_') || ['setup', 'render'].includes(n))) {
+        return component;
+      }
+      return compKeys.reduce<Recordable<CustomRenderFn>>((slots, slotName) => {
+        slots[slotName] = (...rest: any) => vnodeFactory(component[slotName], rest);
+        return slots;
+      }, {});
+    }
+    return component;
+  };
+
   /**
    * @description 当前表单项组件
    */
   const getComponent = computed(() => {
     const component = props.schema.component;
-    return isString(component) ? componentMap[component] : component;
+    return vnodeFactory(component);
+  });
+
+  /**
+   * @description 当前表单项组件的插槽
+   */
+  const getComponentSlots = computed<Recordable<CustomRenderFn>>(() => {
+    const componentSlots = props.schema.componentSlots ?? {};
+    return vnodeFactory(componentSlots);
   });
 
   /**

@@ -96,4 +96,14 @@ export const baseColumns: TableColumnItem[] = [
       return <Tag color={isEnable ? 'success' : 'red'}>{isEnable ? '启用' : '禁用'}</Tag>;
     },
   },
+  {
+    title: '创建时间',
+    dataIndex: 'createdAt',
+    width: 120,
+  },
+  {
+    title: '修改时间',
+    dataIndex: 'updatedAt',
+    width: 120,
+  },
 ];

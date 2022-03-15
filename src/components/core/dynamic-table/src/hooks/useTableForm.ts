@@ -1,16 +1,22 @@
-import { unref, computed } from 'vue';
-import type { ComputedRef, Slots, Ref } from 'vue';
-import type { DynamicTableProps } from '../dynamic-table';
+import { unref, computed, watchEffect } from 'vue';
+import { omit } from 'lodash-es';
+import type { TableMethods } from './useTableMethods';
+import type { TableState } from './useTableState';
+import type { ComputedRef, Slots } from 'vue';
 import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form';
 
-export function useTableForm(
-  propsRef: ComputedRef<DynamicTableProps>,
-  slots: Slots,
-  getColumnKey: (...rest) => any,
-  loadingRef: Ref<boolean>,
-) {
+export type UseTableFormContext = {
+  tableState: TableState;
+  tableMethods: TableMethods;
+  slots: Slots;
+};
+
+export function useTableForm({ tableState, slots, tableMethods }: UseTableFormContext) {
+  const { getProps, loadingRef } = tableState;
+  const { getColumnKey, getQueryFormRef } = tableMethods;
+
   const getFormProps = computed((): SchemaFormProps => {
-    const { formProps } = unref(propsRef);
+    const { formProps } = unref(getProps);
     const { submitButtonOptions } = formProps || {};
     return {
       showAdvancedButton: true,
@@ -24,14 +30,14 @@ export function useTableForm(
   });
 
   const formSchemas = computed<FormSchema[]>(() => {
-    return unref(propsRef)
+    return unref(getProps)
       .columns.filter((n) => {
         const field = getColumnKey(n);
         return !n.hideInSearch && !!field && field !== '$action';
       })
       .map((n) => {
         return {
-          field: n.formItemProps?.field ?? n.searchField ?? getColumnKey(n),
+          field: n.formItemProps?.field ?? n.searchField ?? (getColumnKey(n) as string),
           component: 'Input',
           label: n.title,
           colProps: {
@@ -40,6 +46,11 @@ export function useTableForm(
           ...n.formItemProps,
         };
       });
+  });
+
+  // 同步外部对props的修改
+  watchEffect(() => getQueryFormRef()?.setSchemaFormProps(omit(unref(getFormProps), 'schemas')), {
+    flush: 'post',
   });
 
   const getFormSlotKeys: ComputedRef<string[]> = computed(() => {

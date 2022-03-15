@@ -8,7 +8,7 @@
       <a-button class="mr-2" @click="deleteField"> 删除字段11 </a-button>
     </div>
     <a-card>
-      <SchemaForm @register="register">
+      <SchemaForm>
         <template #operate-button>
           <a-button type="primary" @click="confirm"> 确定 </a-button>
         </template>
@@ -20,13 +20,13 @@
 <script lang="ts" setup>
   import { Alert, message } from 'ant-design-vue';
   import { schemas } from './form-schema';
-  import { SchemaForm, useForm } from '@/components/core/schema-form';
+  import { useForm } from '@/components/core/schema-form';
 
   defineOptions({
     name: 'DemosFormDynamicForm',
   });
 
-  const [register, dynamicFormRef] = useForm({
+  const [SchemaForm, dynamicFormRef] = useForm({
     labelWidth: 120,
     schemas,
     actionColOptions: {

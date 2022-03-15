@@ -25,7 +25,7 @@ export interface ActionItem extends Omit<ButtonProps, 'onClick'> {
       };
 }
 
-export interface PopConfirm extends PopconfirmProps {
+export type PopConfirm = PopconfirmProps & {
   title: string;
   okText?: string;
   cancelText?: string;
@@ -45,4 +45,4 @@ export interface PopConfirm extends PopconfirmProps {
     | 'rightBottom'
     | 'bottomLeft'
     | 'bottomRight';
-}
+};

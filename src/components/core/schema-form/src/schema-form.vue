@@ -7,6 +7,7 @@
           :schema="schemaItem"
           :set-form-model="setFormModel"
           :form-model="formModel"
+          :table-instance="tableInstance"
           :set-item-ref="setItemRef(schemaItem)"
         >
           <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
@@ -77,12 +78,6 @@
   // a-form表单事件二次封装和扩展
   const formEvents = useFormEvents({ ...formState, emit, handleFormValues });
 
-  // 搜索表单 展开/收起 表单项hooks
-  const { handleToggleAdvanced } = useAdvanced({
-    ...formState,
-    emit,
-  });
-
   // 同步外部对props的修改
   watchEffect(() => setSchemaFormProps(omit(props, 'schemas')));
 
@@ -92,6 +87,12 @@
     ...formEvents,
     ...formMethods,
   } as SchemaFormType;
+
+  // 搜索表单 展开/收起 表单项hooks
+  const { handleToggleAdvanced } = useAdvanced({
+    instance,
+    emit,
+  });
 
   emit('register', instance);
 

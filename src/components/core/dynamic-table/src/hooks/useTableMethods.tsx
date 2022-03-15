@@ -2,7 +2,7 @@ import { unref } from 'vue';
 import { isObject, isString } from 'lodash-es';
 import type { VNode } from 'vue';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
-import type { OnChangeCallbackParams, TableColumn } from '../../types/column';
+import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { TableState } from './useTableState';
 
 export type TableMethods = ReturnType<typeof useTableMethods>;
@@ -29,7 +29,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    */
   const queryTable = (params) => {
     params.page = 1;
-    fetchTableData(params);
+    fetchData(params);
   };
 
   /**
@@ -37,7 +37,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @param {boolean} flush 是否将页数重置到第一页
    * @description 获取表格数据
    */
-  const fetchTableData = async (params = {}) => {
+  const fetchData = async (params = {}) => {
     // 如果用户没有提供dataSource并且dataRequest是一个函数，那就进行接口请求
     if (
       Object.is(props.dataSource, undefined) &&
@@ -68,7 +68,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
           // 有分页时,删除当前页最后一条数据时 往前一页查询
           if (data?.list.length === 0 && total > 0 && page > 1) {
             _pagination.current--;
-            return refreshTable();
+            return reload();
           }
         }
 
@@ -86,17 +86,18 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
         tableData.value = [];
       }
     }
+    return tableData;
   };
 
   /**
    * @description 刷新表格
    */
-  const refreshTable = (flush = false) => {
+  const reload = async (resetPageIndex = false) => {
     const pagination = unref(paginationRef);
-    if (Object.is(flush, true) && isObject(pagination)) {
+    if (Object.is(resetPageIndex, true) && isObject(pagination)) {
       pagination.current = 1;
     }
-    fetchTableData();
+    return await fetchData();
   };
 
   /**
@@ -108,7 +109,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     if (Object.keys(pagination).length) {
       Object.assign(unref(paginationRef), pagination);
     }
-    fetchTableData();
+    fetchData();
     emit('change', ...rest);
   };
 
@@ -131,8 +132,8 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     queryTable,
     handleTableChange,
     getColumnKey,
-    fetchTableData,
+    fetchData,
     getQueryFormRef,
-    refreshTable,
+    reload,
   };
 };

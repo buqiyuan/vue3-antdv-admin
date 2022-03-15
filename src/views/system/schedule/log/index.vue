@@ -9,7 +9,7 @@
 
 <script setup lang="tsx">
   import { Tag } from 'ant-design-vue';
-  import { DynamicTable, TableColumn } from '@/components/core/dynamic-table';
+  import { useTable, TableColumn } from '@/components/core/dynamic-table';
   import { getTaskLogList } from '@/api/system/log';
 
   defineOptions({
@@ -17,6 +17,8 @@
   });
 
   type TableListItem = API.TaskLogListItemResult;
+
+  const [DynamicTable] = useTable();
 
   const getStatusType = (status) => {
     switch (status) {

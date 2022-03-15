@@ -6,7 +6,7 @@ import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
 import type { SchemaFormInstance } from '@/components/core/schema-form';
 import type { TableProps } from 'ant-design-vue';
-import type { TableColumn } from '../../types/column';
+import type { TableColumn } from '../types/column';
 
 export type Pagination = TableProps['pagination'];
 export type TableState = ReturnType<typeof useTableState>;

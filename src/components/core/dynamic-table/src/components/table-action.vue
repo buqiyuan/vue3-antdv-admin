@@ -14,7 +14,7 @@
   import { computed } from 'vue';
   import { Popconfirm } from 'ant-design-vue';
   import type { PropType } from 'vue';
-  import type { ActionItem } from '../../types/tableAction';
+  import type { ActionItem } from '../types/tableAction';
   import { verifyAuth } from '@/core/permission/';
   import { isString, isObject } from '@/utils/is';
 

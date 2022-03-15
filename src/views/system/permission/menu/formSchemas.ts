@@ -1,4 +1,3 @@
-import { shallowRef } from 'vue';
 import MultipleCascader from './components/multiple-cascader/index.vue';
 import type { FormSchema } from '@/components/core/schema-form/';
 import IconsSelect from '@/components/basic/icons-select/index.vue';
@@ -56,7 +55,7 @@ export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
   },
   {
     field: 'perms',
-    component: shallowRef(MultipleCascader),
+    component: () => MultipleCascader,
     label: '权限',
     vIf: ({ formModel }) => formModel['type'] === 2,
     rules: [{ required: true, type: 'array', message: '请选择权限' }],
@@ -73,7 +72,7 @@ export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
   },
   {
     field: 'icon',
-    component: shallowRef(IconsSelect),
+    component: () => IconsSelect,
     label: '节点图标',
     vIf: ({ formModel }) => formModel['type'] !== 2,
   },

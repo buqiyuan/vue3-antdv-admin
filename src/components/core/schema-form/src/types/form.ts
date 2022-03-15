@@ -7,6 +7,7 @@ import type { ColEx, ComponentMapType, ComponentProps } from './index';
 import type { RowProps } from 'ant-design-vue';
 import type { SchemaFormInstance } from '../schema-form';
 import type { SchemaFormType } from '../hooks';
+import type { TableActionType } from '@/components/core/dynamic-table';
 
 export type { RowProps };
 
@@ -24,8 +25,16 @@ export interface RenderCallbackParams<T = string> {
   field: T extends string ? string : GetFieldKeys<T>;
   values: any;
   /** 动态表单实例 */
-  formInstance?: SchemaFormType;
+  formInstance: SchemaFormType;
+  /** 动态表格实例 */
+  tableInstance?: TableActionType;
+  /** 作用域插槽数据 */
+  slotData?: Recordable;
 }
+/** 自定义VNode渲染器 */
+export type CustomRenderFn<T = any> = (
+  renderCallbackParams: RenderCallbackParams<T>,
+) => VNode | VNode[] | string;
 
 export interface ButtonProps extends AntdButtonProps {
   text?: string;
@@ -54,8 +63,6 @@ export interface FormActionType {
 
 export type RegisterFn = (formInstance: SchemaFormInstance) => void;
 
-export type UseFormReturnType = [RegisterFn, SchemaFormInstance];
-
 /** 表单项 */
 export interface FormSchema<T = string> {
   /** 字段名 */
@@ -80,16 +87,14 @@ export interface FormSchema<T = string> {
   // Disable the adjustment of labelWidth with global settings of formModel, and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
   // render component
-  component?: ComponentMapType | Component;
+  component?: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
   // 组件参数
   componentProps?: ComponentProps | ((opt: RenderCallbackParams<T>) => ComponentProps);
-
+  /** 表单组件slots，例如 a-input 的 suffix slot 可以写成：{ suffix: () => VNode } */
   componentSlots?:
-    | ((renderCallbackParams: RenderCallbackParams<T>) => Recordable<(...args) => any>)
-    | VNode
-    | VNode[]
-    | string
-    | Recordable<(...args) => any>;
+    | ((renderCallbackParams: RenderCallbackParams<T>) => Recordable<CustomRenderFn<T>>)
+    | Recordable<CustomRenderFn<T>>
+    | ReturnType<CustomRenderFn>;
   // Required
   required?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
@@ -119,16 +124,13 @@ export interface FormSchema<T = string> {
   /** 作用同v-if */
   vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
-  // Render the content in the form-item tag
-  render?: (renderCallbackParams: RenderCallbackParams<T>) => VNode | VNode[] | string;
-
-  // Rendering col content requires outer wrapper form-item
-  renderColContent?: (renderCallbackParams: RenderCallbackParams<T>) => VNode | VNode[] | string;
+  // 渲染col内容需要外层包装form-item
+  renderColContent?: CustomRenderFn<T>;
 
   // Custom slot, in from-item
   slot?: string;
 
-  // Custom slot, similar to renderColContent
+  // 自定义槽，类似renderColContent
   colSlot?: string;
 
   dynamicDisabled?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
