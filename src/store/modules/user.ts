@@ -1,6 +1,6 @@
-import { type RouteRecordRaw } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useWsStore } from './ws';
+import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
 import { login } from '@/api/login';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';

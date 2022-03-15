@@ -1,6 +1,6 @@
-import type { FormItemSchema } from '@/components/core/schema-form/types/form';
+import type { FormSchema } from '@/components/core/schema-form/';
 
-export const schemas: FormItemSchema[] = [
+export const schemas: FormSchema[] = [
   {
     field: 'field1',
     component: 'Input',

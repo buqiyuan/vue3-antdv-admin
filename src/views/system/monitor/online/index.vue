@@ -9,10 +9,8 @@
 </template>
 
 <script setup lang="tsx">
-  import { ref } from 'vue';
   import { Tag } from 'ant-design-vue';
-  import type { TableColumn, DynamicTableInstance } from '@/components/core/dynamic-table';
-  import { DynamicTable } from '@/components/core/dynamic-table';
+  import { useTable, TableColumn } from '@/components/core/dynamic-table';
   import { getOnlineList, kickUser } from '@/api/system/online';
   import { useSocket } from '@/core/socket/useSocket';
 
@@ -20,19 +18,19 @@
     name: 'SystemMonitorOnline',
   });
 
-  const dynamicTableRef = ref<DynamicTableInstance>();
+  const [DynamicTable, dynamicTableInstance] = useTable();
 
   useSocket({
     connect() {
       // connect auto refresh
-      dynamicTableRef.value?.refreshTable();
+      dynamicTableInstance?.reload();
     },
     online() {
       // online event auto refresh
-      dynamicTableRef.value?.refreshTable();
+      dynamicTableInstance?.reload();
     },
     offline() {
-      dynamicTableRef.value?.refreshTable();
+      dynamicTableInstance?.reload();
     },
   });
 

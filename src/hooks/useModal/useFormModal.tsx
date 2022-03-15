@@ -1,18 +1,18 @@
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, unref } from 'vue';
 import { useModal } from './useModal';
-import type { SchemaFormInstance, FormSchema } from '@/components/core/schema-form';
+import type { SchemaFormInstance, SchemaFormProps } from '@/components/core/schema-form';
 import type { FormModalProps } from './types';
-import { SchemaForm } from '@/components/core/schema-form';
+import SchemaForm from '@/components/core/schema-form';
 
 interface ShowModalProps<T = Recordable> {
   modalProps: FormModalProps<T>;
-  formSchema: FormSchema;
+  formProps: Partial<SchemaFormProps>;
 }
 
-export function useFormModal<T extends Recordable>() {
-  const { show } = useModal();
+export function useFormModal<T = any>() {
+  const [ModalRender] = useModal();
 
-  const showModal = async <P extends T>({ modalProps, formSchema }: ShowModalProps<P>) => {
+  const showModal = async <P extends T>({ modalProps, formProps }: ShowModalProps<P>) => {
     const formRef = ref<SchemaFormInstance>();
 
     const onCancel = (e: MouseEvent) => {
@@ -20,19 +20,24 @@ export function useFormModal<T extends Recordable>() {
       modalProps?.onCancel?.(e);
     };
 
-    await show({
+    await ModalRender.show({
       destroyOnClose: true,
       ...modalProps,
       onCancel,
-      content: () => <SchemaForm ref={formRef} formSchema={formSchema}></SchemaForm>,
+      content: () => {
+        const _formProps = Object.assign({}, { showActionButtonGroup: false }, formProps);
+
+        return <SchemaForm ref={formRef} {..._formProps}></SchemaForm>;
+      },
       onOk: async () => {
-        const values = (formRef.value?.formModel || {}) as any;
+        // const values = (formRef?.formModel || {}) as any;
+        let values: any;
         try {
-          await formRef.value?.validate();
-          await modalProps?.onFinish?.({ ...values });
+          values = await formRef.value?.validate();
+          await modalProps?.onFinish?.(values);
           formRef.value?.resetFields();
         } catch (error) {
-          modalProps?.onFail?.({ ...values });
+          modalProps?.onFail?.(values);
           return Promise.reject(error);
         }
       },
@@ -40,8 +45,8 @@ export function useFormModal<T extends Recordable>() {
 
     await nextTick();
 
-    return [formRef] as const;
+    return [unref(formRef)] as const;
   };
 
-  return [showModal] as const;
+  return [showModal, ModalRender] as const;
 }

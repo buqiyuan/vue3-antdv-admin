@@ -1,9 +1,3 @@
-declare module '*.vue' {
-  import { DefineComponent } from 'vue';
-  const Component: DefineComponent<{}, {}, any>;
-  export default Component;
-}
-
 declare module 'mitt' {
   import mitt from 'mitt';
   export default mitt;

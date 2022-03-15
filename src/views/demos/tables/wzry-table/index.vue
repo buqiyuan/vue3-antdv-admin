@@ -4,7 +4,7 @@
       <template #description> 《王者荣耀》-- 根据JSON格式的数据进行导出 </template>
     </Alert>
     <Card title="英雄列表mock数据" style="margin-top: 20px">
-      <dynamic-table
+      <DynamicTable
         ref="dynamicTableRef"
         size="small"
         bordered
@@ -17,23 +17,21 @@
           <a-button type="primary" @click="defaultHeader"> 导出：默认头部 </a-button>
           <a-button type="primary" @click="customHeader"> 导出：自定义头部 </a-button>
         </template>
-      </dynamic-table>
+      </DynamicTable>
     </Card>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
   import { Alert, Card } from 'ant-design-vue';
   import { columns } from './columns';
-  import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { jsonToSheetXlsx } from '@/components/basic/excel';
 
   import { getWzryHeroList } from '@/api/demos/hero';
 
   let tableData = [];
-
-  const dynamicTableRef = ref<DynamicTableInstance>();
+  const [DynamicTable, dynamicTableInstance] = useTable();
 
   function defaultHeader() {
     // 默认Object.keys(data[0])作为header
@@ -65,7 +63,7 @@
   // 展开搜索表单时更新英雄皮肤选项值
   const toggleAdvanced = (e) => {
     if (e) {
-      // dynamicTableRef.value?.getQueryFormRef().updateSchema([
+      //dynamicTableInstance?.getQueryFormRef().updateSchema([
       //   {
       //     field: 'skin_name',
       //     componentProps: {
@@ -89,7 +87,7 @@
     const { data } = await getWzryHeroList(params);
 
     tableData = data.list;
-    dynamicTableRef.value?.getQueryFormRef().updateSchema([
+    dynamicTableInstance?.getQueryFormRef()?.updateSchema([
       {
         field: 'skin_name',
         componentProps: {

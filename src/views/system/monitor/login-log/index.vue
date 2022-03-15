@@ -3,13 +3,14 @@
 </template>
 
 <script setup lang="ts">
-  import type { LoadDataParams, TableColumn } from '@/components/core/dynamic-table';
-  import { DynamicTable } from '@/components/core/dynamic-table';
+  import { useTable, LoadDataParams, TableColumn } from '@/components/core/dynamic-table';
   import { getLoginLogList } from '@/api/system/log';
 
   defineOptions({
     name: 'SystemMonitorLoginLog',
   });
+
+  const [DynamicTable] = useTable();
 
   const loadTableData = async ({ page, limit }: LoadDataParams) => {
     const data = await getLoginLogList({ page, limit });

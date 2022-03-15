@@ -37,9 +37,10 @@ export const baseColumns: TableColumnItem[] = [
     align: 'center',
     hideInSearch: true,
     width: 220,
-    bodyCell: ({ record }) => (
+    //or bodyCell
+    customRender: ({ text }) => (
       <Space>
-        {record.roleNames.map((item) => (
+        {text.map((item) => (
           <Tag color={'success'} key={item}>
             {item}
           </Tag>
@@ -94,5 +95,15 @@ export const baseColumns: TableColumnItem[] = [
       const isEnable = record.status === 1;
       return <Tag color={isEnable ? 'success' : 'red'}>{isEnable ? '启用' : '禁用'}</Tag>;
     },
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createdAt',
+    width: 120,
+  },
+  {
+    title: '修改时间',
+    dataIndex: 'updatedAt',
+    width: 120,
   },
 ];

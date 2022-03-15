@@ -4,7 +4,7 @@
       <template #description> 英雄联盟 -- 根据数组格式的数据进行导出 </template>
     </Alert>
     <Card title="英雄列表mock数据" style="margin-top: 20px">
-      <dynamic-table
+      <DynamicTable
         size="small"
         bordered
         :data-request="loadData"
@@ -18,7 +18,7 @@
           <a-button type="primary" @click="aoaToExcel"> 数组格式导出 </a-button>
           <a-button type="primary" @click="openExportModal"> 自定义导出格式 </a-button>
         </template>
-      </dynamic-table>
+      </DynamicTable>
     </Card>
   </div>
 </template>
@@ -27,7 +27,7 @@
   import { useRouter } from 'vue-router';
   import { Alert, Card } from 'ant-design-vue';
   import { columns } from './columns';
-  import { DynamicTable } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { getLolHeroList } from '@/api/demos/hero';
   import { useContextMenu } from '@/hooks/functions/useContextMenu';
   import { useExportExcelModal, jsonToSheetXlsx, aoaToSheetXlsx } from '@/components/basic/excel';
@@ -35,6 +35,8 @@
   defineOptions({
     name: 'DemosTablesLolTable',
   });
+
+  const [DynamicTable] = useTable();
 
   const router = useRouter();
   const [createContextMenu] = useContextMenu();

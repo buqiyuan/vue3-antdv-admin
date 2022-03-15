@@ -12,13 +12,13 @@
 </template>
 <script lang="ts" setup>
   import { computed, type PropType } from 'vue';
-  import buttonProps, { type ButtonType } from 'ant-design-vue/es/button/buttonTypes';
   import { Button } from 'ant-design-vue';
+  import { buttonProps, type ButtonType } from './button';
 
   const props = defineProps({
     ...buttonProps(),
     type: {
-      type: String as PropType<ButtonType | 'danger' | 'warning' | 'success'>,
+      type: String as PropType<ButtonType>,
       default: 'default',
     },
   });

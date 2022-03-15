@@ -1,11 +1,15 @@
 // export { default as SchemaForm } from './schema-form.vue'
-import SchemaForm from './schema-form.vue';
+import SchemaForm from './src/schema-form.vue';
+import type { DefineComponent } from 'vue';
+import type { SchemaFormProps } from './src/schema-form';
 
-export * from './types/form';
-export * from './types/formItem';
+export * from './src/types/form';
+export * from './src/types/formItem';
+export * from './src/schema-form';
+
+export * from './src/hooks/';
 
 export { SchemaForm };
 
-export default SchemaForm;
-
-export type SchemaFormInstance = InstanceType<typeof SchemaForm>;
+// TODO 暂时是为了解决ts error(如果你有解决方法 请务必联系我~): JSX element type 'SchemaForm' does not have any construct or call signatures.
+export default SchemaForm as unknown as DefineComponent<Partial<SchemaFormProps>>;

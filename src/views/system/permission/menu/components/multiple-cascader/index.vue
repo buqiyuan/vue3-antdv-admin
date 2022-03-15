@@ -22,8 +22,7 @@
   import { Form, Input, Popover, Tag } from 'ant-design-vue';
   import NodePanel from './node-panel.vue';
   // import { cloneDeep } from 'lodash-es';
-  import { updateNodeCheckStatus } from './utils';
-  import type { CascaderOptionType, Key } from './utils';
+  import { updateNodeCheckStatus, CascaderOptionType, Key } from './utils';
   import { formarPermsToCascader } from '@/core/permission';
 
   type TagItem = {

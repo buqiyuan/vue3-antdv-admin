@@ -1,7 +1,6 @@
 <template>
   <div>
     <DynamicTable
-      ref="dynamicTableRef"
       row-key="id"
       header-title="角色管理"
       :data-request="getRoleListByPage"
@@ -19,7 +18,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { roleSchemas } from './formSchemas';
   import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
@@ -32,7 +30,7 @@
   } from '@/api/system/role';
   import { getDeptList } from '@/api/system/dept';
   import { getMenuList } from '@/api/system/menu';
-  import { DynamicTable, type DynamicTableInstance } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
   import { formatDept2Tree, formatMenu2Tree } from '@/core/permission/utils';
 
@@ -40,7 +38,7 @@
     name: 'SystemPermissionRole',
   });
 
-  const dynamicTableRef = ref<DynamicTableInstance>();
+  const [DynamicTable, dynamicTableInstance] = useTable();
 
   const [showModal] = useFormModal();
 
@@ -67,8 +65,8 @@
         width: '50%',
         onFinish: async (values) => {
           record.id && (values.roleId = record.id);
-          const menusRef = formRef.value?.compRefs?.menus;
-          const deptsRef = formRef.value?.compRefs?.depts;
+          const menusRef = formRef?.compRefs?.menus;
+          const deptsRef = formRef?.compRefs?.depts;
           const params = {
             ...values,
             menus: [...menusRef.halfCheckedKeys, ...menusRef.checkedKeys],
@@ -76,12 +74,11 @@
           };
           console.log('新增/编辑角色', params);
           await (record.id ? updateRole : createRole)(params);
-          dynamicTableRef.value?.refreshTable();
+          dynamicTableInstance?.reload();
         },
       },
-      formSchema: {
+      formProps: {
         labelWidth: 100,
-        layout: 'vertical',
         schemas: roleSchemas,
       },
     });
@@ -91,7 +88,7 @@
     const menuTree = formatMenu2Tree(menuData);
     const deptTree = formatDept2Tree(deptData);
 
-    formRef.value?.updateSchema([
+    formRef?.updateSchema([
       {
         field: 'menus',
         componentProps: { treeData: menuTree },
@@ -107,7 +104,7 @@
       const menuIds = data.menus.map((n) => n.menuId);
       const deptIds = data.depts.map((n) => n.departmentId);
 
-      formRef.value?.setFieldsValue({
+      formRef?.setFieldsValue({
         ...record,
         name: data.roleInfo.name,
         label: data.roleInfo.label,
@@ -119,7 +116,7 @@
   };
   const delRowConfirm = async (record: TableListItem) => {
     await deleteRole({ roleIds: [record.id] });
-    dynamicTableRef.value?.refreshTable();
+    dynamicTableInstance?.reload();
   };
 
   const columns: TableColumnItem[] = [

@@ -6,9 +6,19 @@
       type="info"
       show-icon
       style="margin-bottom: 12px"
-    />
+    >
+      <template #description>
+        <a
+          class="text-blue-500"
+          target="_blank"
+          href="https://github.com/buqiyuan/vite-vue3-admin/blob/main/src/views/demos/form/rule-form/index.vue"
+        >
+          查看源码
+        </a>
+      </template>
+    </Alert>
     <a-card>
-      <schema-form ref="dynamicForm" :form-schema="formSchema">
+      <schema-form ref="dynamicForm" v-bind="formProps">
         <template #operate-button>
           <a-button type="primary" @click="confirm"> 确定 </a-button>
         </template>
@@ -21,17 +31,19 @@
   import { ref } from 'vue';
   import { Alert, message } from 'ant-design-vue';
   import { schemas } from './form-schema';
-  import { SchemaForm, type SchemaFormInstance } from '@/components/core/schema-form';
+  import { SchemaForm, type SchemaFormProps } from '@/components/core/schema-form';
 
   defineOptions({
     name: 'DemosFormRuleForm',
   });
 
+  console.log('sss', import.meta.url);
+
   /**
    * @description 验证表单
    */
-  const dynamicForm = ref<SchemaFormInstance>();
-  const formSchema = { schemas, labelWidth: 120 };
+  const dynamicForm = ref<InstanceType<typeof SchemaForm>>();
+  const formProps: SchemaFormProps = { schemas, labelWidth: 120, actionColOptions: { span: 24 } };
 
   // 点击提交
   function confirm() {

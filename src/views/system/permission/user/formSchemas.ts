@@ -1,7 +1,7 @@
-import type { FormItemSchema } from '@/components/core/schema-form/types/form';
+import type { FormSchema } from '@/components/core/schema-form/';
 import { getRoleList } from '@/api/system/role';
 
-export const deptSchemas: FormItemSchema<API.CreateDeptParams>[] = [
+export const deptSchemas: FormSchema<API.CreateDeptParams>[] = [
   {
     field: 'name',
     component: 'Input',
@@ -30,7 +30,7 @@ export const deptSchemas: FormItemSchema<API.CreateDeptParams>[] = [
   },
 ];
 
-export const userSchemas: FormItemSchema<API.CreateUserParams>[] = [
+export const userSchemas: FormSchema<API.CreateUserParams>[] = [
   {
     field: 'departmentId',
     component: 'TreeSelect',
@@ -119,7 +119,7 @@ export const userSchemas: FormItemSchema<API.CreateUserParams>[] = [
 /**
  * @description 更新用户密码
  */
-export const updatePswSchemas: FormItemSchema[] = [
+export const updatePswSchemas: FormSchema[] = [
   {
     field: 'password',
     component: 'Input',
@@ -130,7 +130,7 @@ export const updatePswSchemas: FormItemSchema[] = [
 /**
  * @description 将用户转移部门
  */
-export const transferUserSchemas: FormItemSchema[] = [
+export const transferUserSchemas: FormSchema[] = [
   {
     field: 'departmentId',
     component: 'TreeSelect',

@@ -13,6 +13,8 @@
 - [gitee 地址](https://gitee.com/buqiyuan/vue3-antd-admin)
 - 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
 
+部分设计参考了 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
+
 ## 安装使用
 
 - 获取项目代码

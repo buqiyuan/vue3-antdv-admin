@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n';
 import type { ExportModalResult } from './typing';
-import type { FormItemSchema } from '@/components/core/schema-form/types/form';
+import type { FormSchema } from '@/components/core/schema-form/';
 
 import { useFormModal } from '@/hooks/useModal/useFormModal';
 
@@ -8,7 +8,7 @@ export type OpenModalOptions = {
   onOk: (val: ExportModalResult) => any;
 };
 
-const getSchemas = (t): FormItemSchema<ExportModalResult>[] => [
+const getSchemas = (t): FormSchema<ExportModalResult>[] => [
   {
     field: 'filename',
     component: 'Input',
@@ -65,7 +65,7 @@ export const useExportExcelModal = () => {
           });
         },
       },
-      formSchema: {
+      formProps: {
         labelWidth: 100,
         layout: 'vertical',
         schemas: getSchemas(t),

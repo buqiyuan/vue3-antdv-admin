@@ -15,12 +15,12 @@ const customOn = (eventName, callback) => {
 
 // 通知刷新表格数据
 const toRefreshTable = () => {
-  emitter.emit('refreshTable');
+  emitter.emit('reload');
 };
 
 // 刷新表格数据
-const refreshTable = (callback) => {
-  emitter.on('refreshTable', () => callback());
+const reload = (callback) => {
+  emitter.on('reload', () => callback());
 };
 
 // 通知刷新树结构数据
@@ -41,7 +41,7 @@ export const useEventbus = () => {
     customEmit,
     customOn,
     toRefreshTable,
-    refreshTable,
+    reload,
     toRefreshTree,
     refreshTree,
   };
