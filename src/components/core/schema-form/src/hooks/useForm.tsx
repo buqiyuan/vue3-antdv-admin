@@ -7,7 +7,7 @@ import type { SchemaFormInstance, SchemaFormProps } from '../schema-form';
 export function useForm(props?: Partial<SchemaFormProps>) {
   const formRef = ref<SchemaFormInstance>({} as SchemaFormInstance);
 
-  async function getForm() {
+  async function getFormInstance() {
     await nextTick();
     const form = unref(formRef);
     if (isEmpty(form)) {
@@ -21,7 +21,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
       props &&
         onMounted(async () => {
           // console.log('form onMounted');
-          (await getForm())?.setSchemaFormProps(props);
+          (await getFormInstance())?.setSchemaFormProps(props);
         });
     },
     {
@@ -39,7 +39,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
         return target.value[key];
       }
       return async (...rest) => {
-        const form = await getForm();
+        const form = await getFormInstance();
         return form?.[key](...rest);
       };
     },

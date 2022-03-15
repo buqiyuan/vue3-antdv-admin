@@ -30,8 +30,8 @@ export const useModal = () => {
     return _modalInstance;
   };
 
-  const setProps = (_props) => {
-    const instance = modalRef.value || _modalInstance;
+  const setProps = async (_props) => {
+    const instance = await getModalInstance();
     if (Object.is(instance, modalRef.value)) {
       instance?.setProps?.(_props);
     } else {
@@ -44,10 +44,6 @@ export const useModal = () => {
   };
 
   const show = async (props: HookModalProps) => {
-    const modalInstance = await getModalInstance();
-    console.log('modalInstance', modalInstance);
-    console.log('modalRef', modalRef);
-
     setProps({
       ...props,
       closeModal: hide,

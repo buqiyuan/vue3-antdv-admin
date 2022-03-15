@@ -1,6 +1,16 @@
 <template>
   <div>
-    <Alert message="动态表单示例" type="info" show-icon style="margin-bottom: 12px" />
+    <Alert message="动态表单示例" type="info" show-icon style="margin-bottom: 12px">
+      <template #description>
+        <a
+          class="text-blue-500"
+          target="_blank"
+          href="https://github.com/buqiyuan/vite-vue3-admin/blob/main/src/views/demos/form/use-form/index.vue"
+        >
+          查看源码
+        </a>
+      </template>
+    </Alert>
     <div class="mb-4">
       <a-button class="mr-2" @click="changeLabel3"> 更改字段3label </a-button>
       <a-button class="mr-2" @click="changeLabel34"> 同时更改字段3,4label </a-button>

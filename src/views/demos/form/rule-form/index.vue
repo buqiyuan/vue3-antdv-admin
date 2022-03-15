@@ -6,7 +6,17 @@
       type="info"
       show-icon
       style="margin-bottom: 12px"
-    />
+    >
+      <template #description>
+        <a
+          class="text-blue-500"
+          target="_blank"
+          href="https://github.com/buqiyuan/vite-vue3-admin/blob/main/src/views/demos/form/rule-form/index.vue"
+        >
+          查看源码
+        </a>
+      </template>
+    </Alert>
     <a-card>
       <schema-form ref="dynamicForm" v-bind="formProps">
         <template #operate-button>
@@ -26,6 +36,8 @@
   defineOptions({
     name: 'DemosFormRuleForm',
   });
+
+  console.log('sss', import.meta.url);
 
   /**
    * @description 验证表单
