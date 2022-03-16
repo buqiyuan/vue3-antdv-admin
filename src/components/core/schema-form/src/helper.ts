@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import type { ValidationRule } from 'ant-design-vue/es/form/Form';
-import type { ComponentMapType } from './types';
+import type { ComponentMapType } from './types/component';
 import { isNumber } from '@/utils/is';
 import { useI18n } from '@/hooks/useI18n';
 

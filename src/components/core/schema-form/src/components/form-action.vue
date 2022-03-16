@@ -43,7 +43,7 @@
   import { computed, type PropType } from 'vue';
   import { Form, Col } from 'ant-design-vue';
   import { useFormContext } from '../hooks/useFormContext';
-  import type { ColEx } from '../types/index';
+  import type { ColEx } from '../types/component';
   import { Button, ButtonProps } from '@/components/basic/button';
   import { BasicArrow } from '@/components/basic/basic-arrow';
   import { useI18n } from '@/hooks/useI18n';

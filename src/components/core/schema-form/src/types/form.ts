@@ -2,7 +2,7 @@ import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from './formItem';
 import type { Component, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
-import type { ColEx, ComponentMapType, ComponentProps } from './index';
+import type { ColEx, ComponentMapType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
 import type { RowProps } from 'ant-design-vue';
 import type { SchemaFormInstance } from '../schema-form';
@@ -89,7 +89,12 @@ export interface FormSchema<T = string> {
   // render component
   component?: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
   // 组件参数
-  componentProps?: ComponentProps | ((opt: RenderCallbackParams<T>) => ComponentProps);
+  componentProps?:
+    | ComponentProps
+    | {
+        (opt: RenderCallbackParams<T>): ComponentProps;
+        requestResult: ComponentProps['requestResult'];
+      };
   /** 表单组件slots，例如 a-input 的 suffix slot 可以写成：{ suffix: () => VNode } */
   componentSlots?:
     | ((renderCallbackParams: RenderCallbackParams<T>) => Recordable<CustomRenderFn<T>>)

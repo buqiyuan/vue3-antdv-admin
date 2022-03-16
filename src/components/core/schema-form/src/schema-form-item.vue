@@ -1,6 +1,10 @@
 <template>
   <Col v-if="getShow.isIfShow" v-show="getShow.isShow" v-bind="schema.colProps">
+    <Divider v-if="schema.component === 'Divider'" v-bind="getComponentProps">
+      <component :is="renderLabelHelpMessage"></component>
+    </Divider>
     <Form.Item
+      v-else
       v-bind="{ ...schema.formItemProps }"
       :label="renderLabelHelpMessage"
       :name="schema.field"
@@ -42,7 +46,7 @@
   import { computed, unref, toRefs, onMounted, isVNode } from 'vue';
   import { useVModel, isFunction } from '@vueuse/core';
   import { cloneDeep } from 'lodash-es';
-  import { Form, Col, Spin } from 'ant-design-vue';
+  import { Form, Col, Spin, Divider } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
   import { componentMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
@@ -97,11 +101,6 @@
 
   // @ts-ignore
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
-  // eslint-disable-next-line
-  // const valuesRef = computed(() => {
-  //   const { formModel, schema } = props;
-  //   return { formModel, schema, field: schema.field };
-  // });
 
   const modelValueType = computed(() => {
     const { component, componentProps } = schema.value;
@@ -157,7 +156,7 @@
   const getDisable = computed(() => {
     const { disabled: globDisabled } = unref(formPropsRef);
     const { dynamicDisabled } = props.schema;
-    const { disabled: itemDisabled = false } = unref(getComponentsProps);
+    const { disabled: itemDisabled = false } = unref(getComponentProps);
     let disabled = !!globDisabled || itemDisabled;
     if (isBoolean(dynamicDisabled)) {
       disabled = dynamicDisabled;
@@ -173,7 +172,7 @@
     values = unref(getValues),
   ) => {
     if (isString(component)) {
-      return componentMap[component] ?? <>{component}</>;
+      return <>{component}</>;
     } else if (isVNode(component)) {
       return component;
     } else if (isFunction(component)) {
@@ -197,7 +196,9 @@
    */
   const getComponent = computed(() => {
     const component = props.schema.component;
-    return vnodeFactory(component);
+    return isString(component)
+      ? componentMap[component] ?? vnodeFactory(component)
+      : vnodeFactory(component);
   });
 
   /**
@@ -205,7 +206,11 @@
    */
   const getComponentSlots = computed<Recordable<CustomRenderFn>>(() => {
     const componentSlots = props.schema.componentSlots ?? {};
-    return vnodeFactory(componentSlots);
+    return isString(componentSlots) || isVNode(componentSlots)
+      ? {
+          default: (...rest: any) => vnodeFactory(componentSlots, rest),
+        }
+      : vnodeFactory(componentSlots);
   });
 
   /**
@@ -213,16 +218,24 @@
    */
   const getComponentProps = computed(() => {
     const { schema } = props;
-    const { componentProps = {}, component, label = '' } = schema;
+    let { componentProps = {}, component, label = '' } = schema;
 
-    const _componentProps = isFunction(componentProps)
-      ? componentProps(unref(getValues))
-      : componentProps;
+    if (isFunction(componentProps)) {
+      componentProps = componentProps(unref(getValues)) ?? {};
+    }
 
     if (component !== 'RangePicker' && isString(component)) {
-      _componentProps.placeholder ??= createPlaceholderMessage(component, label);
+      componentProps.placeholder ??= createPlaceholderMessage(component, label);
     }
-    return _componentProps;
+    if (schema.component === 'Divider') {
+      componentProps = Object.assign({ type: 'horizontal' }, componentProps, {
+        orientation: 'left',
+        plain: true,
+      });
+    }
+    schema.field === 'field35' && console.log('componentProps', componentProps);
+
+    return componentProps as Recordable;
   });
 
   /**
@@ -247,7 +260,7 @@
         {label} <span class="text-secondary">{subLabel}</span>
       </span>
     ) : (
-      label
+      vnodeFactory(label)
     );
     const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
     if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
@@ -259,15 +272,6 @@
         <BasicHelp placement="top" class="mx-1" text={getHelpMessage} {...helpComponentProps} />
       </span>
     );
-  });
-
-  const getComponentsProps = computed(() => {
-    const { schema } = props;
-    let { componentProps = {} } = schema;
-    if (isFunction(componentProps)) {
-      componentProps = componentProps(unref(getValues)) ?? {};
-    }
-    return componentProps as Recordable;
   });
 
   function setComponentRuleType(
@@ -358,7 +362,7 @@
         if (component.includes('Input') || component.includes('Textarea')) {
           rule.whitespace = true;
         }
-        const valueFormat = unref(getComponentsProps)?.valueFormat;
+        const valueFormat = unref(getComponentProps)?.valueFormat;
         setComponentRuleType(rule, component, valueFormat);
       }
     }
@@ -377,14 +381,20 @@
   onMounted(async () => {
     if (getComponentProps.value?.request) {
       const compProps = getComponentProps.value;
-      const compName = schema.value.component;
+      const { componentProps, component } = schema.value;
+
       schema.value.loading = true;
+      schema.value.field === 'field35' && console.log('compProps', compProps, formPropsRef.value);
+
       try {
-        if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === compName)) {
-          compProps.options = await getComponentProps.value?.request();
-          console.log('compProps.options', schema.value);
-        } else if (['TreeSelect', 'Tree'].some((n) => n === compName)) {
-          compProps.treeData = await getComponentProps.value?.request();
+        const result = await getComponentProps.value?.request(unref(getValues));
+        if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
+          compProps.options = result;
+        } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
+          compProps.treeData = result;
+        }
+        if (componentProps) {
+          componentProps.requestResult = result;
         }
       } finally {
         schema.value.loading = false;

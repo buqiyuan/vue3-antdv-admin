@@ -1,5 +1,4 @@
 import { unref, computed, watchEffect } from 'vue';
-import { omit } from 'lodash-es';
 import type { TableMethods } from './useTableMethods';
 import type { TableState } from './useTableState';
 import type { ComputedRef, Slots } from 'vue';
@@ -49,7 +48,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   });
 
   // 同步外部对props的修改
-  watchEffect(() => getQueryFormRef()?.setSchemaFormProps(omit(unref(getFormProps), 'schemas')), {
+  watchEffect(() => getQueryFormRef()?.setSchemaFormProps(unref(getFormProps)), {
     flush: 'post',
   });
 

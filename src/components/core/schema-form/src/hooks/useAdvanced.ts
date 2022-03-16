@@ -1,6 +1,6 @@
 import { computed, unref, watch } from 'vue';
 import type { SchemaFormEmitFn } from '../schema-form';
-import type { ColEx } from '../types';
+import type { ColEx } from '../types/component';
 import type { SchemaFormType } from './';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
@@ -40,7 +40,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
     () => {
       const { showAdvancedButton } = unref(getFormProps);
       if (showAdvancedButton) {
-        requestIdleCallback(updateAdvanced);
+        updateAdvanced();
       }
     },
     { immediate: true },

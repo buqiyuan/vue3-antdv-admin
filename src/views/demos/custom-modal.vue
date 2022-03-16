@@ -6,6 +6,13 @@
         <span class="text-red-500">
           Tips: 如果你的弹窗依赖于App上下文（provide/inject），你应该使用`useModal组件方式`
         </span>
+        <a
+          class="text-blue-500"
+          target="_blank"
+          href="https://github.com/buqiyuan/vue3-antd-admin/blob/main/src/views/demos/custom-modal.vue"
+        >
+          查看源码
+        </a>
       </template>
     </Alert>
     <a-card>

@@ -67,7 +67,6 @@ export const useExportExcelModal = () => {
       },
       formProps: {
         labelWidth: 100,
-        layout: 'vertical',
         schemas: getSchemas(t),
       },
     });
