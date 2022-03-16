@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Alert message="动态表单示例" type="info" show-icon style="margin-bottom: 12px">
+    <Alert message="useForm示例" type="info" show-icon style="margin-bottom: 12px">
       <template #description>
         <a
           class="text-blue-500"

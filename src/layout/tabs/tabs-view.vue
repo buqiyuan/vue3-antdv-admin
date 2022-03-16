@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
   import { computed, unref, watch } from 'vue';
-  import { useRoute, useRouter, RouteLocation } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import {
     DownOutlined,
     ReloadOutlined,
@@ -104,6 +104,7 @@
     MinusOutlined,
   } from '@ant-design/icons-vue';
   import { Dropdown, Tabs, message, Menu } from 'ant-design-vue';
+  import type { RouteLocation } from 'vue-router';
   import { Storage } from '@/utils/Storage';
   import { TABS_ROUTES } from '@/enums/cacheEnum';
   import { useTabsViewStore, blackList } from '@/store/modules/tabsView';

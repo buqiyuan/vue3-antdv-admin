@@ -6,5 +6,6 @@ export { DynamicTable };
 export * from './src/types/';
 export * from './src/hooks/';
 export * from './src/dynamic-table';
+export * from './src/components/';
 
 export type DynamicTableRef = Ref<DynamicTableInstance>;

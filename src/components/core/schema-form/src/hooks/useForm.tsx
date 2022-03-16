@@ -1,6 +1,6 @@
 import { nextTick, ref, unref, watch, onMounted } from 'vue';
 import { isEmpty } from 'lodash-es';
-import SchemaForm from '../schema-form.vue';
+import SchemaForm from '../../index';
 import type { Ref, SetupContext } from 'vue';
 import type { SchemaFormInstance, SchemaFormProps } from '../schema-form';
 
