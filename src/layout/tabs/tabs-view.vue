@@ -49,7 +49,7 @@
       </Tabs.TabPane>
 
       <template #rightExtra>
-        <Dropdown :trigger="['click']">
+        <Dropdown :trigger="['click']" placement="bottomRight">
           <a class="ant-dropdown-link" @click.prevent>
             <down-outlined :style="{ fontSize: '20px' }" />
           </a>

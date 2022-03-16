@@ -32,7 +32,7 @@
       </Tooltip>
       <FullScreen />
       <LocalePicker />
-      <Dropdown>
+      <Dropdown placement="bottomRight">
         <Avatar :src="userInfo.headImg" :alt="userInfo.name">{{ userInfo.name }}</Avatar>
         <template #overlay>
           <Menu>
