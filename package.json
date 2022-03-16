@@ -62,7 +62,6 @@
     "@vue/cli-plugin-typescript": "^5.0.3",
     "@vue/cli-plugin-vuex": "^5.0.3",
     "@vue/cli-service": "^5.0.3",
-    "@vue/compiler-sfc": "^3.2.31",
     "@vue/eslint-config-typescript": "^10.0.0",
     "babel-plugin-import": "^1.13.3",
     "commitizen": "^4.2.4",
