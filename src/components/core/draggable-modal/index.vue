@@ -2,7 +2,7 @@
   <teleport :to="getContainer()">
     <div ref="modalWrapRef" class="custom-modal" :class="{ fullscreen: fullscreenModel }">
       <Modal
-        v-bind="{ ...$attrs, ...props }"
+        v-bind="omit(props, ['visible', 'onCancel', 'onOk', 'onUpdate:visible'])"
         v-model:visible="visibleModel"
         :mask-closable="false"
         :get-container="() => modalWrapRef"
@@ -39,30 +39,22 @@
 <script lang="ts" setup>
   import { ref, watch, nextTick } from 'vue';
   import { useRoute } from 'vue-router';
-  // import { modalProps } from 'ant-design-vue/es/modal/Modal';
+  import { modalProps } from 'ant-design-vue/es/modal/Modal';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';
   import { useVModel } from '@vueuse/core';
-  import { throttle } from 'lodash-es';
+  import { throttle, omit } from 'lodash-es';
   import { Modal, Space } from 'ant-design-vue';
 
   const props = defineProps({
-    visible: {
-      type: Boolean,
-      default: false,
-    },
+    ...modalProps(),
     fullscreen: {
       type: Boolean,
       default: false,
-    },
-    width: {
-      type: [Number, String],
-      default: 520,
     },
     getContainer: {
       type: Function,
       default: () => document.body,
     },
-    destroyOnClose: Boolean,
   });
 
   const emit = defineEmits(['update:visible', 'update:fullscreen', 'ok', 'cancel']);

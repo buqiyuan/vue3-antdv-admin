@@ -9,6 +9,7 @@ import { useLocale } from '@/locales/useLocale';
 export type MyModalInstance = InstanceType<typeof MyModal>;
 
 export const MyModal = defineComponent({
+  components: { customModal: DraggableModal },
   props: {
     content: {
       type: [String, Function] as PropType<string | JSX.Element | (() => JSX.Element)>,
@@ -31,7 +32,7 @@ export const MyModal = defineComponent({
       const _props = unref(getProps);
 
       return {
-        ...omit(_props, ['onCancel', 'onOk']),
+        ...omit(_props, ['onCancel', 'onOk', 'closeModal', 'isAppChild', 'content']),
         visible: _props.visible,
         confirmLoading: confirmLoading.value,
         onCancel: handleCancel,
@@ -60,6 +61,7 @@ export const MyModal = defineComponent({
     const handleConfirm = async (e: MouseEvent) => {
       confirmLoading.value = true;
       try {
+        // @ts-ignore
         await unref(getProps)?.onOk?.(e);
         setVisible(false);
       } catch (error) {
@@ -69,6 +71,7 @@ export const MyModal = defineComponent({
       }
     };
     const handleCancel = async (e: MouseEvent) => {
+      // @ts-ignore
       await unref(getProps)?.onCancel?.(e);
       setVisible(false);
     };
@@ -84,10 +87,10 @@ export const MyModal = defineComponent({
       const Content = isFunction(content) ? content() : content;
 
       return isAppChild ? (
-        <DraggableModal {...unref(bindValues)}>{Content}</DraggableModal>
+        <customModal {...unref(bindValues)}>{Content}</customModal>
       ) : (
         <ConfigProvider locale={getAntdLocale.value}>
-          <DraggableModal {...unref(bindValues)}>{Content}</DraggableModal>
+          <customModal {...unref(bindValues)}>{Content}</customModal>
         </ConfigProvider>
       );
     };
