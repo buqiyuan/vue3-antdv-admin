@@ -32,7 +32,7 @@ export const MyModal = defineComponent({
       const _props = unref(getProps);
 
       return {
-        ...omit(_props, ['onCancel', 'onOk']),
+        ...omit(_props, ['onCancel', 'onOk', 'closeModal', 'isAppChild', 'content']),
         visible: _props.visible,
         confirmLoading: confirmLoading.value,
         onCancel: handleCancel,

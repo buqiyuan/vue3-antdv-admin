@@ -3,7 +3,6 @@
     <template #left-content>
       <div class="flex justify-between">
         <div>组织架构</div>
-        <ModalRender @update-dd="fetchDeptList"></ModalRender>
         <Space>
           <Tooltip v-if="$auth('sys.dept.add')" placement="top">
             <template #title>新增部门 </template>
@@ -123,7 +122,7 @@
   }
 
   const [DynamicTable, dynamicTableInstance] = useTable();
-  const [showModal, ModalRender] = useFormModal();
+  const [showModal] = useFormModal();
 
   const deptListLoading = ref(false);
 

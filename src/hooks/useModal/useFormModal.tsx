@@ -1,4 +1,5 @@
 import { nextTick, ref, unref } from 'vue';
+import { omit } from 'lodash-es';
 import { useModal } from './useModal';
 import type { SchemaFormInstance, SchemaFormProps } from '@/components/core/schema-form';
 import type { FormModalProps } from './types';
@@ -22,7 +23,7 @@ export function useFormModal<T = any>() {
 
     await ModalRender.show({
       destroyOnClose: true,
-      ...modalProps,
+      ...omit(modalProps, ['onFinish', 'onFail']),
       onCancel,
       content: () => {
         const _formProps = Object.assign({}, { showActionButtonGroup: false }, formProps);
