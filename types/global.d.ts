@@ -1,5 +1,12 @@
 import packageJSON from '../package.json';
-import type { ComponentRenderProxy, VNode, VNodeChild, PropType as VuePropType } from 'vue';
+import type {
+  ComponentRenderProxy,
+  VNode,
+  VNodeChild,
+  SetupContext,
+  EmitsOptions,
+  PropType as VuePropType,
+} from 'vue';
 
 declare global {
   const __APP_INFO__: {
@@ -48,20 +55,7 @@ declare global {
 
   declare function parseFloat(string: string | number): number;
 
-  declare type EmitFn<
-    Options = ObjectEmitsOptions,
-    Event extends keyof Options = keyof Options,
-  > = Options extends Array<infer V>
-    ? (event: V, ...args: any[]) => void
-    : {} extends Options
-    ? (event: string, ...args: any[]) => void
-    : UnionToIntersection<
-        {
-          [key in Event]: Options[key] extends (...args: infer Args) => any
-            ? (event: key, ...args: Args) => void
-            : (event: key, ...args: any[]) => void;
-        }[Event]
-      >;
+  declare type EmitFn<E = EmitsOptions> = SetupContext<E>['emit'];
 
   namespace JSX {
     // tslint:disable no-empty-interface

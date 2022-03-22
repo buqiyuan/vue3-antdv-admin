@@ -16,16 +16,6 @@ const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
 
 // port = 8098 npm run dev OR npm run dev --port = 8098
 const port = process.env.port || process.env.npm_config_port || 8098; // dev port
-// 获取所有依赖地址
-['dependencies', 'devDependencies'].forEach((name) => {
-  Object.keys(pkg[name]).forEach((key) => {
-    const devPkg = require(`./node_modules/${key}/package.json`);
-    pkg[name][key] = {
-      url: devPkg.repository?.url || devPkg.repository || devPkg.homepage,
-      version: pkg[name][key],
-    };
-  });
-});
 
 const __APP_INFO__ = {
   pkg,
