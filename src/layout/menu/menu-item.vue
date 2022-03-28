@@ -1,29 +1,27 @@
 <template>
-  <template v-if="!props.menuInfo?.meta?.hideInMenu">
-    <!-- 目录 -->
-    <Menu.SubMenu
-      v-if="props.menuInfo?.children?.length"
-      :key="props.menuInfo?.name"
-      v-bind="$attrs"
-    >
-      <template #title>
-        <span>
-          <icon-font :type="props.menuInfo.meta?.icon" />
-          <TitleI18n :title="props.menuInfo?.meta?.title" />
-        </span>
-      </template>
-      <template v-for="item in menuChildren" :key="item.name">
-        <!-- 递归生成菜单 -->
-        <MyMenuItem :menu-info="item" />
-      </template>
-    </Menu.SubMenu>
-    <!-- 菜单 -->
-    <template v-else>
-      <Menu.Item :key="props.menuInfo?.name">
-        <icon-font :type="props.menuInfo?.meta?.icon" />
+  <!-- 目录 -->
+  <Menu.SubMenu
+    v-if="props.menuInfo?.meta?.type === 0 || props.menuInfo?.children?.length"
+    :key="props.menuInfo?.name"
+    v-bind="$attrs"
+  >
+    <template #title>
+      <span>
+        <icon-font :type="props.menuInfo.meta?.icon" />
         <TitleI18n :title="props.menuInfo?.meta?.title" />
-      </Menu.Item>
+      </span>
     </template>
+    <template v-for="item in menuChildren" :key="item.name || item.fullPath">
+      <!-- 递归生成菜单 -->
+      <MyMenuItem :menu-info="item" />
+    </template>
+  </Menu.SubMenu>
+  <!-- 菜单 -->
+  <template v-else>
+    <Menu.Item :key="props.menuInfo?.name">
+      <icon-font :type="props.menuInfo?.meta?.icon" />
+      <TitleI18n :title="props.menuInfo?.meta?.title" />
+    </Menu.Item>
   </template>
 </template>
 
@@ -44,11 +42,11 @@
     },
   });
 
-  const menuChildren = computed(() =>
-    [...(props.menuInfo?.children || [])].sort(
-      (a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0),
-    ),
-  );
+  const menuChildren = computed(() => {
+    return [...(props.menuInfo?.children || [])]
+      .filter((n) => !n.meta?.hideInMenu)
+      .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
+  });
 </script>
 
 <style scoped></style>

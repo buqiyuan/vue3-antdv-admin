@@ -7,7 +7,8 @@ declare namespace API {
     name: string;
     router: string;
     perms: string;
-    type: number;
+    /** 当前菜单类型 0: 目录 | 1: 菜单 | 2: 权限 */
+    type: 0 | 1 | 2;
     icon: string;
     orderNum: number;
     viewPath: string;

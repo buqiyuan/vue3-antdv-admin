@@ -9,7 +9,7 @@
       collapsible
       @click="clickMenuItem"
     >
-      <template v-for="item in menus" :key="item.name">
+      <template v-for="item in menus" :key="item.name || item.fullPath">
         <MenuItem :menu-info="item" />
       </template>
     </Menu>
@@ -39,9 +39,11 @@
     selectedKeys: [currentRoute.name],
   });
 
-  const menus = computed(() =>
-    [...userStore.menus].sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0)),
-  );
+  const menus = computed(() => {
+    return [...userStore.menus]
+      .filter((n) => !n.meta?.hideInMenu)
+      .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
+  });
   console.log('menus', menus.value);
 
   // 根据activeMenu获取指定的menu
