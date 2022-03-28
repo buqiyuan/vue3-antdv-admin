@@ -18,11 +18,7 @@
       </template>
     </Alert>
     <a-card>
-      <schema-form ref="dynamicForm" v-bind="formProps">
-        <template #operate-button>
-          <a-button type="primary" @click="confirm"> 确定 </a-button>
-        </template>
-      </schema-form>
+      <schema-form ref="dynamicForm" v-bind="formProps" @submit="confirm"></schema-form>
     </a-card>
   </div>
 </template>
