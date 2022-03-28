@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useAttrs, watchEffect } from 'vue';
+  import { useAttrs, watch } from 'vue';
   import { pick } from 'lodash-es';
   import { Form, Row } from 'ant-design-vue';
   import SchemaFormItem from './schema-form-item.vue';
@@ -79,7 +79,10 @@
   const formEvents = useFormEvents({ ...formState, emit, handleFormValues });
 
   // 同步外部对props的修改
-  watchEffect(() => setSchemaFormProps(props));
+  watch(props, () => setSchemaFormProps(props), {
+    deep: true,
+    immediate: true,
+  });
 
   // 当前组件所有的状态和方法
   const instance = {
