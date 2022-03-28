@@ -5,7 +5,7 @@
         <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
       </span>
       <Breadcrumb>
-        <template v-for="(routeItem, rotueIndex) in menus" :key="routeItem.name">
+        <template v-for="(routeItem, rotueIndex) in menus" :key="routeItem?.name">
           <Breadcrumb.Item>
             <TitleI18n :title="routeItem?.meta?.title" />
             <template v-if="routeItem?.children?.length" #overlay>
@@ -58,7 +58,7 @@
 
 <script lang="tsx" setup>
   import { computed } from 'vue';
-  import { useRouter, useRoute } from 'vue-router';
+  import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
   import {
     QuestionCircleOutlined,
     SettingOutlined,
@@ -79,7 +79,6 @@
     Tooltip,
   } from 'ant-design-vue';
   import { Search, FullScreen } from './components';
-  import type { RouteRecordRaw } from 'vue-router';
   import { LocalePicker } from '@/components/basic/locale-picker';
   import { useUserStore } from '@/store/modules/user';
   import { useLockscreenStore } from '@/store/modules/lockscreen';

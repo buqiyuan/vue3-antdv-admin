@@ -25,10 +25,17 @@ export const useTabsViewStore = defineStore({
         return !item.meta?.hideInTabs && router.hasRoute(item.name!);
       });
     },
+    /** 当前activity tab */
+    getCurrentTab: (state) => {
+      const currentRoute = router.currentRoute.value!;
+      return state.tabsList.find((item) => {
+        return !item.meta?.hideInTabs && item.fullPath === currentRoute.fullPath;
+      });
+    },
   },
   actions: {
     /** 将已关闭的标签页的组件从keep-alive中移除 */
-    delCompFormClosedTabs(closedTabs: RouteLocationNormalized[]) {
+    delCompFromClosedTabs(closedTabs: RouteLocationNormalized[]) {
       const keepAliveStore = useKeepAliveStore();
       const routes = router.getRoutes();
       const compNames = closedTabs.reduce<string[]>((prev, curr) => {
@@ -56,30 +63,36 @@ export const useTabsViewStore = defineStore({
     /** 关闭左侧 */
     closeLeftTabs(route) {
       const index = this.tabsList.findIndex((item) => item.fullPath == route.fullPath);
-      this.delCompFormClosedTabs(this.tabsList.splice(0, index));
+      this.delCompFromClosedTabs(this.tabsList.splice(0, index));
     },
     /** 关闭右侧 */
     closeRightTabs(route) {
       const index = this.tabsList.findIndex((item) => item.fullPath == route.fullPath);
-      this.delCompFormClosedTabs(this.tabsList.splice(index + 1));
+      this.delCompFromClosedTabs(this.tabsList.splice(index + 1));
     },
     /** 关闭其他 */
     closeOtherTabs(route) {
       const targetIndex = this.tabsList.findIndex((item) => item.fullPath === route.fullPath);
       if (targetIndex !== -1) {
         const current = this.tabsList.splice(targetIndex, 1);
-        this.delCompFormClosedTabs(this.tabsList);
+        this.delCompFromClosedTabs(this.tabsList);
         this.tabsList = current;
       }
     },
     /** 关闭当前页 */
     closeCurrentTab(route) {
       const index = this.tabsList.findIndex((item) => item.fullPath == route.fullPath);
-      this.delCompFormClosedTabs(this.tabsList.splice(index, 1));
+      const isDelCurrentTab = Object.is(this.getCurrentTab, this.tabsList[index]);
+      this.delCompFromClosedTabs(this.tabsList.splice(index, 1));
+      // 如果关闭的tab就是当前激活的tab，则重定向页面
+      if (isDelCurrentTab) {
+        const currentRoute = this.tabsList[Math.max(0, this.tabsList.length - 1)];
+        router.push(currentRoute);
+      }
     },
     /** 关闭全部 */
     closeAllTabs() {
-      this.delCompFormClosedTabs(this.tabsList);
+      this.delCompFromClosedTabs(this.tabsList);
       this.tabsList = [];
       localStorage.removeItem(TABS_ROUTES);
     },

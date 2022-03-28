@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
 import { Modal } from 'ant-design-vue';
 import type { SocketIOWrapperType, SocketStatusType } from '@/core/socket/socket-io';
+import router from '@/router';
 import { store } from '@/store';
-import { EVENT_KICK } from '@/core/socket/event-type';
+import { EVENT_KICK, EVENT_UPDATE_MENU } from '@/core/socket/event-type';
 import { SocketIOWrapper, SocketStatus } from '@/core/socket/socket-io';
 import { useUserStore } from '@/store/modules/user';
+import { useTabsViewStore } from '@/store/modules/tabsView';
 
 interface WsState {
   client: SocketIOWrapperType | null;
@@ -50,6 +52,26 @@ export const useWsStore = defineStore({
             window.location.reload();
           },
         });
+      });
+      ws.subscribe(EVENT_UPDATE_MENU, async () => {
+        const userStore = useUserStore();
+        const tabsViewStore = useTabsViewStore();
+        console.log('EVENT_UPDATE_MENU', EVENT_UPDATE_MENU);
+
+        await userStore.afterLogin();
+        const currentRoute = router.currentRoute.value!;
+        const hasRoute = router.hasRoute(currentRoute.name!);
+        if (Object.is(hasRoute, false)) {
+          Modal.warning({
+            title: '提示',
+            content: `您的权限已被管理员修改，暂无当前页面预览权限！`,
+            centered: true,
+            okText: '关闭当前页',
+            onOk() {
+              tabsViewStore.closeCurrentTab(currentRoute);
+            },
+          });
+        }
       });
       this.setClient(ws);
     },

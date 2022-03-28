@@ -119,7 +119,7 @@
   const tabsViewStore = useTabsViewStore();
   const keepAliveStore = useKeepAliveStore();
 
-  const activeKey = computed(() => route.fullPath);
+  const activeKey = computed(() => tabsViewStore.getCurrentTab?.fullPath);
 
   // 标签页列表
   const tabsList = computed(() => tabsViewStore.getTabsList);
@@ -147,17 +147,6 @@
 
   // tabsViewMutations.initTabs(routes)
 
-  // 将当前组件从keep-alive缓存中移除
-  const delCurrCompFromKeepAlive = () => {
-    if (route.meta.keepAlive) {
-      const name = router.currentRoute.value.matched.find((item) => item.name == route.name)
-        ?.components?.default.name;
-      if (name) {
-        keepAliveStore.remove(name);
-      }
-    }
-  };
-
   watch(
     () => route.fullPath,
     () => {
@@ -183,14 +172,8 @@
     if (tabsList.value.length === 1) {
       return message.warning('这已经是最后一页，不能再关闭了！');
     }
-    delCurrCompFromKeepAlive();
     // tabsViewMutations.closeCurrentTabs(route)
     tabsViewStore.closeCurrentTab(route);
-    // 如果关闭的是当前页
-    if (activeKey.value === route.fullPath) {
-      const currentRoute = tabsList.value[Math.max(0, tabsList.value.length - 1)];
-      router.push(currentRoute);
-    }
   };
   // tabs 编辑（remove || add）
   const editTabItem = (targetKey, action: string) => {
@@ -205,7 +188,6 @@
 
   // 刷新页面
   const reloadPage = () => {
-    delCurrCompFromKeepAlive();
     router.replace({
       name: REDIRECT_NAME,
       params: {

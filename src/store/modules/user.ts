@@ -1,6 +1,6 @@
+import { type RouteRecordRaw } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useWsStore } from './ws';
-import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
 import { login } from '@/api/login';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
@@ -44,7 +44,7 @@ export const useUserStore = defineStore({
     },
   },
   actions: {
-    // 清空token及用户信息
+    /** 清空token及用户信息 */
     resetToken() {
       this.avatar = this.token = this.name = '';
       this.perms = [];
@@ -52,13 +52,13 @@ export const useUserStore = defineStore({
       this.userInfo = {};
       Storage.clear();
     },
-    // 登录成功保存token
+    /** 登录成功保存token */
     setToken(token: string) {
       this.token = token ?? '';
       const ex = 7 * 24 * 60 * 60 * 1000;
       Storage.set(ACCESS_TOKEN_KEY, this.token, ex);
     },
-    // 登录
+    /** 登录 */
     async login(params: API.LoginParams) {
       try {
         const { data } = await login(params);
@@ -68,7 +68,7 @@ export const useUserStore = defineStore({
         return Promise.reject(error);
       }
     },
-    // 登录成功之后, 获取用户信息以及生成权限路由
+    /** 登录成功之后, 获取用户信息以及生成权限路由 */
     async afterLogin() {
       try {
         const wsStore = useWsStore();
@@ -80,14 +80,14 @@ export const useUserStore = defineStore({
         // 生成路由
         const generatorResult = generatorDynamicRouter(menus);
         this.menus = generatorResult.menus.filter((item) => !item.meta?.hideInMenu);
-        wsStore.initSocket();
+        !wsStore.client && wsStore.initSocket();
 
         return { menus, perms, userInfo };
       } catch (error) {
         // return this.logout();
       }
     },
-    // 登出
+    /** 登出 */
     async logout() {
       await logout();
       const wsStore = useWsStore();
