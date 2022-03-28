@@ -49,6 +49,7 @@ export function filterAsyncRoute(
         meta: {
           orderNum,
           title: name,
+          type: item.type,
           perms: [],
           icon,
           namePath: lastNamePath.concat(fullPath),

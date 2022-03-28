@@ -12,8 +12,8 @@ declare module 'vue-router' {
   interface RouteMeta extends VRouteMeta {
     /** 标题 */
     title: string | Title18n;
-    /** 当前路由是否需要权限验证 */
-    isAuth?: boolean;
+    /** 当前菜单类型 0: 目录 | 1: 菜单 | 2: 权限 */
+    type?: 0 | 1 | 2;
     /** 当前路由权限 */
     perms?: PermissionType[];
     /** 是否需要缓存 */
