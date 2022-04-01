@@ -1,5 +1,5 @@
 <template>
-  <Popover placement="bottomLeft" trigger="click">
+  <Popover placement="bottomLeft" trigger="click" overlay-class-name="__multiple-cascader">
     <template #content>
       <NodePanel ref="nodePanelRef" :options="myOptions" />
     </template>
@@ -141,6 +141,12 @@
   //   myOptions.value = cloneOptions;
   // });
 </script>
+
+<style lang="less">
+  .__multiple-cascader .ant-popover-inner-content {
+    padding: 8px 0;
+  }
+</style>
 
 <style lang="less" scoped>
   .input-box {

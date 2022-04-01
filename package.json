@@ -30,7 +30,7 @@
     "@ant-design/icons-vue": "^6.1.0",
     "@vue/runtime-core": "^3.2.31",
     "@vueuse/core": "^8.2.3",
-    "ant-design-vue": "3.1.0-rc.2",
+    "ant-design-vue": "3.1.0-rc.6",
     "axios": "^0.26.1",
     "core-js": "^3.21.1",
     "dayjs": "^1.11.0",
