@@ -334,14 +334,9 @@ export const schemas: FormSchema[] = [
   },
   {
     field: 'field34',
-    component: ({ formModel, schema, field }) => {
+    component: ({ schema }) => {
       const options = schema.componentProps?.requestResult || [];
-      return (
-        <Radio.Group
-          v-model={[formModel[field], 'value']}
-          options={options.slice(0, 2)}
-        ></Radio.Group>
-      );
+      return <Radio.Group options={options.slice(0, 2)}></Radio.Group>;
     },
     label: '远程Radio',
     helpMessage: ['RadioGroup组件', '使用接口提供的数据生成选项'],

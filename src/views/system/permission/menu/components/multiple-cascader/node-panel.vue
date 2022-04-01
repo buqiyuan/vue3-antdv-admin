@@ -80,6 +80,9 @@
 </script>
 
 <style lang="less" scoped>
+  .ant-cascader-menu:last-of-type {
+    border-right: 0;
+  }
   .check-row {
     @apply flex justify-between items-center relative;
     .label {

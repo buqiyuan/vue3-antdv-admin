@@ -10,7 +10,7 @@ import { isObject } from '@/utils/is';
 export const aFormPropKeys = Object.keys(formProps);
 
 export const schemaFormProps = {
-  ...formProps,
+  ...formProps(),
   layout: {
     type: String as PropType<FormProps['layout']>,
     default: 'horizontal',

@@ -15,7 +15,7 @@ export default defineConfig({
         '2xl': '1536px',
       },
       colors: {
-        gray: colors.coolGray,
+        gray: colors.gray,
         blue: colors.sky,
         red: colors.rose,
         pink: colors.fuchsia,

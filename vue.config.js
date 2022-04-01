@@ -1,18 +1,17 @@
 const path = require('path');
 const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// const CompressionPlugin = require('compression-webpack-plugin');
-// 去除console
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const dayjs = require('dayjs');
 const TerserPlugin = require('terser-webpack-plugin');
+
 const resolve = (dir) => path.join(__dirname, dir); // 路径
 const pkg = require('./package.json');
 
 process.env.VUE_APP_VERSION = pkg.version;
 
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
-// const IS_DEV = ['development'].includes(process.env.NODE_ENV);
+const IS_DEV = ['development'].includes(process.env.NODE_ENV);
 
 // port = 8098 npm run dev OR npm run dev --port = 8098
 const port = process.env.port || process.env.npm_config_port || 8098; // dev port
@@ -53,21 +52,12 @@ module.exports = defineConfig({
 
     config
       // https://webpack.js.org/configuration/devtool/#development
-      .when(!IS_PROD, (config) => config.devtool('cheap-source-map'));
+      .when(IS_DEV, (config) => config.devtool('cheap-source-map'));
 
     // 配置相关loader，支持修改，添加和替换相关的loader
     config.resolve.alias.set('@', resolve('src'));
     config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js');
 
-    // 打包分析
-    if (IS_PROD) {
-      // config.optimization.delete('splitChunks');
-      // config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
-      //   {
-      //     analyzerMode: 'static',
-      //   },
-      // ]);
-    }
     config.plugin('html').tap((args) => {
       args[0].title = 'vue3-antd-admin管理系统';
       return args;
@@ -91,6 +81,7 @@ module.exports = defineConfig({
 
     // svg rule loader
     config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end();
+
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -102,19 +93,9 @@ module.exports = defineConfig({
         symbolId: 'icon-[name]',
       });
     config.when(IS_PROD, (config) => {
-      // gzipped
-      // config.plugin('CompressionPlugin').use(
-      //   new CompressionPlugin({
-      //     algorithm: 'gzip',
-      //     test: /\.(js|css)$/, // 匹配文件名
-      //     threshold: 10240, // 对超过10k的数据压缩
-      //     deleteOriginalAssets: false, // 不删除源文件
-      //     minRatio: 0.8, // 压缩比
-      //   }),
-      // );
       // split
       config.optimization.splitChunks({
-        chunks: 'all',
+        chunks: 'all', //指定哪些模块需要打包
         cacheGroups: {
           libs: {
             name: 'chunk-libs',
@@ -130,7 +111,7 @@ module.exports = defineConfig({
           commons: {
             name: 'chunk-commons',
             test: resolve('src/components'), // can customize your rules
-            minChunks: 3, //  minimum common number
+            minChunks: 3, // 被引用3次就提取出来
             priority: 5,
             reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的。
           },
@@ -156,6 +137,8 @@ module.exports = defineConfig({
     config.resolve.fallback = { path: require.resolve('path-browserify') };
     // use defineOptions https://github.com/sxzz/unplugin-vue-define-options
     config.plugins.push(require('unplugin-vue-define-options/webpack')());
+    // 打包速度分析
+    config.plugins.push(new SpeedMeasurePlugin());
 
     config.plugins.push(
       // 定义全局变量
@@ -163,25 +146,26 @@ module.exports = defineConfig({
         __APP_INFO__: JSON.stringify(__APP_INFO__),
       }),
     );
-
     if (IS_PROD) {
-      config.plugins.push(
-        new TerserPlugin({
-          terserOptions: {
-            warnings: false,
-            format: {
-              comments: false,
-            },
-            compress: {
-              drop_debugger: true, // 注释console
-              drop_console: true,
-              pure_funcs: ['console.log'], // 移除console
-            },
-          },
-          extractComments: false, // 是否将注释提取到一个单独的文件中
-          parallel: true,
-        }),
+      // terser-webpack-plugin (https://webpack.docschina.org/plugins/terser-webpack-plugin/);
+      const TerserPluginIndex = config.optimization.minimizer.findIndex(
+        (n) => n.__pluginName === 'terser',
       );
+      config.optimization.minimizer[TerserPluginIndex] = new TerserPlugin({
+        terserOptions: {
+          warnings: false,
+          format: {
+            comments: false,
+          },
+          compress: {
+            drop_debugger: true, // 注释console
+            drop_console: true,
+            pure_funcs: ['console.log'], // 移除console
+          },
+        },
+        extractComments: false, // 是否将注释提取到一个单独的文件中
+        parallel: true, // 是否并⾏打包
+      });
     }
   },
   devServer: {
@@ -189,6 +173,11 @@ module.exports = defineConfig({
     client: {
       progress: true,
     },
+    // watchOptions: {
+    //   // 开发时，自动保存代码导致构建频繁且会报错，又不想手动保存，则可以开启延迟构建
+    //   aggregateTimeout: 1500,
+    //   ignored: /node_modules/,
+    // },
     proxy: {
       // '/mock-api': {
       //   target: `http://localhost:${port}`,

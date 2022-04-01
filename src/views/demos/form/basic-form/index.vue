@@ -116,6 +116,7 @@
       </div>,
       3,
     );
+    console.log('values', values);
   }
 </script>
 

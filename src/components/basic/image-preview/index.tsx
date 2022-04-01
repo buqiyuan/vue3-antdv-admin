@@ -10,7 +10,7 @@ interface PreviewType extends ImagePreviewType {
 
 export default defineComponent({
   props: {
-    ...imageProps,
+    ...imageProps(),
     preview: {
       type: Object as PropType<PreviewType | boolean>,
     },
