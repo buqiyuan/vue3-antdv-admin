@@ -123,6 +123,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     server: {
       host: '0.0.0.0',
+      // https: true,
       port: 8088,
       proxy: {
         '/api': {
