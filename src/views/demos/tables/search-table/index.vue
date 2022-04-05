@@ -22,7 +22,7 @@
 
   const [DynamicTable, dynamicTableInstance] = useTable();
 
-  const loadData = async (params) => {
+  const loadData = async (params): Promise<API.TableListResult> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({

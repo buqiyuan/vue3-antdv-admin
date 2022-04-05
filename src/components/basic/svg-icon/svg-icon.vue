@@ -7,6 +7,10 @@
 <script lang="ts" setup>
   import { computed, type CSSProperties } from 'vue';
 
+  defineOptions({
+    name: 'svg-icon',
+  });
+
   const importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
     requireContext.keys().forEach(requireContext);
   try {

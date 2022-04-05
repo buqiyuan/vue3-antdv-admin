@@ -1,21 +1,19 @@
 <template>
   <!-- 目录 -->
-  <Menu.SubMenu
-    v-if="props.menuInfo?.meta?.type === 0 || props.menuInfo?.children?.length"
-    :key="props.menuInfo?.name"
-    v-bind="$attrs"
-  >
-    <template #title>
-      <span>
-        <icon-font :type="props.menuInfo.meta?.icon" />
-        <TitleI18n :title="props.menuInfo?.meta?.title" />
-      </span>
-    </template>
-    <template v-for="item in menuChildren" :key="item.name || item.fullPath">
-      <!-- 递归生成菜单 -->
-      <MyMenuItem :menu-info="item" />
-    </template>
-  </Menu.SubMenu>
+  <template v-if="props.menuInfo?.meta?.type === 0 || props.menuInfo?.children?.length">
+    <Menu.SubMenu :key="props.menuInfo?.name" v-bind="$attrs">
+      <template #title>
+        <span>
+          <icon-font :type="props.menuInfo.meta?.icon" />
+          <TitleI18n :title="props.menuInfo?.meta?.title" />
+        </span>
+      </template>
+      <template v-for="item in menuChildren" :key="item.name || item.fullPath">
+        <!-- 递归生成菜单 -->
+        <MyMenuItem :menu-info="item" />
+      </template>
+    </Menu.SubMenu>
+  </template>
   <!-- 菜单 -->
   <template v-else>
     <Menu.Item :key="props.menuInfo?.name">

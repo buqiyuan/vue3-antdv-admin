@@ -54,7 +54,7 @@
   import type { PropType } from 'vue';
   import type { ComponentMapType } from './componentMap';
   import type { CustomRenderFn, FormSchema, RenderCallbackParams } from './types/form';
-  import type { ValidationRule } from 'ant-design-vue/es/form/Form';
+  import type { RuleObject } from 'ant-design-vue/es/form/';
   import type { TableActionType } from '@/components/core/dynamic-table';
   import { isBoolean, isNull, isObject, isString } from '@/utils/is';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
@@ -275,7 +275,7 @@
   });
 
   function setComponentRuleType(
-    rule: ValidationRule,
+    rule: RuleObject,
     component: ComponentMapType,
     valueFormat: string,
   ) {
@@ -299,10 +299,10 @@
     } = props.schema;
 
     if (isFunction(dynamicRules)) {
-      return dynamicRules(unref(getValues)) as ValidationRule[];
+      return dynamicRules(unref(getValues)) as RuleObject[];
     }
 
-    let rules: ValidationRule[] = cloneDeep(defRules) as ValidationRule[];
+    let rules = cloneDeep<RuleObject[]>(defRules);
     const { rulesMessageJoinLabel: globalRulesMessageJoinLabel } = unref(formPropsRef);
 
     const joinLabel = Reflect.has(unref(formPropsRef), 'rulesMessageJoinLabel')

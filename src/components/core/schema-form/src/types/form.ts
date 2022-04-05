@@ -1,10 +1,10 @@
+import type { RowProps } from 'ant-design-vue';
 import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
-import type { FormItemProps } from './formItem';
+import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
 import type { Component, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ColEx, ComponentMapType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
-import type { RowProps } from 'ant-design-vue';
 import type { SchemaFormInstance } from '../schema-form';
 import type { SchemaFormType } from '../hooks';
 import type { TableActionType } from '@/components/core/dynamic-table';
@@ -16,6 +16,7 @@ export type FieldMapToTime = [string, [string, string], string?][];
 export type Rule = RuleObject & {
   trigger?: 'blur' | 'change' | ['change', 'blur'];
 };
+
 /** 获取所有字段名 */
 export type GetFieldKeys<T> = Exclude<keyof T, symbol | number>;
 
@@ -86,9 +87,9 @@ export interface FormSchema<T = string> {
   labelWidth?: string | number;
   // Disable the adjustment of labelWidth with global settings of formModel, and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
-  // render component
+  /** 表单项对应的组件，eg: Input */
   component?: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
-  // 组件参数
+  /** 表单组件属性 */
   componentProps?:
     | ComponentProps
     | {
