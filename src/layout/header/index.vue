@@ -9,7 +9,7 @@
           <Breadcrumb.Item>
             <TitleI18n :title="routeItem?.meta?.title" />
             <template v-if="routeItem?.children?.length" #overlay>
-              <Menu :selected-keys="[menus[rotueIndex + 1]?.name]">
+              <Menu :selected-keys="getSelectKeys(rotueIndex)">
                 <template v-for="childItem in routeItem?.children" :key="childItem.name">
                   <Menu.Item
                     v-if="!childItem.meta?.hideInMenu && !childItem.meta?.hideInBreadcrumb"
@@ -119,6 +119,10 @@
     }
     return route.matched;
   });
+
+  const getSelectKeys = (rotueIndex: number) => {
+    return [menus.value[rotueIndex + 1]?.name] as string[];
+  };
 
   const findLastChild = (route?: RouteRecordRaw) => {
     if (typeof route?.redirect === 'object') {

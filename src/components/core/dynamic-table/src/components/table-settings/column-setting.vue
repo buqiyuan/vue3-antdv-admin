@@ -83,12 +83,17 @@
   import { useSortable } from '@/hooks/useSortable';
   import { isNullAndUnDef } from '@/utils/is';
 
+  type TableColumnType<T = any> = TableColumn<T> & {
+    /** 目的是解决：类型实例化过深，且可能无限 */
+    formItemProps?: any;
+  };
+
   const table = useTableContext();
   let inited = false;
-  const defaultColumns = cloneDeep(table.columns);
+  const defaultColumns = cloneDeep<TableColumnType[]>(table.columns);
   const defaultShowIndex = !!table.showIndex;
   const defaultBordered = table.bordered;
-  const tableColumns = ref<TableColumn<any>[]>([]);
+  const tableColumns = ref<TableColumnType[]>([]);
 
   const checkAll = computed<boolean>({
     get() {

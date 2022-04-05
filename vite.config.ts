@@ -3,7 +3,7 @@ import { loadEnv } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
-import EslintPlugin from 'vite-plugin-eslint';
+import checker from 'vite-plugin-checker';
 import { viteMockServe } from 'vite-plugin-mock';
 import styleImport from 'vite-plugin-style-import';
 // import Components from 'unplugin-vue-components/vite';
@@ -26,6 +26,7 @@ const __APP_INFO__ = {
   lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
 
+// https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   // 环境变量
   const { VITE_BASE_URL, VITE_DROP_CONSOLE } = loadEnv(mode, CWD);
@@ -97,17 +98,17 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           },
         ],
       }),
-      EslintPlugin({
-        cache: false,
-        include: ['src/**/*.vue', 'src/**/*.ts', 'src/**/*.tsx'], // 检查的文件
+      // https://github.com/fi3ework/vite-plugin-checker
+      checker({
+        typescript: true,
+        vueTsc: true,
+        eslint: {
+          lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
+        },
       }),
     ],
     css: {
       preprocessorOptions: {
-        // less: {
-        //   modifyVars: {},
-        //   javascriptEnabled: true,
-        // },
         less: {
           javascriptEnabled: true,
           modifyVars: {},

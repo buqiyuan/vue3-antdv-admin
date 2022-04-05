@@ -87,7 +87,7 @@
     name: 'SystemMonitorServe',
   });
 
-  let intervalId = -1;
+  let intervalId: NodeJS.Timer;
 
   const sysInfo = reactive({
     runtime: {

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import type { ValidationRule } from 'ant-design-vue/es/form/Form';
+import type { RuleObject } from 'ant-design-vue/es/form/';
 import type { ComponentMapType } from './types/component';
 import { isNumber } from '@/utils/is';
 import { useI18n } from '@/hooks/useI18n';
@@ -34,7 +34,7 @@ function genType() {
 }
 
 export function setComponentRuleType(
-  rule: ValidationRule,
+  rule: RuleObject,
   component: ComponentMapType,
   valueFormat: string,
 ) {

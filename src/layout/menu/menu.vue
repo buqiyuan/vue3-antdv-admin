@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
   import { reactive, computed, watch } from 'vue';
-  import { type RouteRecordName, useRoute, useRouter } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import { Menu } from 'ant-design-vue';
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
@@ -35,8 +35,8 @@
   const currentRoute = useRoute();
   const router = useRouter();
   const state = reactive({
-    openKeys: [] as (RouteRecordName | undefined)[],
-    selectedKeys: [currentRoute.name],
+    openKeys: [] as string[],
+    selectedKeys: [currentRoute.name] as string[],
   });
 
   const menus = computed(() => {
@@ -52,24 +52,26 @@
   };
 
   // 获取当前打开的子菜单
-  function getOpenKeys() {
+  const getOpenKeys = () => {
     const meta = currentRoute.meta;
     if (meta?.activeMenu) {
       const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
       return targetMenu?.meta?.namePath ?? [meta?.activeMenu];
     }
 
-    return meta?.hideInMenu
-      ? state?.openKeys || []
-      : currentRoute.meta?.namePath ?? currentRoute.matched.slice(1).map((n) => n.name);
-  }
+    return (
+      meta?.hideInMenu
+        ? state?.openKeys || []
+        : currentRoute.meta?.namePath ?? currentRoute.matched.slice(1).map((n) => n.name)
+    ) as string[];
+  };
 
   // 监听菜单收缩状态
   watch(
     () => props.collapsed,
     (newVal) => {
       state.openKeys = newVal ? [] : getOpenKeys();
-      state.selectedKeys = [currentRoute.name];
+      state.selectedKeys = [currentRoute.name] as string[];
     },
   );
 
@@ -82,9 +84,9 @@
       const meta = currentRoute.meta;
       if (meta?.activeMenu) {
         const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
-        state.selectedKeys = [targetMenu?.name ?? meta?.activeMenu];
+        state.selectedKeys = [targetMenu?.name ?? meta?.activeMenu] as string[];
       } else {
-        state.selectedKeys = [currentRoute.meta?.activeMenu ?? currentRoute.name];
+        state.selectedKeys = [currentRoute.meta?.activeMenu ?? currentRoute.name] as string[];
       }
     },
     {

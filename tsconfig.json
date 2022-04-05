@@ -50,5 +50,10 @@
     "**/*.js",
     "**/*.md",
     "src/**/*.md",
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
   ]
 }

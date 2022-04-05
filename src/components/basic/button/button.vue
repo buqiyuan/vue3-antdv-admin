@@ -5,15 +5,17 @@
     :type="buttonType"
     :class="[`ant-btn-${type}`]"
   >
-    <template v-for="(value, key) in $slots" #[key]>
+    <template v-for="(_, key) in $slots" #[key]>
       <slot :name="key"></slot>
     </template>
   </Button>
 </template>
 <script lang="ts" setup>
-  import { computed, type PropType } from 'vue';
+  import { computed } from 'vue';
   import { Button } from 'ant-design-vue';
   import { buttonProps, type ButtonType } from './button';
+  import type { PropType, ComputedRef } from 'vue';
+  import type { ButtonType as AButtonType } from 'ant-design-vue/es/button';
 
   const props = defineProps({
     ...buttonProps(),
@@ -31,7 +33,7 @@
       : ['danger'].includes(type)
       ? 'primary'
       : 'default';
-  });
+  }) as ComputedRef<AButtonType>;
 </script>
 
 <style lang="less" scoped>
