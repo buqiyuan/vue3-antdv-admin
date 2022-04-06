@@ -36,6 +36,7 @@ module.exports = {
       },
     ],
     'no-empty-source': null,
+    'string-quotes': null,
     'named-grid-areas-no-invalid': null,
     'unicode-bom': 'never',
     'no-descending-specificity': null,
@@ -68,7 +69,6 @@ module.exports = {
       ],
       { severity: 'warning' },
     ],
-    'custom-property-pattern': '(?<=--)',
   },
   ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
   overrides: [

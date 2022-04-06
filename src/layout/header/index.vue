@@ -1,29 +1,33 @@
 <template>
   <Layout.Header :style="headerStyle" class="layout-header">
     <Space :size="20">
-      <span class="menu-fold" @click="() => emit('update:collapsed', !collapsed)">
-        <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
-      </span>
-      <Breadcrumb>
-        <template v-for="(routeItem, rotueIndex) in menus" :key="routeItem?.name">
-          <Breadcrumb.Item>
-            <TitleI18n :title="routeItem?.meta?.title" />
-            <template v-if="routeItem?.children?.length" #overlay>
-              <Menu :selected-keys="getSelectKeys(rotueIndex)">
-                <template v-for="childItem in routeItem?.children" :key="childItem.name">
-                  <Menu.Item
-                    v-if="!childItem.meta?.hideInMenu && !childItem.meta?.hideInBreadcrumb"
-                    :key="childItem.name"
-                    @click="clickMenuItem(childItem)"
-                  >
-                    <TitleI18n :title="childItem.meta?.title" />
-                  </Menu.Item>
+      <slot>
+        <Space :size="20">
+          <span class="menu-fold" @click="() => emit('update:collapsed', !collapsed)">
+            <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
+          </span>
+          <Breadcrumb>
+            <template v-for="(routeItem, rotueIndex) in menus" :key="routeItem?.name">
+              <Breadcrumb.Item>
+                <TitleI18n :title="routeItem?.meta?.title" />
+                <template v-if="routeItem?.children?.length" #overlay>
+                  <Menu :selected-keys="getSelectKeys(rotueIndex)">
+                    <template v-for="childItem in routeItem?.children" :key="childItem.name">
+                      <Menu.Item
+                        v-if="!childItem.meta?.hideInMenu && !childItem.meta?.hideInBreadcrumb"
+                        :key="childItem.name"
+                        @click="clickMenuItem(childItem)"
+                      >
+                        <TitleI18n :title="childItem.meta?.title" />
+                      </Menu.Item>
+                    </template>
+                  </Menu>
                 </template>
-              </Menu>
+              </Breadcrumb.Item>
             </template>
-          </Breadcrumb.Item>
-        </template>
-      </Breadcrumb>
+          </Breadcrumb>
+        </Space>
+      </slot>
     </Space>
     <Space :size="20">
       <Search />
@@ -102,9 +106,14 @@
   const router = useRouter();
   const route = useRoute();
   const userInfo = computed(() => userStore.userInfo);
-  const headerStyle = computed<CSSProperties>(() => ({
-    backgroundColor: themeStore.navTheme === 'realDark' ? '' : '#fff',
-  }));
+  const headerStyle = computed<CSSProperties>(() => {
+    const { navTheme, layout } = themeStore;
+    const isDark = navTheme === 'dark' && layout === 'topmenu';
+    return {
+      backgroundColor: navTheme === 'realDark' || isDark ? '' : 'rgba(255, 255, 255, 0.85)',
+      color: isDark ? 'rgba(255, 255, 255, 0.85)' : '',
+    };
+  });
 
   const menus = computed(() => {
     if (route.meta?.namePath) {

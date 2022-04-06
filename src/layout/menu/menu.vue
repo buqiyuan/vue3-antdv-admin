@@ -1,9 +1,9 @@
 <template>
-  <div class="menu-container">
+  <div class="menu-container" :style="{ height: isSideMenu ? 'calc(100vh - 64px)' : '' }">
     <Menu
-      v-model:open-keys="state.openKeys"
       v-model:selected-keys="state.selectedKeys"
-      mode="inline"
+      :open-keys="isSideMenu ? state.openKeys : []"
+      :mode="isSideMenu ? 'inline' : 'horizontal'"
       :theme="theme"
       :collapsed="props.collapsed"
       collapsible
@@ -22,6 +22,7 @@
   import { Menu, type MenuTheme } from 'ant-design-vue';
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
+  import { useThemeStore } from '@/store/modules/projectConfig';
   import { LOGIN_NAME } from '@/router/constant';
 
   const props = defineProps({
@@ -34,6 +35,7 @@
     },
   });
   const userStore = useUserStore();
+  const themeStore = useThemeStore();
   // 当前路由
   const currentRoute = useRoute();
   const router = useRouter();
@@ -48,7 +50,8 @@
       .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
   });
   console.log('menus', menus.value);
-
+  /** 侧边栏布局 */
+  const isSideMenu = computed(() => themeStore.layout === 'sidemenu');
   // 根据activeMenu获取指定的menu
   const getTargetMenuByActiveMenuName = (activeMenu: string) => {
     return router.getRoutes().find((n) => [n.name, n.path].includes(activeMenu));
@@ -110,7 +113,6 @@
 
 <style lang="less" scoped>
   .menu-container {
-    height: calc(100vh - 64px);
     overflow: auto;
 
     &::-webkit-scrollbar {
