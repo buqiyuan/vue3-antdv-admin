@@ -1,5 +1,5 @@
 <template>
-  <Layout.Header class="layout-header">
+  <Layout.Header :style="headerStyle" class="layout-header">
     <Space :size="20">
       <span class="menu-fold" @click="() => emit('update:collapsed', !collapsed)">
         <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
@@ -51,17 +51,16 @@
           </Menu>
         </template>
       </Dropdown>
-      <SettingOutlined />
+      <ProjectSetting />
     </Space>
   </Layout.Header>
 </template>
 
 <script lang="tsx" setup>
-  import { computed } from 'vue';
+  import { computed, type CSSProperties } from 'vue';
   import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
   import {
     QuestionCircleOutlined,
-    SettingOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     PoweroffOutlined,
@@ -77,26 +76,35 @@
     Breadcrumb,
     Avatar,
     Tooltip,
+    type MenuTheme,
   } from 'ant-design-vue';
-  import { Search, FullScreen } from './components';
+  import { Search, FullScreen, ProjectSetting } from './components/';
   import { LocalePicker } from '@/components/basic/locale-picker';
   import { useUserStore } from '@/store/modules/user';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { LOGIN_NAME } from '@/router/constant';
   import { TitleI18n } from '@/components/basic/title-i18n';
+  import { useThemeStore } from '@/store/modules/projectConfig';
 
   defineProps({
     collapsed: {
       type: Boolean,
     },
+    theme: {
+      type: String as PropType<MenuTheme>,
+    },
   });
   const emit = defineEmits(['update:collapsed']);
   const userStore = useUserStore();
+  const themeStore = useThemeStore();
   const lockscreenStore = useLockscreenStore();
 
   const router = useRouter();
   const route = useRoute();
   const userInfo = computed(() => userStore.userInfo);
+  const headerStyle = computed<CSSProperties>(() => ({
+    backgroundColor: themeStore.navTheme === 'realDark' ? '' : '#fff',
+  }));
 
   const menus = computed(() => {
     if (route.meta?.namePath) {
@@ -193,9 +201,9 @@
     display: flex;
     height: @header-height;
     padding: 0 20px;
-    background-color: #fff;
     justify-content: space-between;
     align-items: center;
+
     * {
       cursor: pointer;
     }

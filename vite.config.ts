@@ -52,8 +52,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     plugins: [
       vue(),
-      DefineOptions(), // https://github.com/sxzz/unplugin-vue-define-options
       WindiCSS(),
+      DefineOptions(), // https://github.com/sxzz/unplugin-vue-define-options
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
@@ -101,7 +101,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       // https://github.com/fi3ework/vite-plugin-checker
       checker({
         typescript: true,
-        vueTsc: true,
+        // vueTsc: true,
         eslint: {
           lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
         },
@@ -112,7 +112,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         less: {
           javascriptEnabled: true,
           modifyVars: {},
-          additionalData: `@import "@/styles/variables.less";`,
+          additionalData: `
+            @import "ant-design-vue/lib/style/themes/default.less";
+            @import "@/styles/variables.less";
+          `,
         },
         // scss: {
         //   additionalData: `

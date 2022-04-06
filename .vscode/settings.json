@@ -101,5 +101,6 @@
   "i18n-ally.enabledFrameworks": [
     "vue",
     "react"
-  ]
+  ],
+  "svg.preview.background": "custom"
 }

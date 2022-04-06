@@ -6,6 +6,10 @@
 
 <script lang="ts" setup>
   import { computed, type CSSProperties } from 'vue';
+  defineOptions({
+    name: 'svg-icon',
+  });
+
   const props = defineProps({
     prefix: {
       type: String,

@@ -4,6 +4,7 @@ module.exports = {
   customSyntax: 'postcss-html',
   extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
   rules: {
+    'function-no-unknown': null,
     'selector-class-pattern': null,
     'selector-pseudo-class-no-unknown': [
       true,
@@ -67,6 +68,7 @@ module.exports = {
       ],
       { severity: 'warning' },
     ],
+    'custom-property-pattern': '(?<=--)',
   },
   ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
   overrides: [
@@ -88,6 +90,11 @@ module.exports = {
           },
         ],
       },
+    },
+    {
+      files: ['*.less', '**/*.less'],
+      customSyntax: 'postcss-less',
+      extends: ['stylelint-config-standard', 'stylelint-config-recommended-vue'],
     },
   ],
 };

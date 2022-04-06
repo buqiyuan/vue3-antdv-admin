@@ -4,7 +4,7 @@
       v-model:open-keys="state.openKeys"
       v-model:selected-keys="state.selectedKeys"
       mode="inline"
-      theme="dark"
+      :theme="theme"
       :collapsed="props.collapsed"
       collapsible
       @click="clickMenuItem"
@@ -17,9 +17,9 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, computed, watch } from 'vue';
+  import { reactive, computed, watch, type PropType } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { Menu } from 'ant-design-vue';
+  import { Menu, type MenuTheme } from 'ant-design-vue';
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
   import { LOGIN_NAME } from '@/router/constant';
@@ -28,6 +28,9 @@
     collapsed: {
       // 侧边栏菜单是否收起
       type: Boolean,
+    },
+    theme: {
+      type: String as PropType<MenuTheme>,
     },
   });
   const userStore = useUserStore();

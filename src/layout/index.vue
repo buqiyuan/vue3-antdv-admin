@@ -5,18 +5,19 @@
       :width="asiderWidth"
       :trigger="null"
       collapsible
+      :theme="getTheme"
       class="layout-sider"
     >
       <!--      网站logo start-->
       <logo :collapsed="collapsed" />
       <!--      网站logo end-->
       <!--      侧边菜单栏start-->
-      <aside-menu :collapsed="collapsed" />
+      <aside-menu :collapsed="collapsed" :theme="getTheme" />
       <!--      侧边菜单栏end-->
     </Layout.Sider>
     <Layout>
       <!--      页头 start-->
-      <page-header v-model:collapsed="collapsed" />
+      <page-header v-model:collapsed="collapsed" :theme="getTheme" />
       <!--      页头end-->
       <!--      内容区域start-->
       <Layout.Content class="layout-content">
@@ -38,10 +39,13 @@
   import AsideMenu from './menu/menu.vue';
   import PageHeader from './header/index.vue';
   import PageFooter from './footer';
+  import { useThemeStore } from '@/store/modules/projectConfig';
 
+  const themeStore = useThemeStore();
   const collapsed = ref<boolean>(false);
   // 自定义侧边栏菜单收缩和展开时的宽度
   const asiderWidth = computed(() => (collapsed.value ? 80 : 220));
+  const getTheme = computed(() => (themeStore.navTheme === 'light' ? 'light' : 'dark'));
 </script>
 
 <style lang="less" scoped>
