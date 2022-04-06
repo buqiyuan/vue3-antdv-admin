@@ -11,22 +11,43 @@ jobs:
   repo-sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
 
       # 设置服务器时区为东八区
       - name: Set time zone
         run: sudo timedatectl set-timezone 'Asia/Shanghai'
 
-      - name: Setup Node.js v16.x
-        uses: actions/setup-node@v1
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '16'
+          registry-url: https://registry.npmjs.com/
 
-      - name: Install
-        run: yarn install --frozen-lockfile
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Cache ~/.pnpm-store
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-pnpm-store
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-preview-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-preview-${{ env.cache-name }}-
+            ${{ runner.os }}-preview-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: pnpm build
+        env:
+          FORCE_COLOR: 2
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

@@ -12,7 +12,7 @@
     "build": "cross-env NODE_ENV=production vite build",
     "preview": "npm run build && vite preview",
     "preview:dist": "vite preview",
-    "deploy": "npm run build && npx gh-pages -d dist",
+    "deploy": "bash deploy.sh",
     "clean:cache": "npx rimraf node_modules/.cache/ && npx rimraf node_modules/.vite",
     "clean:lib": "npx rimraf node_modules",
     "lint:eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
@@ -29,7 +29,7 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "@vue/runtime-core": "^3.2.31",
-    "@vueuse/core": "^8.2.4",
+    "@vueuse/core": "^8.2.5",
     "ant-design-vue": "3.1.1",
     "axios": "^0.26.1",
     "core-js": "^3.21.1",
