@@ -59,9 +59,12 @@
   import { Descriptions, Card, Tag } from 'ant-design-vue';
   const { pkg, lastBuildTime } = __APP_INFO__;
 
-  const BlankLink = ({ url = '', text }) => (
-    <a href={`https://www.npmjs.com/package/${url}`} target="_blank">
-      {text}
-    </a>
-  );
+  const BlankLink = ({ url = '', text }) => {
+    const target = /^http(s)?:/.test(url) ? url : `https://www.npmjs.com/package/${url}`;
+    return (
+      <a href={target} target="_blank">
+        {text}
+      </a>
+    );
+  };
 </script>
