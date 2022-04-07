@@ -1,8 +1,8 @@
 <template>
   <div class="login-box">
     <div class="login-logo">
-      <svg-icon name="logo" :size="45" />
-      <!-- <img src="@/assets/images/logo.png" alt="" /> -->
+      <!-- <svg-icon name="logo" :size="45" /> -->
+      <img src="~@/assets/images/logo.png" width="45" />
       <h1 class="mb-0 ml-2 text-3xl font-bold">Antd Admin</h1>
     </div>
     <a-form layout="horizontal" :model="state.formInline" @submit.prevent="handleSubmit">
@@ -55,7 +55,6 @@
   import { message, Modal } from 'ant-design-vue';
   import { useUserStore } from '@/store/modules/user';
   import { getImageCaptcha } from '@/api/login';
-  import { SvgIcon } from '@/components/basic/svg-icon';
 
   const state = reactive({
     loading: false,
