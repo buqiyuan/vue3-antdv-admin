@@ -82,13 +82,16 @@
 </script>
 
 <style lang="less" scoped>
+  @import '@/styles/theme.less';
+
+  .themeBgColor(box);
+
   .box {
     display: flex;
     padding: 12px;
     width: 100%;
     height: calc(100vh - 280px);
     flex-direction: column;
-    background-color: white;
 
     img {
       min-height: 0;

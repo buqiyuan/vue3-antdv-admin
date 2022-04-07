@@ -100,10 +100,22 @@ export const baseColumns: TableColumnItem[] = [
     title: '创建时间',
     dataIndex: 'createdAt',
     width: 120,
+    formItemProps: {
+      component: 'DatePicker',
+      componentProps: {
+        class: 'w-full',
+      },
+    },
   },
   {
     title: '修改时间',
     dataIndex: 'updatedAt',
     width: 120,
+    formItemProps: {
+      component: 'DatePicker',
+      componentProps: {
+        class: 'w-full',
+      },
+    },
   },
 ];

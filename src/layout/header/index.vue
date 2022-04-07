@@ -1,29 +1,33 @@
 <template>
-  <Layout.Header class="layout-header">
+  <Layout.Header :style="headerStyle" class="layout-header">
     <Space :size="20">
-      <span class="menu-fold" @click="() => emit('update:collapsed', !collapsed)">
-        <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
-      </span>
-      <Breadcrumb>
-        <template v-for="(routeItem, rotueIndex) in menus" :key="routeItem?.name">
-          <Breadcrumb.Item>
-            <TitleI18n :title="routeItem?.meta?.title" />
-            <template v-if="routeItem?.children?.length" #overlay>
-              <Menu :selected-keys="getSelectKeys(rotueIndex)">
-                <template v-for="childItem in routeItem?.children" :key="childItem.name">
-                  <Menu.Item
-                    v-if="!childItem.meta?.hideInMenu && !childItem.meta?.hideInBreadcrumb"
-                    :key="childItem.name"
-                    @click="clickMenuItem(childItem)"
-                  >
-                    <TitleI18n :title="childItem.meta?.title" />
-                  </Menu.Item>
+      <slot>
+        <Space :size="20">
+          <span class="menu-fold" @click="() => emit('update:collapsed', !collapsed)">
+            <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
+          </span>
+          <Breadcrumb>
+            <template v-for="(routeItem, rotueIndex) in menus" :key="routeItem?.name">
+              <Breadcrumb.Item>
+                <TitleI18n :title="routeItem?.meta?.title" />
+                <template v-if="routeItem?.children?.length" #overlay>
+                  <Menu :selected-keys="getSelectKeys(rotueIndex)">
+                    <template v-for="childItem in routeItem?.children" :key="childItem.name">
+                      <Menu.Item
+                        v-if="!childItem.meta?.hideInMenu && !childItem.meta?.hideInBreadcrumb"
+                        :key="childItem.name"
+                        @click="clickMenuItem(childItem)"
+                      >
+                        <TitleI18n :title="childItem.meta?.title" />
+                      </Menu.Item>
+                    </template>
+                  </Menu>
                 </template>
-              </Menu>
+              </Breadcrumb.Item>
             </template>
-          </Breadcrumb.Item>
-        </template>
-      </Breadcrumb>
+          </Breadcrumb>
+        </Space>
+      </slot>
     </Space>
     <Space :size="20">
       <Search />
@@ -31,7 +35,6 @@
         <LockOutlined @click="lockscreenStore.setLock(true)" />
       </Tooltip>
       <FullScreen />
-      <svg-icon :name="isDark ? 'sun' : 'moon'" @click="toggleDark" />
       <LocalePicker />
       <Dropdown placement="bottomRight">
         <Avatar :src="userInfo.headImg" :alt="userInfo.name">{{ userInfo.name }}</Avatar>
@@ -52,23 +55,21 @@
           </Menu>
         </template>
       </Dropdown>
-      <SettingOutlined />
+      <ProjectSetting />
     </Space>
   </Layout.Header>
 </template>
 
 <script lang="tsx" setup>
-  import { computed } from 'vue';
+  import { computed, type CSSProperties } from 'vue';
   import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
   import {
     QuestionCircleOutlined,
-    SettingOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     PoweroffOutlined,
     LockOutlined,
   } from '@ant-design/icons-vue';
-  import { useDark, useToggle } from '@vueuse/core';
   import {
     Layout,
     message,
@@ -79,28 +80,40 @@
     Breadcrumb,
     Avatar,
     Tooltip,
+    type MenuTheme,
   } from 'ant-design-vue';
-  import { Search, FullScreen } from './components';
+  import { Search, FullScreen, ProjectSetting } from './components/';
   import { LocalePicker } from '@/components/basic/locale-picker';
   import { useUserStore } from '@/store/modules/user';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { LOGIN_NAME } from '@/router/constant';
   import { TitleI18n } from '@/components/basic/title-i18n';
+  import { useThemeStore } from '@/store/modules/projectConfig';
 
   defineProps({
     collapsed: {
       type: Boolean,
     },
+    theme: {
+      type: String as PropType<MenuTheme>,
+    },
   });
   const emit = defineEmits(['update:collapsed']);
   const userStore = useUserStore();
+  const themeStore = useThemeStore();
   const lockscreenStore = useLockscreenStore();
 
   const router = useRouter();
   const route = useRoute();
-  const isDark = useDark();
-  const toggleDark = useToggle(isDark);
   const userInfo = computed(() => userStore.userInfo);
+  const headerStyle = computed<CSSProperties>(() => {
+    const { navTheme, layout } = themeStore;
+    const isDark = navTheme === 'dark' && layout === 'topmenu';
+    return {
+      backgroundColor: navTheme === 'realDark' || isDark ? '' : 'rgba(255, 255, 255, 0.85)',
+      color: isDark ? 'rgba(255, 255, 255, 0.85)' : '',
+    };
+  });
 
   const menus = computed(() => {
     if (route.meta?.namePath) {
@@ -197,9 +210,9 @@
     display: flex;
     height: @header-height;
     padding: 0 20px;
-    background-color: #fff;
     justify-content: space-between;
     align-items: center;
+
     * {
       cursor: pointer;
     }

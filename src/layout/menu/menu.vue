@@ -1,10 +1,10 @@
 <template>
-  <div class="menu-container">
+  <div class="menu-container" :style="{ height: isSideMenu ? 'calc(100vh - 64px)' : '' }">
     <Menu
-      v-model:open-keys="state.openKeys"
       v-model:selected-keys="state.selectedKeys"
-      mode="inline"
-      theme="dark"
+      :open-keys="isSideMenu ? state.openKeys : []"
+      :mode="isSideMenu ? 'inline' : 'horizontal'"
+      :theme="theme"
       :collapsed="props.collapsed"
       collapsible
       @click="clickMenuItem"
@@ -17,11 +17,12 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, computed, watch } from 'vue';
+  import { reactive, computed, watch, type PropType } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { Menu } from 'ant-design-vue';
+  import { Menu, type MenuTheme } from 'ant-design-vue';
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
+  import { useThemeStore } from '@/store/modules/projectConfig';
   import { LOGIN_NAME } from '@/router/constant';
 
   const props = defineProps({
@@ -29,8 +30,12 @@
       // 侧边栏菜单是否收起
       type: Boolean,
     },
+    theme: {
+      type: String as PropType<MenuTheme>,
+    },
   });
   const userStore = useUserStore();
+  const themeStore = useThemeStore();
   // 当前路由
   const currentRoute = useRoute();
   const router = useRouter();
@@ -45,7 +50,8 @@
       .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
   });
   console.log('menus', menus.value);
-
+  /** 侧边栏布局 */
+  const isSideMenu = computed(() => themeStore.layout === 'sidemenu');
   // 根据activeMenu获取指定的menu
   const getTargetMenuByActiveMenuName = (activeMenu: string) => {
     return router.getRoutes().find((n) => [n.name, n.path].includes(activeMenu));
@@ -107,7 +113,6 @@
 
 <style lang="less" scoped>
   .menu-container {
-    height: calc(100vh - 64px);
     overflow: auto;
 
     &::-webkit-scrollbar {

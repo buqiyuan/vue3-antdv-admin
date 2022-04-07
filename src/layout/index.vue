@@ -1,31 +1,28 @@
 <template>
   <Layout class="layout">
     <Layout.Sider
+      v-if="themeStore.layout === 'sidemenu'"
       v-model:collapsed="collapsed"
       :width="asiderWidth"
       :trigger="null"
       collapsible
+      :theme="getTheme"
       class="layout-sider"
     >
-      <!--      网站logo start-->
-      <logo :collapsed="collapsed" />
-      <!--      网站logo end-->
-      <!--      侧边菜单栏start-->
-      <aside-menu :collapsed="collapsed" />
-      <!--      侧边菜单栏end-->
+      <Logo :collapsed="collapsed" />
+      <AsideMenu :collapsed="collapsed" :theme="getTheme" />
     </Layout.Sider>
     <Layout>
-      <!--      页头 start-->
-      <page-header v-model:collapsed="collapsed" />
-      <!--      页头end-->
-      <!--      内容区域start-->
+      <PageHeader v-model:collapsed="collapsed" :theme="getTheme">
+        <template v-if="themeStore.layout === 'topmenu'" #default>
+          <Logo :collapsed="collapsed" />
+          <AsideMenu :collapsed="collapsed" :theme="getTheme" />
+        </template>
+      </PageHeader>
       <Layout.Content class="layout-content">
         <tabs-view />
       </Layout.Content>
-      <!--      内容区域end-->
-      <!--      页脚start-->
-      <page-footer />
-      <!--      页脚end-->
+      <PageFooter />
     </Layout>
   </Layout>
 </template>
@@ -38,10 +35,13 @@
   import AsideMenu from './menu/menu.vue';
   import PageHeader from './header/index.vue';
   import PageFooter from './footer';
+  import { useThemeStore } from '@/store/modules/projectConfig';
 
+  const themeStore = useThemeStore();
   const collapsed = ref<boolean>(false);
   // 自定义侧边栏菜单收缩和展开时的宽度
   const asiderWidth = computed(() => (collapsed.value ? 80 : 220));
+  const getTheme = computed(() => (themeStore.navTheme === 'light' ? 'light' : 'dark'));
 </script>
 
 <style lang="less" scoped>

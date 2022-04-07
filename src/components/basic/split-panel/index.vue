@@ -47,11 +47,15 @@
 </script>
 
 <style lang="less">
+  @import '@/styles/theme.less';
+
+  @classNames: split-wrapper, separator;
+  .themeBgColor(@classNames);
+
   .split-wrapper {
     display: flex;
     width: 100%;
     height: 100%;
-    background-color: white;
 
     .scalable {
       position: relative;
@@ -73,7 +77,6 @@
         width: 14px;
         height: 100%;
         cursor: col-resize;
-        background-color: white;
         box-shadow: -4px -2px 4px -5px rgba(0, 0, 0, 0.35), 4px 3px 4px -5px rgba(0, 0, 0, 0.35);
         align-items: center;
         justify-content: center;

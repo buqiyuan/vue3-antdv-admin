@@ -7,10 +7,6 @@
 <script lang="ts" setup>
   import { computed, type CSSProperties } from 'vue';
 
-  defineOptions({
-    name: 'svg-icon',
-  });
-
   const importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
     requireContext.keys().forEach(requireContext);
   try {
@@ -19,10 +15,14 @@
     console.log(error);
   }
 
+  defineOptions({
+    name: 'svg-icon',
+  });
+
   const props = defineProps({
     prefix: {
       type: String,
-      default: 'icon',
+      default: 'svg-icon',
     },
     name: {
       type: String,
@@ -33,9 +33,7 @@
       default: 16,
     },
   });
-
   const symbolId = computed(() => `#${props.prefix}-${props.name}`);
-
   const getStyle = computed((): CSSProperties => {
     const { size } = props;
     const s = `${size}`.replace('px', '').concat('px');

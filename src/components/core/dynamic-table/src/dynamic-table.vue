@@ -3,7 +3,7 @@
     <SchemaForm
       v-if="search"
       ref="queryFormRef"
-      class="bg-white mb-16px pt-24px pr-24px"
+      class="bg-white dark:bg-black mb-16px pt-24px pr-24px"
       submit-on-reset
       v-bind="getFormProps"
       :table-instance="tableAction"
@@ -14,7 +14,7 @@
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </SchemaForm>
-    <div class="bg-white">
+    <div class="bg-white dark:bg-black">
       <ToolBar
         v-if="showToolBar"
         :title="headerTitle"
@@ -144,6 +144,7 @@
 <style lang="less" scoped>
   :deep(.ant-table-wrapper) {
     padding: 0 6px 6px 6px;
+
     .ant-table {
       .ant-table-title {
         display: flex;

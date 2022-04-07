@@ -227,14 +227,18 @@
 </script>
 
 <style lang="less" scoped>
+  .dark .tabs-view {
+    border-top: 1px solid black;
+  }
+
   .tabs-view {
     border-top: 1px solid #eee;
 
     :deep(.tabs) {
       .ant-tabs-nav {
+        @apply bg-white dark:bg-black;
         padding: 4px 20px 0 10px;
         margin: 0;
-        background-color: white;
         user-select: none;
       }
 
@@ -246,6 +250,7 @@
         display: flex;
         padding: 0;
         margin: 0;
+
         .anticon-close {
           padding-left: 6px;
         }
@@ -255,6 +260,7 @@
         .ant-tabs-tab-remove {
           width: 0;
         }
+
         .anticon-close {
           width: 0;
           visibility: hidden;
@@ -267,6 +273,7 @@
             visibility: visible;
             padding-left: 6px;
           }
+
           .ant-tabs-tab-remove {
             width: unset;
           }

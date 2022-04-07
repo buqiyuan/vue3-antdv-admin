@@ -21,6 +21,7 @@ const __APP_INFO__ = {
   lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
 
+// https://next.cli.vuejs.org/
 module.exports = defineConfig({
   // lintOnSave: false, //关闭eslint检查
   // publicPath: isDev ? '' : querystring.unescape('<%=request.getContextPath()%>'),
@@ -28,14 +29,23 @@ module.exports = defineConfig({
   // filenameHashing: false,
   productionSourceMap: false,
   css: {
-    // requireModuleExtension: true, // 是否开启CSSmodule并保留xxx.module.css后缀
     loaderOptions: {
+      // css: {
+      //   modules: {
+      //     auto: (path) => {
+      //       return path.includes('ant-design-vue/dist/antd.dark.css');
+      //     },
+      //   },
+      // },
       less: {
         lessOptions: {
           javascriptEnabled: true,
           modifyVars: {},
         },
-        additionalData: `@import "~@/styles/variables.less";`,
+        additionalData: `
+          @import "ant-design-vue/lib/style/themes/default.less";
+          @import "~@/styles/variables.less";
+      `,
       },
       // sass: {
       //   additionalData: `
@@ -63,6 +73,12 @@ module.exports = defineConfig({
       return args;
     });
 
+    config.module
+      .rule('css')
+      .exclude.add(resolve('node_modules/ant-design-vue/dist/antd.dark.css'))
+      .end();
+    config.module.rule('raw-css').resourceQuery(/raw/).type('asset/source');
+
     // 忽略解析markdown文件
     config.module.noParse(/\.md$/);
     if (IS_PROD) {
@@ -79,6 +95,7 @@ module.exports = defineConfig({
         });
     }
 
+    // config.module.rule('css').test(/\.ts$/).resourceQuery(/raw/).type('asset/source').end();
     // svg rule loader
     config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end();
 
@@ -90,7 +107,7 @@ module.exports = defineConfig({
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
-        symbolId: 'icon-[name]',
+        symbolId: 'svg-icon-[name]',
       });
     config.when(IS_PROD, (config) => {
       // split
