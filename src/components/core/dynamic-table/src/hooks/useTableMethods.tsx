@@ -37,7 +37,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @param {boolean} flush 是否将页数重置到第一页
    * @description 获取表格数据
    */
-  const fetchData = async (params = {}) => {
+  const fetchData = async (params = {}, rest?: OnChangeCallbackParams) => {
     // 如果用户没有提供dataSource并且dataRequest是一个函数，那就进行接口请求
     if (
       Object.is(props.dataSource, undefined) &&
@@ -58,7 +58,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       }
       loadingRef.value = true;
       const data = await props
-        ?.dataRequest?.(queryParams)
+        ?.dataRequest?.(queryParams, rest)
         .finally(() => (loadingRef.value = false));
 
       if (data?.pagination) {
@@ -103,13 +103,13 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   /**
    * @description 分页改变
    */
-  const handleTableChange: OnChangeCallbackParams = (...rest) => {
+  const handleTableChange = (...rest: OnChangeCallbackParams) => {
     // const [pagination, filters, sorter] = rest;
     const [pagination] = rest;
     if (Object.keys(pagination).length) {
       Object.assign(unref(paginationRef), pagination);
     }
-    fetchData();
+    fetchData(pagination, rest);
     emit('change', ...rest);
   };
 

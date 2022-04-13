@@ -50,6 +50,7 @@ export const columns: TableColumn<ListItemType>[] = [
     title: '姓名',
     align: 'center',
     dataIndex: 'name',
+    sorter: true,
     formItemProps: {
       required: true,
     },

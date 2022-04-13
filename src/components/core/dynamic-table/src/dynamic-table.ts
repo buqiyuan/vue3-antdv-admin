@@ -85,7 +85,7 @@ export const dynamicTableProps = {
 export type DynamicTableProps = ExtractPropTypes<typeof dynamicTableProps>;
 
 export const dynamicTableEmits = {
-  change: (...rest: Parameters<NonNullable<OnChangeCallbackParams>>) => rest.length === 4,
+  change: (...rest: OnChangeCallbackParams) => rest.length === 4,
   'toggle-advanced': (isAdvanced: boolean) => isBoolean(isAdvanced),
 };
 

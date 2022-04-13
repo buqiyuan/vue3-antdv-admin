@@ -18,11 +18,16 @@
 <script lang="ts" setup>
   import { Alert, Card } from 'ant-design-vue';
   import { columns, tableData } from './columns';
-  import { useTable } from '@/components/core/dynamic-table';
+  import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
 
   const [DynamicTable, dynamicTableInstance] = useTable();
 
-  const loadData = async (params): Promise<API.TableListResult> => {
+  const loadData = async (
+    params,
+    onChangeParams: OnChangeCallbackParams,
+  ): Promise<API.TableListResult> => {
+    console.log('onChangeParams', onChangeParams);
+
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
