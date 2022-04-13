@@ -85,14 +85,14 @@ export const dynamicTableProps = {
 export type DynamicTableProps = ExtractPropTypes<typeof dynamicTableProps>;
 
 export const dynamicTableEmits = {
-  change: (...rest: Parameters<NonNullable<OnChangeCallbackParams>>) => rest.length === 4,
+  change: (...rest: OnChangeCallbackParams) => rest.length === 4,
   'toggle-advanced': (isAdvanced: boolean) => isBoolean(isAdvanced),
 };
 
 export type DynamicTableEmits = typeof dynamicTableEmits;
 
 export type DynamicTableEmitFn = EmitFn<DynamicTableEmits>;
-// @ts-ignore:next-line
+// @ts-ignore
 export type DynamicTableInstance = InstanceType<typeof DynamicTable>;
 
 // 默认支持的插槽
