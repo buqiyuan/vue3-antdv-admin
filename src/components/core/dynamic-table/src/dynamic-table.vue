@@ -8,7 +8,7 @@
       v-bind="getFormProps"
       :table-instance="tableAction"
       @toggle-advanced="(e) => $emit('toggle-advanced', e)"
-      @submit="queryTable"
+      @submit="handleSubmit"
     >
       <template v-for="item in getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
         <slot :name="item" v-bind="data || {}"></slot>
@@ -104,8 +104,15 @@
   const { tableData, queryFormRef, getBindValues } = tableState;
   // 表格内部方法
   const tableMethods = useTableMethods({ state: tableState, props, emit });
-  const { getColumnKey, setProps, fetchData, queryTable, reload, handleTableChange, getComponent } =
-    tableMethods;
+  const {
+    getColumnKey,
+    setProps,
+    fetchData,
+    handleSubmit,
+    reload,
+    handleTableChange,
+    getComponent,
+  } = tableMethods;
 
   // 搜索表单
   const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = useTableForm({
