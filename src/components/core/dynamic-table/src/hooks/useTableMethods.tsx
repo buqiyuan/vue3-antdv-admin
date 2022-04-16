@@ -27,8 +27,8 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   /**
    * @description 表格查询
    */
-  const queryTable = (params) => {
-    params.page = 1;
+  const handleSubmit = (params, page = 1) => {
+    params.page = page;
     fetchData(params);
   };
 
@@ -103,13 +103,16 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   /**
    * @description 分页改变
    */
-  const handleTableChange = (...rest: OnChangeCallbackParams) => {
+  const handleTableChange = async (...rest: OnChangeCallbackParams) => {
     // const [pagination, filters, sorter] = rest;
     const [pagination] = rest;
-    if (Object.keys(pagination).length) {
-      Object.assign(unref(paginationRef), pagination);
+    let params = {};
+    if (queryFormRef.value) {
+      const values = await queryFormRef.value.validate();
+      params = queryFormRef.value.handleFormValues(values);
     }
-    fetchData(pagination, rest);
+    Object.assign(unref(paginationRef), pagination || {});
+    fetchData(params, rest);
     emit('change', ...rest);
   };
 
@@ -129,7 +132,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   return {
     setProps,
     getComponent,
-    queryTable,
+    handleSubmit,
     handleTableChange,
     getColumnKey,
     fetchData,
