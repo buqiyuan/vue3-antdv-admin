@@ -1,4 +1,4 @@
-import { isNavigationFailure } from 'vue-router';
+import { isNavigationFailure, RouteLocationNormalized } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
 import { type WhiteNameList, LOGIN_NAME, REDIRECT_NAME } from './constant';
 import type { Router } from 'vue-router';
@@ -58,14 +58,19 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
     }
   });
 
-  router.afterEach((to, _, failure) => {
+  /** 获取路由对应的组件名称 */
+  const getComponentName = (route: RouteLocationNormalized) => {
+    return route.matched.find((item) => item.name === route.name)?.components?.default.name;
+  };
+
+  router.afterEach((to, from, failure) => {
     const keepAliveStore = useKeepAliveStore();
 
     if (isNavigationFailure(failure)) {
       console.error('failed navigation', failure);
     }
     // 在这里设置需要缓存的组件名称
-    const componentName = to.matched.find((item) => item.name == to.name)?.components?.default.name;
+    const componentName = getComponentName(to);
     // 判断当前页面是否开启缓存，如果开启，则将当前页面的 componentName 信息存入 keep-alive 全局状态
     if (to.meta?.keepAlive) {
       // 需要缓存的组件
@@ -83,7 +88,8 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
       }
     }
     // 如果进入的是 Redirect 页面，则也将离开页面的缓存清空
-    if (to.name == REDIRECT_NAME) {
+    if (to.name === REDIRECT_NAME) {
+      const componentName = getComponentName(from);
       componentName && keepAliveStore.remove(componentName);
     }
     NProgress.done(); // finish progress bar

@@ -1,6 +1,6 @@
 <template>
   <!-- 目录 -->
-  <template v-if="props.menuInfo?.meta?.type === 0 || props.menuInfo?.children?.length">
+  <template v-if="isShowSubMenu">
     <Menu.SubMenu :key="props.menuInfo?.name" v-bind="$attrs">
       <template #title>
         <span>
@@ -44,6 +44,14 @@
     return [...(props.menuInfo?.children || [])]
       .filter((n) => !n.meta?.hideInMenu)
       .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
+  });
+
+  const isShowSubMenu = computed(() => {
+    const menuInfo = props.menuInfo;
+    return (
+      menuInfo?.meta?.type === 0 ||
+      (!Object.is(menuInfo?.meta?.hideChildrenInMenu, true) && menuInfo?.children?.length)
+    );
   });
 </script>
 

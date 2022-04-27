@@ -27,7 +27,9 @@ declare module 'vue-router' {
     /** 菜单图标 */
     icon?: string;
     /** 当前页面切换动画 */
-    transitionName?: string;
+    transitionName?: string | false;
+    /** @name 在菜单中隐藏子节点 */
+    hideChildrenInMenu?: boolean;
     /** 不在菜单中显示 */
     hideInMenu?: boolean;
     /** 不在面包屑导航中显示 */

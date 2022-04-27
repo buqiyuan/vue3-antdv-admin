@@ -80,7 +80,11 @@
     <div class="tabs-view-content">
       <router-view v-slot="{ Component }">
         <template v-if="Component">
-          <transition name="fade-transform" mode="out-in" appear>
+          <transition
+            :name="Object.is(route.meta?.transitionName, false) ? '' : 'fade-transform'"
+            mode="out-in"
+            appear
+          >
             <keep-alive :include="keepAliveComponents">
               <component :is="Component" :key="route.fullPath" />
             </keep-alive>
@@ -183,7 +187,7 @@
   };
   // 切换页面
   const changePage = (key) => {
-    router.push(key);
+    Object.is(route.fullPath, key) || router.push(key);
   };
 
   // 刷新页面

@@ -67,6 +67,12 @@ module.exports = defineConfig({
     // 配置相关loader，支持修改，添加和替换相关的loader
     config.resolve.alias.set('@', resolve('src'));
     config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js');
+    if (process.env.DEBUG_ANTDV) {
+      console.info('DEBUG_ANTDV', process.env.DEBUG_ANTDV);
+      config.resolve.alias.set('ant-design-vue/es/', 'ant-design-vue/components/');
+      config.resolve.alias.set('ant-design-vue/lib/', 'ant-design-vue/components/');
+      config.resolve.alias.set('vue', 'ant-design-vue/node_modules/vue');
+    }
 
     config.plugin('html').tap((args) => {
       args[0].title = 'vue3-antd-admin管理系统';
