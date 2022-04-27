@@ -1,6 +1,6 @@
 <template>
   <ConfigProvider :locale="getAntdLocale">
-    <router-view v-slot="{ Component }">
+    <router-view #="{ Component }">
       <component :is="Component" />
     </router-view>
     <LockScreen />

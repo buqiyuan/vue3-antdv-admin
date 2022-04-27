@@ -182,6 +182,55 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import(/* webpackChunkName: "demos-button" */ '@/views/demos/icons/Iconfont.vue'),
       },
+      {
+        path: 'nested-routes',
+        name: `${moduleName}-nested-routes`,
+        redirect: { name: `${moduleName}-nested-routes-one` },
+        meta: {
+          title: '嵌套路由',
+          icon: 'icon-zhuomian',
+          keepAlive: true,
+          hideChildrenInMenu: true,
+          transitionName: false,
+        },
+        component: () =>
+          import(/* webpackChunkName: "nested-routes" */ '@/views/demos/nested-routes/index.vue'),
+        children: [
+          {
+            path: 'route-one',
+            name: `${moduleName}-nested-routes-one`,
+            meta: {
+              title: '路由一',
+              icon: 'icon-zhuomian',
+              hideInMenu: true,
+              activeMenu: `${moduleName}-nested-routes`,
+            },
+            component: () => import('@/views/demos/nested-routes/route-one.vue'),
+          },
+          {
+            path: 'route-two',
+            name: `${moduleName}-nested-routes-two`,
+            meta: {
+              title: '路由二',
+              icon: 'icon-zhuomian',
+              hideInMenu: true,
+              activeMenu: `${moduleName}-nested-routes`,
+            },
+            component: () => import('@/views/demos/nested-routes/route-two.vue'),
+          },
+          {
+            path: 'route-three',
+            name: `${moduleName}-nested-routes-three`,
+            meta: {
+              title: '路由三',
+              icon: 'icon-zhuomian',
+              hideInMenu: true,
+              activeMenu: `${moduleName}-nested-routes`,
+            },
+            component: () => import('@/views/demos/nested-routes/route-three.vue'),
+          },
+        ],
+      },
     ],
   },
 ];
