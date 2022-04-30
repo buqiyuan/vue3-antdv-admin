@@ -35,7 +35,7 @@
           ...params,
         });
         // 手动设置搜索表单的搜索项
-        dynamicTableInstance?.getQueryFormRef()?.updateSchema([
+        dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
           {
             field: 'price',
             componentProps: {
