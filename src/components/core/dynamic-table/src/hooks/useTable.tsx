@@ -35,7 +35,7 @@ export function useTable(props?: Partial<DynamicTableProps>) {
       if (Reflect.has(target, key)) {
         return unref(target);
       }
-      if (Reflect.has(target.value, key)) {
+      if (target.value && Reflect.has(target.value, key)) {
         return target.value[key];
       }
       return async (...rest) => {

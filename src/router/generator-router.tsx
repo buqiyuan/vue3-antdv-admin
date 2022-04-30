@@ -114,7 +114,7 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
       .getRoutes()
       .filter(
         (item) =>
-          (!item.children.length || Object.is(item.meta.hideChildrenInMenu, true)) &&
+          (!item.children.length || Object.is(item.meta?.hideChildrenInMenu, true)) &&
           !outsideLayout.some((n) => n.name === item.name),
       );
     // 清空所有路由

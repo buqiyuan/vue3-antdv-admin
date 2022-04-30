@@ -87,7 +87,7 @@
     const { data } = await getWzryHeroList(params);
 
     tableData = data.list;
-    dynamicTableInstance?.getQueryFormRef()?.updateSchema([
+    dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
       {
         field: 'skin_name',
         componentProps: {

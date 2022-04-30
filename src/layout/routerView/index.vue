@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-view v-slot="{ Component }">
+    <!-- <router-view v-slot="{ Component }">
       <template v-if="Component">
         <transition mode="out-in">
           <suspense>
@@ -11,7 +11,7 @@
           </suspense>
         </transition>
       </template>
-    </router-view>
+    </router-view> -->
   </div>
 </template>
 

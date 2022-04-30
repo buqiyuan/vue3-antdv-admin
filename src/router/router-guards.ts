@@ -65,6 +65,7 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
 
   router.afterEach((to, from, failure) => {
     const keepAliveStore = useKeepAliveStore();
+    const token = Storage.get(ACCESS_TOKEN_KEY, null);
 
     if (isNavigationFailure(failure)) {
       console.error('failed navigation', failure);
@@ -91,6 +92,10 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
     if (to.name === REDIRECT_NAME) {
       const componentName = getComponentName(from);
       componentName && keepAliveStore.remove(componentName);
+    }
+    // 如果用户已登出，则清空所有缓存的组件
+    if (!token) {
+      keepAliveStore.clear();
     }
     NProgress.done(); // finish progress bar
   });

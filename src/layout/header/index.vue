@@ -61,7 +61,7 @@
 </template>
 
 <script lang="tsx" setup>
-  import { computed, type CSSProperties } from 'vue';
+  import { computed, nextTick, type CSSProperties } from 'vue';
   import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
   import {
     QuestionCircleOutlined,
@@ -85,6 +85,7 @@
   import { Search, FullScreen, ProjectSetting } from './components/';
   import { LocalePicker } from '@/components/basic/locale-picker';
   import { useUserStore } from '@/store/modules/user';
+  import { useKeepAliveStore } from '@/store/modules/keepAlive';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { LOGIN_NAME } from '@/router/constant';
   import { TitleI18n } from '@/components/basic/title-i18n';
@@ -102,6 +103,7 @@
   const userStore = useUserStore();
   const themeStore = useThemeStore();
   const lockscreenStore = useLockscreenStore();
+  const keepAliveStore = useKeepAliveStore();
 
   const router = useRouter();
   const route = useRoute();
@@ -188,9 +190,11 @@
           // logout({})
           await userStore.logout();
         }
-        message.success('成功退出登录');
+        keepAliveStore.clear();
         // 移除标签页
         localStorage.clear();
+        message.success('成功退出登录');
+        await nextTick();
         router.replace({
           name: LOGIN_NAME,
           query: {
