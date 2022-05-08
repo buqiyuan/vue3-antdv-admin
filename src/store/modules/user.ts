@@ -84,6 +84,7 @@ export const useUserStore = defineStore({
 
         return { menus, perms, userInfo };
       } catch (error) {
+        return Promise.reject(error);
         // return this.logout();
       }
     },
