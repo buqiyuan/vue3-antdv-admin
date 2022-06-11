@@ -28,7 +28,7 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const innerPropsRef = ref<Partial<DynamicTableProps>>();
 
   // 分页配置参数
-  const paginationRef = ref<Pagination>(false);
+  const paginationRef = ref<NonNullable<Pagination>>(false);
 
   if (!Object.is(props.pagination, false)) {
     paginationRef.value = {

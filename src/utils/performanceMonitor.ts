@@ -166,7 +166,7 @@ class PerformanceMonitor {
    * 不支持时使用img的方式上报
    */
   sendReport(performance, reportUrl, isSendBeacon = false) {
-    if (isSendBeacon && navigator.sendBeacon) {
+    if (isSendBeacon) {
       this.sendBeacon(performance, reportUrl);
       return;
     }

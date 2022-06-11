@@ -1,43 +1,42 @@
-import { computed, onMounted, reactive, toRefs } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 
-interface Battery {
+export type Battery = {
   charging: boolean; // 当前电池是否正在充电
   chargingTime: number; // 距离充电完毕还需多少秒，如果为0则充电完毕
   dischargingTime: number; // 代表距离电池耗电至空且挂起需要多少秒
-  level: number; // 代表电量的放大等级，这个值在 0.0 至 1.0 之间
+  /**  代表电量的放大等级，这个值在 0.0 至 1.0 之间 */
+  level: number;
   [key: string]: any;
-}
+};
 
 export const useBattery = () => {
-  const state = reactive({
-    battery: {
-      charging: false,
-      chargingTime: 0,
-      dischargingTime: 0,
-      level: 100,
-    },
+  const battery = reactive<Battery>({
+    charging: false,
+    chargingTime: 0,
+    dischargingTime: 0,
+    level: 100,
   });
 
   // 更新电池使用状态
   const updateBattery = (target) => {
-    for (const key in state.battery) {
-      state.battery[key] = target[key];
+    for (const key in battery) {
+      battery[key] = target[key];
     }
-    state.battery.level = state.battery.level * 100;
+    battery.level = battery.level * 100;
   };
 
   // 计算电池剩余可用时间
   const calcDischargingTime = computed(() => {
-    const hour = state.battery.dischargingTime / 3600;
-    const minute = (state.battery.dischargingTime / 60) % 60;
+    const hour = battery.dischargingTime / 3600;
+    const minute = (battery.dischargingTime / 60) % 60;
     return `${~~hour}小时${~~minute}分钟`;
   });
 
   // 电池状态
   const batteryStatus = computed(() => {
-    if (state.battery.charging && state.battery.level >= 100) {
+    if (battery.charging && battery.level >= 100) {
       return '已充满';
-    } else if (state.battery.charging) {
+    } else if (battery.charging) {
       return '充电中';
     } else {
       return '已断开电源';
@@ -82,8 +81,8 @@ export const useBattery = () => {
   });
 
   return {
-    ...toRefs(state),
+    battery,
     batteryStatus,
     calcDischargingTime,
-  };
+  } as const;
 };
