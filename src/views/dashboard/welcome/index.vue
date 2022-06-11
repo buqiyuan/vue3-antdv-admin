@@ -66,15 +66,15 @@
   watchEffect(() => {
     Object.assign(browserInfo.value, {
       距离电池充满需要:
-        Number.isFinite(battery.value.chargingTime) && battery.value.chargingTime != 0
+        Number.isFinite(battery.chargingTime) && battery.chargingTime != 0
           ? calcDischargingTime.value
           : '未知',
       剩余可使用时间:
-        Number.isFinite(battery.value.dischargingTime) && battery.value.dischargingTime != 0
+        Number.isFinite(battery.dischargingTime) && battery.dischargingTime != 0
           ? calcDischargingTime.value
           : '未知',
       电池状态: batteryStatus.value,
-      当前电量: `${battery.value.level}%`,
+      当前电量: `${battery.level}%`,
     });
   });
 

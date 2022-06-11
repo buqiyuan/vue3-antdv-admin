@@ -8,6 +8,7 @@ import { Storage } from '@/utils/Storage';
 
 const styleDom = document.createElement('style');
 styleDom.dataset.type = 'theme-dark';
+styleDom.textContent = darkThemeCss;
 document.head.appendChild(styleDom);
 
 /**
@@ -59,13 +60,14 @@ export const defaultConfig: ThemeState = {
   // production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true',
 };
 
+// 设置黑暗主题
 const setRealDarkTheme = (navTheme?: ThemeName) => {
   if (navTheme === 'realDark') {
     document.documentElement.classList.add('dark');
-    styleDom.textContent = darkThemeCss;
+    styleDom.disabled = false;
   } else {
     document.documentElement.classList.remove('dark');
-    styleDom.textContent = '';
+    styleDom.disabled = true;
   }
 };
 
@@ -73,7 +75,7 @@ let localThemeConfig: Partial<ThemeState> = {};
 try {
   localThemeConfig = JSON.parse(Storage.get(THEME_KEY, '{}'));
   const { primaryColor, navTheme } = localThemeConfig;
-  navTheme && setRealDarkTheme(navTheme);
+  setRealDarkTheme(navTheme);
   primaryColor &&
     ConfigProvider.config({
       theme: {
@@ -101,7 +103,7 @@ export const useThemeStore = defineStore({
         this[key] = theme[key];
       }
       // document.documentElement.style.setProperty(key, nextTheme[key]);
-      setRealDarkTheme(theme.navTheme);
+      theme.navTheme && setRealDarkTheme(theme.navTheme);
       Storage.set(THEME_KEY, JSON.stringify(this.$state));
     },
     /** antdv自带的改变主题颜色方法，但可以配置的颜色很有限，仅6种 */

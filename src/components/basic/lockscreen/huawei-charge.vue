@@ -1,6 +1,6 @@
 <template>
   <div class="huawei-charge">
-    <div class="number">{{ battery.level }}%</div>
+    <div class="number">{{ battery.level.toFixed(0) }}%</div>
     <div class="contrast">
       <div class="circle"></div>
       <ul class="bubbles">
@@ -21,6 +21,8 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
+  import type { PropType } from 'vue';
+  import type { Battery } from '@/hooks/useBattery';
 
   export default defineComponent({
     name: 'HuaweiCharge',
@@ -28,7 +30,7 @@
     props: {
       battery: {
         // 电池对象
-        type: Object,
+        type: Object as PropType<Battery>,
         default: () => ({}),
       },
       calcDischargingTime: {

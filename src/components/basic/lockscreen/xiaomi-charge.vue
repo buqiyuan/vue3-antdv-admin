@@ -25,7 +25,7 @@
       ></div>
     </div>
     <div class="outer">
-      <div class="text">{{ battery.level }}<span class="sub">%</span></div>
+      <div class="text">{{ battery.level.toFixed(0) }}<span class="sub">%</span></div>
     </div>
     <div class="light"></div>
   </div>
@@ -33,13 +33,14 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-
+  import type { PropType } from 'vue';
+  import type { Battery } from '@/hooks/useBattery';
   export default defineComponent({
     name: 'XiaomiCharge',
     props: {
       battery: {
         // 电池对象
-        type: Object,
+        type: Object as PropType<Battery>,
         default: () => ({}),
       },
     },
