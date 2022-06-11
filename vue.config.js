@@ -60,6 +60,18 @@ module.exports = defineConfig({
     // 移除 prefetch 插件
     config.plugins.delete('prefetch');
 
+    // 优化二次启动速度
+    config.cache({
+      // 将缓存类型设置为文件系统,默认是memory
+      type: 'filesystem',
+      buildDependencies: {
+        // 更改配置文件时，重新缓存
+        config: [__filename],
+      },
+    });
+    // https://webpack.js.org/configuration/optimization/#optimizationruntimechunk
+    config.optimization.runtimeChunk('single');
+
     config
       // https://webpack.js.org/configuration/devtool/#development
       .when(IS_DEV, (config) => config.devtool('cheap-source-map'));
@@ -87,19 +99,6 @@ module.exports = defineConfig({
 
     // 忽略解析markdown文件
     config.module.noParse(/\.md$/);
-    if (IS_PROD) {
-      config.module
-        .rule('md')
-        .test(/\.md$/)
-        .type('javascript/auto')
-        .use('asset')
-        .loader('asset')
-        .options({
-          limit: 100,
-          esModule: false,
-          generator: () => '',
-        });
-    }
 
     // config.module.rule('css').test(/\.ts$/).resourceQuery(/raw/).type('asset/source').end();
     // svg rule loader
@@ -140,16 +139,17 @@ module.exports = defineConfig({
           },
         },
       });
-      config.cache({
-        // 将缓存类型设置为文件系统,默认是memory
-        type: 'filesystem',
-        buildDependencies: {
-          // 更改配置文件时，重新缓存
-          config: [__filename],
-        },
-      });
-      // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
-      config.optimization.runtimeChunk('single');
+      config.module
+        .rule('md')
+        .test(/\.md$/)
+        .type('javascript/auto')
+        .use('asset')
+        .loader('asset')
+        .options({
+          limit: 100,
+          esModule: false,
+          generator: () => '',
+        });
     });
   },
   configureWebpack: (config) => {

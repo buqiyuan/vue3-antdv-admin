@@ -21,8 +21,29 @@ jobs:
         with:
           node-version: '14.x'
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - name: Install
         run: yarn install --frozen-lockfile
+
+      - uses: actions/cache@v3
+        with:
+          # 缓存文件夹
+          path: node_modules/.cache/webpack/
+          key: ${{ github.ref.name }}-webpack-build
+          # 兜底使用 "main" 分支缓存
+          restore-keys: |
+            main-webpack-build
 
       - name: Build
         run: yarn build
