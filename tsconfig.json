@@ -17,22 +17,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "noImplicitAny": false,
     "skipLibCheck": true,
     "removeComments": true,
-    "types": [
-      "webpack-env",
-      "unplugin-vue-define-options"
-    ],
+    "types": ["webpack-env", "unplugin-vue-define-options"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "mock/**/*",
@@ -43,11 +35,5 @@
     "types/**/*.d.ts",
     "types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.js",
-    "**/*.md",
-    "src/**/*.md",
-  ]
+  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"]
 }

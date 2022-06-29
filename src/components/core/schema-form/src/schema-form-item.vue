@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="tsx">
-  import { computed, unref, toRefs, onMounted, isVNode } from 'vue';
+  import { computed, unref, toRefs, isVNode } from 'vue';
   import { useVModel, isFunction } from '@vueuse/core';
   import { cloneDeep } from 'lodash-es';
   import { Form, Col, Spin, Divider } from 'ant-design-vue';
@@ -378,20 +378,19 @@
     return rules;
   });
 
-  onMounted(async () => {
+  requestIdleCallback(async () => {
     if (getComponentProps.value?.request) {
-      const compProps = getComponentProps.value;
-      const { componentProps, component } = schema.value;
+      const { componentProps, component } = unref(schema);
 
-      schema.value.loading = true;
-      schema.value.field === 'field35' && console.log('compProps', compProps, formPropsRef.value);
+      Reflect.set(schema.value, 'loading', true);
+      // schema.value.field === 'field35' && console.log('compProps', getComponentProps.value, formPropsRef.value);
 
       try {
         const result = await getComponentProps.value?.request(unref(getValues));
         if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
-          compProps.options = result;
+          getComponentProps.value.options = result;
         } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
-          compProps.treeData = result;
+          getComponentProps.value.treeData = result;
         }
         if (componentProps) {
           componentProps.requestResult = result;
