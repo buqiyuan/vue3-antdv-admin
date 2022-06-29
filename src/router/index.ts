@@ -1,11 +1,12 @@
 import 'nprogress/css/nprogress.css'; // 进度条样式
-import { type App } from 'vue';
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { createRouterGuards } from './router-guards';
 
 import outsideLayout from './outsideLayout';
 import { whiteNameList } from './constant';
+import type { App } from 'vue';
+import type { RouteRecordRaw } from 'vue-router';
 
 export const routes: Array<RouteRecordRaw> = [
   {

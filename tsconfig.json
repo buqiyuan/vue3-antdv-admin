@@ -17,22 +17,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "noImplicitAny": false,
     "skipLibCheck": true,
     "removeComments": true,
-    "types": [
-      "node",
-      "vite/client",
-      "unplugin-vue-define-options"
-    ],
+    "types": ["node", "vite/client", "unplugin-vue-define-options"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     }
   },
   "include": [
@@ -45,11 +36,5 @@
     "types/**/*.ts",
     "vite.config.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.js",
-    "**/*.md",
-    "src/**/*.md"
-  ]
+  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"]
 }
