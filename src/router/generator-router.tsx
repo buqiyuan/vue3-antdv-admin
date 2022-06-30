@@ -124,16 +124,13 @@ export const generatorDynamicRouter = (asyncMenus: API.Menu[]) => {
     router.addRoute(layout);
     console.log('所有路由', router.getRoutes());
 
-    return {
+    return Promise.resolve({
       menus,
       routes: layout.children,
-    };
+    });
   } catch (error) {
     console.error('生成路由时出错', error);
-    return {
-      menus: [],
-      routes: [],
-    };
+    return Promise.reject(`生成路由时出错: ${error}`);
   }
 };
 

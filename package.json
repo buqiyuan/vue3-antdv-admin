@@ -16,8 +16,8 @@
     "clean:cache": "npx rimraf node_modules/.cache/ && npx rimraf node_modules/.vite",
     "clean:lib": "npx rimraf node_modules",
     "format": "prettier --write .",
-    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json --max-warnings 0 && pretty-quick --check --branch dev",
-    "lint:fix": "eslint --fix . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json && pretty-quick --branch dev",
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json --max-warnings 0 && pretty-quick --check --branch main",
+    "lint:fix": "eslint --fix . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json && pretty-quick --branch main",
     "lint:eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
     "lint:prettier": "prettier --write  \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
     "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
@@ -32,10 +32,9 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "@vue/runtime-core": "^3.2.37",
-    "@vueuse/core": "^8.6.0",
+    "@vueuse/core": "^8.7.5",
     "ant-design-vue": "3.2.9",
     "axios": "^0.27.2",
-    "core-js": "^3.23.3",
     "dayjs": "^1.11.3",
     "file-saver": "^2.0.5",
     "lodash-es": "^4.17.21",
@@ -68,7 +67,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-define-config": "^1.5.1",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.1.1",
     "husky": "^8.0.1",
     "less": "^4.1.3",
@@ -86,17 +85,18 @@
     "stylelint-config-recommended-vue": "^1.4.0",
     "stylelint-config-standard": "^26.0.0",
     "stylelint-order": "^5.0.0",
+    "terser": "^5.14.1",
     "typescript": "^4.7.4",
+    "unplugin-vue-components": "^0.20.1",
     "unplugin-vue-define-options": "^0.6.1",
-    "vite": "^2.9.13",
+    "vite": "^3.0.0-beta.5",
     "vite-plugin-checker": "^0.4.6",
     "vite-plugin-mock": "^2.9.6",
-    "vite-plugin-style-import": "^1.4.0",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-windicss": "^1.8.5",
+    "vite-plugin-windicss": "^1.8.6",
     "vue-eslint-parser": "^9.0.3",
     "vue-tsc": "^0.38.2",
-    "windicss": "^3.5.5"
+    "windicss": "^3.5.6"
   },
   "__npminstall_done": false,
   "repository": {
@@ -115,7 +115,7 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": "^12 || >=14"
+    "node": ">=14"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

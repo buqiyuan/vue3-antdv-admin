@@ -5,8 +5,8 @@ import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import checker from 'vite-plugin-checker';
 import { viteMockServe } from 'vite-plugin-mock';
-import styleImport from 'vite-plugin-style-import';
-// import Components from 'unplugin-vue-components/vite';
+import Components from 'unplugin-vue-components/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import WindiCSS from 'vite-plugin-windicss';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
@@ -59,7 +59,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       }),
 
       legacy({
-        targets: ['defaults', 'not IE 11'],
+        targets: ['defaults', 'not IE 11', 'chrome 79', 'maintained node versions'],
+        additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
+        // 根据你自己需要导入相应的polyfill:  https://github.com/vitejs/vite/tree/main/packages/plugin-legacy#polyfill-specifiers
+        modernPolyfills: ['es.promise.finally', 'es/array', 'es/map', 'es/set'],
       }),
       createSvgIconsPlugin({
         // Specify the icon folder to be cached
@@ -75,28 +78,18 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         logger: true,
         injectCode: `
           import { setupProdMockServer } from '../mock/_createProductionServer';
-    
+
           setupProdMockServer();
           `,
       }),
-      // Components({
-      //   resolvers: [
-      //     AntDesignVueResolver({
-      //       exclude: ['AButton'],
-      //     }),
-      //   ],
-      //   directoryAsNamespace: true,
-      // }),
-      styleImport({
-        libs: [
-          {
-            libraryName: 'ant-design-vue',
-            esModule: true,
-            resolveStyle: (name) => {
-              return `ant-design-vue/es/${name}/style/index`;
-            },
-          },
+      // https://github.com/antfu/unplugin-vue-components
+      Components({
+        resolvers: [
+          AntDesignVueResolver({
+            exclude: ['AButton'],
+          }),
         ],
+        // directoryAsNamespace: true,
       }),
       // https://github.com/fi3ework/vite-plugin-checker
       checker({
@@ -149,15 +142,16 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     esbuild: {
       pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
+      supported: {
+        // https://github.com/vitejs/vite/pull/8665
+        'top-level-await': true,
+      },
     },
     build: {
       target: 'es2015',
+      minify: 'esbuild',
       cssTarget: 'chrome79',
-      brotliSize: false,
       chunkSizeWarningLimit: 2000,
-      // rollupOptions: {
-      //   experimentalTopLevelAwait: true,
-      // },
     },
   };
 };

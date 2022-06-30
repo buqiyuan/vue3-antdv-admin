@@ -55,6 +55,7 @@
   import { message, Modal } from 'ant-design-vue';
   import { useUserStore } from '@/store/modules/user';
   import { getImageCaptcha } from '@/api/login';
+  import { to } from '@/utils/awaitTo';
 
   const state = reactive({
     loading: false,
@@ -91,20 +92,20 @@
     state.loading = true;
     console.log(state.formInline);
     // params.password = md5(password)
-    try {
-      await userStore.login(state.formInline).finally(() => {
-        state.loading = false;
-        message.destroy();
-      });
-      message.success('登录成功！');
-      setTimeout(() => router.replace((route.query.redirect as string) ?? '/'));
-    } catch (error: any) {
+
+    const [err] = await to(userStore.login(state.formInline));
+    if (err) {
       Modal.error({
         title: () => '提示',
-        content: () => error.message,
+        content: () => err.message,
       });
       setCaptcha();
+    } else {
+      message.success('登录成功！');
+      setTimeout(() => router.replace((route.query.redirect as string) ?? '/'));
     }
+    state.loading = false;
+    message.destroy();
   };
 </script>
 

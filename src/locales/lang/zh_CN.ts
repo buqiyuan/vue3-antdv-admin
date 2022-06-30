@@ -1,7 +1,7 @@
 import antdLocale from 'ant-design-vue/es/locale/zh_CN';
 import { genMessage } from '../helper';
 
-const modulesFiles = import.meta.globEager('./zh-CN/**/*.ts');
+const modulesFiles = import.meta.glob<{ default: Recordable }>('./zh-CN/**/*.ts', { eager: true });
 
 export default {
   message: {

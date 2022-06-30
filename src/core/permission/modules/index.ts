@@ -4,7 +4,9 @@ interface Permissions {
   };
 }
 
-const modulesPermissionFiles = import.meta.globEager('./**/*.ts');
+const modulesPermissionFiles = import.meta.glob<{ default: Recordable }>('./**/*.ts', {
+  eager: true,
+});
 /**
  * 根据接口路径生成接口权限码, eg: sys/user/add => sys:user:add
  * @param str 接口路径
