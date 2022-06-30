@@ -6,6 +6,7 @@ import { useUserStore } from '@/store/modules/user';
 import { useKeepAliveStore } from '@/store/modules/keepAlive';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
+import { to as _to } from '@/utils/awaitTo';
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
@@ -23,10 +24,13 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
         NProgress.done();
       } else {
         const hasRoute = router.hasRoute(to.name!);
-        // 如果不需要每次切换路由获取最新的动态路由，可把下面注释放开
         if (userStore.menus.length === 0) {
           // 从后台获取菜单
-          await userStore.afterLogin();
+          const [err] = await _to(userStore.afterLogin());
+          if (err) {
+            userStore.resetToken();
+            return next({ name: LOGIN_NAME });
+          }
           if (!hasRoute) {
             // 请求带有 redirect 重定向时，登录自动重定向到该地址
             const redirect = decodeURIComponent((from.query.redirect || '') as string);

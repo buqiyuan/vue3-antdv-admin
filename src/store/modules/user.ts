@@ -78,7 +78,7 @@ export const useUserStore = defineStore({
         this.avatar = userInfo.headImg;
         this.userInfo = userInfo;
         // 生成路由
-        const generatorResult = generatorDynamicRouter(menus);
+        const generatorResult = await generatorDynamicRouter(menus);
         this.menus = generatorResult.menus.filter((item) => !item.meta?.hideInMenu);
         !wsStore.client && wsStore.initSocket();
 
