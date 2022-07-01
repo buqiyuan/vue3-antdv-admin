@@ -1,7 +1,7 @@
 import antdLocale from 'ant-design-vue/es/locale/en_US';
 import { genMessage } from '../helper';
 
-const modulesFiles = import.meta.glob<{ default: Recordable }>('./en-US/**/*.ts', { eager: true });
+const modulesFiles = import.meta.globEager('./en-US/**/*.ts');
 
 export default {
   message: {
