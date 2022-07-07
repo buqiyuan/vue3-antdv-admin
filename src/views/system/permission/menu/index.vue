@@ -1,13 +1,6 @@
 <template>
   <div>
-    <DynamicTable
-      row-key="id"
-      header-title="菜单管理"
-      :data-request="loadTableData"
-      :columns="columns"
-      bordered
-      :scroll="{ x: 2000 }"
-    >
+    <DynamicTable header-title="菜单管理" :data-request="loadTableData" :columns="columns">
       <template #toolbar>
         <a-button type="primary" :disabled="!$auth('sys.menu.add')" @click="openMenuModal({})">
           新增
@@ -37,6 +30,9 @@
     search: false,
     pagination: false,
     size: 'small',
+    rowKey: 'id',
+    bordered: true,
+    scroll: { x: 2000 },
   });
   const [showModal] = useFormModal();
 
@@ -60,7 +56,7 @@
           values.menuId = record.id;
           values.perms = values.perms?.join(',');
           await (record.id ? updateMenu : createMenu)(values);
-          dynamicTableInstance?.reload();
+          dynamicTableInstance.reload();
         },
       },
       formProps: {
@@ -88,7 +84,7 @@
   };
   const delRowConfirm = async (record: TableListItem) => {
     await deleteMenu({ menuId: record.id });
-    dynamicTableInstance?.reload();
+    dynamicTableInstance.reload();
   };
 
   const columns: TableColumnItem[] = [

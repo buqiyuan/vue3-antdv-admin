@@ -29,7 +29,7 @@
   "include": [
     "mock/**/*",
     "src/**/*.ts",
-    "src/**/*.d.ts",
+    "**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "types/**/*.d.ts",

@@ -15,3 +15,5 @@ dist
 /src/mock
 Dockerfile
 commitlint.config.js
+
+components.d.ts

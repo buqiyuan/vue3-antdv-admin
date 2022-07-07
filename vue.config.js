@@ -158,17 +158,18 @@ module.exports = defineConfig({
       topLevelAwait: true,
     };
     config.resolve.fallback = { path: require.resolve('path-browserify') };
-    // use defineOptions https://github.com/sxzz/unplugin-vue-define-options
-    config.plugins.push(require('unplugin-vue-define-options/webpack')());
-    // 打包速度分析
-    config.plugins.push(new SpeedMeasurePlugin());
 
     config.plugins.push(
       // 定义全局变量
       new webpack.DefinePlugin({
         __APP_INFO__: JSON.stringify(__APP_INFO__),
       }),
+      // 打包速度分析
+      new SpeedMeasurePlugin(),
+      // use defineOptions https://github.com/sxzz/unplugin-vue-define-options
+      require('unplugin-vue-define-options/webpack')(),
     );
+
     if (IS_PROD) {
       // terser-webpack-plugin (https://webpack.docschina.org/plugins/terser-webpack-plugin/);
       const TerserPluginIndex = config.optimization.minimizer.findIndex(

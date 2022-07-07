@@ -36,7 +36,7 @@ export function useTable(props?: Partial<DynamicTableProps>) {
         return unref(target);
       }
       if (target.value && Reflect.has(target.value, key)) {
-        return target.value[key];
+        return Reflect.get(target.value, key);
       }
       return async (...rest) => {
         const table = await getTableInstance();
