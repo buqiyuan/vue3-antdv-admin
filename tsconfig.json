@@ -27,9 +27,9 @@
     }
   },
   "include": [
+    "**/*.d.ts",
     "mock/**/*",
     "src/**/*.ts",
-    "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "types/**/*.d.ts",
