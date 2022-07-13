@@ -1,5 +1,4 @@
-import 'virtual:windi.css';
-import 'virtual:windi-devtools';
+import 'uno.css';
 import 'virtual:svg-icons-register';
 import '@/styles/index.less';
 
