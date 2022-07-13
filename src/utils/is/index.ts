@@ -53,7 +53,11 @@ export function isNumber(val: unknown): val is number {
 }
 
 export function isPromise<T = any>(val: unknown): val is Promise<T> {
-  return is(val, 'Promise') && isObject(val) && isFunction(val.then) && isFunction(val.catch);
+  return (
+    is(val, 'Promise') &&
+    val instanceof Promise &&
+    [val.then, val.catch, val.finally].every(isFunction)
+  );
 }
 
 export function isString(val: unknown): val is string {
