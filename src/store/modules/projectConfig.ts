@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import darkThemeCss from 'ant-design-vue/dist/antd.dark.css?raw';
+import { useMutationObserver } from '@vueuse/core';
 import { ConfigProvider } from 'ant-design-vue';
 import type { Theme } from 'ant-design-vue/es/config-provider/';
 import { store } from '@/store';
@@ -10,6 +11,20 @@ const styleDom = document.createElement('style');
 styleDom.dataset.type = 'theme-dark';
 styleDom.textContent = darkThemeCss;
 document.head.appendChild(styleDom);
+
+useMutationObserver(
+  document.head,
+  (mutations) => {
+    const hasCustomStyleEl = mutations.some((n) => Array.from(n.addedNodes).includes(styleDom));
+    if (!hasCustomStyleEl) {
+      document.head.appendChild(styleDom);
+      styleDom.disabled = !document.documentElement.classList.contains('dark');
+    }
+  },
+  {
+    childList: true,
+  },
+);
 
 /**
  * 项目默认配置项
@@ -71,20 +86,23 @@ const setRealDarkTheme = (navTheme?: ThemeName) => {
   }
 };
 
-let localThemeConfig: Partial<ThemeState> = {};
-try {
-  localThemeConfig = JSON.parse(Storage.get(THEME_KEY, '{}'));
-  const { primaryColor, navTheme } = localThemeConfig;
-  setRealDarkTheme(navTheme);
-  primaryColor &&
-    ConfigProvider.config({
-      theme: {
-        primaryColor,
-      },
-    });
-} catch {
-  localThemeConfig = {};
-}
+const getLocalThemeConfig = (): Partial<ThemeState> => {
+  try {
+    return JSON.parse(Storage.get(THEME_KEY, '{}'));
+  } catch {
+    return {};
+  }
+};
+
+const localThemeConfig = getLocalThemeConfig();
+const { primaryColor, navTheme } = localThemeConfig;
+setRealDarkTheme(navTheme);
+primaryColor &&
+  ConfigProvider.config({
+    theme: {
+      primaryColor,
+    },
+  });
 
 export const useThemeStore = defineStore({
   id: 'theme',

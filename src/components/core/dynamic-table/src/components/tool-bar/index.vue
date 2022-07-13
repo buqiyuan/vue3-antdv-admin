@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between p-y-16px">
+  <div class="flex justify-between p-16px">
     <slot name="headerTitle">
       <div class="title">
         {{ title }}
@@ -42,7 +42,6 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    color: rgba(0, 0, 0, 0.85);
     font-weight: 500;
     font-size: 16px;
   }
