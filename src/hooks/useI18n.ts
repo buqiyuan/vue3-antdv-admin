@@ -1,4 +1,4 @@
-import { type Composer } from 'vue-i18n';
+import type { Composer } from 'vue-i18n';
 import * as locales from '@/locales';
 
 type I18nGlobalTranslation = Composer['t'];

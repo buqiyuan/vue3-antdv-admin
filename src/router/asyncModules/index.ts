@@ -2,7 +2,7 @@
 export const constantRouterComponents = {};
 
 // auto load
-const modulesFiles = import.meta.globEager('./**/*.ts');
+const modulesFiles = import.meta.glob<Recordable>('./**/*.ts', { eager: true });
 
 Object.keys(modulesFiles).forEach((path) => {
   if (path.startsWith('./index.')) return;

@@ -1,7 +1,7 @@
-import { type App } from 'vue';
 import { createI18n } from 'vue-i18n';
 import { localeMap } from './config';
 import { setHtmlPageLang, setLoadLocalePool } from './helper';
+import type { App } from 'vue';
 import { useLocaleStoreWithOut } from '@/store/modules/locale';
 
 async function createI18nOptions() {

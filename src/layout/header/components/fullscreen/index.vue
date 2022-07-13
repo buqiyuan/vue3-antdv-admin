@@ -8,11 +8,11 @@
 </template>
 <script lang="ts" setup>
   import { computed, unref } from 'vue';
-  import { useI18n } from 'vue-i18n';
   import { useFullscreen } from '@vueuse/core';
 
   import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons-vue';
   import { Tooltip } from 'ant-design-vue';
+  import { useI18n } from '@/hooks/useI18n';
   const { t } = useI18n();
   const { toggle, isFullscreen } = useFullscreen();
 
