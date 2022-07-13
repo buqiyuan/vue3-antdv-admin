@@ -1,6 +1,6 @@
-import { useI18n } from 'vue-i18n';
 import type { ExportModalResult } from './typing';
 import type { FormSchema } from '@/components/core/schema-form/';
+import { useI18n } from '@/hooks/useI18n';
 
 import { useFormModal } from '@/hooks/useModal/useFormModal';
 
