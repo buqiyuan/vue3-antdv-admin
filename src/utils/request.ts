@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { message as $message } from 'ant-design-vue';
+import { uniqueSlash } from './urlUtils';
 import type { AxiosRequestConfig } from 'axios';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
@@ -113,7 +114,7 @@ export const request = async <T = any>(
       return $message.error('你没有访问该接口的权限，请联系管理员！');
     }
     const fullUrl = `${(isMock ? baseMockUrl : baseApiUrl) + config.url}`;
-    config.url = fullUrl.replace(/(?<!:)\/{2,}/g, '/');
+    config.url = uniqueSlash(fullUrl);
     // if (IS_PROD) {
     //   // 保持api请求的协议与当前访问的站点协议一致
     //   config.url.replace(/^https?:/g, location.protocol);
