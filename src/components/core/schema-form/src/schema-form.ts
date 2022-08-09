@@ -7,7 +7,7 @@ import type { ButtonProps } from '@/components/basic/button';
 import type { TableActionType } from '@/components/core/dynamic-table';
 import { isObject } from '@/utils/is';
 
-export const aFormPropKeys = Object.keys(formProps);
+export const aFormPropKeys = Object.keys(formProps());
 
 export const schemaFormProps = {
   ...formProps(),
