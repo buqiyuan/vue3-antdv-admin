@@ -2,38 +2,38 @@
   <Form ref="schemaFormRef" v-bind="pick(getFormProps, aFormPropKeys)" :model="formModel">
     <Row v-bind="getRowConfig">
       <slot name="formHeader"></slot>
-      <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
-        <SchemaFormItem
-          :schema="schemaItem"
-          :set-form-model="setFormModel"
-          :form-model="formModel"
-          :table-instance="tableInstance"
-          :set-item-ref="setItemRef(schemaItem)"
+      <slot>
+        <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
+          <SchemaFormItem
+            :schema="schemaItem"
+            :form-model="formModel"
+            :table-instance="tableInstance"
+          >
+            <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
+              <slot :name="item" v-bind="data || {}"></slot>
+            </template>
+          </SchemaFormItem>
+        </template>
+        <FormAction
+          v-if="showActionButtonGroup"
+          v-bind="getFormActionBindProps"
+          @toggle-advanced="handleToggleAdvanced"
         >
-          <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
+          <template
+            v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']"
+            #[item]="data"
+          >
             <slot :name="item" v-bind="data || {}"></slot>
           </template>
-        </SchemaFormItem>
-      </template>
-      <FormAction
-        v-if="showActionButtonGroup"
-        v-bind="getFormActionBindProps"
-        @toggle-advanced="handleToggleAdvanced"
-      >
-        <template
-          v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']"
-          #[item]="data"
-        >
-          <slot :name="item" v-bind="data || {}"></slot>
-        </template>
-      </FormAction>
+        </FormAction>
+      </slot>
       <slot name="formFooter"></slot>
     </Row>
   </Form>
 </template>
 
 <script lang="ts" setup>
-  import { useAttrs, watch } from 'vue';
+  import { useAttrs } from 'vue';
   import { pick } from 'lodash-es';
   import { Form, Row } from 'ant-design-vue';
   import SchemaFormItem from './schema-form-item.vue';
@@ -69,8 +69,7 @@
 
   // 表单内部方法
   const formMethods = useFormMethods({ ...formState });
-  const { initFormValues, handleFormValues, setFormModel, setItemRef, setSchemaFormProps } =
-    formMethods;
+  const { initFormValues, handleFormValues } = formMethods;
 
   // 初始化表单默认值
   initFormValues();
@@ -79,10 +78,10 @@
   const formEvents = useFormEvents({ ...formState, emit, handleFormValues });
 
   // 同步外部对props的修改
-  watch(props, () => setSchemaFormProps(props), {
-    deep: true,
-    immediate: true,
-  });
+  // watch(props, () => setSchemaFormProps(props), {
+  //   deep: true,
+  //   immediate: true,
+  // });
 
   // 当前组件所有的状态和方法
   const instance = {

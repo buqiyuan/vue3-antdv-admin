@@ -92,7 +92,7 @@
     {
       title: '操作',
       width: 160,
-      dataIndex: '$action',
+      dataIndex: 'ACTION',
       hideInSearch: true,
       align: 'center',
       fixed: 'right',

@@ -1,13 +1,13 @@
 import { formProps, type FormProps } from 'ant-design-vue/es/form';
-import SchemaForm from './schema-form.vue';
-import { ColEx } from './types/component';
+import type SchemaForm from './schema-form.vue';
+import type { ColEx } from './types/component';
 import type { ExtractPropTypes, ComponentInternalInstance, CSSProperties } from 'vue';
 import type { FieldMapToTime, FormSchema, RowProps } from './types/form';
 import type { ButtonProps } from '@/components/basic/button';
 import type { TableActionType } from '@/components/core/dynamic-table';
 import { isObject } from '@/utils/is';
 
-export const aFormPropKeys = Object.keys(formProps);
+export const aFormPropKeys = Object.keys(formProps());
 
 export const schemaFormProps = {
   ...formProps(),

@@ -1,13 +1,18 @@
 import { tableProps } from 'ant-design-vue/es/table';
-import DynamicTable from './dynamic-table.vue';
+import type DynamicTable from './dynamic-table.vue';
 import type { PropType, ExtractPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
 import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './types/';
 import type { SchemaFormProps } from '@/components/core/schema-form';
+import type { GetRowKey } from 'ant-design-vue/es/table/interface';
 import { isBoolean } from '@/utils/is';
 
 export const dynamicTableProps = {
   ...tableProps(),
+  rowKey: {
+    type: [String, Function] as PropType<string | GetRowKey<any>>,
+    default: 'id',
+  },
   /** 是否显示搜索表单 */
   search: {
     type: Boolean as PropType<boolean>,
@@ -80,6 +85,13 @@ export const dynamicTableProps = {
     >,
     default: null,
   },
+  /** 编辑行类型，支持 只能同时编辑一行 | 同时编辑多行 */
+  editableType: {
+    type: String as PropType<'single' | 'multiple'>,
+    default: 'single',
+  },
+  /** 只能编辑一行的的提示 */
+  onlyOneLineEditorAlertMessage: String,
 } as const;
 
 export type DynamicTableProps = ExtractPropTypes<typeof dynamicTableProps>;
@@ -94,15 +106,3 @@ export type DynamicTableEmits = typeof dynamicTableEmits;
 export type DynamicTableEmitFn = EmitFn<DynamicTableEmits>;
 // @ts-ignore
 export type DynamicTableInstance = InstanceType<typeof DynamicTable>;
-
-// 默认支持的插槽
-export const defaultSlots = [
-  'emptyText',
-  'expandIcon',
-  'title',
-  'footer',
-  'summary',
-  'expandedRowRender',
-  'customFilterIcon',
-  'customFilterDropdown',
-] as const;

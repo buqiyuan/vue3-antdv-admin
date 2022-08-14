@@ -45,7 +45,7 @@
   let tableData: any[] = [];
 
   const aoaToExcel = () => {
-    const colFilters = columns.filter((n) => n.dataIndex !== '$action');
+    const colFilters = columns.filter((n) => n.dataIndex !== 'INDEX');
     const colFilterKeys = colFilters.map((n) => n.dataIndex);
     // 保证data顺序与header一致
     aoaToSheetXlsx({

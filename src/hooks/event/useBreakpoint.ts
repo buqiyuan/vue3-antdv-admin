@@ -1,4 +1,5 @@
-import { ref, computed, ComputedRef, unref } from 'vue';
+import { ref, computed, unref } from 'vue';
+import type { ComputedRef } from 'vue';
 import { useEventListener } from '@/hooks/event/useEventListener';
 import { screenMap, sizeEnum, screenEnum } from '@/enums/breakpointEnum';
 

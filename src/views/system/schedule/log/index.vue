@@ -9,7 +9,8 @@
 
 <script setup lang="tsx">
   import { Tag } from 'ant-design-vue';
-  import { useTable, TableColumn } from '@/components/core/dynamic-table';
+  import type { TableColumn } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { getTaskLogList } from '@/api/system/log';
 
   defineOptions({
@@ -59,19 +60,19 @@
       title: '异常信息',
       dataIndex: 'detail',
       align: 'center',
-      bodyCell: ({ record }) => <>{record.detail ?? '无'}</>,
+      customRender: ({ record }) => record.detail ?? '无',
     },
     {
       title: '耗时',
       dataIndex: 'consumeTime',
       align: 'center',
-      bodyCell: ({ record }) => <Tag>{record.consumeTime}ms</Tag>,
+      customRender: ({ record }) => <Tag>{record.consumeTime}ms</Tag>,
     },
     {
       title: '状态',
       dataIndex: 'status',
       align: 'center',
-      bodyCell: ({ record }) => (
+      customRender: ({ record }) => (
         <Tag color={getStatusType(record.status)}>{getStatusTip(record.status)}</Tag>
       ),
     },

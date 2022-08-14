@@ -10,84 +10,64 @@
       @toggle-advanced="(e) => $emit('toggle-advanced', e)"
       @submit="handleSubmit"
     >
-      <template v-for="item in getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
+      <template v-for="item of getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </SchemaForm>
     <div class="bg-white dark:bg-black">
       <ToolBar
         v-if="showToolBar"
+        :export-file-name="exportFileName"
         :title="headerTitle"
         :title-tooltip="titleTooltip"
         :show-table-setting="showTableSetting"
       >
-        <template v-if="$slots.headerTitle" #headerTitle>
-          <slot name="headerTitle"></slot>
-        </template>
-        <span v-if="exportFileName" class="ml-6px" @click="exportData2Excel">
-          <slot name="export-button">
-            <a-button type="primary">导出</a-button>
-          </slot>
-        </span>
-        <template v-if="$slots.toolbar" #toolbar>
-          <Space><slot name="toolbar"></slot></Space>
+        <template v-for="name of Object.keys($slots)" #[name]="data">
+          <slot :name="name" v-bind="data || {}"></slot>
         </template>
       </ToolBar>
-      <Table
-        ref="tableRef"
-        v-bind="getBindValues"
-        :data-source="tableData"
-        @change="handleTableChange"
+      <component
+        :is="Object.keys(editFormModel).length ? SchemaForm : 'div'"
+        ref="editTableFormRef"
+        layout="inline"
+        no-style
+        :initial-values="editFormModel"
+        :show-action-button-group="false"
+        :show-advanced-button="false"
+        @validate="handleEditFormValidate"
       >
-        <template
-          v-for="slotName in defaultSlots.filter((name) => Reflect.has($slots, name))"
-          #[slotName]="slotData"
-          :key="slotName"
+        <Table
+          ref="tableRef"
+          v-bind="getBindValues"
+          :columns="getColumns"
+          :data-source="tableData"
+          @change="handleTableChange"
         >
-          <slot :name="slotName" v-bind="slotData"></slot>
-        </template>
-
-        <!-- 个性化单元格 start -->
-        <template
-          v-for="slotName in ['bodyCell', 'headerCell']"
-          #[slotName]="slotData"
-          :key="slotName"
-        >
-          <slot :name="slotName" v-bind="slotData"></slot>
-          <!-- 表格行操作start -->
-          <template v-if="slotName === 'bodyCell' && getColumnKey(slotData.column) === '$action'">
-            <TableAction :actions="slotData.column.actions(slotData)" />
+          <template v-for="(_, slotName) of $slots" #[slotName]="slotData" :key="slotName">
+            <slot :name="slotName" v-bind="slotData"></slot>
           </template>
-          <!-- 表格行操作end -->
-          <template
-            v-for="slotItem in getBindValues.columns?.filter((item) => item[slotName])"
-            :key="getColumnKey(slotItem)"
-          >
-            <component
-              :is="getComponent(slotItem?.[slotName]?.(slotData))"
-              v-if="getColumnKey(slotData.column) === getColumnKey(slotItem)"
-            />
-          </template>
-        </template>
-        <!-- 个性化单元格 end -->
-      </Table>
+          <template #bodyCell> </template>
+        </Table>
+      </component>
     </div>
   </div>
 </template>
 
 <script lang="tsx" setup>
   import { useSlots } from 'vue';
-  import { Table, Space } from 'ant-design-vue';
+  import { Table } from 'ant-design-vue';
   import {
     useTableMethods,
     createTableContext,
     useExportData2Excel,
     useTableForm,
     useTableState,
+    useColumns,
+    useEditable,
   } from './hooks';
-  import { TableAction, ToolBar } from './components';
-  import { dynamicTableProps, defaultSlots, dynamicTableEmits } from './dynamic-table';
-  import { TableActionType } from './types';
+  import { ToolBar } from './components';
+  import { dynamicTableProps, dynamicTableEmits } from './dynamic-table';
+  import type { TableActionType } from './types';
   import { SchemaForm } from '@/components/core/schema-form';
 
   defineOptions({
@@ -101,18 +81,29 @@
 
   // 表格内部状态
   const tableState = useTableState({ props, slots });
-  const { tableData, queryFormRef, getBindValues } = tableState;
+  const { tableData, queryFormRef, editTableFormRef, getBindValues, editFormModel } = tableState;
   // 表格内部方法
   const tableMethods = useTableMethods({ state: tableState, props, emit });
-  const {
-    getColumnKey,
+  const { setProps, fetchData, handleSubmit, reload, handleTableChange, handleEditFormValidate } =
+    tableMethods;
+  // 控制编辑行
+  const editableHooks = useEditable({ props, state: tableState });
+
+  const tableAction: TableActionType = {
     setProps,
-    fetchData,
-    handleSubmit,
     reload,
-    handleTableChange,
-    getComponent,
-  } = tableMethods;
+    fetchData,
+    ...editableHooks,
+  };
+
+  // 表格列的配置描述
+  const { getColumns } = useColumns({
+    props,
+    slots,
+    state: tableState,
+    methods: tableMethods,
+    tableAction,
+  });
 
   // 搜索表单
   const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = useTableForm({
@@ -121,24 +112,20 @@
     slots,
   });
 
-  // 当前组件所有的状态和方法
-  const instance = {
-    ...props,
-    ...tableState,
-    ...tableMethods,
-  };
-
   // 表单导出
-  const { exportData2Excel } = useExportData2Excel({
+  const exportData2ExcelHooks = useExportData2Excel({
     props,
     state: tableState,
     methods: tableMethods,
   });
 
-  const tableAction: TableActionType = {
-    setProps,
-    reload,
-    fetchData,
+  // 当前组件所有的状态和方法
+  const instance = {
+    ...props,
+    ...tableState,
+    ...tableMethods,
+    ...editableHooks,
+    ...exportData2ExcelHooks,
   };
 
   createTableContext(instance);

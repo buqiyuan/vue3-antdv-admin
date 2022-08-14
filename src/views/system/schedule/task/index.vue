@@ -77,8 +77,9 @@
 <script lang="ts" setup>
   import { ToolOutlined, CaretRightOutlined, PoweroffOutlined } from '@ant-design/icons-vue';
   import { Descriptions, Tooltip, Popconfirm, Button } from 'ant-design-vue';
-  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
+  import { baseColumns } from './columns';
   import { taskSchemas } from './formSchemas';
+  import type { TableListItem, TableColumnItem } from './columns';
   import { useTable } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/useFormModal';
   import {
@@ -178,7 +179,7 @@
     {
       title: '操作',
       width: 220,
-      dataIndex: '$action',
+      dataIndex: 'ACTION',
       align: 'center',
       fixed: 'right',
       actions: ({ record }) => [

@@ -10,7 +10,8 @@
 
 <script setup lang="tsx">
   import { Tag } from 'ant-design-vue';
-  import { useTable, TableColumn } from '@/components/core/dynamic-table';
+  import type { TableColumn } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { getOnlineList, kickUser } from '@/api/system/online';
   import { useSocket } from '@/core/socket/useSocket';
 
@@ -48,11 +49,11 @@
       title: '用户名',
       dataIndex: 'username',
       align: 'center',
-      bodyCell: ({ record }) => (
-        <>
+      customRender: ({ record }) => (
+        <div>
           <span class="pr-16px">{record.username}</span>
           {record.isCurrent && <Tag color={'red'}>当前</Tag>}
-        </>
+        </div>
       ),
     },
     {
@@ -78,7 +79,7 @@
     },
     {
       title: '操作',
-      dataIndex: '$action',
+      dataIndex: 'ACTION',
       align: 'center',
       actions: ({ record }) => [
         {

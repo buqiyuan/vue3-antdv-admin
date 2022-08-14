@@ -29,7 +29,12 @@
   import { ref, computed, watch } from 'vue';
   import { RightOutlined } from '@ant-design/icons-vue';
   import { Checkbox } from 'ant-design-vue';
-  import { updateNodeCheckStatus, CascaderOptionType, Key } from './utils';
+  import { updateNodeCheckStatus } from './utils';
+  import type { CascaderOptionType, Key } from './utils';
+
+  defineOptions({
+    name: 'NodePanel',
+  });
 
   const props = defineProps({
     options: {
@@ -83,11 +88,14 @@
   .ant-cascader-menu:last-of-type {
     border-right: 0;
   }
+
   .check-row {
     @apply flex justify-between items-center relative;
+
     .label {
       @apply px-10px;
     }
+
     .arrow {
       @apply absolute right-10px;
     }

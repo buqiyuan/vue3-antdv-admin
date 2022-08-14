@@ -1,5 +1,5 @@
-import { isEmpty } from 'lodash-es';
-import { DynamicTableProps } from '../dynamic-table';
+import { get, isEmpty } from 'lodash-es';
+import type { DynamicTableProps } from '../dynamic-table';
 import type { TableMethods, TableState } from './index';
 import { exportJson2Excel } from '@/utils/Export2Excel';
 
@@ -8,6 +8,8 @@ export type UseExportData2ExcelContext = {
   methods: TableMethods;
   props: DynamicTableProps;
 };
+
+export type ExportData2Excel = ReturnType<typeof useExportData2Excel>;
 
 /**
  * 导出表格Excel
@@ -18,7 +20,7 @@ export const useExportData2Excel = ({ props, state, methods }: UseExportData2Exc
     const { getColumnKey } = methods;
     const { tableData } = state;
 
-    const theaders = columns.filter((n) => getColumnKey(n) && getColumnKey(n) !== '$action');
+    const theaders = columns.filter((n) => getColumnKey(n) && getColumnKey(n) !== 'INDEX');
 
     if (exportFormatter) {
       const { header, data } = exportFormatter(theaders, tableData.value);
@@ -35,8 +37,8 @@ export const useExportData2Excel = ({ props, state, methods }: UseExportData2Exc
       }
     } else {
       exportJson2Excel({
-        header: theaders.map((n) => n.title),
-        data: tableData.value.map((v) => theaders.map((header) => v[getColumnKey(header)!])),
+        header: theaders.map((n) => n.title as string),
+        data: tableData.value.map((v) => theaders.map((header) => get(v, getColumnKey(header)!))),
         filename: exportFileName,
         bookType: exportBookType,
         autoWidth: exportAutoWidth,

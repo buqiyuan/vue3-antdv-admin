@@ -1,4 +1,4 @@
-import { type RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_NAME } from '@/router/constant';
 import RouterView from '@/layout/routerView/index.vue';
 

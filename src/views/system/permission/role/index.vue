@@ -65,8 +65,8 @@
         width: '50%',
         onFinish: async (values) => {
           record.id && (values.roleId = record.id);
-          const menusRef = formRef?.compRefs?.menus;
-          const deptsRef = formRef?.compRefs?.depts;
+          const menusRef = formRef?.compRefMap.get('menus')!;
+          const deptsRef = formRef?.compRefMap.get('depts')!;
           const params = {
             ...values,
             menus: [...menusRef.halfCheckedKeys, ...menusRef.checkedKeys],
@@ -124,7 +124,7 @@
     {
       title: '操作',
       width: 160,
-      dataIndex: '$action',
+      dataIndex: 'ACTION',
       hideInSearch: true,
       align: 'center',
       fixed: 'right',

@@ -12,6 +12,7 @@ export default {
   table: {
     demo: '表格演示',
     searchTable: '查询表格',
+    editRowTable: '可编辑行',
     wzry: '王者荣耀',
     lol: '英雄联盟',
   },

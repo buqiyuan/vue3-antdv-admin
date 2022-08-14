@@ -12,6 +12,7 @@ export default {
   table: {
     demo: 'Table Demo',
     searchTable: 'Search Table',
+    editRowTable: 'Editable Rows',
     wzry: 'Honor of Kings',
     lol: 'League of Legends',
   },

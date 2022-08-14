@@ -1,10 +1,11 @@
-import { ColumnParams } from './column';
+import type { CustomRenderParams } from './column';
 import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
 import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
 import type { PermissionType } from '@/core/permission/modules/types';
+import type { TableMethods, UseEditableType } from '../hooks/';
 
 export interface ActionItem extends Omit<ButtonProps, 'onClick'> {
-  onClick?: Fn<ColumnParams, any>;
+  onClick?: Fn<CustomRenderParams, any>;
   label?: string;
   color?: 'success' | 'error' | 'warning';
   icon?: string;
@@ -29,8 +30,8 @@ export type PopConfirm = PopconfirmProps & {
   title: string;
   okText?: string;
   cancelText?: string;
-  onConfirm: Fn<ColumnParams, any>;
-  onCancel?: Fn<ColumnParams, any>;
+  onConfirm: Fn<CustomRenderParams, any>;
+  onCancel?: Fn<CustomRenderParams, any>;
   icon?: string;
   placement?:
     | 'top'
@@ -45,4 +46,23 @@ export type PopConfirm = PopconfirmProps & {
     | 'rightBottom'
     | 'bottomLeft'
     | 'bottomRight';
+};
+
+export type TableActionType = {
+  /** 刷新并清空,页码也会重置，不包括搜索表单 */
+  reload: TableMethods['reload'];
+  /** 设置动态表格属性 */
+  setProps: TableMethods['setProps'];
+  /** 获取远程数据 */
+  fetchData: TableMethods['fetchData'];
+  /** 进入编辑状态 */
+  startEditable: UseEditableType['startEditable'];
+  /** 取消编辑 */
+  cancelEditable: UseEditableType['cancelEditable'];
+  /** 获取编辑后表单的值 */
+  getEditFormModel: UseEditableType['getEditFormModel'];
+  /** 当前行是否处于编辑状态 */
+  isEditable: UseEditableType['isEditable'];
+  /** 行编辑表单是否校验通过 */
+  validateRow: UseEditableType['validateRow'];
 };
