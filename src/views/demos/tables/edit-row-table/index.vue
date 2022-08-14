@@ -1,15 +1,17 @@
 <template>
   <div>
-    <Alert message="查询表格" type="info" show-icon>
-      <template #description> 查询表格-查询表单使用示例 </template>
+    <Alert message="可编辑行表格" type="info" show-icon>
+      <template #description> 可编辑行表格-可编辑行表格使用示例 </template>
     </Alert>
-    <Card title="查询表单基本使用示例" style="margin-top: 20px">
-      <DynamicTable size="small" bordered :data-request="loadData" :columns="columns" row-key="id">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.dataIndex === 'name'">
-            {{ record.name }} <a class="text-red-500">[测试bodyCell]</a>
-          </template>
-        </template>
+    <Card title="可编辑行表格基本使用示例" style="margin-top: 20px">
+      <DynamicTable
+        size="small"
+        bordered
+        :data-request="loadData"
+        :search="false"
+        :columns="columns"
+        row-key="id"
+      >
       </DynamicTable>
     </Card>
   </div>
@@ -19,6 +21,10 @@
   import { Alert, Card } from 'ant-design-vue';
   import { columns, tableData } from './columns';
   import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
+
+  defineOptions({
+    name: 'EditRowTable',
+  });
 
   const [DynamicTable, dynamicTableInstance] = useTable();
 

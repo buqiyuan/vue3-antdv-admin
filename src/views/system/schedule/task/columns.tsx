@@ -33,7 +33,7 @@ export const baseColumns: TableColumnItem[] = [
     width: 120,
     dataIndex: 'status',
     align: 'center',
-    bodyCell: ({ record }) => (
+    customRender: ({ record }) => (
       <Badge
         status={record.status === 1 ? 'processing' : 'default'}
         color={getStatusColor(record.status)}
@@ -46,7 +46,7 @@ export const baseColumns: TableColumnItem[] = [
     width: 100,
     align: 'center',
     dataIndex: 'type',
-    bodyCell: ({ record }) => (
+    customRender: ({ record }) => (
       <Tag color={'processing'}>{record.type === 1 ? 'Interval' : 'Cron'}</Tag>
     ),
   },

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import RequireContext = __WebpackModuleApi.RequireContext;
+
+type RequireContext = __WebpackModuleApi.RequireContext;
 
 /**
  * @description 处理首字母大写 abc => Abc

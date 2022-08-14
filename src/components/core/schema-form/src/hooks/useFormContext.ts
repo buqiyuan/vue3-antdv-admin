@@ -7,6 +7,6 @@ export async function createFormContext(instance: SchemaFormType) {
   provide(key, instance);
 }
 
-export function useFormContext() {
-  return inject(key) as SchemaFormType;
+export function useFormContext(formProps = {}) {
+  return inject(key, formProps) as SchemaFormType;
 }

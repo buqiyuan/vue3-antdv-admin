@@ -1,5 +1,5 @@
-import { type App } from 'vue';
 import { isObject } from './is';
+import type { App } from 'vue';
 
 /**
  *

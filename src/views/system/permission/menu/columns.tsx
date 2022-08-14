@@ -30,14 +30,14 @@ export const baseColumns: TableColumnItem[] = [
     width: 80,
     dataIndex: 'icon',
     align: 'center',
-    bodyCell: ({ record }) => <>{record.icon && <icon-font type={record.icon} size="22" />}</>,
+    customRender: ({ record }) => record.icon && <icon-font type={record.icon} size="22" />,
   },
   {
     title: '类型',
     width: 80,
     align: 'center',
     dataIndex: 'type',
-    bodyCell: ({ record }) => <>{getMenuType(record.type)}</>,
+    customRender: ({ record }) => getMenuType(record.type),
   },
   {
     title: '节点路由',
@@ -50,6 +50,7 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'keepalive',
     align: 'center',
     width: 80,
+    customRender: ({ record }) => record.type === 1 && (record.keepalive ? '是' : '否'),
   },
   {
     title: '文件路径',

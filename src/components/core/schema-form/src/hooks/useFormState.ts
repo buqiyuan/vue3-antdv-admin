@@ -1,9 +1,11 @@
-import { computed, reactive, ref, unref } from 'vue';
+import { computed, reactive, ref, unref, watchEffect } from 'vue';
 import { cloneDeep } from 'lodash-es';
-import type { SetupContext } from 'vue';
+import type { SetupContext, DefineComponent } from 'vue';
 import type { AdvanceState } from '../types/hooks';
 import type { SchemaFormProps } from '../schema-form';
 import type { FormInstance } from 'ant-design-vue';
+import type { ComponentProps, RenderCallbackParams } from '../types';
+import { isFunction } from '@/utils/is';
 
 export type FormState = ReturnType<typeof useFormState>;
 
@@ -24,7 +26,12 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
   // 缓存的表单值，用于恢复form-item v-if为true后的值
   const cacheFormModel = { ...props.initialValues };
   // 将所有的表单组件实例保存起来
-  const compRefs = {} as any;
+  const compRefMap = new Map<string, DefineComponent<any>>();
+  // 初始时的componentProps，用于updateSchema更新时不覆盖componentProps为函数时的值
+  const originComponentPropsFnMap = new Map<
+    string,
+    (opt: RenderCallbackParams) => ComponentProps
+  >();
 
   const advanceState = reactive<AdvanceState>({
     isAdvanced: true,
@@ -54,17 +61,26 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     (): Recordable => ({ ...getFormProps.value, ...advanceState }),
   );
 
+  watchEffect(() => {
+    formPropsRef.value.schemas?.forEach((item) => {
+      if (!originComponentPropsFnMap.has(item.field) && isFunction(item.componentProps)) {
+        originComponentPropsFnMap.set(item.field, item.componentProps);
+      }
+    });
+  });
+
   return {
     formModel,
     defaultFormValues,
     schemaFormRef,
     formPropsRef,
     cacheFormModel,
-    compRefs,
+    compRefMap,
     getFormProps,
     advanceState,
     getRowConfig,
     getFormActionBindProps,
+    originComponentPropsFnMap,
     formSchemasRef: computed(() => unref(formPropsRef).schemas || []),
   };
 };

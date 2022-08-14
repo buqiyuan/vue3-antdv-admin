@@ -1,65 +1,14 @@
 import { debounce } from 'lodash-es';
-import { Tag } from 'ant-design-vue';
+import { Tag, message } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 
-const names = ['王路飞', '王大蛇', '李白', '刺客伍六七'];
-const clothes = ['西装', '领带', '裙子', '包包'];
-export const tableData = Array.from({ length: 30 }).map((_, i) => ({
-  id: i + 1,
-  date: new Date().toLocaleString(),
-  name: names[~~(Math.random() * 4)],
-  clothes: clothes[~~(Math.random() * 4)],
-  price: ~~(Math.random() * 1000),
-  gender: ~~(Math.random() * 2),
-  status: ~~(Math.random() * 2),
-}));
+import {
+  fetchStatusMapData,
+  getClothesByGender,
+  tableData,
+} from '@/views/demos/tables/search-table/columns';
 
-export const fetchStatusMapData = (keyword = '') => {
-  return new Promise<LabelValueOptions>((resolve) => {
-    setTimeout(() => {
-      const data = [
-        {
-          label: '已售罄',
-          value: 0,
-        },
-        {
-          label: '热卖中',
-          value: 1,
-        },
-      ].filter((n) => n.label.includes(keyword));
-      resolve(data);
-    }, 2000);
-  });
-};
-
-export const getClothesByGender = (gender: number) => {
-  if (gender === 1) {
-    // 男
-    return [
-      {
-        label: '西装',
-        value: 1,
-      },
-      {
-        label: '领带',
-        value: 0,
-      },
-    ];
-  } else if (gender === 0) {
-    //女
-    return [
-      {
-        label: '裙子',
-        value: 1,
-      },
-      {
-        label: '包包',
-        value: 0,
-      },
-    ];
-  }
-  return [];
-};
+export { tableData };
 
 // 数据项类型
 export type ListItemType = typeof tableData[number];
@@ -71,16 +20,17 @@ export const columns: TableColumn<ListItemType>[] = [
     dataIndex: 'name',
     sorter: true,
     formItemProps: {
-      required: true,
+      rules: [{ required: true, message: '请选择姓名' }],
     },
   },
   {
     title: '性别',
     align: 'center',
     dataIndex: 'gender',
-    formItemProps: {
+    editFormItemProps: {
       component: 'Select',
-      componentProps: ({ formInstance, formModel, tableInstance }) => ({
+      rules: [{ required: true, type: 'number', message: '请选择性别' }],
+      componentProps: ({ formInstance, formModel, tableRowKey }) => ({
         options: [
           {
             label: '男',
@@ -92,11 +42,11 @@ export const columns: TableColumn<ListItemType>[] = [
           },
         ],
         onChange() {
-          console.log('tableInstance', tableInstance?.reload());
+          console.log('formModel', formModel);
 
           // 根据当前选择的性别，更新衣服可选项
           formInstance?.updateSchema({
-            field: 'clothes',
+            field: `${tableRowKey}.clothes`,
             componentProps: {
               options: getClothesByGender(formModel.gender),
             },
@@ -119,8 +69,9 @@ export const columns: TableColumn<ListItemType>[] = [
     title: '价格',
     align: 'center',
     dataIndex: 'price',
-    formItemProps: {
-      component: 'Select',
+    editFormItemProps: {
+      component: 'InputNumber',
+      rules: [{ required: true, message: '请输入价格！' }],
     },
     customRender: ({ record }) => `${record.price}元`,
   },
@@ -128,8 +79,9 @@ export const columns: TableColumn<ListItemType>[] = [
     title: '状态',
     align: 'center',
     dataIndex: 'status',
-    formItemProps: {
+    editFormItemProps: {
       component: 'Select',
+      rules: [{ required: true, type: 'number', message: '请选择状态' }],
       componentProps: ({ formInstance, schema }) => ({
         showSearch: true,
         filterOption: false,
@@ -139,14 +91,14 @@ export const columns: TableColumn<ListItemType>[] = [
         onSearch: debounce(async (keyword) => {
           schema.loading = true;
           const newSchema = {
-            field: 'status',
+            field: schema.field,
             componentProps: {
               options: [] as LabelValueOptions,
             },
           };
           formInstance?.updateSchema([newSchema]);
-          console.log('onSearch keyword', keyword);
           const result = await fetchStatusMapData(keyword).finally(() => (schema.loading = false));
+          console.log('onSearch keyword', keyword, formInstance, newSchema);
           newSchema.componentProps.options = result;
           formInstance?.updateSchema([newSchema]);
         }, 500),
@@ -160,5 +112,45 @@ export const columns: TableColumn<ListItemType>[] = [
         {['已售罄', '热卖中'][record.status]}
       </Tag>
     ),
+  },
+  {
+    title: '操作',
+    align: 'center',
+    width: 200,
+    dataIndex: 'ACTION',
+    actions: ({ record }, action) => {
+      const { startEditable, cancelEditable, isEditable, getEditFormModel, validateRow } = action;
+
+      return isEditable(record.id)
+        ? [
+            {
+              label: '保存',
+              onClick: async () => {
+                const result = await validateRow(record.id);
+                message.loading({ content: '保存中...', key: record.id });
+                console.log('result', result);
+                console.log('保存', getEditFormModel(record.id));
+                setTimeout(() => {
+                  cancelEditable(record.id);
+                  message.success({ content: '保存成功!', key: record.id, duration: 2 });
+                }, 1500);
+              },
+            },
+            {
+              label: '取消',
+              onClick: () => {
+                cancelEditable(record.id);
+              },
+            },
+          ]
+        : [
+            {
+              label: '编辑',
+              onClick: () => {
+                startEditable(record.id, record);
+              },
+            },
+          ];
+    },
   },
 ];

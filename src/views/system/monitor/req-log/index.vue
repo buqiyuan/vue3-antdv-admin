@@ -9,7 +9,8 @@
 
 <script setup lang="tsx">
   import { Tag } from 'ant-design-vue';
-  import { useTable, TableColumn } from '@/components/core/dynamic-table';
+  import type { TableColumn } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
   import { getReqLogList } from '@/api/system/log';
 
   defineOptions({
@@ -59,7 +60,7 @@
       title: '请求方式',
       dataIndex: 'method',
       align: 'center',
-      bodyCell: ({ record }) => <Tag color="processing">{record.method}</Tag>,
+      customRender: ({ record }) => <Tag color="processing">{record.method}</Tag>,
     },
     {
       title: '请求参数',
@@ -78,14 +79,14 @@
       dataIndex: 'status',
       align: 'center',
       width: 120,
-      bodyCell: ({ record }) => <Tag color={getStatusType(record.status)}>{record.status}</Tag>,
+      customRender: ({ record }) => <Tag color={getStatusType(record.status)}>{record.status}</Tag>,
     },
     {
       title: '耗时',
       dataIndex: 'consumeTime',
       align: 'center',
       width: 120,
-      bodyCell: ({ record }) => (
+      customRender: ({ record }) => (
         <Tag color={getConsumeTimeType(record.consumeTime)}>{`${record.consumeTime}ms`}</Tag>
       ),
     },

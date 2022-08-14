@@ -7,7 +7,7 @@
       v-else
       v-bind="{ ...schema.formItemProps }"
       :label="renderLabelHelpMessage"
-      :name="schema.field"
+      :name="schema.field.split('.')"
       :label-col="itemLabelWidthProp.labelCol"
       :wrapper-col="itemLabelWidthProp.wrapperCol"
       :rules="getRules"
@@ -16,10 +16,10 @@
       <component
         :is="getComponent"
         v-else-if="getComponent"
-        :ref="setItemRef"
+        :ref="setItemRef(schema.field)"
         :key="schema.field"
         v-bind="getComponentProps"
-        v-model:[modelValueType]="modelValue[schema.field]"
+        v-model:[modelValueType]="modelValue"
         :allow-clear="true"
         :disabled="getDisable"
         v-on="componentEvents"
@@ -43,20 +43,18 @@
 </template>
 
 <script setup lang="tsx">
-  import { computed, unref, toRefs, isVNode } from 'vue';
-  import { useVModel, isFunction } from '@vueuse/core';
+  import { computed, unref, toRefs, isVNode, onActivated, nextTick } from 'vue';
   import { cloneDeep } from 'lodash-es';
   import { Form, Col, Spin, Divider } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
   import { componentMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
-  import type { PropType } from 'vue';
+  import { schemaFormItemProps } from './schema-form-item';
   import type { ComponentMapType } from './componentMap';
-  import type { CustomRenderFn, FormSchema, RenderCallbackParams } from './types/form';
+  import type { CustomRenderFn, FormSchema, RenderCallbackParams, ComponentProps } from './types/';
   import type { RuleObject } from 'ant-design-vue/es/form/';
-  import type { TableActionType } from '@/components/core/dynamic-table';
-  import { isBoolean, isNull, isObject, isString } from '@/utils/is';
+  import { isBoolean, isNull, isObject, isString, isFunction } from '@/utils/is';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
   import { useI18n } from '@/hooks/useI18n';
 
@@ -64,40 +62,32 @@
     name: 'SchemaFormItem',
   });
 
-  const props = defineProps({
-    formModel: {
-      type: Object as PropType<Record<string, any>>,
-      default: () => ({}),
-    },
-    schema: {
-      type: Object as PropType<FormSchema>,
-      default: () => ({}),
-    },
-    setFormModel: {
-      type: Function as PropType<(key: string, value: any) => void>,
-      default: null,
-    },
-    // 动态表格实例
-    tableInstance: {
-      type: Object as PropType<TableActionType>,
-    },
-    /** 将表单组件实例保存起来 */
-    setItemRef: {
-      type: Function,
-      default: () => ({}),
-    },
-  });
+  const props = defineProps(schemaFormItemProps);
 
   const emit = defineEmits(['update:formModel']);
 
   // schemaForm组件实例
   const formContext = useFormContext();
-  const { formPropsRef } = formContext;
+  const { formPropsRef, setItemRef, updateSchema, getSchemaByFiled, appendSchemaByField } =
+    formContext;
 
-  const modelValue = useVModel(props, 'formModel', emit);
   const { t } = useI18n();
 
   const { schema } = toRefs(props);
+
+  const modelValue = computed({
+    get() {
+      const namePath = schema.value.field.split('.');
+      return namePath.reduce((prev, field) => prev[field], props.formModel);
+    },
+    set(val) {
+      const namePath = schema.value.field.split('.');
+      const prop = namePath.pop()!;
+      const target = namePath.reduce((prev, field) => prev[field], props.formModel);
+      target[prop] = val;
+      emit('update:formModel', props.formModel);
+    },
+  });
 
   // @ts-ignore
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
@@ -119,7 +109,8 @@
       field: schema.field,
       formInstance: formContext,
       tableInstance,
-      formModel,
+      tableRowKey: props.tableRowKey,
+      formModel: props.tableRowKey ? formModel[props.tableRowKey] : formModel,
       values: {
         ...mergeDynamicData,
         ...formModel,
@@ -233,7 +224,6 @@
         plain: true,
       });
     }
-    schema.field === 'field35' && console.log('componentProps', componentProps);
 
     return componentProps as Recordable;
   });
@@ -378,7 +368,13 @@
     return rules;
   });
 
-  requestIdleCallback(async () => {
+  nextTick(() => {
+    if (!getSchemaByFiled(props.schema.field)) {
+      appendSchemaByField(props.schema);
+    }
+  });
+
+  const fetchRemoteData = async () => {
     if (getComponentProps.value?.request) {
       const { componentProps, component } = unref(schema);
 
@@ -387,17 +383,25 @@
 
       try {
         const result = await getComponentProps.value?.request(unref(getValues));
+        const newSchema = {
+          ...unref(schema),
+          componentProps: {} as ComponentProps,
+        };
         if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
-          getComponentProps.value.options = result;
+          newSchema.componentProps.options = result;
         } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
-          getComponentProps.value.treeData = result;
+          newSchema.componentProps.treeData = result;
         }
         if (componentProps) {
           componentProps.requestResult = result;
         }
+        updateSchema(newSchema);
       } finally {
         schema.value.loading = false;
       }
     }
-  });
+  };
+
+  setTimeout(fetchRemoteData);
+  onActivated(fetchRemoteData);
 </script>

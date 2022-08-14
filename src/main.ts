@@ -1,4 +1,3 @@
-// import './publicPath'
 // with polyfills
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';

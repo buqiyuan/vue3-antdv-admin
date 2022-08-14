@@ -26,6 +26,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     getFormProps,
     schemaFormRef,
     defaultFormValues,
+    originComponentPropsFnMap,
     handleFormValues,
   } = formActionContext;
 
@@ -127,7 +128,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
   /**
    * @description: 根据 field 删除 Schema
    */
-  async function removeSchemaByFiled(fields: string | string[]): Promise<void> {
+  function removeSchemaByFiled(fields: string | string[]) {
     const schemaList = cloneDeep<FormSchema[]>(unref(formSchemasRef));
 
     if (!fields) {
@@ -151,9 +152,18 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
   }
 
   /**
+   * @description: 根据 field 查找 Schema
+   */
+  function getSchemaByFiled(fields: string | string[]): FormSchema | undefined {
+    const schemaList = unref(formSchemasRef);
+    const fieldList = ([] as string[]).concat(fields);
+    return schemaList.find((schema) => fieldList.includes(schema.field));
+  }
+
+  /**
    * @description  更新formItemSchema
    */
-  async function updateSchema(data: Partial<FormSchema> | Partial<FormSchema>[]) {
+  const updateSchema = (data: Partial<FormSchema> | Partial<FormSchema>[]) => {
     let updateData: Partial<FormSchema>[] = [];
     if (isObject(data)) {
       updateData.push(data as FormSchema);
@@ -177,6 +187,17 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
       unref(formSchemasRef).forEach((val) => {
         if (val.field === item.field) {
           const newSchema = deepMerge(val, item);
+          if (originComponentPropsFnMap.has(val.field)) {
+            const originCompPropsFn = originComponentPropsFnMap.get(val.field)!;
+            const compProps = { ...newSchema.componentProps };
+            newSchema.componentProps = (opt) => {
+              const res = {
+                ...originCompPropsFn(opt),
+                ...compProps,
+              };
+              return res;
+            };
+          }
           schemas.push(newSchema);
         } else {
           schemas.push(val);
@@ -185,7 +206,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     });
 
     unref(formPropsRef).schemas = uniqBy(schemas, 'field');
-  }
+  };
 
   async function resetFields(): Promise<void> {
     const { resetFunc, submitOnReset } = unref(getFormProps);
@@ -242,6 +263,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     getFieldsValue,
     updateSchema,
     resetSchema,
+    getSchemaByFiled,
     appendSchemaByField,
     removeSchemaByFiled,
     resetFields,
