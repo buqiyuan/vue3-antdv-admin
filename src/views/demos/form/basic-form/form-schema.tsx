@@ -348,7 +348,7 @@ export const schemas: FormSchema[] = [
         return data;
       },
     },
-    defaultValue: '1',
+    defaultValue: '0',
     colProps: {
       span: 8,
     },

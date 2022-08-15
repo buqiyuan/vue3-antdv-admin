@@ -1,7 +1,7 @@
-import { MockMethod } from 'vite-plugin-mock';
 import { resultPageSuccess, resultSuccess } from '../../_util';
 import heroListJson from './_heroList.json';
 import heroLoLListJson from './_lolHeroList.json';
+import type { MockMethod } from 'vite-plugin-mock';
 
 export default [
   // 获取请求日志

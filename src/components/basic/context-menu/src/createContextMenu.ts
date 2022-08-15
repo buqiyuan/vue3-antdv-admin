@@ -1,6 +1,6 @@
 import { createVNode, render } from 'vue';
 import contextMenuVue from './ContextMenu.vue';
-import { CreateContextOptions, ContextMenuProps } from './typing';
+import type { CreateContextOptions, ContextMenuProps } from './typing';
 import { isClient } from '@/utils/is';
 
 const menuManager: {

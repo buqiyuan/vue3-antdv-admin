@@ -1,4 +1,4 @@
-import { nextTick, ref, unref, watch, onMounted } from 'vue';
+import { nextTick, ref, unref, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 import SchemaForm from '../../index';
 import type { Ref, SetupContext } from 'vue';
@@ -17,16 +17,18 @@ export function useForm(props?: Partial<SchemaFormProps>) {
   }
   watch(
     () => props,
-    () => {
-      props &&
-        onMounted(async () => {
-          // console.log('form onMounted');
-          (await getFormInstance())?.setSchemaFormProps(props);
-        });
+    async () => {
+      if (props) {
+        await nextTick();
+        const formInstance = await getFormInstance();
+        // console.log('form onMounted');
+        formInstance.setSchemaFormProps?.(props);
+      }
     },
     {
       immediate: true,
       deep: true,
+      flush: 'post',
     },
   );
 
@@ -35,7 +37,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
       if (Reflect.has(target, key)) {
         return unref(target);
       }
-      if (Reflect.has(target.value, key)) {
+      if (target.value && Reflect.has(target.value, key)) {
         return target.value[key];
       }
       return async (...rest) => {

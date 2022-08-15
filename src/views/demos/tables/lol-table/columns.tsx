@@ -10,7 +10,7 @@ export const columns: TableColumn[] = [
     width: 100,
     hideInSearch: true,
     dataIndex: 'avatar',
-    bodyCell: ({ record }) => (
+    customRender: ({ record }) => (
       <ImagePreview src={record.avatar} preview={{ src: record.posters }} key={record.avatar} />
     ),
   },
@@ -28,21 +28,21 @@ export const columns: TableColumn[] = [
     title: '定位',
     align: 'center',
     dataIndex: 'roles',
-    bodyCell: ({ record }) => (
-      <>
+    customRender: ({ record }) => (
+      <div>
         {record.roles?.map((name) => (
           <Tag color={'blue'} key={name}>
             {name}
           </Tag>
         ))}
-      </>
+      </div>
     ),
   },
   {
     title: '操作',
     align: 'center',
     width: 120,
-    dataIndex: '$action',
+    dataIndex: 'ACTION',
     actions: ({ record }) => [
       {
         label: '查看详情',

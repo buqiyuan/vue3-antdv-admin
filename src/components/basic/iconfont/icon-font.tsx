@@ -1,5 +1,6 @@
-import { defineComponent, PropType, unref, computed } from 'vue';
+import { defineComponent, unref, computed } from 'vue';
 import { createFromIconfontCN } from '@ant-design/icons-vue';
+import type { PropType } from 'vue';
 import { isString } from '@/utils/is';
 
 let scriptUrls = [`${import.meta.env.BASE_URL}iconfont.js`];

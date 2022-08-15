@@ -1,5 +1,6 @@
 import { unref } from 'vue';
 import { isObject, isString } from 'lodash-es';
+import { useEditable } from './useEditable';
 import type { VNode } from 'vue';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
@@ -14,7 +15,10 @@ export type UseTableMethodsContext = {
 };
 
 export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) => {
-  const { innerPropsRef, tableData, loadingRef, queryFormRef, paginationRef } = state;
+  const { innerPropsRef, tableData, loadingRef, queryFormRef, paginationRef, editFormErrorMsgs } =
+    state;
+  // 可编辑行
+  const editableMethods = useEditable({ state, props });
 
   const setProps = (props: Partial<DynamicTableProps>) => {
     innerPropsRef.value = { ...unref(innerPropsRef), ...props };
@@ -124,12 +128,23 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     return column?.key || column?.dataIndex;
   };
 
+  /** 编辑表单验证失败回调 */
+  const handleEditFormValidate = (name: string[], status, errorMsgs) => {
+    // console.log('errorInfo', editFormErrorMsgs);
+    if (status) {
+      editFormErrorMsgs.value.delete(name.join('.'));
+    } else {
+      editFormErrorMsgs.value.set(name.join('.'), errorMsgs);
+    }
+  };
+
   /**
    * @description当外部需要动态改变搜索表单的值或选项时，需要调用此方法获取dynamicFormRef实例
    */
   const getQueryFormRef = () => queryFormRef.value;
 
   return {
+    ...editableMethods,
     setProps,
     getComponent,
     handleSubmit,
@@ -138,5 +153,6 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     fetchData,
     getQueryFormRef,
     reload,
+    handleEditFormValidate,
   };
 };

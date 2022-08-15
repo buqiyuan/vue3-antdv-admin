@@ -1,5 +1,6 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "npm.packageManager": "yarn",
   "editor.tabSize": 2,
   "editor.formatOnSave": true,

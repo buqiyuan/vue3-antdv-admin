@@ -1,7 +1,7 @@
-import { MockMethod } from 'vite-plugin-mock';
 import { resultPageSuccess } from '../_util';
 
 import data from './_reqLog.data';
+import type { MockMethod } from 'vite-plugin-mock';
 
 export default [
   {

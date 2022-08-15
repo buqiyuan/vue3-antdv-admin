@@ -20,11 +20,12 @@
   </Select>
 </template>
 <script lang="ts" setup>
-  import { PropType, ref, watchEffect, computed, unref, watch } from 'vue';
+  import { ref, watchEffect, computed, unref, watch } from 'vue';
   import { get, omit } from 'lodash-es';
   import { LoadingOutlined } from '@ant-design/icons-vue';
   import { selectProps } from 'ant-design-vue/es/select';
   import { Select } from 'ant-design-vue';
+  import type { PropType } from 'vue';
   import { isFunction } from '@/utils/is';
   import { useI18n } from '@/hooks/useI18n';
   import { propTypes } from '@/utils/propTypes';

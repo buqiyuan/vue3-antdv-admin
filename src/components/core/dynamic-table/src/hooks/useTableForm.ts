@@ -1,4 +1,5 @@
 import { unref, computed, watchEffect } from 'vue';
+import { ColumnKeyFlag } from '../types/column';
 import type { TableMethods } from './useTableMethods';
 import type { TableState } from './useTableState';
 import type { ComputedRef, Slots } from 'vue';
@@ -29,22 +30,24 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   });
 
   const formSchemas = computed<FormSchema[]>(() => {
+    const columnKeyFlags = Object.keys(ColumnKeyFlag);
     return unref(getProps)
       .columns.filter((n) => {
         const field = getColumnKey(n);
-        return !n.hideInSearch && !!field && field !== '$action';
+        return !n.hideInSearch && !!field && !columnKeyFlags.includes(field as string);
       })
       .map((n) => {
         return {
-          field: n.formItemProps?.field ?? n.searchField ?? (getColumnKey(n) as string),
+          field: n.searchField ?? (getColumnKey(n) as string),
           component: 'Input',
-          label: n.title,
+          label: n.title as string,
           colProps: {
             span: 8,
           },
           ...n.formItemProps,
         };
-      });
+      })
+      .sort((a, b) => Number(a?.order) - Number(b?.order)) as FormSchema[];
   });
 
   // 同步外部对props的修改

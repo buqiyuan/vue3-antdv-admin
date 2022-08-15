@@ -1,6 +1,6 @@
-import { nextTick, ref, unref, watch, onMounted } from 'vue';
+import { nextTick, ref, unref, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
-import DynamicTable from '../dynamic-table.vue';
+import DynamicTable from '../../index';
 import type { Ref, SetupContext } from 'vue';
 import type { DynamicTableInstance, DynamicTableProps } from '../dynamic-table';
 
@@ -17,12 +17,13 @@ export function useTable(props?: Partial<DynamicTableProps>) {
   }
   watch(
     () => props,
-    () => {
-      props &&
-        onMounted(async () => {
-          // console.log('table onMounted');
-          (await getTableInstance())?.setProps(props);
-        });
+    async () => {
+      if (props) {
+        // console.log('table onMounted');
+        await nextTick();
+        const tableInstance = await getTableInstance();
+        tableInstance?.setProps?.(props);
+      }
     },
     {
       immediate: true,
@@ -35,13 +36,12 @@ export function useTable(props?: Partial<DynamicTableProps>) {
       if (Reflect.has(target, key)) {
         return unref(target);
       }
-
       if (target.value && Reflect.has(target.value, key)) {
         return Reflect.get(target.value, key);
       }
       return async (...rest) => {
         const table = await getTableInstance();
-        return table?.[key](...rest);
+        return table?.[key]?.(...rest);
       };
     },
   });

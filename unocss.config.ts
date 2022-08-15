@@ -11,6 +11,7 @@ import {
 export default defineConfig({
   presets: [presetMini({ dark: 'class' }), presetAttributify(), presetUno()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
+  include: [`${__dirname}/**/*`],
   exclude: [`${__dirname}/node_modules/**/*`],
   shortcuts: {
     'wh-full': 'w-full h-full',

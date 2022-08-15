@@ -1,4 +1,4 @@
-import { type RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_NAME } from '@/router/constant';
 import RouterView from '@/layout/routerView/index.vue';
 
@@ -34,7 +34,6 @@ export const errorRoute: RouteRecordRaw = {
       meta: {
         title: '404',
         icon: 'UserOutlined',
-        hideInTabs: true,
         hideInMenu: true,
       },
       component: () => import(/* webpackChunkName: "404" */ '@/views/error/404.vue'),

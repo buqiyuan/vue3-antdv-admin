@@ -9,7 +9,7 @@ export const columns: TableColumn[] = [
     width: 100,
     hideInSearch: true,
     dataIndex: 'faceimg',
-    bodyCell: ({ record }) => (
+    customRender: ({ record }) => (
       <ImagePreview src={record.faceimg} preview={{ src: record.heroimg }} key={record.faceimg} />
     ),
   },
@@ -35,21 +35,21 @@ export const columns: TableColumn[] = [
     formItemProps: {
       component: 'Select',
     },
-    bodyCell: ({ record }) => (
-      <>
+    customRender: ({ record }) => (
+      <div>
         {record.skin_name?.split('|')?.map((name) => (
           <Tag color={'blue'} key={name}>
             {name}
           </Tag>
         ))}
-      </>
+      </div>
     ),
   },
   {
     title: '操作',
     align: 'center',
     width: 120,
-    dataIndex: '$action',
+    dataIndex: 'ACTION',
     actions: ({ record }) => [
       {
         label: '查看详情',

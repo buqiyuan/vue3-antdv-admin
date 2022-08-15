@@ -22,7 +22,8 @@
   import { Form, Input, Popover, Tag } from 'ant-design-vue';
   import NodePanel from './node-panel.vue';
   // import { cloneDeep } from 'lodash-es';
-  import { updateNodeCheckStatus, CascaderOptionType, Key } from './utils';
+  import { updateNodeCheckStatus } from './utils';
+  import type { CascaderOptionType, Key } from './utils';
   import { formarPermsToCascader } from '@/core/permission';
 
   type TagItem = {
@@ -44,7 +45,7 @@
   });
   // 数组去重
   // const duplicateArr = (...rest: any[]) => [...new Set(rest.flat(Infinity))];
-  // // 数组差集
+  // 数组差集
   // const diffArr = (a, b) => a.filter((n) => !b.includes(n));
 
   const emit = defineEmits(['update:value']);
@@ -163,10 +164,12 @@
     &:hover .clear-icon {
       display: block;
     }
+
     :deep(.ant-input-prefix) {
       width: 100%;
       flex-wrap: wrap;
     }
+
     .tag-item {
       @apply my-2px;
     }

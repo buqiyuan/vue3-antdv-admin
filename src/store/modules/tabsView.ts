@@ -1,6 +1,6 @@
-import { type RouteLocationNormalized } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useKeepAliveStore } from './keepAlive';
+import type { RouteLocationNormalized } from 'vue-router';
 import { store } from '@/store';
 import { TABS_ROUTES } from '@/enums/cacheEnum';
 import router from '@/router';

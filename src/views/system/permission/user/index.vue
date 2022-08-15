@@ -97,6 +97,7 @@
   import { userSchemas, deptSchemas, updatePswSchemas, transferUserSchemas } from './formSchemas';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import type { LoadDataParams } from '@/components/core/dynamic-table';
+  import type { TreeDataItem } from '@/core/permission/utils';
   import { SplitPanel } from '@/components/basic/split-panel';
   import { useTable } from '@/components/core/dynamic-table';
   import {
@@ -109,7 +110,7 @@
   } from '@/api/system/user';
   import { createDept, deleteDept, updateDept, getDeptList, transferDept } from '@/api/system/dept';
   import { useFormModal } from '@/hooks/useModal/index';
-  import { TreeDataItem, formatDept2Tree, findChildById } from '@/core/permission/utils';
+  import { formatDept2Tree, findChildById } from '@/core/permission/utils';
 
   defineOptions({
     name: 'SystemUser',
@@ -339,7 +340,7 @@
     {
       title: '操作',
       width: 230,
-      dataIndex: '$action',
+      dataIndex: 'ACTION',
       align: 'center',
       fixed: 'right',
       actions: ({ record }) => [

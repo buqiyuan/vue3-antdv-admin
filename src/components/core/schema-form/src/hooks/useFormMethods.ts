@@ -1,6 +1,5 @@
 import { unref } from 'vue';
 import { set } from 'lodash-es';
-import type { FormSchema } from '../types/form';
 import type { FormState } from './useFormState';
 import type { SchemaFormProps } from '../schema-form';
 import { deepMerge } from '@/utils/';
@@ -13,7 +12,7 @@ export type FormMethods = ReturnType<typeof useFormMethods>;
 
 export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
   const {
-    compRefs,
+    compRefMap,
     formModel,
     formPropsRef,
     cacheFormModel,
@@ -22,23 +21,28 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
     getFormProps,
   } = formMethodsContext;
 
-  // 将所有的表单组件实例保存起来
-  const setItemRef = (formItem: FormSchema) => {
+  // 将所有的表单组件实例保存起来, 方便外面通过表单组件实例操作
+  const setItemRef = (field: string) => {
     return (el) => {
       if (el) {
-        compRefs[formItem.field] = el;
+        compRefMap.set(field, el);
       }
     };
   };
 
   // 设置某个字段的值
-  const setFormModel = (key: string, value: any) => {
+  const setFormModel = (key: Key, value: any) => {
     formModel[key] = value;
     cacheFormModel[key] = value;
     const { validateTrigger } = unref(getFormProps);
     if (!validateTrigger || validateTrigger === 'change') {
       schemaFormRef.value?.validateFields([key]);
     }
+  };
+
+  // 删除某个字段
+  const delFormModel = (key: Key) => {
+    return Reflect.deleteProperty(formModel, key);
   };
 
   const setSchemaFormProps = (formProps: Partial<SchemaFormProps>) => {
@@ -115,6 +119,7 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
     setItemRef,
     initFormValues,
     setFormModel,
+    delFormModel,
     setSchemaFormProps,
     handleFormValues,
   };

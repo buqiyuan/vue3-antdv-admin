@@ -63,7 +63,7 @@
   const heroInfo = ref<any>({});
 
   onMounted(async () => {
-    const { data } = await getLolHeroInfo({ id: route.params.id as string });
+    const { data } = await getLolHeroInfo({ id: route.params.id });
     heroInfo.value = data;
     tabsViewStore.updateTabTitle(`${route.meta.title}(${heroInfo.value.title})`);
   });
@@ -72,30 +72,37 @@
 <style lang="less" scoped>
   .skins :deep(.ant-carousel) {
     text-align: center;
+
     .slick-dots {
       position: relative;
       height: auto;
     }
+
     .slick-slide img {
       border: 5px solid #fff;
       display: block;
       margin: auto;
     }
+
     .slick-arrow {
       display: none !important;
     }
+
     .slick-thumb {
       bottom: 0px;
     }
+
     .slick-thumb li {
       width: 60px;
       height: 45px;
     }
+
     .slick-thumb li img {
       width: 100%;
       height: 100%;
       filter: grayscale(100%);
     }
+
     .slick-thumb li.slick-active img {
       filter: grayscale(0%);
     }
@@ -113,6 +120,7 @@
       opacity: 0.3;
       z-index: 1;
     }
+
     .slick-prev {
       left: 10px;
     }

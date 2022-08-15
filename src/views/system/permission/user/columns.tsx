@@ -10,7 +10,7 @@ export const baseColumns: TableColumnItem[] = [
     width: 80,
     dataIndex: 'headImg',
     hideInSearch: true,
-    bodyCell: ({ record }) => <Avatar src={record.headImg} />,
+    customRender: ({ record }) => <Avatar src={record.headImg} />,
   },
   {
     title: '姓名',
@@ -37,10 +37,9 @@ export const baseColumns: TableColumnItem[] = [
     align: 'center',
     hideInSearch: true,
     width: 220,
-    //or bodyCell
-    customRender: ({ text }) => (
+    customRender: ({ record }) => (
       <Space>
-        {text.map((item) => (
+        {record.roleNames.map((item) => (
           <Tag color={'success'} key={item}>
             {item}
           </Tag>
@@ -91,7 +90,7 @@ export const baseColumns: TableColumnItem[] = [
         ],
       },
     },
-    bodyCell: ({ record }) => {
+    customRender: ({ record }) => {
       const isEnable = record.status === 1;
       return <Tag color={isEnable ? 'success' : 'red'}>{isEnable ? '启用' : '禁用'}</Tag>;
     },
