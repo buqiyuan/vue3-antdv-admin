@@ -1,7 +1,9 @@
 <template>
   <Popover :visible="!!errorMsgs?.length" placement="topRight">
     <template #content>
-      <p v-for="err in errorMsgs" :key="err" class="mb-0">{{ err }}</p>
+      <template v-for="err in errorMsgs" :key="err">
+        <Typography.Text type="danger">{{ err }}</Typography.Text>
+      </template>
     </template>
     <SchemaFormItem
       v-if="getIsEditable && getSchema"
@@ -20,7 +22,7 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue';
-  import { Popover } from 'ant-design-vue';
+  import { Popover, Typography } from 'ant-design-vue';
   import { useTableContext } from '../../hooks';
   import type { PropType } from 'vue';
   import { schemaFormItemProps, SchemaFormItem } from '@/components/core/schema-form';

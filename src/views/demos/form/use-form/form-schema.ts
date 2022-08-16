@@ -103,7 +103,7 @@ export const schemas: FormSchema[] = [
     },
     componentProps: ({ formInstance }) => ({
       onChange(e) {
-        requestIdleCallback(() => {
+        requestAnimationFrame(() => {
           e ? formInstance?.validateFields() : formInstance?.clearValidate();
         });
       },

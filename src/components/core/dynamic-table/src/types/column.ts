@@ -39,10 +39,10 @@ export interface TableColumn<T = Indexable> extends Omit<TableColumnType<T>, 'da
   /** 传递给可编辑表格 Form.Item 的配置,可以配置 rules */
   editFormItemProps?: Partial<FormSchema<T>> & {
     /**
-     * 是否继承于搜索表单`TableColumn.formItemProps`的所有属性,
+     * 是否继承于搜索表单`TableColumn.formItemProps`的所有属性,为深拷贝合并
      * 值为`true`时的行为伪代码如下：
      * ```js
-     * Object.assign({}, TableColumn.formItemProps, EditableConfig.formProps)
+     * Object.assign({}, TableColumn.formItemProps, TableColumn.editFormItemProps)
      * ```
      * @defaultValue 默认值为`true`
      * */

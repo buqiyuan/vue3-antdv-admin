@@ -4,14 +4,7 @@
       <template #description> 可编辑行表格-可编辑行表格使用示例 </template>
     </Alert>
     <Card title="可编辑行表格基本使用示例" style="margin-top: 20px">
-      <DynamicTable
-        size="small"
-        bordered
-        :data-request="loadData"
-        :search="false"
-        :columns="columns"
-        row-key="id"
-      >
+      <DynamicTable size="small" bordered :data-request="loadData" :columns="columns" row-key="id">
       </DynamicTable>
     </Card>
   </div>
