@@ -20,17 +20,17 @@ export const columns: TableColumn<ListItemType>[] = [
     dataIndex: 'name',
     sorter: true,
     formItemProps: {
-      rules: [{ required: true, message: '请选择姓名' }],
+      rules: [{ required: true, message: '请输入姓名' }],
     },
   },
   {
     title: '性别',
     align: 'center',
     dataIndex: 'gender',
-    editFormItemProps: {
+    /** 搜索表单配置 */
+    formItemProps: {
       component: 'Select',
-      rules: [{ required: true, type: 'number', message: '请选择性别' }],
-      componentProps: ({ formInstance, formModel, tableRowKey }) => ({
+      componentProps: ({ formInstance, formModel }) => ({
         options: [
           {
             label: '男',
@@ -41,6 +41,26 @@ export const columns: TableColumn<ListItemType>[] = [
             value: 0,
           },
         ],
+        onChange() {
+          console.log('formModel', formModel);
+
+          // 根据当前选择的性别，更新衣服可选项
+          formInstance?.updateSchema({
+            field: `clothes`,
+            componentProps: {
+              options: getClothesByGender(formModel.gender),
+            },
+          });
+          formModel['clothes'] = undefined;
+        },
+      }),
+    },
+    /** 可编辑行表单配置 */
+    editFormItemProps: {
+      /** 继承 formItemProps 的属性配置, 默认就是是true，这里为了演示有这个字段开关，所以特别写上 */
+      extendSearchFormProps: true,
+      rules: [{ required: true, type: 'number', message: '请选择性别' }],
+      componentProps: ({ formInstance, formModel, tableRowKey }) => ({
         onChange() {
           console.log('formModel', formModel);
 
@@ -79,9 +99,8 @@ export const columns: TableColumn<ListItemType>[] = [
     title: '状态',
     align: 'center',
     dataIndex: 'status',
-    editFormItemProps: {
+    formItemProps: {
       component: 'Select',
-      rules: [{ required: true, type: 'number', message: '请选择状态' }],
       componentProps: ({ formInstance, schema }) => ({
         showSearch: true,
         filterOption: false,
@@ -106,6 +125,9 @@ export const columns: TableColumn<ListItemType>[] = [
           console.log('onChange', value);
         },
       }),
+    },
+    editFormItemProps: {
+      rules: [{ required: true, type: 'number', message: '请选择状态' }],
     },
     customRender: ({ record }) => (
       <Tag color={record.status == 1 ? 'red' : 'default'}>

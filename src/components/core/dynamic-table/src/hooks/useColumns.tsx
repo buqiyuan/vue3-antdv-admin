@@ -1,5 +1,5 @@
-import { computed, unref } from 'vue';
-import { cloneDeep } from 'lodash-es';
+import { computed, unref, useSlots } from 'vue';
+import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { EditableCell } from '../components/';
 import { ColumnKeyFlag } from '../types/column';
 import type { Slots } from 'vue';
@@ -23,6 +23,7 @@ export type UseTableColumnsContext = {
 };
 
 export const useColumns = ({ state, methods, props, tableAction }: UseTableColumnsContext) => {
+  const slots = useSlots();
   const { getColumnKey } = methods;
   const { getProps } = state;
   const { isEditable } = tableAction;
@@ -74,6 +75,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
           <EditableCell
             schema={getColumnFormSchema(item, record)}
             rowKey={record[rowKey]}
+            v-slots={slots}
           ></EditableCell>
         ) : (
           customRender?.(options)
@@ -95,6 +97,18 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
     });
   });
 
+  function mergeCustomizer(objValue, srcValue, key) {
+    /** 这里着重处理 `componentProps` 为函数时的合并处理 */
+    if (key === 'componentProps') {
+      return (...rest) => {
+        return {
+          ...(isFunction(objValue) ? objValue(...rest) : objValue),
+          ...(isFunction(srcValue) ? srcValue(...rest) : srcValue),
+        };
+      };
+    }
+  }
+
   // 获取当前行的form schema
   const getColumnFormSchema = (item: TableColumn<any>, record: Recordable): FormSchema<string> => {
     const key = getColumnKey(item) as string;
@@ -115,7 +129,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
         help: '',
       },
       ...(isExtendSearchFormProps
-        ? { ...item.formItemProps, ...item.editFormItemProps }
+        ? mergeWith(cloneDeep(item.formItemProps), item.editFormItemProps, mergeCustomizer)
         : item.editFormItemProps),
     };
   };

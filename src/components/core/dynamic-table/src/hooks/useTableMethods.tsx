@@ -1,5 +1,5 @@
 import { unref } from 'vue';
-import { isObject, isString } from 'lodash-es';
+import { isObject, isString, isFunction } from 'lodash-es';
 import { useEditable } from './useEditable';
 import type { VNode } from 'vue';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
@@ -43,10 +43,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    */
   const fetchData = async (params = {}, rest?: OnChangeCallbackParams) => {
     // 如果用户没有提供dataSource并且dataRequest是一个函数，那就进行接口请求
-    if (
-      Object.is(props.dataSource, undefined) &&
-      Object.prototype.toString.call(props.dataRequest).includes('Function')
-    ) {
+    if (Object.is(props.dataSource, undefined) && isFunction(props.dataRequest)) {
       const _pagination = unref(paginationRef)!;
       // 是否启用了分页
       const enablePagination = isObject(_pagination);
