@@ -257,6 +257,9 @@
     }
   };
 
+  /**
+   * 打开更新用户密码弹窗
+   */
   const openUpdatePasswordModal = async (record: TableListItem) => {
     await showModal({
       modalProps: {

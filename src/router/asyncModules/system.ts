@@ -11,4 +11,4 @@ export default {
   'views/system/monitor/serve': () => import('@/views/system/monitor/serve/index.vue'),
   'views/system/schedule/task': () => import('@/views/system/schedule/task/index.vue'),
   'views/system/schedule/log': () => import('@/views/system/schedule/log/index.vue'),
-};
+} as const;
