@@ -9,8 +9,8 @@ Object.keys(modulesFiles).forEach((path) => {
   const value = modulesFiles[path].default;
 
   // mouted
-  Object.keys(value).forEach((ele) => {
-    constantRouterComponents[ele] = value[ele];
+  Object.entries(value).forEach(([path, comp]) => {
+    constantRouterComponents[path] = comp;
   });
 });
 
