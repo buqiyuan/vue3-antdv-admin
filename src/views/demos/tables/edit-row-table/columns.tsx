@@ -19,6 +19,10 @@ export const columns: TableColumn<ListItemType>[] = [
     align: 'center',
     dataIndex: 'name',
     sorter: true,
+    editable: ({ index }) => {
+      // 第一行不允许被编辑
+      return index > 0;
+    },
     formItemProps: {
       rules: [{ required: true, message: '请输入姓名' }],
     },

@@ -77,6 +77,7 @@
     "**/yarn.lock": true
   },
   "stylelint.enable": true,
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
   "stylelint.packageManager": "yarn",
   "path-intellisense.mappings": {
     "@/": "${workspaceRoot}/src"
@@ -107,6 +108,12 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
+    }
   },
   "i18n-ally.localesPaths": ["src/locales/lang"],
   "i18n-ally.keystyle": "nested",

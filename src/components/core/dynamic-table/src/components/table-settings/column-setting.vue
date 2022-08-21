@@ -137,7 +137,7 @@
     table.setProps({ bordered: e.target.checked });
   };
 
-  const handleColumnFixed = (columItem: TableColumn<any>, direction: 'left' | 'right') => {
+  const handleColumnFixed = (columItem: TableColumn, direction: 'left' | 'right') => {
     columItem.fixed = columItem.fixed === direction ? false : direction;
   };
 
@@ -175,6 +175,7 @@
   .check-item {
     @apply flex justify-between;
   }
+
   .column-fixed {
     .fixed-right,
     .fixed-left {

@@ -1,7 +1,6 @@
 import { unref } from 'vue';
-import { isObject, isString, isFunction } from 'lodash-es';
+import { isObject, isFunction } from 'lodash-es';
 import { useEditable } from './useEditable';
-import type { VNode } from 'vue';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { TableState } from './useTableState';
@@ -14,6 +13,8 @@ export type UseTableMethodsContext = {
   emit: DynamicTableEmitFn;
 };
 
+let retryFetchCount = 2;
+
 export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) => {
   const { innerPropsRef, tableData, loadingRef, queryFormRef, paginationRef, editFormErrorMsgs } =
     state;
@@ -22,10 +23,6 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
 
   const setProps = (props: Partial<DynamicTableProps>) => {
     innerPropsRef.value = { ...unref(innerPropsRef), ...props };
-  };
-
-  const getComponent = (comp: VNode | string) => {
-    return isString(comp) ? <>{comp}</> : comp;
   };
 
   /**
@@ -65,8 +62,8 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       if (data?.pagination) {
         const { page, size, total } = data.pagination;
 
-        if (enablePagination && _pagination?.current) {
-          // 有分页时,删除当前页最后一条数据时 往前一页查询
+        if (enablePagination && _pagination?.current && retryFetchCount-- > 0) {
+          // 有分页时,删除当前页最后一条数据时 自动往前一页查询
           if (data?.list.length === 0 && total > 0 && page > 1) {
             _pagination.current--;
             return reload();
@@ -87,6 +84,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
         tableData.value = [];
       }
     }
+    retryFetchCount = 2;
     return tableData;
   };
 
@@ -143,7 +141,6 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   return {
     ...editableMethods,
     setProps,
-    getComponent,
     handleSubmit,
     handleTableChange,
     getColumnKey,
