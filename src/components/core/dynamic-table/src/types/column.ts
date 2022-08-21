@@ -1,10 +1,12 @@
-import type { TableColumnType } from 'ant-design-vue';
+import type { ColumnsType } from 'ant-design-vue/es/table';
 import type { FormSchema } from '@/components/core/schema-form';
 import type { ActionItem } from './tableAction';
 import type { TableActionType } from '@/components/core/dynamic-table/src/types';
 
+export type ColumnType<T> = ColumnsType<T>[number];
+
 export type CustomRenderParams<T = any> = Parameters<
-  NonNullable<TableColumnType<T>['customRender']>
+  NonNullable<ColumnType<T>['customRender']>
 >[number];
 
 export type EditableConfig<T = any> = {
@@ -26,8 +28,8 @@ export type EditableConfig<T = any> = {
 /**
  * 表格属性
  */
-export interface TableColumn<T = Indexable> extends Omit<TableColumnType<T>, 'dataIndex'> {
-  dataIndex?: keyof T | ColumnKeyFlagType | 'INDEX';
+export type TableColumn<T = Recordable> = ColumnType<T> & {
+  dataIndex?: keyof T | ColumnKeyFlagType;
   /** 指定搜索的字段 */
   searchField?: string;
   /** 在查询表单中不展示此项 */
@@ -52,10 +54,10 @@ export interface TableColumn<T = Indexable> extends Omit<TableColumnType<T>, 'da
   actions?: (params: CustomRenderParams<T>, action: TableActionType) => ActionItem[];
   /** 当前单元格是否允许被编辑 */
   editable?: boolean | ((params: CustomRenderParams<T>) => boolean);
-}
+};
 
 export enum ColumnKeyFlag {
   ACTION = 'ACTION',
   INDEX = 'INDEX',
 }
-export type ColumnKeyFlagType = keyof typeof ColumnKeyFlag;
+export type ColumnKeyFlagType = `${ColumnKeyFlag}`;

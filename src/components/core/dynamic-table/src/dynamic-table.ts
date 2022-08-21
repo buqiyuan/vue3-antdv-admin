@@ -25,7 +25,7 @@ export const dynamicTableProps = {
   },
   /** 表格列配置 */
   columns: {
-    type: Array as PropType<TableColumn<any>[]>,
+    type: Array as PropType<TableColumn[]>,
     required: true,
     default: () => [],
   },
@@ -81,7 +81,7 @@ export const dynamicTableProps = {
   /** 自定义数据导出格式函数 */
   exportFormatter: {
     type: Function as PropType<
-      (columns: TableColumn<any>[], tableData: any[]) => { header: string[]; data: any[] }
+      (columns: TableColumn[], tableData: any[]) => { header: string[]; data: any[] }
     >,
     default: null,
   },

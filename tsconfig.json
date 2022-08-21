@@ -11,6 +11,8 @@
     "strictFunctionTypes": false,
     "jsx": "preserve",
     "baseUrl": ".",
+    // fix i18-ally 没有找到文案文件。
+    "preserveValueImports": false,
     "allowJs": true,
     "sourceMap": true,
     "esModuleInterop": true,

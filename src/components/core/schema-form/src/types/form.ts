@@ -121,7 +121,7 @@ export interface FormSchema<T = string> {
   // col configuration outside formModelItem
   colProps?: Partial<ColEx>;
 
-  /** 表单项排序 */
+  /** 搜索表单项排序 */
   order?: number;
   // 默认值
   defaultValue?: any;
