@@ -1,13 +1,15 @@
+import type { Ref } from 'vue';
 import type { CustomRenderParams } from './column';
 import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
 import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
 import type { PermissionType } from '@/core/permission/modules/types';
 import type { TableMethods, UseEditableType } from '../hooks/';
 
-export interface ActionItem extends Omit<ButtonProps, 'onClick'> {
+export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading'> & {
   onClick?: Fn<CustomRenderParams, any>;
   label?: string;
   color?: 'success' | 'error' | 'warning';
+  loading?: Ref<ButtonProps['loading']> | ButtonProps['loading'];
   icon?: string;
   popConfirm?: PopConfirm;
   disabled?: boolean;
@@ -24,7 +26,7 @@ export interface ActionItem extends Omit<ButtonProps, 'onClick'> {
         perm: PermissionType;
         effect?: 'delete' | 'disable';
       };
-}
+};
 
 export type PopConfirm = PopconfirmProps & {
   title: string;

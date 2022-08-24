@@ -56,11 +56,11 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
     return columns.map((item) => {
       const customRender = item.customRender;
 
+      const rowKey = props.rowKey as string;
       const columnKey = getColumnKey(item) as string;
 
       item.customRender = (options) => {
-        const { record } = options;
-        const rowKey = props.rowKey as string;
+        const { record, index } = options;
         /** 当前行是否开启了编辑行模式 */
         const isEditableRow = isEditable(record[rowKey]);
         /** 当前单元格是否允许被编辑 */
@@ -74,7 +74,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
           // @ts-ignore
           <EditableCell
             schema={getColumnFormSchema(item, record)}
-            rowKey={record[rowKey]}
+            rowKey={record[rowKey] ?? index}
             v-slots={slots}
           ></EditableCell>
         ) : (
@@ -84,9 +84,15 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
 
       // 操作列
       if (item.actions && columnKey === ColumnKeyFlag.ACTION) {
-        item.customRender = (columnParams) => {
-          // @ts-ignore
-          return <TableAction actions={item.actions!(columnParams, tableAction)} />;
+        item.customRender = (options) => {
+          const { record, index } = options;
+          return (
+            <TableAction
+              actions={item.actions!(options, tableAction)}
+              rowKey={record[rowKey] ?? index}
+              columnParams={options}
+            />
+          );
         };
       }
       return {
