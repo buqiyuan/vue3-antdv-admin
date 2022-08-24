@@ -4,16 +4,6 @@ import type { TableColumn } from '@/components/core/dynamic-table';
 import { waitTime } from '@/utils/common';
 
 const names = ['王路飞', '王大蛇', '李白', '刺客伍六七'];
-const clothes = ['西装', '领带', '裙子', '包包'];
-export const tableData = Array.from({ length: 30 }).map((_, i) => ({
-  id: i + 1,
-  date: new Date().toLocaleString(),
-  name: names[~~(Math.random() * 4)],
-  clothes: clothes[~~(Math.random() * 4)],
-  price: ~~(Math.random() * 1000),
-  gender: ~~(Math.random() * 2),
-  status: ~~(Math.random() * 2),
-}));
 
 export const fetchStatusMapData = (keyword = '') => {
   const data = [
@@ -57,6 +47,19 @@ export const getClothesByGender = (gender: number) => {
   }
   return [];
 };
+
+export const tableData = Array.from({ length: 30 }).map((_, i) => {
+  const gender = ~~(Math.random() * 2);
+  return {
+    id: i + 1,
+    date: new Date().toLocaleString(),
+    name: names[~~(Math.random() * 4)],
+    clothes: getClothesByGender(gender)[~~(Math.random() * 2)].label,
+    price: ~~(Math.random() * 1000),
+    gender,
+    status: ~~(Math.random() * 2),
+  };
+});
 
 // 数据项类型
 export type ListItemType = typeof tableData[number];

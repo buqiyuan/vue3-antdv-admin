@@ -7,6 +7,7 @@ import {
   getClothesByGender,
   tableData,
 } from '@/views/demos/tables/search-table/columns';
+import { waitTime } from '@/utils/common';
 
 export { tableData };
 
@@ -87,6 +88,9 @@ export const columns: TableColumn<ListItemType>[] = [
     dataIndex: 'clothes',
     formItemProps: {
       component: 'Select',
+      componentProps: ({ formModel }) => ({
+        options: getClothesByGender(formModel.gender),
+      }),
     },
   },
   {
@@ -146,7 +150,6 @@ export const columns: TableColumn<ListItemType>[] = [
     dataIndex: 'ACTION',
     actions: ({ record }, action) => {
       const { startEditable, cancelEditable, isEditable, getEditFormModel, validateRow } = action;
-
       return isEditable(record.id)
         ? [
             {
@@ -156,10 +159,9 @@ export const columns: TableColumn<ListItemType>[] = [
                 message.loading({ content: '保存中...', key: record.id });
                 console.log('result', result);
                 console.log('保存', getEditFormModel(record.id));
-                setTimeout(() => {
-                  cancelEditable(record.id);
-                  message.success({ content: '保存成功!', key: record.id, duration: 2 });
-                }, 1500);
+                await waitTime(2000);
+                cancelEditable(record.id);
+                message.success({ content: '保存成功!', key: record.id, duration: 2 });
               },
             },
             {

@@ -1,5 +1,7 @@
 const toString = Object.prototype.toString;
 
+const AsyncFunction = async function () {}.constructor;
+
 export function is(val: unknown, type: string) {
   return toString.call(val) === `[object ${type}]`;
 }
@@ -66,6 +68,10 @@ export function isString(val: unknown): val is string {
 
 export function isFunction(val: unknown): val is Function {
   return typeof val === 'function';
+}
+
+export function isAsyncFunction(val: unknown): val is Function {
+  return val instanceof AsyncFunction || (isFunction(val) && isPromise(val));
 }
 
 export function isBoolean(val: unknown): val is boolean {

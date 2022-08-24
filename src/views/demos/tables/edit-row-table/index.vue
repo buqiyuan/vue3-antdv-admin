@@ -4,14 +4,28 @@
       <template #description> 可编辑行表格-可编辑行表格使用示例 </template>
     </Alert>
     <Card title="可编辑行表格基本使用示例" style="margin-top: 20px">
-      <DynamicTable size="small" bordered :data-request="loadData" :columns="columns" row-key="id">
+      <DynamicTable
+        size="small"
+        bordered
+        :data-request="loadData"
+        :columns="columns"
+        :editable-type="editableType"
+        row-key="id"
+      >
+        <template #toolbar>
+          <Select ref="select" v-model:value="editableType">
+            <Select.Option value="single">单行编辑</Select.Option>
+            <Select.Option value="multiple">多行编辑</Select.Option>
+          </Select>
+        </template>
       </DynamicTable>
     </Card>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { Alert, Card } from 'ant-design-vue';
+  import { ref } from 'vue';
+  import { Alert, Card, Select } from 'ant-design-vue';
   import { columns, tableData } from './columns';
   import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
 
@@ -20,6 +34,8 @@
   });
 
   const [DynamicTable, dynamicTableInstance] = useTable();
+
+  const editableType = ref('single' as const);
 
   const loadData = async (
     params,
