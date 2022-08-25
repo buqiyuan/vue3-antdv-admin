@@ -148,7 +148,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     build: {
-      target: 'es2015',
+      target: 'es2017',
       minify: 'esbuild',
       cssTarget: 'chrome79',
       chunkSizeWarningLimit: 2000,
