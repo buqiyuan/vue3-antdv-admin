@@ -2,7 +2,14 @@ import { tableProps } from 'ant-design-vue/es/table';
 import type DynamicTable from './dynamic-table.vue';
 import type { PropType, ExtractPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
-import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './types/';
+import type {
+  LoadDataParams,
+  TableColumn,
+  OnChangeCallbackParams,
+  EditableType,
+  OnSave,
+  OnCancel,
+} from './types/';
 import type { SchemaFormProps } from '@/components/core/schema-form';
 import type { GetRowKey } from 'ant-design-vue/es/table/interface';
 import { isBoolean } from '@/utils/is';
@@ -85,10 +92,23 @@ export const dynamicTableProps = {
     >,
     default: null,
   },
-  /** 编辑行类型，支持 只能同时编辑一行 | 同时编辑多行 */
+  /** 编辑行类型
+   * @const `single`: 只能同时编辑一行
+   * @const `multiple`: 同时编辑多行
+   * @const `cell`: 可编辑单元格
+   * @defaultValue `single`
+   */
   editableType: {
-    type: String as PropType<'single' | 'multiple'>,
+    type: String as PropType<EditableType>,
     default: 'single',
+  },
+  /** 单元格保存编辑回调 */
+  onSave: {
+    type: Function as PropType<OnSave>,
+  },
+  /** 单元格取消编辑回调 */
+  onCancel: {
+    type: Function as PropType<OnCancel>,
   },
   /** 只能编辑一行的的提示 */
   onlyOneLineEditorAlertMessage: String,

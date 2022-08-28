@@ -3,7 +3,7 @@
     <SchemaForm
       v-if="search"
       ref="queryFormRef"
-      class="bg-white dark:bg-black mb-16px pt-24px pr-24px"
+      class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
       submit-on-reset
       v-bind="getFormProps"
       :table-instance="tableAction"
@@ -27,7 +27,7 @@
         </template>
       </ToolBar>
       <component
-        :is="Object.keys(editFormModel).length ? SchemaForm : 'div'"
+        :is="editableType === 'cell' || Object.keys(editFormModel).length ? SchemaForm : 'div'"
         ref="editTableFormRef"
         layout="inline"
         no-style
@@ -128,6 +128,7 @@
     ...tableMethods,
     ...editableHooks,
     ...exportData2ExcelHooks,
+    emit,
   };
 
   createTableContext(instance);

@@ -1,5 +1,6 @@
 import { debounce } from 'lodash-es';
-import { Tag, message } from 'ant-design-vue';
+import { PlusOutlined } from '@ant-design/icons-vue';
+import { Tag, Image } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 
 import {
@@ -7,7 +8,6 @@ import {
   getClothesByGender,
   tableData,
 } from '@/views/demos/tables/search-table/columns';
-import { waitTime } from '@/utils/common';
 
 export { tableData };
 
@@ -94,6 +94,39 @@ export const columns: TableColumn<ListItemType>[] = [
     },
   },
   {
+    title: '图片',
+    dataIndex: 'img',
+    hideInSearch: true,
+    formItemProps: {
+      component: 'Upload',
+      defaultValue: [
+        {
+          uid: '-1',
+          name: 'image.png',
+          status: 'done',
+          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        },
+      ],
+      componentProps: {
+        maxCount: 1,
+        listType: 'picture-card',
+        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      },
+      componentSlots: ({ formModel }) => ({
+        default: () =>
+          formModel['img']?.length ? (
+            ''
+          ) : (
+            <div>
+              <PlusOutlined />
+              <div class="mt-8px">Upload</div>
+            </div>
+          ),
+      }),
+    },
+    customRender: ({ record }) => <Image width={100} src={record.img}></Image>,
+  },
+  {
     title: '价格',
     align: 'center',
     dataIndex: 'price',
@@ -142,43 +175,5 @@ export const columns: TableColumn<ListItemType>[] = [
         {['已售罄', '热卖中'][record.status]}
       </Tag>
     ),
-  },
-  {
-    title: '操作',
-    align: 'center',
-    width: 200,
-    dataIndex: 'ACTION',
-    actions: ({ record }, action) => {
-      const { startEditable, cancelEditable, isEditable, getEditFormModel, validateRow } = action;
-      return isEditable(record.id)
-        ? [
-            {
-              label: '保存',
-              onClick: async () => {
-                const result = await validateRow(record.id);
-                message.loading({ content: '保存中...', key: record.id });
-                console.log('result', result);
-                console.log('保存', getEditFormModel(record.id));
-                await waitTime(2000);
-                cancelEditable(record.id);
-                message.success({ content: '保存成功!', key: record.id, duration: 2 });
-              },
-            },
-            {
-              label: '取消',
-              onClick: () => {
-                cancelEditable(record.id);
-              },
-            },
-          ]
-        : [
-            {
-              label: '编辑',
-              onClick: () => {
-                startEditable(record.id, record);
-              },
-            },
-          ];
-    },
   },
 ];

@@ -5,8 +5,8 @@
       <slot>
         <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
           <SchemaFormItem
+            v-model:form-model="formModel"
             :schema="schemaItem"
-            :form-model="formModel"
             :table-instance="tableInstance"
           >
             <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">

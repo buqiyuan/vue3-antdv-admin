@@ -1,4 +1,4 @@
-import { computed, ref, unref, watchEffect } from 'vue';
+import { computed, ref, unref, watch } from 'vue';
 import { omit } from 'lodash-es';
 import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
@@ -34,6 +34,10 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const editFormModel = ref<Recordable>({});
   /** 所有验证不通过的表单项 */
   const editFormErrorMsgs = ref(new Map());
+  /** 当前所有正在被编辑的行key的格式为：`${recordKey}`  */
+  const editableRowKeys = ref(new Set<Key>());
+  /** 当前所有正在被编辑的单元格key的格式为：`${recordKey}.${dataIndex}`，仅`editableType`为`cell`时有效  */
+  const editableCellKeys = ref(new Set<Key>());
 
   if (!Object.is(props.pagination, false)) {
     paginationRef.value = {
@@ -73,11 +77,34 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   });
 
   // 如果外界设置了dataSource，那就直接用外界提供的数据
-  watchEffect(() => {
-    if (props.dataSource) {
-      tableData.value = props.dataSource;
-    }
-  });
+  watch(
+    () => props.dataSource,
+    (val) => {
+      if (val) {
+        tableData.value = val;
+      }
+    },
+    {
+      immediate: true,
+      deep: true,
+    },
+  );
+
+  watch(
+    () => props.columns,
+    (val) => {
+      if (val) {
+        innerPropsRef.value = {
+          ...innerPropsRef.value,
+          columns: val,
+        };
+      }
+    },
+    {
+      immediate: true,
+      deep: true,
+    },
+  );
 
   return {
     tableRef,
@@ -91,5 +118,7 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     paginationRef,
     editFormModel,
     editFormErrorMsgs,
+    editableCellKeys,
+    editableRowKeys,
   };
 };
