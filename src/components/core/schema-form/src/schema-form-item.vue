@@ -17,7 +17,6 @@
         :is="getComponent"
         v-else-if="getComponent"
         :ref="setItemRef(schema.field)"
-        :key="schema.field"
         v-bind="getComponentProps"
         v-model:[modelValueType]="modelValue"
         :allow-clear="true"
@@ -92,13 +91,18 @@
   // @ts-ignore
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
 
-  const modelValueType = computed(() => {
+  const modelValueType = computed<string>(() => {
     const { component, componentProps } = schema.value;
     if (!isFunction(componentProps) && componentProps?.vModelKey) {
       return componentProps.vModelKey;
     }
     const isCheck = isString(component) && ['Switch', 'Checkbox'].includes(component);
-    return isCheck ? 'checked' : 'value';
+    const isUpload = component === 'Upload';
+    return {
+      true: 'value',
+      [`${isCheck}`]: 'checked',
+      [`${isUpload}`]: 'file-list',
+    }['true'];
   });
 
   const getValues = computed<RenderCallbackParams>(() => {

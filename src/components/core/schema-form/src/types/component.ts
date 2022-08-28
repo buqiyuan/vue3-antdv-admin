@@ -1,6 +1,8 @@
 import type { CSSProperties } from 'vue';
 import type {
   InputNumberProps,
+  InputProps,
+  SliderProps,
   SelectProps,
   CascaderProps,
   SwitchProps,
@@ -10,6 +12,10 @@ import type {
   TreeProps,
   TreeSelectProps,
   RadioGroupProps,
+  RadioProps,
+  UploadProps,
+  DatePickerProps,
+  CheckboxProps,
 } from 'ant-design-vue';
 import type { RenderCallbackParams } from './form';
 
@@ -19,6 +25,7 @@ type ColSpanType = number | string;
 
 /** 组件属性 */
 export type ComponentProps = (
+  | InputProps
   | InputNumberProps
   | SelectProps
   | CascaderProps
@@ -29,6 +36,11 @@ export type ComponentProps = (
   | TreeProps
   | TreeSelectProps
   | RadioGroupProps
+  | RadioProps
+  | UploadProps
+  | DatePickerProps
+  | CheckboxProps
+  | SliderProps
 ) & {
   /** 组件异步请求数据 */
   request?: PromiseFn<RenderCallbackParams, any>;

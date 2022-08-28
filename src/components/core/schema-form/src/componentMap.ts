@@ -17,6 +17,7 @@ import {
   Slider,
   Rate,
   Divider,
+  Upload,
 } from 'ant-design-vue';
 
 const componentMap = {
@@ -42,6 +43,7 @@ const componentMap = {
   RangePicker: DatePicker.RangePicker,
   WeekPicker: DatePicker.WeekPicker,
   TimePicker,
+  Upload,
 
   Divider,
 };

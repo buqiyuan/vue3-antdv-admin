@@ -8,14 +8,17 @@
         size="small"
         bordered
         :data-request="loadData"
-        :columns="columns"
+        :columns="tableColumns"
         :editable-type="editableType"
+        :on-save="handleSave"
+        :on-cancel="handleCancelSave"
         row-key="id"
       >
         <template #toolbar>
           <Select ref="select" v-model:value="editableType">
             <Select.Option value="single">单行编辑</Select.Option>
             <Select.Option value="multiple">多行编辑</Select.Option>
+            <Select.Option value="cell">可编辑单元格</Select.Option>
           </Select>
         </template>
       </DynamicTable>
@@ -24,51 +27,89 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import { Alert, Card, Select } from 'ant-design-vue';
+  import { ref, computed } from 'vue';
+  import { Alert, Card, Select, message } from 'ant-design-vue';
   import { columns, tableData } from './columns';
-  import { useTable, type OnChangeCallbackParams } from '@/components/core/dynamic-table';
+  import type {
+    OnChangeCallbackParams,
+    EditableType,
+    OnSave,
+    OnCancel,
+  } from '@/components/core/dynamic-table';
+  import { useTable } from '@/components/core/dynamic-table';
+  import { waitTime } from '@/utils/common';
 
   defineOptions({
     name: 'EditRowTable',
   });
 
-  const [DynamicTable, dynamicTableInstance] = useTable();
+  const [DynamicTable] = useTable();
 
-  const editableType = ref('single' as const);
+  const editableType = ref<EditableType>('single');
 
   const loadData = async (
     params,
     onChangeParams: OnChangeCallbackParams,
   ): Promise<API.TableListResult> => {
     console.log('onChangeParams', onChangeParams);
+    await waitTime(500);
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          list: tableData,
-          ...params,
-        });
-        // 手动设置搜索表单的搜索项
-        dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
-          {
-            field: 'price',
-            componentProps: {
-              options: [
-                {
-                  label: '0-199',
-                  value: '0-199',
+    return {
+      list: tableData,
+      ...params,
+    };
+  };
+
+  const tableColumns = computed<typeof columns>(() => [
+    ...columns,
+    {
+      title: '操作',
+      align: 'center',
+      hideInTable: editableType.value === 'cell',
+      width: 200,
+      dataIndex: 'ACTION',
+      actions: ({ record }, action) => {
+        const { startEditable, cancelEditable, isEditable, getEditFormModel, validateRow } = action;
+        return isEditable(record.id)
+          ? [
+              {
+                label: '保存',
+                onClick: async () => {
+                  const result = await validateRow(record.id);
+                  message.loading({ content: '保存中...', key: record.id });
+                  console.log('result', result);
+                  console.log('保存', getEditFormModel(record.id));
+                  await waitTime(2000);
+                  cancelEditable(record.id);
+                  message.success({ content: '保存成功!', key: record.id, duration: 2 });
                 },
-                {
-                  label: '200-999',
-                  value: '200-999',
+              },
+              {
+                label: '取消',
+                onClick: () => {
+                  cancelEditable(record.id);
                 },
-              ],
-            },
-          },
-        ]);
-      }, 500);
-    });
+              },
+            ]
+          : [
+              {
+                label: '编辑',
+                onClick: () => {
+                  startEditable(record.id, record);
+                },
+              },
+            ];
+      },
+    },
+  ]);
+
+  const handleCancelSave: OnCancel = (rowKey, record, originRow) => {
+    console.log('handleCancelSave', rowKey, record, originRow);
+  };
+
+  const handleSave: OnSave = async (rowKey, record, originRow) => {
+    console.log('handleSave', rowKey, record, originRow);
+    await waitTime(2000);
   };
 </script>
 

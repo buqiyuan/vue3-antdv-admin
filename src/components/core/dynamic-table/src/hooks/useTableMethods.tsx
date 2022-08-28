@@ -4,6 +4,7 @@ import { useEditable } from './useEditable';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { TableState } from './useTableState';
+import { isAsyncFunction } from '@/utils/is';
 
 export type TableMethods = ReturnType<typeof useTableMethods>;
 
@@ -40,7 +41,10 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    */
   const fetchData = async (params = {}, rest?: OnChangeCallbackParams) => {
     // 如果用户没有提供dataSource并且dataRequest是一个函数，那就进行接口请求
-    if (Object.is(props.dataSource, undefined) && isFunction(props.dataRequest)) {
+    if (
+      Object.is(props.dataSource, undefined) &&
+      (isFunction(props.dataRequest) || isAsyncFunction(props.dataRequest))
+    ) {
       const _pagination = unref(paginationRef)!;
       // 是否启用了分页
       const enablePagination = isObject(_pagination);
@@ -120,7 +124,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
 
   // 获取表格列key
   const getColumnKey = (column: TableColumn) => {
-    return column?.key || column?.dataIndex;
+    return (column?.key || column?.dataIndex) as string;
   };
 
   /** 编辑表单验证失败回调 */

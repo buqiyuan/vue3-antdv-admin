@@ -1,7 +1,7 @@
 import { computed, unref, useSlots } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { EditableCell } from '../components/';
-import { ColumnKeyFlag } from '../types/column';
+import { ColumnKeyFlag, CustomRenderParams } from '../types/column';
 import type { Slots } from 'vue';
 import type {
   TableActionType,
@@ -50,7 +50,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
           const { current = 1, pageSize = 10 } = getPagination!;
           return ((current < 1 ? 1 : current) - 1) * pageSize + index + 1;
         },
-      });
+      } as TableColumn);
     }
 
     return columns.map((item) => {
@@ -60,23 +60,31 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
       const columnKey = getColumnKey(item) as string;
 
       item.customRender = (options) => {
-        const { record, index } = options;
+        const { record, index, text } = options as CustomRenderParams<Recordable<any>>;
         /** 当前行是否开启了编辑行模式 */
         const isEditableRow = isEditable(record[rowKey]);
+        /** 是否开启了单元格编辑模式 */
+        const isEditableCell = innerProps.editableType === 'cell';
         /** 当前单元格是否允许被编辑 */
         const isCellEditable = isBoolean(item.editable)
           ? item.editable
           : item.editable?.(options) ?? true;
+        /** 是否允许被编辑 */
         const isShowEditable =
-          isEditableRow && isCellEditable && !ColumnKeyFlags.includes(columnKey);
+          (isEditableRow || isEditableCell) &&
+          isCellEditable &&
+          !ColumnKeyFlags.includes(columnKey);
 
         return isShowEditable ? (
-          // @ts-ignore
           <EditableCell
             schema={getColumnFormSchema(item, record)}
             rowKey={record[rowKey] ?? index}
+            editableType={innerProps.editableType}
+            column={options}
             v-slots={slots}
-          ></EditableCell>
+          >
+            {customRender?.(options) ?? text}
+          </EditableCell>
         ) : (
           customRender?.(options)
         );
@@ -99,7 +107,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
         key: item.key ?? (item.dataIndex as Key),
         dataIndex: item.dataIndex ?? (item.key as Key),
         ...item,
-      };
+      } as TableColumn;
     });
   });
 
@@ -115,7 +123,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
     }
   }
 
-  // 获取当前行的form schema
+  /** 获取当前行的form schema */
   const getColumnFormSchema = (item: TableColumn, record: Recordable): FormSchema<string> => {
     const key = getColumnKey(item) as string;
     /** 是否继承搜索表单的属性 */
@@ -129,7 +137,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
       component: 'Input',
       defaultValue: record[key],
       colProps: {
-        span: 24,
+        span: unref(getProps).editableType === 'cell' ? 20 : 24,
       },
       formItemProps: {
         help: '',

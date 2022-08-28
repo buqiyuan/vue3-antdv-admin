@@ -57,6 +57,7 @@ export const tableData = Array.from({ length: 30 }).map((_, i) => {
     clothes: getClothesByGender(gender)[~~(Math.random() * 2)].label,
     price: ~~(Math.random() * 1000),
     gender,
+    img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     status: ~~(Math.random() * 2),
   };
 });
