@@ -48,20 +48,20 @@
     "qs": "~6.11.0",
     "socket.io-client": "~4.5.1",
     "sortablejs": "~1.15.0",
-    "vue": "3.2.37",
+    "vue": "3.2.38",
     "vue-i18n": "9.2.2",
     "vue-router": "~4.0.16",
     "vue-types": "~4.2.1",
     "xlsx": "~0.18.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "~17.1.1",
+    "@commitlint/cli": "~17.1.2",
     "@commitlint/config-conventional": "~17.1.0",
     "@types/lodash-es": "~4.17.6",
-    "@types/node": "~18.7.13",
+    "@types/node": "~18.7.14",
     "@types/webpack-env": "~1.18.0",
-    "@typescript-eslint/eslint-plugin": "~5.35.1",
-    "@typescript-eslint/parser": "~5.35.1",
+    "@typescript-eslint/eslint-plugin": "~5.36.0",
+    "@typescript-eslint/parser": "~5.36.0",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-plugin-router": "~5.0.8",
@@ -103,7 +103,7 @@
     "unplugin-vue-define-options": "~0.7.3",
     "vue-cli-plugin-windicss": "~1.1.6",
     "vue-eslint-parser": "~9.0.3",
-    "vue-tsc": "^0.40.2"
+    "vue-tsc": "^0.40.4"
   },
   "__npminstall_done": false,
   "repository": {

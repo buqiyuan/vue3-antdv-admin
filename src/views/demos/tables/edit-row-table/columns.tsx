@@ -20,6 +20,8 @@ export const columns: TableColumn<ListItemType>[] = [
     align: 'center',
     dataIndex: 'name',
     sorter: true,
+    /** 默认开启编辑, 仅`editableType`为`cell`时有效 */
+    defaultEditable: true,
     editable: ({ index }) => {
       // 第一行不允许被编辑
       return index > 0;
