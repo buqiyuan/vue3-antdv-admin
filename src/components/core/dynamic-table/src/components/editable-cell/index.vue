@@ -137,6 +137,11 @@
         cancelCellEditable(props.rowKey!, dataIndex.value);
       };
 
+      // 默认开启编辑的单元格
+      if (isCellEdit.value && props.editableType === 'cell') {
+        startEditCell();
+      }
+
       return {
         saving,
         isCellEdit,

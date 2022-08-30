@@ -26,8 +26,7 @@
           <slot :name="name" v-bind="data || {}"></slot>
         </template>
       </ToolBar>
-      <component
-        :is="editableType === 'cell' || Object.keys(editFormModel).length ? SchemaForm : 'div'"
+      <SchemaForm
         ref="editTableFormRef"
         layout="inline"
         no-style
@@ -50,7 +49,7 @@
             <slot name="bodyCell" v-bind="slotData"></slot>
           </template>
         </Table>
-      </component>
+      </SchemaForm>
     </div>
   </div>
 </template>
