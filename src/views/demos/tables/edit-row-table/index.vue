@@ -45,12 +45,13 @@
 
   const [DynamicTable] = useTable();
 
-  const editableType = ref<EditableType>('single');
+  const editableType = ref<EditableType>('cell');
 
   const loadData = async (
     params,
     onChangeParams: OnChangeCallbackParams,
   ): Promise<API.TableListResult> => {
+    console.log('params', params);
     console.log('onChangeParams', onChangeParams);
     await waitTime(500);
 

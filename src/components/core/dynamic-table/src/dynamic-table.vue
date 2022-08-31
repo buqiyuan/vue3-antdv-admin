@@ -28,7 +28,6 @@
       </ToolBar>
       <SchemaForm
         ref="editTableFormRef"
-        layout="inline"
         no-style
         :initial-values="editFormModel"
         :show-action-button-group="false"
@@ -38,7 +37,7 @@
         <Table
           ref="tableRef"
           v-bind="getBindValues"
-          :columns="getColumns"
+          :columns="innerColumns"
           :data-source="tableData"
           @change="handleTableChange"
         >
@@ -98,7 +97,7 @@
   };
 
   // 表格列的配置描述
-  const { getColumns } = useColumns({
+  const { innerColumns } = useColumns({
     props,
     slots,
     state: tableState,

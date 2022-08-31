@@ -1,10 +1,10 @@
-import { unref } from 'vue';
+import { unref, nextTick } from 'vue';
 import { isObject, isFunction } from 'lodash-es';
 import { useEditable } from './useEditable';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
-import type { TableState } from './useTableState';
-import { isAsyncFunction } from '@/utils/is';
+import type { Pagination, TableState } from './useTableState';
+import { isAsyncFunction, isBoolean } from '@/utils/is';
 
 export type TableMethods = ReturnType<typeof useTableMethods>;
 
@@ -40,11 +40,20 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @description 获取表格数据
    */
   const fetchData = async (params = {}, rest?: OnChangeCallbackParams) => {
+    const [pagination] = rest || [];
     // 如果用户没有提供dataSource并且dataRequest是一个函数，那就进行接口请求
     if (
       Object.is(props.dataSource, undefined) &&
       (isFunction(props.dataRequest) || isAsyncFunction(props.dataRequest))
     ) {
+      await nextTick();
+      if (queryFormRef.value) {
+        const values = await queryFormRef.value.validate();
+        params = {
+          ...queryFormRef.value.handleFormValues(values),
+          ...params,
+        };
+      }
       const _pagination = unref(paginationRef)!;
       // 是否启用了分页
       const enablePagination = isObject(_pagination);
@@ -74,11 +83,13 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
           }
         }
 
-        Object.assign(unref(paginationRef), {
-          current: ~~page,
-          pageSize: ~~size,
-          total: ~~total,
+        updatePagination({
+          current: page,
+          pageSize: size,
+          total,
         });
+      } else {
+        updatePagination(pagination);
       }
       if (Array.isArray(data?.list)) {
         tableData.value = data!.list;
@@ -87,7 +98,10 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       } else {
         tableData.value = [];
       }
+    } else {
+      updatePagination(pagination);
     }
+
     retryFetchCount = 2;
     return tableData;
   };
@@ -109,13 +123,11 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   const handleTableChange = async (...rest: OnChangeCallbackParams) => {
     // const [pagination, filters, sorter] = rest;
     const [pagination] = rest;
-    let params = {};
     if (queryFormRef.value) {
-      const values = await queryFormRef.value.validate();
-      params = queryFormRef.value.handleFormValues(values);
+      await queryFormRef.value.validate();
     }
-    Object.assign(unref(paginationRef), pagination || {});
-    fetchData(params, rest);
+    updatePagination(pagination);
+    await fetchData({}, rest);
     emit('change', ...rest);
   };
 
@@ -134,6 +146,18 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       editFormErrorMsgs.value.delete(name.join('.'));
     } else {
       editFormErrorMsgs.value.set(name.join('.'), errorMsgs);
+    }
+  };
+
+  /** 更新表格分页信息 */
+  const updatePagination = (info: Pagination = paginationRef.value) => {
+    if (isBoolean(info)) {
+      paginationRef.value = info;
+    } else if (isObject(paginationRef.value)) {
+      paginationRef.value = {
+        ...paginationRef.value,
+        ...info,
+      };
     }
   };
 

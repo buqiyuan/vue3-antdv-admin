@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash-es';
 import { message } from 'ant-design-vue';
 import type { DynamicTableProps } from '../dynamic-table';
 import type { TableState } from './useTableState';
+import type { TableColumn } from '@/components/core/dynamic-table/src/types/column';
 
 type UseTableMethodsContext = {
   state: TableState;
@@ -40,6 +41,34 @@ export const useEditable = ({ state, props }: UseTableMethodsContext) => {
     });
   };
 
+  /** 获取要编辑的值 */
+  const getEditValue = (
+    recordKey: Key,
+    currentRow?: Recordable,
+    columns?: TableColumn<Recordable<any>>[],
+  ) => {
+    // 克隆当前行数据作为临时编辑的表单数据，避免直接修改原数据
+    const editValue = cloneDeep(
+      currentRow ?? tableData.value.find((n) => n[String(props.rowKey)] === recordKey),
+    );
+    // 用户设置的默认值优先
+    columns?.forEach((item) => {
+      const { formItemProps, editFormItemProps } = item;
+      const field = (item.dataIndex || item.key) as string;
+      if (
+        !Object.is(editFormItemProps?.extendSearchFormProps, false) &&
+        formItemProps &&
+        Reflect.has(formItemProps, 'defaultValue')
+      ) {
+        editValue[field] = formItemProps.defaultValue;
+      }
+      if (editFormItemProps && Reflect.has(editFormItemProps, 'defaultValue')) {
+        editValue[field] = editFormItemProps.defaultValue;
+      }
+    });
+    return editValue;
+  };
+
   /**
    * @description 进入编辑行状态
    *
@@ -54,20 +83,7 @@ export const useEditable = ({ state, props }: UseTableMethodsContext) => {
       message.warn(props.onlyOneLineEditorAlertMessage || '只能同时编辑一行');
       return false;
     }
-    // 克隆当前行数据作为临时编辑的表单数据，避免直接修改原数据
-    const editValue = cloneDeep(
-      currentRow ?? tableData.value.find((n) => n[String(props.rowKey)] === recordKey),
-    );
-    // 用户设置的默认值优先
-    props.columns.forEach((item) => {
-      const field = (item.dataIndex || item.key) as string;
-      if (item.formItemProps && Reflect.has(item.formItemProps, 'defaultValue')) {
-        editValue[field] = item.formItemProps.defaultValue;
-      }
-      if (item.editFormItemProps && Reflect.has(item.editFormItemProps, 'defaultValue')) {
-        editValue[field] = item.editFormItemProps.defaultValue;
-      }
-    });
+    const editValue = getEditValue(recordKey, currentRow, props.columns);
     setEditFormModel(recordKey, editValue);
     editableRowKeys.value.add(recordKey);
     return true;
@@ -76,23 +92,9 @@ export const useEditable = ({ state, props }: UseTableMethodsContext) => {
   /** 进入编辑单元格状态 */
   const startCellEditable = (recordKey: Key, dataIndex: Key, currentRow?: Recordable) => {
     editableRowKeys.value.clear();
-    // 克隆当前行数据作为临时编辑的表单数据，避免直接修改原数据
-    const editValue = cloneDeep(
-      currentRow ?? tableData.value.find((n) => n[String(props.rowKey)] === recordKey),
-    );
-    const targetColumn = props.columns.find((n) => n.dataIndex === dataIndex);
-    if (targetColumn) {
-      const field = (targetColumn.dataIndex || targetColumn.key) as string;
-      if (targetColumn.formItemProps && Reflect.has(targetColumn.formItemProps, 'defaultValue')) {
-        editValue[field] = targetColumn.formItemProps.defaultValue;
-      }
-      if (
-        targetColumn.editFormItemProps &&
-        Reflect.has(targetColumn.editFormItemProps, 'defaultValue')
-      ) {
-        editValue[field] = targetColumn.editFormItemProps.defaultValue;
-      }
-    }
+    const targetColumn = props.columns.filter((n) => n.dataIndex === dataIndex);
+    const editValue = getEditValue(recordKey, currentRow, targetColumn);
+
     editableCellKeys.value.add(`${recordKey}.${dataIndex}`);
     setEditFormModel(recordKey, {
       ...(getEditFormModel(recordKey) || editValue),

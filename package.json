@@ -56,8 +56,8 @@
     "@commitlint/config-conventional": "~17.1.0",
     "@types/lodash-es": "~4.17.6",
     "@types/node": "~18.7.14",
-    "@typescript-eslint/eslint-plugin": "~5.36.0",
-    "@typescript-eslint/parser": "~5.36.0",
+    "@typescript-eslint/eslint-plugin": "~5.36.1",
+    "@typescript-eslint/parser": "~5.36.1",
     "@vitejs/plugin-legacy": "~2.0.1",
     "@vitejs/plugin-vue": "~3.0.3",
     "@vitejs/plugin-vue-jsx": "~2.0.0",
@@ -99,7 +99,7 @@
     "vite-plugin-mock": "~2.9.6",
     "vite-plugin-svg-icons": "~2.0.1",
     "vue-eslint-parser": "~9.0.3",
-    "vue-tsc": "~0.40.4"
+    "vue-tsc": "~0.40.5"
   },
   "__npminstall_done": false,
   "repository": {
