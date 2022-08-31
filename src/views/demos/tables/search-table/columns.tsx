@@ -71,7 +71,10 @@ export const columns: TableColumn<ListItemType>[] = [
     align: 'center',
     dataIndex: 'name',
     sorter: true,
+    width: 300,
+    resizable: true,
     formItemProps: {
+      defaultValue: '李白',
       required: true,
     },
   },
@@ -79,6 +82,8 @@ export const columns: TableColumn<ListItemType>[] = [
     title: '性别',
     align: 'center',
     dataIndex: 'gender',
+    width: 120,
+    resizable: true,
     formItemProps: {
       component: 'Select',
       componentProps: ({ formInstance, formModel, tableInstance }) => ({

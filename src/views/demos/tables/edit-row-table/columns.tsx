@@ -27,6 +27,12 @@ export const columns: TableColumn<ListItemType>[] = [
       return index > 0;
     },
     formItemProps: {
+      defaultValue: '李白',
+      rules: [{ required: true, message: '请输入姓名' }],
+    },
+    editFormItemProps: {
+      /** 不继承于 `formItemProps`的属性 */
+      extendSearchFormProps: false,
       rules: [{ required: true, message: '请输入姓名' }],
     },
   },

@@ -4,7 +4,14 @@
       <template #description> 查询表格-查询表单使用示例 </template>
     </Alert>
     <Card title="查询表单基本使用示例" style="margin-top: 20px">
-      <DynamicTable size="small" bordered :data-request="loadData" :columns="columns" row-key="id">
+      <DynamicTable
+        size="small"
+        bordered
+        :data-request="loadData"
+        :columns="columns"
+        row-key="id"
+        @resize-column="handleResizeColumn"
+      >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'name'">
             {{ record.name }} <a class="text-red-500">[测试bodyCell]</a>
@@ -26,6 +33,7 @@
     params,
     onChangeParams: OnChangeCallbackParams,
   ): Promise<API.TableListResult> => {
+    console.log('params', params);
     console.log('onChangeParams', onChangeParams);
 
     return new Promise((resolve) => {
@@ -54,6 +62,11 @@
         ]);
       }, 500);
     });
+  };
+
+  const handleResizeColumn = (w, col) => {
+    // console.log('w', w, col);
+    col.width = w;
   };
 </script>
 

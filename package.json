@@ -60,8 +60,8 @@
     "@types/lodash-es": "~4.17.6",
     "@types/node": "~18.7.14",
     "@types/webpack-env": "~1.18.0",
-    "@typescript-eslint/eslint-plugin": "~5.36.0",
-    "@typescript-eslint/parser": "~5.36.0",
+    "@typescript-eslint/eslint-plugin": "~5.36.1",
+    "@typescript-eslint/parser": "~5.36.1",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-plugin-router": "~5.0.8",
@@ -103,7 +103,7 @@
     "unplugin-vue-define-options": "~0.7.3",
     "vue-cli-plugin-windicss": "~1.1.6",
     "vue-eslint-parser": "~9.0.3",
-    "vue-tsc": "^0.40.4"
+    "vue-tsc": "^0.40.5"
   },
   "__npminstall_done": false,
   "repository": {

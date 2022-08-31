@@ -1,4 +1,4 @@
-import { computed, unref, useSlots } from 'vue';
+import { ref, watchEffect, unref, useSlots } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { EditableCell } from '../components/';
 import { ColumnKeyFlag, CustomRenderParams } from '../types/column';
@@ -24,11 +24,12 @@ export type UseTableColumnsContext = {
 
 export const useColumns = ({ state, methods, props, tableAction }: UseTableColumnsContext) => {
   const slots = useSlots();
+  const innerColumns = ref(props.columns);
   const { getColumnKey } = methods;
   const { getProps } = state;
   const { isEditable } = tableAction;
 
-  const getColumns = computed<TableColumn<any>[]>(() => {
+  watchEffect(() => {
     const innerProps = { ...unref(getProps) };
     const ColumnKeyFlags = Object.keys(ColumnKeyFlag);
     const columns = cloneDeep(innerProps!.columns!.filter((n) => !n.hideInTable));
@@ -53,7 +54,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
       } as TableColumn);
     }
 
-    return columns.map((item) => {
+    innerColumns.value = columns.map((item) => {
       const customRender = item.customRender;
 
       const rowKey = props.rowKey as string;
@@ -149,6 +150,6 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
   };
 
   return {
-    getColumns,
+    innerColumns,
   };
 };
