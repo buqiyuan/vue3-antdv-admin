@@ -1,6 +1,6 @@
 {
   "name": "vite-vue3-admin",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "author": {
     "name": "buqiyuan",
     "email": "1743369777@qq.com",
@@ -24,9 +24,9 @@
     "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
     "lint:lint-staged": "lint-staged",
     "prepare": "husky install",
-    "postversion": "git push && git push origin --tags",
+    "release": "git push && git push origin --tags",
+    "gen:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "reinstall": "rimraf pnpm-lock.yaml && rimraf package.lock.json && rimraf node_modules && npm run bootstrap",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "test:gzip": "npx http-server dist --cors --gzip -c-1",
     "test:br": "npx http-server dist --cors --brotli -c-1"
   },

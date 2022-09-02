@@ -80,6 +80,10 @@ pnpm build
   - `types` 类型定义文件更改
   - `wip` 开发中
 
+## 更新日志
+
+[CHANGELOG](./CHANGELOG.md)
+
 ### QQ 交流群（2022-3-8）
 
 [![加入QQ群](https://img.shields.io/badge/570108996-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi)
