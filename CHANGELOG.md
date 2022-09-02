@@ -1,3 +1,32 @@
+# [1.1.0](https://github.com/buqiyuan/vue3-antd-admin/compare/v1.0.1...v1.1.0) (2022-09-02)
+
+### Bug Fixes
+
+- add menu type judgment ([41bcd22](https://github.com/buqiyuan/vue3-antd-admin/commit/41bcd226be776c159796b09a71f20809bce12d3e))
+- **babel.config.js:** use polyfill of Array.prototype.at ([c0b25f0](https://github.com/buqiyuan/vue3-antd-admin/commit/c0b25f07d466d195beafc38296ec8bc5ea447d4b))
+- **components:** [dynamic-table] initial fetchData did not carry the default value ([c2a31d4](https://github.com/buqiyuan/vue3-antd-admin/commit/c2a31d4045ad65f7ae0c7862ad1ee60722a4543f))
+- **components:** [dynamic-table] parameter missing [#95](https://github.com/buqiyuan/vue3-antd-admin/issues/95) ([31758b5](https://github.com/buqiyuan/vue3-antd-admin/commit/31758b577f399ed80e1d05037a6dea87fdec099f))
+- **dynamic-table:** add onChangeParams param for dataRequest ([9c9ec46](https://github.com/buqiyuan/vue3-antd-admin/commit/9c9ec463f12b60eda40f4cb69076d097c8b34363))
+- invalid regular expression in safari ([6375f53](https://github.com/buqiyuan/vue3-antd-admin/commit/6375f532e9459e96f93dc40b56e52d7766d6ebbc)), closes [#108](https://github.com/buqiyuan/vue3-antd-admin/issues/108)
+- **pages:** about page link issues ([8b87e06](https://github.com/buqiyuan/vue3-antd-admin/commit/8b87e061129277fd737f1ed6071282ea8a3e2f06))
+- **projects:** 修复 tabs-view 下拉菜单溢出,移除@vue/compiler-sfc 依赖 ([2d5f011](https://github.com/buqiyuan/vue3-antd-admin/commit/2d5f0119a1a045aeb7b62c97b771a296dadea93f))
+- router redirect error when logout [#98](https://github.com/buqiyuan/vue3-antd-admin/issues/98) ([32c0a15](https://github.com/buqiyuan/vue3-antd-admin/commit/32c0a157e716521037ccc5bfcd116b8a9f6a3ded))
+- **schema-form:** update props issue ([62f7a4e](https://github.com/buqiyuan/vue3-antd-admin/commit/62f7a4e79117ddd00ff21b033f2f63296af554c6))
+- some css style issues ([31cbd31](https://github.com/buqiyuan/vue3-antd-admin/commit/31cbd310ee96f98559694b77a654e861d6bf6794))
+- some ts type issue ([fdbaf55](https://github.com/buqiyuan/vue3-antd-admin/commit/fdbaf55d23e54ea8c20535de2e21b8cef7deaa4a))
+- **user:** getInfo、getInfo api network error causing infinite retries ([#100](https://github.com/buqiyuan/vue3-antd-admin/issues/100)) ([a73d4ad](https://github.com/buqiyuan/vue3-antd-admin/commit/a73d4adcf2c126341f79df176b2318cd2cb38eae))
+- **utils:** [is] always false of isPromise [#107](https://github.com/buqiyuan/vue3-antd-admin/issues/107) ([ec9a6b7](https://github.com/buqiyuan/vue3-antd-admin/commit/ec9a6b725531078834a8aa46b1ea7a0284db458d))
+
+### Features
+
+- 当前用户角色权限变更时实时更新权限菜单 ([adbda89](https://github.com/buqiyuan/vue3-antd-admin/commit/adbda89c97b2bc91b0bcf295e76053b62afdc238))
+- **components:** [dynamic-table] cell support defaultEditable ([03e7806](https://github.com/buqiyuan/vue3-antd-admin/commit/03e7806780193a200251f3f7d0c851beb312e553))
+- **components:** [dynamic-table] support cell edit ([0eccb9a](https://github.com/buqiyuan/vue3-antd-admin/commit/0eccb9ac7b225f3a63674196f2bafe5fa6d99c65))
+- **components:** [ProjectSetting] config project style online ([2031927](https://github.com/buqiyuan/vue3-antd-admin/commit/2031927c62774e4c47aeebfb9ba2ec0026e0632f))
+- edit-row-table support save loading ([b24e25a](https://github.com/buqiyuan/vue3-antd-admin/commit/b24e25ad829c484628b09d291db5e01b4f5275db))
+- support for nested routes ([79b2093](https://github.com/buqiyuan/vue3-antd-admin/commit/79b209361f4cb77a7128fa6ed3a8a626d4143934))
+- update basic-form demo ([bea6824](https://github.com/buqiyuan/vue3-antd-admin/commit/bea6824fd7c28e2b9097c7a308d58b8976d1767d))
+
 ## [1.0.1](https://github.com/buqiyuan/vue3-antd-admin/compare/v0.1.4...v1.0.1) (2022-03-15)
 
 ### Bug Fixes

@@ -25,9 +25,9 @@
     "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
     "lint:lint-staged": "lint-staged",
     "prepare": "husky install",
-    "postversion": "git push && git push origin --tags",
     "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && npm run dev",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "release": "git push && git push origin --tags",
+    "gen:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "test:gzip": "npx http-server dist --cors --gzip -c-1",
     "test:br": "npx http-server dist --cors --brotli -c-1",
     "commit": "czg"
