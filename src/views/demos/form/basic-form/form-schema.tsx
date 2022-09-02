@@ -282,7 +282,7 @@ export const schemas: FormSchema[] = [
     colProps: {
       span: 8,
     },
-    defaultValue: 1,
+    defaultValue: '1',
   },
   {
     field: 'field31',

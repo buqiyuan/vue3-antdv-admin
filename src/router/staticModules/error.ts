@@ -14,6 +14,7 @@ export const notFound: RouteRecordRaw = {
   },
   redirect: '/error/404',
   component: () => import(/* webpackChunkName: "404" */ '@/views/error/404.vue'),
+  children: [],
 };
 
 export const errorRoute: RouteRecordRaw = {
