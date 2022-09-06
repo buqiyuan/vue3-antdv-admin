@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import { loadEnv } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
@@ -8,6 +8,7 @@ import { viteMockServe } from 'vite-plugin-mock';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
+import mkcert from 'vite-plugin-mkcert';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
 import DefineOptions from 'unplugin-vue-define-options/vite';
@@ -51,6 +52,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       ],
     },
     plugins: [
+      mkcert(),
       vue(),
       Unocss(),
       DefineOptions(), // https://github.com/sxzz/unplugin-vue-define-options
@@ -120,8 +122,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     server: {
       host: '0.0.0.0',
-      // https: true,
       port: 8088,
+      https: true,
       proxy: {
         '/api': {
           target: 'https://nest-api.buqiyuan.site/api/',
@@ -138,7 +140,13 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     optimizeDeps: {
-      include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
+      include: [
+        '@vue/runtime-core',
+        '@vue/shared',
+        'lodash-es',
+        'ant-design-vue/es/locale/zh_CN',
+        'ant-design-vue/es/locale/en_US',
+      ],
     },
     esbuild: {
       pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
