@@ -1,6 +1,6 @@
 <template>
   <teleport :to="getContainer()">
-    <div ref="modalWrapRef" class="custom-modal" :class="{ fullscreen: fullscreenModel }">
+    <div ref="modalWrapRef" class="draggable-modal" :class="{ fullscreen: fullscreenModel }">
       <Modal
         v-bind="omit(props, ['visible', 'onCancel', 'onOk', 'onUpdate:visible'])"
         v-model:visible="visibleModel"
@@ -183,8 +183,12 @@
       }, 20);
       modalWrapEl.onmousedown = (e: MouseEvent) => {
         if (fullscreenModel.value) return;
-        const iParentTop = modalEl.getBoundingClientRect().top;
-        const iParentLeft = modalEl.getBoundingClientRect().left;
+        const {
+          top: iParentTop,
+          bottom: iParentBottom,
+          left: iParentLeft,
+          right: iParentRight,
+        } = modalEl.getBoundingClientRect();
         const disX = e.clientX - iParentLeft;
         const disY = e.clientY - iParentTop;
         const iParentWidth = modalEl.offsetWidth;
@@ -197,40 +201,59 @@
           if (cursor !== cursorStyle.auto) {
             document.body.style.userSelect = 'none';
           }
+          const mLeft = `${Math.max(0, event.clientX - disX)}px`;
+          const mTop = `${Math.max(0, event.clientY - disY)}px`;
+          const mLeftWidth = `${Math.min(
+            iParentRight,
+            iParentWidth + iParentLeft - event.clientX,
+          )}px`;
+          const mRightWidth = `${Math.min(
+            window.innerWidth - iParentLeft,
+            event.clientX - iParentLeft,
+          )}px`;
+          const mTopHeight = `${Math.min(
+            iParentBottom,
+            iParentHeight + iParentTop - event.clientY,
+          )}px`;
+          const mBottomHeight = `${Math.min(
+            window.innerHeight - iParentTop,
+            event.clientY - iParentTop,
+          )}px`;
+
           // 向左边拖拽
           if (cursor === cursorStyle.left) {
-            modalEl.style.left = `${event.clientX - disX}px`;
-            modalEl.style.width = `${iParentWidth + iParentLeft - event.clientX}px`;
+            modalEl.style.left = mLeft;
+            modalEl.style.width = mLeftWidth;
             // 向上边拖拽
           } else if (cursor === cursorStyle.top) {
-            modalEl.style.top = `${event.clientY - disY}px`;
-            modalEl.style.height = `${iParentHeight + iParentTop - event.clientY}px`;
+            modalEl.style.top = mTop;
+            modalEl.style.height = mTopHeight;
             // 向右边拖拽
           } else if (cursor === cursorStyle.right) {
-            modalEl.style.width = `${event.clientX - iParentLeft}px`;
+            modalEl.style.width = mRightWidth;
             // 向下拖拽
           } else if (cursor === cursorStyle.bottom) {
-            modalEl.style.height = `${event.clientY - iParentTop}px`;
+            modalEl.style.height = mBottomHeight;
             // 左上角拖拽
           } else if (cursor === cursorStyle.topLeft) {
-            modalEl.style.left = `${event.clientX - disX}px`;
-            modalEl.style.top = `${event.clientY - disY}px`;
-            modalEl.style.height = `${iParentHeight + iParentTop - event.clientY}px`;
-            modalEl.style.width = `${iParentWidth + iParentLeft - event.clientX}px`;
+            modalEl.style.left = mLeft;
+            modalEl.style.top = mTop;
+            modalEl.style.height = mTopHeight;
+            modalEl.style.width = mLeftWidth;
             // 右上角拖拽
           } else if (cursor === cursorStyle.topright) {
-            modalEl.style.top = `${event.clientY - disY}px`;
-            modalEl.style.width = `${event.clientX - iParentLeft}px`;
-            modalEl.style.height = `${iParentHeight + iParentTop - event.clientY}px`;
+            modalEl.style.top = mTop;
+            modalEl.style.width = mRightWidth;
+            modalEl.style.height = mTopHeight;
             // 左下角拖拽
           } else if (cursor === cursorStyle.bottomLeft) {
-            modalEl.style.left = `${event.clientX - disX}px`;
-            modalEl.style.width = `${iParentWidth + iParentLeft - event.clientX}px`;
-            modalEl.style.height = `${event.clientY - iParentTop}px`;
+            modalEl.style.left = mLeft;
+            modalEl.style.width = mLeftWidth;
+            modalEl.style.height = mBottomHeight;
             // 右下角拖拽
           } else if (cursor === cursorStyle.bottomRight) {
-            modalEl.style.width = `${event.clientX - iParentLeft}px`;
-            modalEl.style.height = `${event.clientY - iParentTop}px`;
+            modalEl.style.width = mRightWidth;
+            modalEl.style.height = mBottomHeight;
           }
           innerWidth.value = modalEl.style.width;
         }, 20);
@@ -259,7 +282,7 @@
 </script>
 
 <style lang="less">
-  .custom-modal {
+  .draggable-modal {
     &.fullscreen {
       .ant-modal {
         top: 0 !important;
@@ -270,38 +293,46 @@
         height: 100% !important;
         max-width: 100vw !important;
       }
+
       .ant-modal-content {
         width: 100% !important;
         height: 100% !important;
       }
     }
+
     .ant-modal {
       position: fixed;
       padding: 0;
       min-height: 200px;
       min-width: 200px;
+
       .ant-modal-close {
         top: 6px;
         right: 6px;
+
         &:hover,
         &:focus {
           color: rgba(0, 0, 0, 0.45);
         }
+
         .ant-space-item:hover .anticon,
         .ant-space-item:focus .anticon {
           color: rgba(0, 0, 0, 0.75);
           text-decoration: none;
         }
+
         .ant-modal-close-x {
           width: 50px;
           height: 50px;
           line-height: 44px;
+
           .ant-space {
             width: 100%;
             height: 100%;
           }
         }
       }
+
       .ant-modal-content {
         /* width: ~'v-bind("props.width")px'; */
         display: flex;
@@ -311,12 +342,11 @@
         min-height: 200px;
         min-width: 200px;
         overflow: hidden;
+
         .ant-modal-body {
           flex: auto;
           overflow: auto;
           height: 100%;
-        }
-        .ant-modal-footer {
         }
       }
     }
