@@ -23,7 +23,7 @@ const __APP_INFO__ = {
 
 // https://next.cli.vuejs.org/
 module.exports = defineConfig({
-  // lintOnSave: false, //关闭eslint检查
+  // lintOnSave: IS_DEV, //关闭eslint检查
   // publicPath: isDev ? '' : querystring.unescape('<%=request.getContextPath()%>'),
   publicPath: process.env.BASE_URL,
   // filenameHashing: false,
