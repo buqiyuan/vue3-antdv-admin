@@ -1,10 +1,13 @@
-import { unref, nextTick } from 'vue';
+import { unref, nextTick, getCurrentInstance } from 'vue';
 import { isObject, isFunction } from 'lodash-es';
+import { useInfiniteScroll } from '@vueuse/core';
 import { useEditable } from './useEditable';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { Pagination, TableState } from './useTableState';
 import { isAsyncFunction, isBoolean } from '@/utils/is';
+
+export type UseInfiniteScrollParams = Parameters<typeof useInfiniteScroll>;
 
 export type TableMethods = ReturnType<typeof useTableMethods>;
 
@@ -160,6 +163,14 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       };
     }
   };
+  /** 表格无限滚动 */
+  const onInfiniteScroll = (
+    callback: UseInfiniteScrollParams[1],
+    options?: UseInfiniteScrollParams[2],
+  ) => {
+    const el = getCurrentInstance()?.proxy?.$el.querySelector('.ant-table-body');
+    useInfiniteScroll(el, callback, options);
+  };
 
   /**
    * @description当外部需要动态改变搜索表单的值或选项时，需要调用此方法获取dynamicFormRef实例
@@ -175,6 +186,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     fetchData,
     getQueryFormRef,
     reload,
+    onInfiniteScroll,
     handleEditFormValidate,
   };
 };

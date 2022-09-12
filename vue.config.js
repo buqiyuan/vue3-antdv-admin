@@ -213,8 +213,8 @@ module.exports = defineConfig({
       // },
       '^/api': {
         // target: process.env.VUE_APP_API_URL,
-        target: 'https://nest-api.buqiyuan.site/api/',
-        // target: 'http://localhost:7001 ',
+        // target: 'https://nest-api.buqiyuan.site/api/',
+        target: 'http://localhost:7001 ',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
@@ -222,8 +222,8 @@ module.exports = defineConfig({
         },
       },
       '^/ws-api': {
-        target: 'wss://nest-api.buqiyuan.site',
-        // target: 'http://localhost:7002',
+        // target: 'wss://nest-api.buqiyuan.site',
+        target: 'http://localhost:7002',
         changeOrigin: true, //是否允许跨域
         wss: true,
         logLevel: 'debug',

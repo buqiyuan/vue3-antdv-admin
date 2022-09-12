@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-container" :style="{ height: isSideMenu ? 'calc(100vh - 64px)' : '' }">
+  <div class="menu-container" :class="{ 'is-side-menu': isSideMenu }">
     <Menu
       v-model:selected-keys="state.selectedKeys"
       :open-keys="isSideMenu ? state.openKeys : []"
@@ -118,6 +118,10 @@
     &::-webkit-scrollbar {
       width: 0;
       height: 0;
+    }
+
+    &.is-side-menu {
+      height: calc(100vh - 64px);
     }
   }
 </style>

@@ -4,7 +4,7 @@
     <Menu.SubMenu :key="props.menuInfo?.name" v-bind="$attrs">
       <template #title>
         <span>
-          <icon-font :type="props.menuInfo.meta?.icon" />
+          <icon-font :type="props.menuInfo?.meta?.icon" />
           <TitleI18n :title="props.menuInfo?.meta?.title" />
         </span>
       </template>
