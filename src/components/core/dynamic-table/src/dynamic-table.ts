@@ -70,6 +70,8 @@ export const dynamicTableProps = {
   headerTitle: String as PropType<string>,
   /** 表格标题提示信息 */
   titleTooltip: String as PropType<string>,
+  /** 表格自适应高度 */
+  autoHeight: Boolean as PropType<boolean>,
   // excel导出配置
   /** 导出的文件名 */
   exportFileName: {

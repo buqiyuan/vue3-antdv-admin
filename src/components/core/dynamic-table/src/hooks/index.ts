@@ -11,6 +11,7 @@ export * from './useTableState';
 export * from './useTableMethods';
 export * from './useColumns';
 export * from './useEditable';
+export * from './useScroll';
 
 export type DynamicTableType = DynamicTableProps &
   TableState &

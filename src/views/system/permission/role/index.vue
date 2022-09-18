@@ -59,7 +59,7 @@
    * @description 打开新增/编辑弹窗
    */
   const openMenuModal = async (record: Partial<TableListItem>) => {
-    const [formRef] = await showModal<API.UpdateRoleParams & API.CaptchaParams>({
+    const [formRef] = await showModal<API.UpdateRoleParams>({
       modalProps: {
         title: `${record.id ? '编辑' : '新增'}角色`,
         width: '50%',

@@ -1,9 +1,8 @@
 <template>
   <Button
-    v-bind="props"
-    :danger="['danger'].includes(type)"
+    v-bind="{ ...$attrs, ...props }"
     :type="buttonType"
-    :class="[`ant-btn-${type}`]"
+    :class="[`ant-btn-${type}`, { 'basic-btn': colorVar }]"
   >
     <template v-for="(_, key) in $slots" #[key]>
       <slot :name="key"></slot>
@@ -11,35 +10,39 @@
   </Button>
 </template>
 <script lang="ts" setup>
-  import { computed } from 'vue';
+  import { computed, type ComputedRef } from 'vue';
   import { Button } from 'ant-design-vue';
-  import { buttonProps, type ButtonType } from './button';
-  import type { PropType, ComputedRef } from 'vue';
+  import { buttonProps, typeColorMap, buttonTypes } from './button';
+  import type { ButtonType } from './button';
   import type { ButtonType as AButtonType } from 'ant-design-vue/es/button';
 
   const props = defineProps({
     ...buttonProps(),
     type: {
       type: String as PropType<ButtonType>,
-      default: 'default',
     },
+    // 自定义按钮颜色
+    color: String,
   });
 
-  const buttonTypes = ['default', 'primary', 'ghost', 'dashed', 'link', 'text'];
   const buttonType = computed(() => {
-    const type = props.type;
+    const type = props.type!;
     return buttonTypes.includes(type)
       ? (type as ButtonType)
-      : ['danger'].includes(type)
+      : Reflect.has(typeColorMap, type) || props.color
       ? 'primary'
       : 'default';
   }) as ComputedRef<AButtonType>;
+
+  const colorVar = computed(() => {
+    return props.color || typeColorMap[props.type!];
+  });
 </script>
 
-<style lang="less" scoped>
-  @import 'styles/success';
-</style>
-
-<style lang="less" scoped>
-  @import 'styles/warning';
+<style scoped>
+  .basic-btn {
+    --ant-primary-color: v-bind(colorVar);
+    --ant-primary-color-hover: v-bind(colorVar);
+    --ant-primary-color-active: v-bind(colorVar);
+  }
 </style>

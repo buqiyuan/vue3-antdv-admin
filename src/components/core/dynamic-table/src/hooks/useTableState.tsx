@@ -1,5 +1,6 @@
 import { computed, ref, unref, watch } from 'vue';
 import { omit } from 'lodash-es';
+import { useScroll } from './useScroll';
 import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
 import type { SchemaFormInstance } from '@/components/core/schema-form';
@@ -16,6 +17,7 @@ export type UseTableStateParams = {
 
 export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const { t } = useI18n();
+  const { scroll } = useScroll({ props });
   /** 表格实例 */
   const tableRef = ref<InstanceType<typeof Table>>();
   /** 查询表单实例 */
@@ -64,9 +66,10 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     let propsData: Recordable = {
       ...props,
       rowKey: props.rowKey ?? 'id',
-      loading: unref(loadingRef),
-      tableLayout: 'fixed',
+      loading: props.loading ?? unref(loadingRef),
       pagination: unref(paginationRef),
+      tableLayout: props.tableLayout ?? 'fixed',
+      scroll: unref(scroll),
     };
     if (slots.expandedRowRender) {
       propsData = omit(propsData, 'scroll');

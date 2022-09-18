@@ -328,10 +328,9 @@
     dynamicTableInstance?.reload?.();
   };
 
-  const loadTableData = async ({ page, limit }: LoadDataParams) => {
+  const loadTableData = async (params: LoadDataParams) => {
     const data = await getUserListPage({
-      page,
-      limit,
+      ...params,
       departmentIds: state.departmentIds.length ? state.departmentIds : undefined,
     });
     rowSelection.value.selectedRowKeys = [];

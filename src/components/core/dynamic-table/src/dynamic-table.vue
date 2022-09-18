@@ -81,13 +81,15 @@
 
   // 表格内部状态
   const tableState = useTableState({ props, slots });
-  const { tableData, queryFormRef, editTableFormRef, getBindValues, editFormModel } = tableState;
+  const { tableRef, tableData, queryFormRef, editTableFormRef, getBindValues, editFormModel } =
+    tableState;
   // 表格内部方法
   const tableMethods = useTableMethods({ state: tableState, props, emit });
   const { setProps, fetchData, handleSubmit, reload, handleTableChange, handleEditFormValidate } =
     tableMethods;
   // 控制编辑行
   const editableHooks = useEditable({ props, state: tableState });
+  /** 表格scroll */
 
   const tableAction: TableActionType = {
     setProps,

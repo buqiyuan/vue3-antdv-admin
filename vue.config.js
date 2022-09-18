@@ -23,7 +23,7 @@ const __APP_INFO__ = {
 
 // https://next.cli.vuejs.org/
 module.exports = defineConfig({
-  // lintOnSave: IS_DEV, //关闭eslint检查
+  lintOnSave: IS_DEV, //关闭eslint检查
   // publicPath: isDev ? '' : querystring.unescape('<%=request.getContextPath()%>'),
   publicPath: process.env.BASE_URL,
   // filenameHashing: false,
@@ -219,6 +219,12 @@ module.exports = defineConfig({
         logLevel: 'debug',
         pathRewrite: {
           '^/api': '',
+        },
+        on: {
+          // proxyReq: (proxyReq) => {
+          //   // add custom header to request
+          //   proxyReq.setHeader('Referer', 'https://vue3-antd-admin.vercel.app');
+          // },
         },
       },
       '^/ws-api': {

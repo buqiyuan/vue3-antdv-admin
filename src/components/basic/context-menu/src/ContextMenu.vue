@@ -2,7 +2,7 @@
   import { defineComponent, nextTick, onMounted, computed, ref, unref, onUnmounted } from 'vue';
   import { Menu, Divider } from 'ant-design-vue';
   import type { ContextMenuItem, ItemContentProps, Axis } from './typing';
-  import type { FunctionalComponent, CSSProperties } from 'vue';
+  import type { FunctionalComponent, CSSProperties, PropType } from 'vue';
   import { IconFont } from '@/components/basic/iconfont';
 
   const prefixCls = 'context-menu';
@@ -36,7 +36,7 @@
         class="px-4"
         onClick={props.handler.bind(null, item)}
       >
-        {props.showIcon && item.icon && <IconFont class="mr-2" type={item.icon} />}
+        {props.showIcon && item.icon && <IconFont class="mr-2" name={item.icon} />}
         <span>{item.label}</span>
       </span>
     );
@@ -64,6 +64,7 @@
           width: `${width}px`,
           left: `${left + 1}px`,
           top: `${top + 1}px`,
+          zIndex: 9999,
         };
       });
 
@@ -88,7 +89,8 @@
       }
 
       function renderMenuItem(items: ContextMenuItem[]) {
-        return items.map((item) => {
+        const visibleItems = items.filter((item) => !item.hidden);
+        return visibleItems.map((item) => {
           const { disabled, label, children, divider = false } = item;
 
           const contentProps = {
@@ -159,8 +161,7 @@
       }
 
       &:not(.ant-menu-item-disabled):hover {
-        color: #c9d1d9;
-        background-color: #f5f5f5;
+        background-color: @item-hover-bg;
       }
     }
   }
@@ -174,7 +175,7 @@
     width: 156px;
     margin: 0;
     list-style: none;
-    background-color: #151515;
+    background-color: @component-background;
     border: 1px solid rgb(0 0 0 / 8%);
     border-radius: 0.25rem;
     box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 10%),

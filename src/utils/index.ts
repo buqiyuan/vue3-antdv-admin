@@ -1,6 +1,57 @@
 import { isObject } from './is';
 import type { App, Component, Plugin } from 'vue';
 
+export function getFileExtension(filename) {
+  return /[.]/.exec(filename) ? /[^.]+$/.exec(filename)?.[0] : undefined;
+}
+/**
+ * 将文件文件名转为文件类型后缀
+ * @param {string} fileName mime type
+ * @returns svg icon name
+ */
+export function parseMimeTypeToIconName(fileName) {
+  if (!fileName) {
+    return 'file-type-unknown';
+  }
+  const ext = getFileExtension(fileName)?.toLowerCase();
+  if (!ext) {
+    return 'file-type-unknown';
+  }
+  if (['png', 'jpg', 'jpeg', 'ico', 'gif', 'bmp', 'webp'].includes(ext)) {
+    return 'file-type-img';
+  }
+  if (['markdown', 'md', 'txt'].includes(ext)) {
+    return 'file-type-txt';
+  }
+  if (['docx', 'doc', 'docm', 'dot', 'dotx'].includes(ext)) {
+    return 'file-type-docx';
+  }
+  if (['csv', 'xls', 'xlsb', 'xlsm', 'xlsx', 'xltx'].includes(ext)) {
+    return 'file-type-excel';
+  }
+  if (ext === 'pdf') {
+    return 'file-type-pdf';
+  }
+  if (['pptx', 'ppt', 'pptm'].includes(ext)) {
+    return 'file-type-ppt';
+  }
+  if (['zip', 'rar', '7z', 'tar', 'gz', 'tgz', 'tar.gz', 'tar.xz'].includes(ext)) {
+    return 'file-type-zip';
+  }
+  if (['mp4', 'avi', 'wmv', 'rmvb', '3gp', 'mov', 'm4v', 'flv', 'mkv'].includes(ext)) {
+    return 'file-type-video';
+  }
+  if (['mp3', 'wav'].includes(ext)) {
+    return 'file-type-music';
+  }
+  if (
+    ['vue', 'js', 'go', 'java', 'ts', 'css', 'html', 'php', 'c', 'cpp', 'swift', 'kt'].includes(ext)
+  ) {
+    return 'file-type-code';
+  }
+  return 'file-type-unknown';
+}
+
 /**
  *
  * byte to size

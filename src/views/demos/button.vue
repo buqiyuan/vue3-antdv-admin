@@ -1,26 +1,36 @@
 <template>
   <div>
-    <Alert
-      message="可扩展antd按钮样式功能"
-      description="继承自原ant-design-vue的a-button，轻易扩展按钮的type定制不同颜色，详细看@/components/button/button.vue"
-      type="info"
-      show-icon
-      style="margin-bottom: 12px"
-    />
+    <Alert message="扩展antd按钮样式" type="info" show-icon style="margin-bottom: 12px" />
     <Card>
+      <Divider orientation="left">扩展按钮类型</Divider>
       <Space>
         <AButton type="primary">primary</AButton>
-        <AButton type="danger">danger</AButton>
+        <AButton type="primary" danger>danger</AButton>
         <AButton type="warning">warning</AButton>
         <AButton type="success">success</AButton>
+      </Space>
+
+      <Divider orientation="left">自定义按钮颜色</Divider>
+      <Space>
+        <template v-for="item in themeColors" :key="item.key">
+          <AButton :color="item.value">{{ item.title }}</AButton>
+        </template>
+      </Space>
+
+      <Divider orientation="left">幽灵按钮</Divider>
+      <Space>
+        <template v-for="item in themeColors" :key="item.key">
+          <AButton ghost :color="item.value">{{ item.title }}</AButton>
+        </template>
       </Space>
     </Card>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { Alert, Space, Card } from 'ant-design-vue';
+  import { Alert, Space, Card, Divider } from 'ant-design-vue';
   import { AButton } from '@/components/basic/button';
+  import { themeColors } from '@/layout/header/components/setting/constant';
 
   defineOptions({
     name: 'DemoButton',
