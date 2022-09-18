@@ -15,7 +15,6 @@
           drag
           action="noaction"
           :multiple="true"
-          :on-error="onError"
           :custom-request="uploadFile"
         >
           <i class="el-icon-upload" />
@@ -114,21 +113,37 @@
       },
       error: (err) => {
         onError?.(err);
+        handleUploadError(err, file as File);
+        console.log('上传失败', err);
       },
       complete: (res) => {
         successSubs.value.push(sub);
         onSuccess?.(res);
+        handleUploadSuccess(file as File);
       },
     });
     subscribes.value.push(sub);
   };
-  const onError = (err, file) => {
+  const handleUploadError = (err, file: File) => {
+    const failFile = fileList.value.find((n) => n.originFileObj === file);
+    if (failFile) {
+      failFile.status = 'error';
+    }
     notification.error({
       message: '上传进度提醒',
-      description: `上传${file.name}文件失败！错误信息：${
+      description: `上传${file?.name}文件失败！错误信息：${
         err.code === 614 ? '上传文件已存在' : err.message
       }`,
       duration: 0,
+    });
+  };
+  const handleUploadSuccess = (file: File) => {
+    const successFile = fileList.value.find((n) => n.originFileObj === file);
+    if (successFile) {
+      successFile.status = 'success';
+    }
+    notification.success({
+      message: `上传${successFile?.name}成功`,
     });
   };
   const clear = async () => {
