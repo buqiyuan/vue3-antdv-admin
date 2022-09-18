@@ -6,6 +6,7 @@ import type { SysRolePerms } from './role';
 import type { SysTaskPerms } from './task';
 import type { SysUserPerms } from './user';
 import type { SysServePerms } from './serve';
+import type { SysParamConfigPerms } from './param-config';
 
 export type SysPermissionType =
   | SysLogPerms
@@ -15,4 +16,5 @@ export type SysPermissionType =
   | SysRolePerms
   | SysTaskPerms
   | SysServePerms
-  | SysUserPerms;
+  | SysUserPerms
+  | SysParamConfigPerms;

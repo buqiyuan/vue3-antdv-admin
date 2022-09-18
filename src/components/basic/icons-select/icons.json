@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "17331151",
+      "name": "系统参数配置",
+      "font_class": "xitongcanshupeizhi",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "797154",
+      "name": "客户参数配置",
+      "font_class": "kehucanshupeizhi",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    },
+    {
+      "icon_id": "14745812",
+      "name": "参数设置",
+      "font_class": "canshushezhi",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "7339798",
+      "name": "概览",
+      "font_class": "gailan",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "18735872",
+      "name": "网盘",
+      "font_class": "wangpan",
+      "unicode": "e74e",
+      "unicode_decimal": 59214
+    },
+    {
+      "icon_id": "27545706",
+      "name": "网盘空间",
+      "font_class": "wangpankongjian",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
       "icon_id": "1059047",
       "name": "读取数据库",
       "font_class": "duqushujuku",

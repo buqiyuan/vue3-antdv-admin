@@ -51,6 +51,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '呢称',
     width: 120,
     align: 'center',
+    hideInSearch: true,
     dataIndex: 'nickName',
   },
   {
@@ -75,6 +76,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '状态',
     dataIndex: 'status',
     width: 100,
+    hideInSearch: true,
     formItemProps: {
       component: 'Select',
       componentProps: {
@@ -99,6 +101,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '创建时间',
     dataIndex: 'createdAt',
     width: 120,
+    hideInSearch: true,
     formItemProps: {
       component: 'DatePicker',
       componentProps: {
@@ -110,6 +113,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '修改时间',
     dataIndex: 'updatedAt',
     width: 120,
+    hideInSearch: true,
     formItemProps: {
       component: 'DatePicker',
       componentProps: {
