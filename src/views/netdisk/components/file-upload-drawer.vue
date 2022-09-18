@@ -10,6 +10,7 @@
       <Spin :spinning="loading" class="upload-inner-box">
         <Upload.Dragger
           ref="uploadRef"
+          v-model:file-list="fileList"
           class="upload"
           drag
           action="noaction"
@@ -31,7 +32,7 @@
   import * as qiniu from 'qiniu-js/esm';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
   import { Modal, Drawer, Spin, Upload, notification } from 'ant-design-vue';
-  import type { UploadProps } from 'ant-design-vue';
+  import type { UploadProps, UploadFile } from 'ant-design-vue';
   import * as netdiskManage from '@/api/netdisk';
 
   defineOptions({
@@ -48,6 +49,7 @@
   const subscribes = ref<any[]>([]);
   // 成功的请求
   const successSubs = ref<any[]>([]);
+  const fileList = ref<UploadFile<any>[]>([]);
 
   const title = computed(() => {
     return `上传文件到 ${
@@ -91,6 +93,7 @@
     loading.value = false;
     path.value = '';
     token.value = '';
+    fileList.value = [];
     clear();
   };
   /**
@@ -155,55 +158,4 @@
   });
 </script>
 
-<style lang="less">
-  .file-upload-drawer-container {
-    .el-drawer__body {
-      height: 100%;
-
-      .upload-inner-box {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        padding: 0 10px;
-
-        .header {
-          height: 40px;
-          font-size: 16px;
-          line-height: 40px;
-
-          i {
-            cursor: pointer;
-          }
-        }
-
-        .upload {
-          flex: 1;
-          display: flex;
-          padding-bottom: 10px;
-          flex-direction: column;
-          width: 100%;
-          height: 0;
-          position: relative;
-
-          .el-upload-list {
-            overflow: auto;
-            flex: 1;
-          }
-
-          .el-upload {
-            width: 100%;
-
-            .el-upload-dragger {
-              width: 100%;
-            }
-          }
-        }
-
-        .footer {
-          padding: 10px 0;
-        }
-      }
-    }
-  }
-</style>
+<style lang="less"></style>

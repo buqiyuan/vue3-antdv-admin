@@ -220,7 +220,7 @@
   const handleDownload = async (row) => {
     try {
       isLoading.value = true;
-      const { data } = await netdiskManage.downloadFile({
+      const data = await netdiskManage.downloadFile({
         path: parsePath(),
         name: row.name,
       });

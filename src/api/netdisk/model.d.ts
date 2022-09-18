@@ -88,4 +88,25 @@ declare namespace API {
     originPath: string;
     toPath: string;
   };
+
+  type OverviewSpaceInfo = {
+    // 当前使用容量
+    spaceSize: number;
+    // 当前文件数量
+    fileSize: number;
+    // 当天使用流量
+    flowSize: number;
+    // 当天请求次数
+    hitSize: number;
+    // 流量趋势，从当月1号开始计算
+    flowTrend: {
+      times: number[];
+      datas: number[];
+    };
+    // 容量趋势，从当月1号开始计算
+    sizeTrend: {
+      times: number[];
+      datas: number[];
+    };
+  };
 }

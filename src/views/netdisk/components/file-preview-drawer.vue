@@ -8,10 +8,13 @@
             height: disabledPreview ? '85px' : '210px',
           }"
           :src="disabledPreview ? noPreviewImage : imageView2Handle"
-          :preview="{
-            visible: !disabledPreview,
-            src: previewSrc,
-          }"
+          :preview="
+            disabledPreview
+              ? false
+              : {
+                  src: previewSrc,
+                }
+          "
         />
         <Descriptions bordered :column="1">
           <template v-for="key in detailInfoMap.keys()" :key="key">
@@ -111,7 +114,7 @@
         console.log('detailInfo', detailInfo.value);
         if (verifyAuth('netdisk.manage.download') && data.mimeType.includes('image/')) {
           // 可预览
-          const { data: url } = await netdiskManage.downloadFile(fileInfo);
+          const url = await netdiskManage.downloadFile(fileInfo);
           previewSrc.value = url;
         }
       } catch {
