@@ -1,3 +1,8 @@
+---
+name: Bug report（报告问题）
+about: Create a report to help us improve
+---
+
 <!--
     注意：为更好的解决你的问题，请参考模板提供完整信息，准确描述问题，信息不全的 issue 将被关闭。
 

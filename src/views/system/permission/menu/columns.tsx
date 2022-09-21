@@ -1,3 +1,4 @@
+import { Tag } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 // import { Avatar, Space, Tag } from 'ant-design-vue';
 
@@ -24,6 +25,8 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '名称',
     dataIndex: 'name',
+    width: 240,
+    fixed: 'left',
   },
   {
     title: '图标',
@@ -63,6 +66,16 @@ export const baseColumns: TableColumnItem[] = [
     width: 300,
     align: 'center',
     dataIndex: 'perms',
+    customRender: ({ record }) =>
+      record.type == 2 && (
+        <div>
+          {record.perms?.split(',').map((i) => (
+            <Tag color="blue" key={i}>
+              {i}
+            </Tag>
+          ))}
+        </div>
+      ),
   },
   {
     title: '排序号',

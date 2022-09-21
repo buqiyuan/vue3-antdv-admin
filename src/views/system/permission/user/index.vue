@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="tsx">
-  import { ref, reactive, computed } from 'vue';
+  import { ref, reactive, computed, onMounted } from 'vue';
   import {
     SyncOutlined,
     PlusOutlined,
@@ -300,7 +300,7 @@
     state.deptTree = formatDept2Tree(dept);
     state.expandedKeys = [...state.expandedKeys, ...state.deptTree.map((n) => Number(n.key))];
   };
-  fetchDeptList();
+
   /**
    * @description 表格删除行
    */
@@ -370,6 +370,10 @@
       ],
     },
   ];
+
+  onMounted(() => {
+    fetchDeptList();
+  });
 </script>
 
 <style></style>
