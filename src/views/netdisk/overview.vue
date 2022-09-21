@@ -26,7 +26,7 @@
   import { use } from 'echarts/core';
   import { CanvasRenderer } from 'echarts/renderers';
   import { TooltipComponent, GridComponent } from 'echarts/components';
-  import VChart from 'vue-echarts'; // 在 webpack 环境下指向 components/ECharts.vue
+  import VChart from 'vue-echarts';
   import { LineChart } from 'echarts/charts';
   import { Card, Tabs } from 'ant-design-vue';
   import OverviewHeaderItem from './components/overview-header-item.vue';

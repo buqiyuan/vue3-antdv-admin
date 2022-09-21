@@ -53,7 +53,7 @@
         width: 700,
         onFinish: async (values) => {
           console.log('新增/编辑菜单', values);
-          values.menuId = record.id;
+          record.id && (values.menuId = record.id);
           values.perms = values.perms?.join(',');
           await (record.id ? updateMenu : createMenu)(values);
           dynamicTableInstance.reload();

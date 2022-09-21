@@ -7,6 +7,7 @@ declare namespace API {
     name: string;
     router: string;
     perms: string;
+    /** 0: '目录', 1: '菜单', 2: '权限'  */
     type: number;
     icon: string;
     orderNum: number;

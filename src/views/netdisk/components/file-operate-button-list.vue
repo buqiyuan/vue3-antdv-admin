@@ -200,7 +200,7 @@
       emit('update:searchKey', '');
       return;
     }
-    await showModal<any>({
+    await showModal<API.NetdiskManageListParams>({
       modalProps: {
         title: '全盘搜索',
         width: 700,
@@ -220,7 +220,7 @@
   };
 
   const handleMkdir = async () => {
-    await showModal<any>({
+    await showModal<API.MkdirParams>({
       modalProps: {
         title: '创建文件夹',
         width: 700,

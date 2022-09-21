@@ -149,9 +149,9 @@
     const path = parsePath();
     const data = await netdiskManage
       .netdiskManageList({
-        marker: marker.value?.trim() || '',
         path,
         key: localSearchKey.value,
+        marker: marker.value?.trim() || '',
       })
       .finally(() => (tableLoading.value = false));
     if (!isEmpty(marker)) {
@@ -170,10 +170,6 @@
       });
       if (!isEmpty(fl)) {
         fileList.value.push(...fl);
-      } else {
-        // 重复分页只有目录时没有数据滚动，则会导致分页无法正常加载
-        // fileList = cloneDeep(fileList)
-        // tableKey += 1;
       }
     } else {
       // 非分页，直接赋值
@@ -237,13 +233,11 @@
   const handleRename = async (record: API.NetdiskManageListItem) => {
     console.log('record', record);
 
-    await showModal<any>({
+    await showModal<API.FileRenameParams>({
       modalProps: {
         title: '重命名',
         width: 700,
         onFinish: async (values) => {
-          console.log('新增/编辑部门', values);
-          values.id = record.id;
           await netdiskManage.renameFile({
             type: record.type,
             toName: values.toName,
@@ -270,7 +264,6 @@
               label: '下载',
               disabled: record.type === 'dir' || !verifyAuth('netdisk.manage.download'),
               handler: () => {
-                console.log('ddd');
                 handleDownload(record);
               },
             },
