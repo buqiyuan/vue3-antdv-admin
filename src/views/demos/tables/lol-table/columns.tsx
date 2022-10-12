@@ -1,7 +1,32 @@
-import { Tag } from 'ant-design-vue';
+import { ref, defineComponent } from 'vue';
+import { Tag, Image } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import router from '@/router';
-import ImagePreview from '@/components/basic/image-preview/index';
+
+const AvatarRender = defineComponent({
+  props: { record: Object },
+  setup(props) {
+    const visible = ref(false);
+    return () => (
+      <>
+        <Image
+          src={props.record?.avatar}
+          preview={{ visible: false }}
+          onClick={() => (visible.value = true)}
+        />
+        <div hidden>
+          <Image.PreviewGroup
+            preview={{ visible: visible.value, onVisibleChange: (vis) => (visible.value = vis) }}
+          >
+            {props.record?.posters.map((item) => (
+              <Image src={item} key={item} />
+            ))}
+          </Image.PreviewGroup>
+        </div>
+      </>
+    );
+  },
+});
 
 export const columns: TableColumn[] = [
   {
@@ -10,9 +35,7 @@ export const columns: TableColumn[] = [
     width: 100,
     hideInSearch: true,
     dataIndex: 'avatar',
-    customRender: ({ record }) => (
-      <ImagePreview src={record.avatar} preview={{ src: record.posters }} key={record.avatar} />
-    ),
+    customRender: ({ record }) => <AvatarRender record={record} key={record.avatar} />,
   },
   {
     title: '英雄名称',
