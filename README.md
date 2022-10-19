@@ -6,7 +6,7 @@
 
 - 账号：rootadmin，密码：123456
 - 在线预览（ [gitee](http://buqiyuan.gitee.io/vue3-antd-admin/) / [vercel](https://vue3-antd-admin.vercel.app/) ）
-- [swagger 文档](https://nest-api.buqiyuan.site/swagger-api/static/index.html)
+- [swagger 文档](https://nest-api.buqiyuan.site/swagger-api/)
 - [后台地址](https://github.com/buqiyuan/nest-admin)
 - [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
 - [vite 版](https://github.com/buqiyuan/vite-vue3-admin)

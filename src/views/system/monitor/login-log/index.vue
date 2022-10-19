@@ -1,5 +1,10 @@
 <template>
-  <DynamicTable header-title="登录日志" :data-request="loadTableData" :columns="columns" />
+  <DynamicTable
+    header-title="登录日志"
+    auto-height
+    :data-request="loadTableData"
+    :columns="columns"
+  />
 </template>
 
 <script setup lang="ts">

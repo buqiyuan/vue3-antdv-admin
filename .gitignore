@@ -3,6 +3,7 @@ node_modules
 dist
 .npmrc
 .cache
+.fleet
 
 tests/server/static
 tests/server/static/upload

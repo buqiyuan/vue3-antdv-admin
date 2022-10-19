@@ -1,6 +1,5 @@
-import { Tag } from 'ant-design-vue';
+import { Tag, Image } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
-import ImagePreview from '@/components/basic/image-preview/index';
 
 export const columns: TableColumn[] = [
   {
@@ -10,7 +9,7 @@ export const columns: TableColumn[] = [
     hideInSearch: true,
     dataIndex: 'faceimg',
     customRender: ({ record }) => (
-      <ImagePreview src={record.faceimg} preview={{ src: record.heroimg }} key={record.faceimg} />
+      <Image src={record.faceimg} preview={{ src: record.heroimg }} key={record.faceimg}></Image>
     ),
   },
   {
