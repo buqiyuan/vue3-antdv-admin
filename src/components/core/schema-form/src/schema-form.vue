@@ -1,5 +1,10 @@
 <template>
-  <Form ref="schemaFormRef" v-bind="pick(getFormProps, aFormPropKeys)" :model="formModel">
+  <Form
+    ref="schemaFormRef"
+    v-bind="pick(getFormProps, aFormPropKeys)"
+    :model="formModel"
+    @keypress.enter="handleEnterPress"
+  >
     <Row v-bind="getRowConfig">
       <slot name="formHeader"></slot>
       <slot>
@@ -76,12 +81,7 @@
 
   // a-form表单事件二次封装和扩展
   const formEvents = useFormEvents({ ...formState, emit, handleFormValues });
-
-  // 同步外部对props的修改
-  // watch(props, () => setSchemaFormProps(props), {
-  //   deep: true,
-  //   immediate: true,
-  // });
+  const { handleEnterPress } = formEvents;
 
   // 当前组件所有的状态和方法
   const instance = {
