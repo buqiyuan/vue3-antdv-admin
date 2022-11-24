@@ -45,6 +45,7 @@
       const actionFilters = computed(() => {
         return props.actions
           .filter((item) => {
+            if (item.isHidden) return false;
             const auth = item.auth;
 
             if (Object.is(auth, undefined)) {
