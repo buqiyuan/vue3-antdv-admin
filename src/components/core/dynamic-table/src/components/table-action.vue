@@ -23,9 +23,10 @@
   import type { ActionItem } from '../types/tableAction';
   import type { CustomRenderParams } from '../types/column';
   import { verifyAuth } from '@/core/permission/';
-  import { isString, isObject, isAsyncFunction } from '@/utils/is';
+  import { isString, isObject, isAsyncFunction, isBoolean, isFunction } from '@/utils/is';
 
   export default defineComponent({
+    name: 'TableAction',
     components: { [Popconfirm.name]: Popconfirm },
     props: {
       actions: {
@@ -45,29 +46,7 @@
       const actionFilters = computed(() => {
         return props.actions
           .filter((item) => {
-            if (item.isHidden) return false;
-            const auth = item.auth;
-
-            if (Object.is(auth, undefined)) {
-              return true;
-            }
-            if (isString(auth)) {
-              const isValid = verifyAuth(auth);
-              item.disabled ??= !isValid;
-              if (item.disabled && !isValid) {
-                item.title = '对不起，您没有该操作权限！';
-              }
-              return isValid;
-            }
-            if (isObject(auth)) {
-              const isValid = verifyAuth(auth.perm);
-              const isDisable = auth.effect !== 'delete';
-              item.disabled ??= !isValid && isDisable;
-              if (item.disabled && !isValid) {
-                item.title = '对不起，您没有该操作权限！';
-              }
-              return isValid || isDisable;
-            }
+            return hasAuth(item) && isIfShow(item);
           })
           .map((item, index) => {
             const onClick = item.onClick;
@@ -84,6 +63,47 @@
             return item;
           });
       });
+
+      const isIfShow = (item: ActionItem) => {
+        const ifShow = item.ifShow;
+
+        let isIfShow = true;
+
+        if (isBoolean(ifShow)) {
+          isIfShow = ifShow;
+        }
+        if (isFunction(ifShow)) {
+          isIfShow = ifShow(item);
+        }
+        return isIfShow;
+      };
+
+      const hasAuth = (item: ActionItem) => {
+        const auth = item.auth;
+
+        if (Object.is(auth, undefined)) {
+          return true;
+        }
+
+        if (isString(auth)) {
+          const isValid = verifyAuth(auth);
+          item.disabled ??= !isValid;
+          if (item.disabled && !isValid) {
+            item.title = '对不起，您没有该操作权限！';
+          }
+          return isValid;
+        }
+        if (isObject(auth)) {
+          const isValid = verifyAuth(auth.perm);
+          const isDisable = auth.effect !== 'delete';
+          item.disabled ??= !isValid && isDisable;
+          if (item.disabled && !isValid) {
+            item.title = '对不起，您没有该操作权限！';
+          }
+          return isValid || isDisable;
+        }
+        return false;
+      };
 
       const getKey = (actionItem: ActionItem, index: number) => {
         return `${props.rowKey}${index}${actionItem.label}`;

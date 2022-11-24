@@ -17,7 +17,7 @@ export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading'> & {
   // 权限编码控制是否显示
   // auth?: RoleEnum | RoleEnum[] | string | string[];
   // 业务控制是否显示
-  isHidden?: boolean | ((action: ActionItem) => boolean);
+  ifShow?: boolean | ((action: ActionItem) => boolean);
   tooltip?: string | TooltipProps;
   /** 设置按钮权限, effect不传默认为disable */
   auth?:
