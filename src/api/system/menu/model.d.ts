@@ -27,6 +27,8 @@ declare namespace API {
     name: string;
     orderNum: number;
     router: string;
+    isExt: boolean;
+    openMode: number;
     isShow: boolean;
     keepalive: boolean;
     icon: string;

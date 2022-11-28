@@ -1,58 +1,55 @@
 <template>
-  <!-- 目录 -->
-  <template v-if="isShowSubMenu">
-    <Menu.SubMenu :key="props.menuInfo?.name" v-bind="$attrs">
-      <template #title>
-        <span>
-          <icon-font :type="props.menuInfo?.meta?.icon" />
-          <TitleI18n :title="props.menuInfo?.meta?.title" />
-        </span>
-      </template>
-      <template v-for="item in menuChildren" :key="item.name || item.fullPath">
-        <!-- 递归生成菜单 -->
-        <MyMenuItem :menu-info="item" />
-      </template>
-    </Menu.SubMenu>
-  </template>
-  <!-- 菜单 -->
-  <template v-else>
-    <Menu.Item :key="props.menuInfo?.name">
-      <icon-font :type="props.menuInfo?.meta?.icon" />
-      <TitleI18n :title="props.menuInfo?.meta?.title" />
-    </Menu.Item>
+  <template v-for="item in filterMenus" :key="item.name || item.fullPath">
+    <!-- 目录 -->
+    <template v-if="isShowSubMenu(item)">
+      <Menu.SubMenu :key="item?.name" v-bind="$attrs">
+        <template #title>
+          <MenuItemContent :item="item" />
+        </template>
+        <template v-if="item.children">
+          <!-- 递归生成菜单 -->
+          <MyMenuItem :menus="item.children" />
+        </template>
+      </Menu.SubMenu>
+    </template>
+    <!-- 菜单 -->
+    <template v-else>
+      <Menu.Item :key="item?.name">
+        <MenuItemContent :item="item" />
+      </Menu.Item>
+    </template>
   </template>
 </template>
 
 <script setup lang="ts">
   import { type PropType, computed } from 'vue';
   import { Menu } from 'ant-design-vue';
+  import MenuItemContent from './menu-item-content.vue';
   import type { RouteRecordRaw } from 'vue-router';
-  import { IconFont } from '@/components/basic/iconfont';
-  import { TitleI18n } from '@/components/basic/title-i18n';
 
   defineOptions({
     name: 'MyMenuItem',
   });
 
   const props = defineProps({
-    menuInfo: {
-      type: Object as PropType<RouteRecordRaw>,
+    menus: {
+      type: Array as PropType<RouteRecordRaw[]>,
+      default: () => [],
     },
   });
 
-  const menuChildren = computed(() => {
-    return [...(props.menuInfo?.children || [])]
+  const filterMenus = computed(() => {
+    return [...props.menus]
       .filter((n) => !n.meta?.hideInMenu)
       .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
   });
 
-  const isShowSubMenu = computed(() => {
-    const menuInfo = props.menuInfo;
+  const isShowSubMenu = (menuItem: RouteRecordRaw) => {
     return (
-      menuInfo?.meta?.type === 0 ||
-      (!Object.is(menuInfo?.meta?.hideChildrenInMenu, true) && menuInfo?.children?.length)
+      menuItem?.meta?.type === 0 ||
+      (!Object.is(menuItem?.meta?.hideChildrenInMenu, true) && menuItem?.children?.length)
     );
-  });
+  };
 </script>
 
 <style scoped></style>

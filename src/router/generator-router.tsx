@@ -11,6 +11,7 @@ import { constantRouterComponents } from '@/router/asyncModules';
 import common from '@/router/staticModules';
 import router, { routes } from '@/router';
 import NotFound from '@/views/error/404.vue';
+import IFramePage from '@/components/basic/iframe-page';
 
 // 需要放在所有路由之后的路由
 const endRoutes: RouteRecordRaw[] = [REDIRECT_ROUTE, errorRoute, notFound];
@@ -23,7 +24,7 @@ export function filterAsyncRoute(
   return routes
     .filter((item) => item.type !== 2 && item.isShow && item.parentId == parentRoute?.id)
     .map((item) => {
-      const { router, viewPath, name, icon, orderNum, keepalive } = item;
+      const { router, viewPath, name, icon, orderNum, keepalive, isExt, openMode } = item;
       let fullPath = '';
       const pathPrefix = lastNamePath.at(-1) || '';
       if (isUrl(router)) {
@@ -42,16 +43,19 @@ export function filterAsyncRoute(
         }
       }
       realRoutePath = realRoutePath.startsWith('/') ? realRoutePath.slice(1) : realRoutePath;
+      realRoutePath = realRoutePath.replace(/http(s)?:\/\//, '');
       const route: Partial<RouteRecordRaw> = {
         path: realRoutePath,
         // name: `${viewPath ? toHump(viewPath) : fullPath}-${item.id}`,
         name: fullPath,
         meta: {
           orderNum,
+          isExt,
+          openMode,
+          icon,
           title: name,
           type: item.type,
           perms: [],
-          icon,
           namePath: lastNamePath.concat(fullPath),
           keepAlive: keepalive,
         },
@@ -76,7 +80,12 @@ export function filterAsyncRoute(
         return route;
         // 如果是页面
       } else if (item.type === 1) {
-        const Component = constantRouterComponents[viewPath] || NotFound;
+        const Component =
+          isExt && openMode === 2 ? (
+            <IFramePage src={fullPath} />
+          ) : (
+            constantRouterComponents[viewPath] || NotFound
+          );
         route.component = Component;
 
         const perms = routes

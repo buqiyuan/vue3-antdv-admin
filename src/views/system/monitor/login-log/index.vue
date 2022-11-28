@@ -37,6 +37,11 @@
       align: 'center',
     },
     {
+      title: '登录地点',
+      dataIndex: 'loginLocation',
+      align: 'center',
+    },
+    {
       title: '登录时间',
       dataIndex: 'time',
       align: 'center',

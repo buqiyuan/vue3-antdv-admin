@@ -15,6 +15,7 @@ const defaultRoutePath = '/dashboard/welcome';
 
 export function createRouterGuards(router: Router, whiteNameList: WhiteNameList) {
   router.beforeEach(async (to, _, next) => {
+    console.log('to', { ...to });
     NProgress.start(); // start progress bar
     const userStore = useUserStore();
     const token = Storage.get(ACCESS_TOKEN_KEY, null);
@@ -54,7 +55,8 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
 
   /** 获取路由对应的组件名称 */
   const getComponentName = (route: RouteLocationNormalized) => {
-    return route.matched.find((item) => item.name === route.name)?.components?.default.name;
+    const comp = route.matched.at(-1)?.components?.default;
+    return comp?.name ?? (comp as any)?.type?.name;
   };
 
   router.afterEach((to, from, failure) => {

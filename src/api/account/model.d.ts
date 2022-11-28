@@ -14,6 +14,13 @@ declare namespace API {
     viewPath: string;
     keepalive: boolean;
     isShow: boolean;
+    /** 是否外链 */
+    isExt?: boolean;
+    /** 外链打开方式
+     * 1: 新窗口打开
+     * 2: iframe
+     */
+    openMode?: 1 | 2;
   };
 
   type PermMenu = {

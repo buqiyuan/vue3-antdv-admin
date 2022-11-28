@@ -42,7 +42,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
       }
       return async (...rest) => {
         const form = await getFormInstance();
-        return form?.[key](...rest);
+        return form?.[key]?.(...rest);
       };
     },
   });

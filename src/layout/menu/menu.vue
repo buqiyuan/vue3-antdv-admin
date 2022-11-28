@@ -9,9 +9,7 @@
       collapsible
       @click="clickMenuItem"
     >
-      <template v-for="item in menus" :key="item.name || item.fullPath">
-        <MenuItem :menu-info="item" />
-      </template>
+      <MenuItem :menus="menus" />
     </Menu>
   </div>
 </template>
@@ -44,14 +42,11 @@
     selectedKeys: [currentRoute.name] as string[],
   });
 
-  const menus = computed(() => {
-    return [...userStore.menus]
-      .filter((n) => !n.meta?.hideInMenu)
-      .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
-  });
+  const menus = computed(() => userStore.menus);
   console.log('menus', menus.value);
   /** 侧边栏布局 */
   const isSideMenu = computed(() => themeStore.layout === 'sidemenu');
+  const getRouteByName = (name: string) => router.getRoutes().find((n) => n.name === name);
   // 根据activeMenu获取指定的menu
   const getTargetMenuByActiveMenuName = (activeMenu: string) => {
     return router.getRoutes().find((n) => [n.name, n.path].includes(activeMenu));
@@ -103,7 +98,9 @@
   // 点击菜单
   const clickMenuItem = ({ key }) => {
     if (key === currentRoute.name) return;
-    if (/http(s)?:/.test(key)) {
+    const targetRoute = getRouteByName(key);
+    const { isExt, openMode } = targetRoute?.meta || {};
+    if (isExt && openMode !== 2) {
       window.open(key);
     } else {
       router.push({ name: key });

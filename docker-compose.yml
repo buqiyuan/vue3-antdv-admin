@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  eoapi:
+    # 从当前路径构建镜像
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: buqiyuan/vue3-antd-admin:latest
+    env_file:
+      - .env
