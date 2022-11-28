@@ -40,6 +40,12 @@ declare module 'vue-router' {
     activeMenu?: string;
     /** 菜单排序号 */
     orderNum?: number;
-    isLink?: boolean;
+    /** 是否外链 */
+    isExt?: boolean;
+    /** 外链打开方式
+     * 1: 新窗口打开
+     * 2: iframe
+     */
+    openMode?: 1 | 2;
   }
 }

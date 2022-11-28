@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  eoapi:
+    # 从当前路径构建镜像
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: buqiyuan/vite-vue3-admin:latest
+    env_file:
+      - .env

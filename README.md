@@ -1,12 +1,12 @@
 # vite-vue3-admin
 
-> 基于 vite2.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
+> 基于 vite3.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
 
-基于 vite2.x + vue3.x + antd-design-vue3.x + typescript4.x 的后台管理系统模板
+基于 vite3.x + vue3.x + antd-design-vue3.x + typescript4.x 的后台管理系统模板
 
 - 账号：rootadmin，密码：123456
 - 在线预览（ [gitee](http://buqiyuan.gitee.io/vite-vue3-admin/) / [vercel](https://vite-vue3-admin.vercel.app/) ）
-- [swagger 文档](https://nest-api.buqiyuan.site/api/swagger-api/static/index.html#/)
+- [swagger 文档](https://nest-api.buqiyuan.site/swagger-api/)
 - [后台地址](https://github.com/buqiyuan/nest-admin)
 - [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
 - [vue-cli](https://github.com/buqiyuan/vite-vue3-admin)

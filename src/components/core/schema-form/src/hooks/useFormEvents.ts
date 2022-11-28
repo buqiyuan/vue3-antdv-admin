@@ -255,8 +255,20 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     }
   }
 
+  const handleEnterPress = (e: KeyboardEvent) => {
+    const { autoSubmitOnEnter } = unref(formPropsRef);
+    if (!autoSubmitOnEnter) return;
+    if (e.key === 'Enter' && e.target && e.target instanceof HTMLElement) {
+      const target: HTMLElement = e.target as HTMLElement;
+      if (target && target.tagName && target.tagName.toUpperCase() == 'INPUT') {
+        handleSubmit(e);
+      }
+    }
+  };
+
   return {
     submit: handleSubmit,
+    handleEnterPress,
     clearValidate,
     validate,
     validateFields,

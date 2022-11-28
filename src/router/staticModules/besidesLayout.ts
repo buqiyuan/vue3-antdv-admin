@@ -17,7 +17,7 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
   },
   children: [
     {
-      path: '/redirect/:path(.*)',
+      path: ':path(.*)',
       name: REDIRECT_NAME,
       component: RouterView,
       meta: {

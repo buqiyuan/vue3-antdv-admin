@@ -21,26 +21,33 @@ export function useFormModal<T = any>() {
       modalProps?.onCancel?.(e);
     };
 
+    const onOk = async () => {
+      // const values = (formRef?.formModel || {}) as any;
+      let values: any;
+      try {
+        values = await formRef.value?.validate();
+        await modalProps?.onFinish?.(values);
+        formRef.value?.resetFields();
+      } catch (error) {
+        modalProps?.onFail?.(values);
+        return Promise.reject(error);
+      }
+    };
+
+    const onSubmit = async () => {
+      await onOk();
+      ModalRender.hide();
+    };
+
     await ModalRender.show({
       destroyOnClose: true,
       ...omit(modalProps, ['onFinish', 'onFail']),
       onCancel,
+      onOk,
       content: () => {
-        const _formProps = Object.assign({}, { showActionButtonGroup: false }, formProps);
+        const _formProps = Object.assign({}, { showActionButtonGroup: false, onSubmit }, formProps);
 
         return <SchemaForm ref={formRef} {..._formProps}></SchemaForm>;
-      },
-      onOk: async () => {
-        // const values = (formRef?.formModel || {}) as any;
-        let values: any;
-        try {
-          values = await formRef.value?.validate();
-          await modalProps?.onFinish?.(values);
-          formRef.value?.resetFields();
-        } catch (error) {
-          modalProps?.onFail?.(values);
-          return Promise.reject(error);
-        }
       },
     });
 

@@ -122,7 +122,7 @@
     deptTree: TreeDataItem[];
   }
 
-  const [DynamicTable, dynamicTableInstance] = useTable();
+  const [DynamicTable, dynamicTableInstance] = useTable({ formProps: { autoSubmitOnEnter: true } });
   const [showModal] = useFormModal();
 
   const deptListLoading = ref(false);
@@ -236,6 +236,7 @@
       formProps: {
         labelWidth: 100,
         schemas: userSchemas,
+        autoSubmitOnEnter: true,
       },
     });
 

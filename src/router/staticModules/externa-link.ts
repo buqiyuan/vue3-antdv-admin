@@ -9,6 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'H5低代码平台',
       icon: 'icon-externa-link',
+      isExt: true,
     },
   },
 ];
