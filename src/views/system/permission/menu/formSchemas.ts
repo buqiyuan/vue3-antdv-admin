@@ -69,7 +69,7 @@ export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
     field: 'viewPath',
     component: 'Select',
     label: '文件路径',
-    vIf: ({ formModel }) => isMenu(formModel['type']),
+    vIf: ({ formModel }) => isMenu(formModel['type']) && !formModel['isExt'],
     componentProps: {
       options: Object.keys(constantRouterComponents).map((n) => ({ label: n, value: n })),
     },

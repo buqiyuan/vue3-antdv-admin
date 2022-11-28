@@ -15,7 +15,6 @@ const defaultRoutePath = '/dashboard/welcome';
 
 export function createRouterGuards(router: Router, whiteNameList: WhiteNameList) {
   router.beforeEach(async (to, _, next) => {
-    console.log('to', { ...to });
     NProgress.start(); // start progress bar
     const userStore = useUserStore();
     const token = Storage.get(ACCESS_TOKEN_KEY, null);
