@@ -24,7 +24,7 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "removeComments": true,
-    "types": ["webpack-env", "unplugin-vue-define-options"],
+    "types": ["webpack-env", "unplugin-vue-define-options/macros-global"],
     "paths": {
       "@/*": ["src/*"]
     }

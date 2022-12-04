@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const dayjs = require('dayjs');
 const TerserPlugin = require('terser-webpack-plugin');
+const defineOptions = require('unplugin-vue-define-options/webpack');
 
 const resolve = (dir) => path.join(__dirname, dir); // 路径
 const pkg = require('./package.json');
@@ -167,7 +168,9 @@ module.exports = defineConfig({
       // 打包速度分析
       new SpeedMeasurePlugin(),
       // use defineOptions https://github.com/sxzz/unplugin-vue-define-options
-      require('unplugin-vue-define-options/webpack')(),
+      defineOptions({
+        include: [/\.vue$/, /\.vue\?vue/],
+      }),
     );
 
     if (IS_PROD) {

@@ -21,6 +21,7 @@
         v-model:[modelValueType]="modelValue"
         :allow-clear="true"
         :disabled="getDisable"
+        :loading="schema.loading"
         v-on="componentEvents"
       >
         <template v-if="Object.is(schema.loading, true)" #notFoundContent>
@@ -42,8 +43,8 @@
 </template>
 
 <script setup lang="tsx">
-  import { computed, unref, toRefs, isVNode, onActivated, nextTick } from 'vue';
-  import { cloneDeep } from 'lodash-es';
+  import { computed, unref, toRefs, isVNode, onMounted, watch, nextTick } from 'vue';
+  import { cloneDeep, debounce } from 'lodash-es';
   import { Form, Col, Spin, Divider } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
   import { componentMap } from './componentMap';
@@ -229,7 +230,7 @@
       });
     }
 
-    return componentProps as Recordable;
+    return componentProps;
   });
 
   /**
@@ -372,25 +373,21 @@
     return rules;
   });
 
-  nextTick(() => {
-    if (!getSchemaByFiled(props.schema.field)) {
-      appendSchemaByField(props.schema);
-    }
-  });
-
-  const fetchRemoteData = async () => {
-    if (getComponentProps.value?.request) {
+  const fetchRemoteData = async (request) => {
+    if (request) {
       const { componentProps, component } = unref(schema);
 
-      Reflect.set(schema.value, 'loading', true);
-      // schema.value.field === 'field35' && console.log('compProps', getComponentProps.value, formPropsRef.value);
-
       try {
-        const result = await getComponentProps.value?.request(unref(getValues));
         const newSchema = {
           ...unref(schema),
-          componentProps: {} as ComponentProps,
+          loading: true,
+          componentProps: {
+            ...unref(getComponentProps),
+            options: [],
+          } as ComponentProps,
         };
+        updateSchema(newSchema);
+        const result = await request(unref(getValues));
         if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
           newSchema.componentProps.options = result;
         } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
@@ -399,13 +396,41 @@
         if (componentProps) {
           componentProps.requestResult = result;
         }
+        newSchema.loading = false;
         updateSchema(newSchema);
       } finally {
-        schema.value.loading = false;
+        nextTick(() => {
+          schema.value.loading = false;
+        });
       }
     }
   };
 
-  setTimeout(fetchRemoteData);
-  onActivated(fetchRemoteData);
+  const initRequestConfig = () => {
+    const request = getComponentProps.value.request;
+    if (request) {
+      if (isFunction(request)) {
+        fetchRemoteData(request);
+      } else {
+        const { watchFields = [], options = {}, wait = 0, callback } = request;
+        const params = watchFields.map((field) => () => props.formModel[field]);
+        watch(
+          params,
+          debounce(() => {
+            fetchRemoteData(callback);
+          }, wait),
+          {
+            ...options,
+          },
+        );
+      }
+    }
+  };
+
+  onMounted(() => {
+    if (!getSchemaByFiled(props.schema.field)) {
+      appendSchemaByField(props.schema);
+    }
+    initRequestConfig();
+  });
 </script>

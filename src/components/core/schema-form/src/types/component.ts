@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'vue';
+import type { CSSProperties, WatchOptions } from 'vue';
 import type {
   InputNumberProps,
   InputProps,
@@ -23,6 +23,18 @@ export type { ComponentMapType } from '../componentMap';
 
 type ColSpanType = number | string;
 
+/** 组件异步请求配置 */
+type RequestConfig =
+  | PromiseFn<RenderCallbackParams, any>
+  | {
+      /** 指定监听的字段名, 当该字段值发生变化时会调用 callback */
+      watchFields: string[];
+      callback: PromiseFn<RenderCallbackParams, any>;
+      options?: WatchOptions;
+      /** debounce 请求防抖 */
+      wait?: number;
+    };
+
 /** 组件属性 */
 export type ComponentProps = (
   | InputProps
@@ -43,7 +55,7 @@ export type ComponentProps = (
   | SliderProps
 ) & {
   /** 组件异步请求数据 */
-  request?: PromiseFn<RenderCallbackParams, any>;
+  request?: RequestConfig;
   /** 组件异步请求数据结果 */
   requestResult?: any;
   style?: CSSProperties;
