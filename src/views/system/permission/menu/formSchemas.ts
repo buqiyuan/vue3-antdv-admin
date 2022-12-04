@@ -116,7 +116,7 @@ export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
           value: 1,
         },
         {
-          label: 'iframe',
+          label: '内嵌页打开',
           value: 2,
         },
       ],
