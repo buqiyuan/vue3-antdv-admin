@@ -85,14 +85,29 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           `,
       }),
       // https://github.com/antfu/unplugin-vue-components
-      Components({
-        resolvers: [
-          AntDesignVueResolver({
-            exclude: ['AButton'],
-          }),
-        ],
-        // directoryAsNamespace: true,
-      }),
+      //让 unplugin-vue-components 只有在生产环境生效
+      {
+        ...Components({
+          resolvers: [AntDesignVueResolver()],
+        }),
+        apply: 'build',
+      },
+      // 开发环境动态加入ui库框架引入
+      {
+        name: 'dev-auto-import-antdv',
+        transform(code, id) {
+          if (/src\/main.ts$/.test(id)) {
+            const result = code.split('\n');
+            // 解决首次加载isCustomElement的问题
+            result.splice(result.length - 2, 0, `import Antd from 'ant-design-vue';app.use(Antd);`);
+            return {
+              code: result.join('\n'),
+              map: null,
+            };
+          }
+        },
+        apply: 'serve',
+      },
       // https://github.com/fi3ework/vite-plugin-checker
       checker({
         typescript: true,
