@@ -8,7 +8,6 @@ import { viteMockServe } from 'vite-plugin-mock';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
-import mkcert from 'vite-plugin-mkcert';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
 import DefineOptions from 'unplugin-vue-define-options/vite';
@@ -52,7 +51,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       ],
     },
     plugins: [
-      mkcert(),
       vue(),
       Unocss(),
       DefineOptions(), // https://github.com/sxzz/unplugin-vue-define-options
@@ -98,8 +96,17 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         transform(code, id) {
           if (/src\/main.ts$/.test(id)) {
             const result = code.split('\n');
+            const script = `
+              import * as components from 'ant-design-vue/es/components';
+              const filters = ['AButton'];
+              Object.entries(components).forEach(([key, comp]) => {
+                if (comp.install && !filters.includes(comp.name)) {
+                  app.use(comp);
+                }
+              });
+            `;
             // 解决首次加载isCustomElement的问题
-            result.splice(result.length - 2, 0, `import Antd from 'ant-design-vue';app.use(Antd);`);
+            result.splice(result.length - 2, 0, script);
             return {
               code: result.join('\n'),
               map: null,
@@ -138,7 +145,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     server: {
       host: '0.0.0.0',
       port: 8088,
-      https: true,
       proxy: {
         '/api': {
           target: 'https://nest-api.buqiyuan.site/api/',
