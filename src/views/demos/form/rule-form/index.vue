@@ -42,10 +42,10 @@
   const formProps: SchemaFormProps = { schemas, labelWidth: 120, actionColOptions: { span: 24 } };
 
   // 点击提交
-  function confirm() {
-    console.log('dynamicForm.value', dynamicForm.value?.formModel);
-
-    dynamicForm.value?.validate().then(() => message.success('验证通过！'));
+  function confirm(values) {
+    dynamicForm.value?.validate().then(() => {
+      message.success(JSON.stringify(values));
+    });
   }
 </script>
 

@@ -23,19 +23,17 @@ export function useFormModal<T = any>() {
 
     const onOk = async () => {
       // const values = (formRef?.formModel || {}) as any;
-      let values: any;
       try {
-        values = await formRef.value?.validate();
-        await modalProps?.onFinish?.(values);
-        formRef.value?.resetFields();
+        await formRef.value?.submit();
       } catch (error) {
-        modalProps?.onFail?.(values);
+        modalProps?.onFail?.({} as any);
         return Promise.reject(error);
       }
     };
 
-    const onSubmit = async () => {
-      await onOk();
+    const onSubmit = async (values) => {
+      await modalProps?.onFinish?.(values);
+      formRef.value?.resetFields();
       ModalRender.hide();
     };
 
