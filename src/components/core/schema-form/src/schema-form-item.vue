@@ -7,7 +7,7 @@
       v-else
       v-bind="{ ...schema.formItemProps }"
       :label="renderLabelHelpMessage"
-      :name="schema.field.split('.')"
+      :name="schema.field"
       :label-col="itemLabelWidthProp.labelCol"
       :wrapper-col="itemLabelWidthProp.wrapperCol"
       :rules="getRules"
@@ -18,7 +18,7 @@
         v-else-if="getComponent"
         :ref="setItemRef(schema.field)"
         v-bind="getComponentProps"
-        v-model:[modelValueType]="modelValue"
+        v-model:[modelValueType]="formModel[schema.field]"
         :allow-clear="true"
         :disabled="getDisable"
         :loading="schema.loading"
@@ -64,8 +64,6 @@
 
   const props = defineProps(schemaFormItemProps);
 
-  const emit = defineEmits(['update:formModel']);
-
   // schemaForm组件实例
   const formContext = useFormContext();
   const { formPropsRef, setItemRef, updateSchema, getSchemaByFiled, appendSchemaByField } =
@@ -74,20 +72,6 @@
   const { t } = useI18n();
 
   const { schema } = toRefs(props);
-
-  const modelValue = computed({
-    get() {
-      const namePath = schema.value.field.split('.');
-      return namePath.reduce((prev, field) => prev[field], props.formModel);
-    },
-    set(val) {
-      const namePath = schema.value.field.split('.');
-      const prop = namePath.pop()!;
-      const target = namePath.reduce((prev, field) => prev[field], props.formModel);
-      target[prop] = val;
-      emit('update:formModel', props.formModel);
-    },
-  });
 
   // @ts-ignore
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);

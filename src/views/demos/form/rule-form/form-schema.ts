@@ -2,7 +2,7 @@ import type { FormSchema } from '@/components/core/schema-form/';
 
 export const schemas: FormSchema[] = [
   {
-    field: 'field1',
+    field: 'field1.dd.cc',
     component: 'Input',
     label: '字段1',
     colProps: {
