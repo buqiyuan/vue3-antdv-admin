@@ -11,4 +11,4 @@ export const whiteNameList = [LOGIN_NAME, 'icons', 'error', 'error-404'] as cons
 
 export type WhiteNameList = typeof whiteNameList;
 
-export type WhiteName = typeof whiteNameList[number];
+export type WhiteName = (typeof whiteNameList)[number];

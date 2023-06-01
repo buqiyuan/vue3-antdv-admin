@@ -199,6 +199,11 @@ module.exports = defineConfig({
     port,
     client: {
       progress: true,
+      overlay: {
+        errors: true,
+        warnings: false,
+        runtimeErrors: false,
+      },
     },
     // watchOptions: {
     //   // 开发时，自动保存代码导致构建频繁且会报错，又不想手动保存，则可以开启延迟构建

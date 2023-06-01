@@ -7,7 +7,7 @@
       v-else
       v-bind="{ ...schema.formItemProps }"
       :label="renderLabelHelpMessage"
-      :name="schema.field"
+      :name="namePath"
       :label-col="itemLabelWidthProp.labelCol"
       :wrapper-col="itemLabelWidthProp.wrapperCol"
       :rules="getRules"
@@ -18,7 +18,7 @@
         v-else-if="getComponent"
         :ref="setItemRef(schema.field)"
         v-bind="getComponentProps"
-        v-model:[modelValueType]="formModel[schema.field]"
+        v-model:[modelValueType]="modelValue"
         :allow-clear="true"
         :disabled="getDisable"
         :loading="schema.loading"
@@ -54,7 +54,7 @@
   import type { ComponentMapType } from './componentMap';
   import type { CustomRenderFn, FormSchema, RenderCallbackParams, ComponentProps } from './types/';
   import type { RuleObject } from 'ant-design-vue/es/form/';
-  import { isBoolean, isNull, isObject, isString, isFunction } from '@/utils/is';
+  import { isBoolean, isNull, isObject, isString, isFunction, isArray } from '@/utils/is';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
   import { useI18n } from '@/hooks/useI18n';
 
@@ -63,6 +63,7 @@
   });
 
   const props = defineProps(schemaFormItemProps);
+  const emit = defineEmits(['update:formModel']);
 
   // schemaForm组件实例
   const formContext = useFormContext();
@@ -75,6 +76,23 @@
 
   // @ts-ignore
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
+
+  const namePath = computed<string[]>(() => {
+    return isArray(schema.value.field) ? schema.value.field : schema.value.field.split('.');
+  });
+
+  const modelValue = computed({
+    get() {
+      return namePath.value.reduce((prev, field) => prev?.[field], props.formModel);
+    },
+    set(val) {
+      const namePath = schema.value.field.split('.');
+      const prop = namePath.pop()!;
+      const target = namePath.reduce((prev, field) => (prev[field] ??= {}), props.formModel);
+      target[prop] = val;
+      emit('update:formModel', props.formModel);
+    },
+  });
 
   const modelValueType = computed<string>(() => {
     const { component, componentProps } = schema.value;
@@ -212,6 +230,9 @@
         orientation: 'left',
         plain: true,
       });
+    }
+    if (isVNode(getComponent.value)) {
+      Object.assign(componentProps, getComponent.value.props);
     }
 
     return componentProps;
@@ -359,7 +380,7 @@
 
   const fetchRemoteData = async (request) => {
     if (request) {
-      const { componentProps, component } = unref(schema);
+      const { component } = unref(schema);
 
       try {
         const newSchema = {
@@ -377,8 +398,8 @@
         } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
           newSchema.componentProps.treeData = result;
         }
-        if (componentProps) {
-          componentProps.requestResult = result;
+        if (newSchema.componentProps) {
+          newSchema.componentProps.requestResult = result;
         }
         newSchema.loading = false;
         updateSchema(newSchema);

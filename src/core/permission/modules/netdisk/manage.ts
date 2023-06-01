@@ -14,6 +14,6 @@ export const netdiskMange = {
 
 export const values = Object.values(netdiskMange);
 
-export type NetdiskMangePerms = typeof values[number];
+export type NetdiskMangePerms = (typeof values)[number];
 
 export default netdiskMange;

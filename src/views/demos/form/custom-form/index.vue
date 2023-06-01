@@ -15,7 +15,7 @@
   import { type FormSchema, useForm } from '@/components/core/schema-form';
 
   defineOptions({
-    name: 'custom-form',
+    name: 'CustomForm',
   });
 
   const schemas: FormSchema[] = [

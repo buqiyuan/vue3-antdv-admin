@@ -36,7 +36,7 @@
         class="px-4"
         onClick={props.handler.bind(null, item)}
       >
-        {props.showIcon && item.icon && <IconFont class="mr-2" name={item.icon} />}
+        {props.showIcon && item.icon && <IconFont class="mr-2" type={item.icon} />}
         <span>{item.label}</span>
       </span>
     );

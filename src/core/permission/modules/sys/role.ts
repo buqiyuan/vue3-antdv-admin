@@ -9,6 +9,6 @@ export const sysRole = {
 
 export const values = Object.values(sysRole);
 
-export type SysRolePerms = typeof values[number];
+export type SysRolePerms = (typeof values)[number];
 
 export default sysRole;

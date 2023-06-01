@@ -8,6 +8,6 @@ export const sysMenu = {
 
 export const deptValues = Object.values(sysMenu);
 
-export type SysMenuPerms = typeof deptValues[number];
+export type SysMenuPerms = (typeof deptValues)[number];
 
 export default sysMenu;

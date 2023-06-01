@@ -341,7 +341,7 @@ export const schemas: FormSchema[] = [
       const options = schema.componentProps?.requestResult || [];
       return <Radio.Group options={options.slice(0, 2)}></Radio.Group>;
     },
-    label: '远程Radio',
+    label: '远程RadioGroup',
     helpMessage: ['RadioGroup组件', '使用接口提供的数据生成选项'],
     required: true,
     componentProps: {

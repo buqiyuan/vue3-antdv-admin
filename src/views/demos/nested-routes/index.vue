@@ -17,7 +17,7 @@
   import { Tabs } from 'ant-design-vue';
 
   defineOptions({
-    name: 'demos-nested-routes',
+    name: 'DemosNestedRoutes',
   });
 
   const router = useRouter();

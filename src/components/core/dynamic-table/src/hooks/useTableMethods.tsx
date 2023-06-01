@@ -5,6 +5,7 @@ import { useEditable } from './useEditable';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { Pagination, TableState } from './useTableState';
+import type { FormProps } from 'ant-design-vue';
 import { isAsyncFunction, isBoolean } from '@/utils/is';
 
 export type UseInfiniteScrollParams = Parameters<typeof useInfiniteScroll>;
@@ -143,12 +144,13 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   };
 
   /** 编辑表单验证失败回调 */
-  const handleEditFormValidate = (name: string[], status, errorMsgs) => {
+  const handleEditFormValidate: FormProps['onValidate'] = (name, status, errorMsgs) => {
     // console.log('errorInfo', editFormErrorMsgs);
+    const key = Array.isArray(name) ? name.join('.') : name;
     if (status) {
-      editFormErrorMsgs.value.delete(name.join('.'));
+      editFormErrorMsgs.value.delete(key);
     } else {
-      editFormErrorMsgs.value.set(name.join('.'), errorMsgs);
+      editFormErrorMsgs.value.set(key, errorMsgs);
     }
   };
 

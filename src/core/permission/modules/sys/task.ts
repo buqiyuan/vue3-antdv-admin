@@ -11,6 +11,6 @@ export const sysTask = {
 
 export const values = Object.values(sysTask);
 
-export type SysTaskPerms = typeof values[number];
+export type SysTaskPerms = (typeof values)[number];
 
 export default sysTask;

@@ -118,15 +118,19 @@
       };
 
       const handleSaveCell = async () => {
-        const { rowKey, column } = props;
-        await validateCell(rowKey!, dataIndex.value);
-        if (isAsyncFunction(tableContext?.onSave)) {
-          saving.value = true;
-          await tableContext
-            .onSave(rowKey!, editFormModel.value[rowKey!], column?.record)
-            .finally(() => (saving.value = false));
-          cancelCellEditable(rowKey!, dataIndex.value);
-          isCellEdit.value = false;
+        try {
+          const { rowKey, column } = props;
+          await validateCell(rowKey!, dataIndex.value);
+          if (isAsyncFunction(tableContext?.onSave)) {
+            saving.value = true;
+            await tableContext
+              .onSave(rowKey!, editFormModel.value[rowKey!], column?.record)
+              .finally(() => (saving.value = false));
+            cancelCellEditable(rowKey!, dataIndex.value);
+            isCellEdit.value = false;
+          }
+        } catch (error) {
+          console.error(error);
         }
       };
 

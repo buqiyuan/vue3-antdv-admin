@@ -16,7 +16,7 @@
   }
 
   defineOptions({
-    name: 'svg-icon',
+    name: 'SvgIcon',
   });
 
   const props = defineProps({
@@ -48,6 +48,6 @@
   .svg-icon {
     overflow: hidden;
     vertical-align: -0.15em;
-    fill: currentColor;
+    fill: currentcolor;
   }
 </style>
