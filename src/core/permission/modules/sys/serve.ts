@@ -4,6 +4,6 @@ export const sysServe = {
 
 export const values = Object.values(sysServe);
 
-export type SysServePerms = typeof values[number];
+export type SysServePerms = (typeof values)[number];
 
 export default sysServe;

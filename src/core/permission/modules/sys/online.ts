@@ -5,6 +5,6 @@ export const sysOnline = {
 
 export const values = Object.values(sysOnline);
 
-export type SysOnlinePerms = typeof values[number];
+export type SysOnlinePerms = (typeof values)[number];
 
 export default sysOnline;

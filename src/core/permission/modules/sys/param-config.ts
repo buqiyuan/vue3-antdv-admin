@@ -8,6 +8,6 @@ export const sysParamConfig = {
 
 export const values = Object.values(sysParamConfig);
 
-export type SysParamConfigPerms = typeof values[number];
+export type SysParamConfigPerms = (typeof values)[number];
 
 export default sysParamConfig;

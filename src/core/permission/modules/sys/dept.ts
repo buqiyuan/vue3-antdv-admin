@@ -13,6 +13,6 @@ export const sysDept = {
 
 export const values = Object.values(sysDept);
 
-export type SysDeptPerms = typeof values[number];
+export type SysDeptPerms = (typeof values)[number];
 
 export default sysDept;

@@ -63,7 +63,7 @@ export const tableData = Array.from({ length: 30 }).map((_, i) => {
 });
 
 // 数据项类型
-export type ListItemType = typeof tableData[number];
+export type ListItemType = (typeof tableData)[number];
 // 使用TableColumn<ListItemType> 将会限制dataIndex的类型，但换来的是dataIndex有类型提示
 export const columns: TableColumn<ListItemType>[] = [
   {

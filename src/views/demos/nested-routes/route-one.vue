@@ -2,6 +2,6 @@
 
 <script lang="ts" setup>
   defineOptions({
-    name: 'demos-nested-routes-one',
+    name: 'DemosNestedRoutesOne',
   });
 </script>

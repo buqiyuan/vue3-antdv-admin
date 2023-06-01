@@ -16,6 +16,7 @@ const AvatarRender = defineComponent({
         />
         <div hidden>
           <Image.PreviewGroup
+            // @ts-ignore
             preview={{ visible: visible.value, onVisibleChange: (vis) => (visible.value = vis) }}
           >
             {props.record?.posters.map((item) => (

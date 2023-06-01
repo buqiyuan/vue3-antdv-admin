@@ -6,6 +6,6 @@ export const sysLog = {
 
 export const values = Object.values(sysLog);
 
-export type SysLogPerms = typeof values[number];
+export type SysLogPerms = (typeof values)[number];
 
 export default sysLog;
