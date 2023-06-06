@@ -24,7 +24,8 @@ export function useFormModal<T = any>() {
     const onOk = async () => {
       // const values = (formRef?.formModel || {}) as any;
       try {
-        await formRef.value?.submit();
+        const values = await formRef.value?.submit();
+        await onSubmit(values);
       } catch (error) {
         modalProps?.onFail?.({} as any);
         return Promise.reject(error);
@@ -43,7 +44,7 @@ export function useFormModal<T = any>() {
       onCancel,
       onOk,
       content: () => {
-        const _formProps = Object.assign({}, { showActionButtonGroup: false, onSubmit }, formProps);
+        const _formProps = Object.assign({}, { showActionButtonGroup: false }, formProps);
 
         return <SchemaForm ref={formRef} {..._formProps}></SchemaForm>;
       },
