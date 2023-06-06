@@ -237,7 +237,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     await schemaFormRef.value?.scrollToField(name, options);
   }
 
-  async function handleSubmit(e?: Event): Promise<void> {
+  async function handleSubmit(e?: Event) {
     e && e.preventDefault();
     const { submitFunc } = unref(getFormProps);
     if (submitFunc && isFunction(submitFunc)) {
@@ -250,6 +250,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
       const values = await validate();
       const res = handleFormValues(values);
       emit('submit', res);
+      return res;
     } catch (error: any) {
       return Promise.reject(error);
     }
