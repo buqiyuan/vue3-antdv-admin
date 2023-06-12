@@ -1,17 +1,15 @@
-// generate components map
-export const constantRouterComponents = {};
-
 // auto load
-const modulesFiles = import.meta.glob<Recordable>('./**/*.ts', { eager: true });
+const modulesFiles = import.meta.glob<Recordable>('../../views/**/*.vue');
+// console.log('modulesFiles', modulesFiles);
 
-Object.keys(modulesFiles).forEach((path) => {
-  if (path.startsWith('./index.')) return;
-  const value = modulesFiles[path].default;
+// generate components map
+export const asyncRoutes = Object.entries(modulesFiles).reduce((routes, [url, importFn]) => {
+  if (!/\/(login|components)\//.test(url)) {
+    const path = url.replace('../../views/', '');
+    routes[path] = importFn;
+  }
 
-  // mouted
-  Object.entries(value).forEach(([path, comp]) => {
-    constantRouterComponents[path] = comp;
-  });
-});
+  return routes;
+}, {});
 
-console.log('constantRouterComponents', constantRouterComponents);
+console.log('asyncRoutes', asyncRoutes);

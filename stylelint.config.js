@@ -1,21 +1,37 @@
+/**
+ * @type {import('stylelint').Config}
+ */
 module.exports = {
-  root: true,
-  plugins: ['stylelint-order'],
-  customSyntax: 'postcss-html',
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  extends: ['stylelint-config-standard', 'stylelint-config-property-sort-order-smacss'],
+  plugins: ['stylelint-order', 'stylelint-prettier'],
+  // customSyntax: 'postcss-html',
+  overrides: [
+    {
+      files: ['**/*.(css|html|vue)'],
+      customSyntax: 'postcss-html',
+    },
+    {
+      files: ['*.less', '**/*.less'],
+      customSyntax: 'postcss-less',
+      extends: ['stylelint-config-standard', 'stylelint-config-recommended-vue'],
+    },
+  ],
   rules: {
+    'value-keyword-case': null,
+    'selector-not-notation': null,
+    'import-notation': null,
     'function-no-unknown': null,
     'selector-class-pattern': null,
     'selector-pseudo-class-no-unknown': [
       true,
       {
-        ignorePseudoClasses: ['global'],
+        ignorePseudoClasses: ['global', 'deep'],
       },
     ],
     'selector-pseudo-element-no-unknown': [
       true,
       {
-        ignorePseudoElements: ['v-deep'],
+        ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted'],
       },
     ],
     'at-rule-no-unknown': [
@@ -32,18 +48,15 @@ module.exports = {
           'each',
           'include',
           'mixin',
+          'extend',
         ],
       },
     ],
     'no-empty-source': null,
     'string-quotes': null,
     'named-grid-areas-no-invalid': null,
-    'unicode-bom': 'never',
     'no-descending-specificity': null,
     'font-family-no-missing-generic-family-keyword': null,
-    'declaration-colon-space-after': 'always-single-line',
-    'declaration-colon-space-before': 'never',
-    // 'declaration-block-trailing-semicolon': 'always',
     'rule-empty-line-before': [
       'always',
       {
@@ -67,34 +80,8 @@ module.exports = {
         },
         'rules',
       ],
-      { severity: 'warning' },
+      { severity: 'error' },
     ],
   },
   ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
-  overrides: [
-    {
-      files: ['*.vue', '**/*.vue', '*.html', '**/*.html'],
-      extends: ['stylelint-config-recommended', 'stylelint-config-html'],
-      rules: {
-        'keyframes-name-pattern': null,
-        'selector-pseudo-class-no-unknown': [
-          true,
-          {
-            ignorePseudoClasses: ['deep', 'global'],
-          },
-        ],
-        'selector-pseudo-element-no-unknown': [
-          true,
-          {
-            ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted'],
-          },
-        ],
-      },
-    },
-    {
-      files: ['*.less', '**/*.less'],
-      customSyntax: 'postcss-less',
-      extends: ['stylelint-config-standard', 'stylelint-config-recommended-vue'],
-    },
-  ],
 };

@@ -75,7 +75,7 @@ export interface FormSchema<T = string> {
   // Variable name bound to v-model Default value
   valueField?: string;
   // Label name
-  label?: string;
+  label?: string | ((v: RenderCallbackParams<T>) => string);
   // Auxiliary text
   subLabel?: string;
   // Help text on the right side of the text

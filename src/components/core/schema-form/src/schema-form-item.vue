@@ -182,7 +182,7 @@
         return component;
       }
       return compKeys.reduce<Recordable<CustomRenderFn>>((slots, slotName) => {
-        slots[slotName] = (...rest: any) => vnodeFactory(component[slotName], rest);
+        slots[slotName] = (...rest: any) => vnodeFactory(component[slotName], ...rest);
         return slots;
       }, {});
     }
@@ -211,19 +211,24 @@
       : vnodeFactory(componentSlots);
   });
 
+  const getLabel = computed(() => {
+    const label = props.schema.label;
+    return isFunction(label) ? label(unref(getValues)) : label;
+  });
+
   /**
    * @description 表单组件props
    */
   const getComponentProps = computed(() => {
     const { schema } = props;
-    let { componentProps = {}, component, label = '' } = schema;
+    let { componentProps = {}, component } = schema;
 
     if (isFunction(componentProps)) {
       componentProps = componentProps(unref(getValues)) ?? {};
     }
 
     if (component !== 'RangePicker' && isString(component)) {
-      componentProps.placeholder ??= createPlaceholderMessage(component, label);
+      componentProps.placeholder ??= createPlaceholderMessage(component, getLabel.value);
     }
     if (schema.component === 'Divider') {
       componentProps = Object.assign({ type: 'horizontal' }, componentProps, {
@@ -254,13 +259,13 @@
   });
 
   const renderLabelHelpMessage = computed(() => {
-    const { label, helpMessage, helpComponentProps, subLabel } = props.schema;
+    const { helpMessage, helpComponentProps, subLabel } = props.schema;
     const renderLabel = subLabel ? (
       <span>
-        {label} <span class="text-secondary">{subLabel}</span>
+        {getLabel.value} <span class="text-secondary">{subLabel}</span>
       </span>
     ) : (
-      vnodeFactory(label)
+      vnodeFactory(getLabel.value)
     );
     const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
     if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
@@ -293,7 +298,6 @@
       rules: defRules = [],
       component,
       rulesMessageJoinLabel,
-      label,
       dynamicRules,
       required,
     } = props.schema;
@@ -309,7 +313,7 @@
       ? rulesMessageJoinLabel
       : globalRulesMessageJoinLabel;
     const defaultMsg = isString(component)
-      ? `${createPlaceholderMessage(component, label)}${joinLabel ? label : ''}`
+      ? `${createPlaceholderMessage(component, getLabel.value)}${joinLabel ? getLabel.value : ''}`
       : undefined;
 
     function validator(rule: any, value: any) {

@@ -14,7 +14,7 @@
   import { ref } from 'vue';
   import { cloneDeep } from 'lodash-es';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
-  import { menuSchemas } from './formSchemas';
+  import { useMenuSchemas } from './formSchemas';
   import type { TreeSelectProps } from 'ant-design-vue';
   import { getMenuList, updateMenu, createMenu, deleteMenu } from '@/api/system/menu';
   import { useTable } from '@/components/core/dynamic-table';
@@ -53,15 +53,20 @@
         width: 700,
         onFinish: async (values) => {
           console.log('新增/编辑菜单', values);
-          values.menuId = record.id;
-          values.perms = values.perms?.join(',');
+          record.id && (values.menuId = record.id);
+          if (values.type === 1 && values.viewPath?.length) {
+            values.viewPath = values.viewPath.join('/');
+          }
+          if (values.type === 2 && values.perms?.length) {
+            values.perms = values.perms.map((n) => n.join(':')).toString();
+          }
           await (record.id ? updateMenu : createMenu)(values);
           dynamicTableInstance.reload();
         },
       },
       formProps: {
         labelWidth: 100,
-        schemas: menuSchemas,
+        schemas: useMenuSchemas(),
       },
     });
 
@@ -78,7 +83,11 @@
     formRef?.setFieldsValue({
       ...record,
       icon: record.icon ?? '',
-      perms: record.perms?.split(','),
+      perms: record.perms
+        ?.split(',')
+        .filter(Boolean)
+        .map((n) => n.split(':')),
+      viewPath: record.viewPath?.split('/'),
       parentId: record.parentId ?? -1,
     });
   };

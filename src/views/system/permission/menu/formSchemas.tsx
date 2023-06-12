@@ -1,14 +1,15 @@
-import MultipleCascader from './components/multiple-cascader/index.vue';
+import { SHOW_CHILD } from 'ant-design-vue/es/vc-cascader';
 import type { FormSchema } from '@/components/core/schema-form/';
 import IconsSelect from '@/components/basic/icons-select/index.vue';
-import { constantRouterComponents } from '@/router/asyncModules';
+import { asyncRoutes } from '@/router/asyncModules';
+import { formarPermsToCascader, str2tree } from '@/core/permission';
 
 /** 菜单类型 0: 目录 | 1: 菜单 | 2: 权限 */
 // const isDir = (type: API.MenuListResultItem['type']) => type === 0;
 const isMenu = (type: API.MenuListResultItem['type']) => type === 1;
 const isPerm = (type: API.MenuListResultItem['type']) => type === 2;
 
-export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
+export const useMenuSchemas = (): FormSchema<API.MenuAddParams>[] => [
   {
     field: 'type',
     component: 'RadioGroup',
@@ -35,7 +36,7 @@ export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
   {
     field: 'name',
     component: 'Input',
-    label: '节点名称',
+    label: ({ formModel }) => (isPerm(formModel['type']) ? '权限名称' : '节点名称'),
     rules: [{ required: true, type: 'string' }],
   },
   {
@@ -60,20 +61,31 @@ export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
   },
   {
     field: 'perms',
-    component: () => MultipleCascader,
+    component: 'Cascader',
     label: '权限',
     vIf: ({ formModel }) => isPerm(formModel['type']),
     rules: [{ required: true, type: 'array', message: '请选择权限' }],
+    componentProps: {
+      multiple: true,
+      showCheckedStrategy: SHOW_CHILD,
+      options: formarPermsToCascader(),
+    },
+    componentSlots: {
+      displayRender: ({ slotData }) => slotData?.labels?.join(':'),
+    },
   },
   {
     field: 'viewPath',
-    component: 'Select',
+    component: 'Cascader',
     label: '文件路径',
     vIf: ({ formModel }) => isMenu(formModel['type']) && !formModel['isExt'],
     componentProps: {
-      options: Object.keys(constantRouterComponents).map((n) => ({ label: n, value: n })),
+      options: Object.keys(asyncRoutes).reduce(
+        (prev, curr) => (str2tree(curr, prev, '/'), prev),
+        [],
+      ),
     },
-    rules: [{ required: true, type: 'string' }],
+    rules: [{ required: true, type: 'array' }],
   },
   {
     field: 'icon',

@@ -40,7 +40,7 @@
     name: 'SystemParamConfig',
   });
 
-  const [DynamicTable, dynamicTableInstance] = useTable();
+  const [DynamicTable, dynamicTableInstance] = useTable({ scroll: { x: 1600 } });
   const [showModal] = useFormModal();
 
   /**
