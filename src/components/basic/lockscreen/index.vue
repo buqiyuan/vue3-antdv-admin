@@ -56,6 +56,7 @@
   .slide-up-leave-active {
     animation: slide-up 0.5s reverse;
   }
+
   @keyframes slide-up {
     0% {
       transform: translateY(-100%);

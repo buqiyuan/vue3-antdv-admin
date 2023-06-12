@@ -21,10 +21,10 @@
 <style lang="less" scoped>
   .page-container {
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100vw;
     height: 100vh;
     background-color: white;
-    justify-content: center;
-    align-items: center;
   }
 </style>

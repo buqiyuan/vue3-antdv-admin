@@ -210,14 +210,14 @@
 
 <style lang="less" scoped>
   .layout-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
     display: flex;
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    align-items: center;
+    justify-content: space-between;
     height: @header-height;
     padding: 0 20px;
-    justify-content: space-between;
-    align-items: center;
 
     * {
       cursor: pointer;

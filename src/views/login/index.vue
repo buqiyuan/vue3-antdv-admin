@@ -112,18 +112,18 @@
 <style lang="less" scoped>
   .login-box {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100vw;
     height: 100vh;
     padding-top: 240px;
     background: url('~@/assets/login.svg');
     background-size: 100%;
-    flex-direction: column;
-    align-items: center;
 
     .login-logo {
       display: flex;
-      margin-bottom: 30px;
       align-items: center;
+      margin-bottom: 30px;
 
       .svg-icon {
         font-size: 48px;

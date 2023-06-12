@@ -61,7 +61,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-weight: 500;
     font-size: 16px;
+    font-weight: 500;
   }
 </style>

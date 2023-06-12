@@ -101,11 +101,11 @@
     position: relative;
     cursor: pointer;
 
-    &.active:after {
+    &.active::after {
       content: '✔';
       position: absolute;
-      bottom: 10px;
       right: 12px;
+      bottom: 10px;
       color: @primary-color;
     }
   }
@@ -113,10 +113,10 @@
   input[type='color'] {
     width: 40px;
     height: 40px;
-    border: 0;
     padding: 0;
+    border: 0;
     outline: none;
-    -webkit-appearance: none;
+    appearance: none;
 
     &::-webkit-color-swatch-wrapper {
       background: var(--custom-color);

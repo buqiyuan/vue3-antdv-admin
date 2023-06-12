@@ -72,47 +72,56 @@
 <style lang="less" scoped>
   .skins :deep(.ant-carousel) {
     text-align: center;
+
     .slick-dots {
       position: relative;
       height: auto;
     }
+
     .slick-slide img {
-      border: 5px solid #fff;
       display: block;
       margin: auto;
+      border: 5px solid #fff;
     }
+
     .slick-arrow {
       display: none !important;
     }
+
     .slick-thumb {
-      bottom: 0px;
+      bottom: 0;
     }
+
     .slick-thumb li {
       width: 60px;
       height: 45px;
     }
+
     .slick-thumb li img {
       width: 100%;
       height: 100%;
       filter: grayscale(100%);
     }
+
     .slick-thumb li.slick-active img {
       filter: grayscale(0%);
     }
   }
+
   /* For demo */
 
   /* For demo */
   .posters :deep(.ant-carousel) {
     .slick-arrow.custom-slick-arrow {
+      z-index: 1;
       width: 25px;
       height: 25px;
-      font-size: 25px;
-      color: #fff;
-      background-color: rgba(31, 45, 61, 0.11);
       opacity: 0.3;
-      z-index: 1;
+      background-color: rgb(31 45 61 / 11%);
+      color: #fff;
+      font-size: 25px;
     }
+
     .slick-prev {
       left: 10px;
     }

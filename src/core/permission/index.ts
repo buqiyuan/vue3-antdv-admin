@@ -15,30 +15,33 @@ import { useUserStore } from '@/store/modules/user';
 
 type DataNode = NonNullable<TreeSelectProps['treeData']>[number];
 
+export const str2tree = (str: string, treeData: DataNode[] = [], separator = ':') => {
+  return str.split(separator).reduce((prev, curr, currentIndex, arr) => {
+    const path = arr.slice(0, currentIndex + 1).join(':');
+    const index = prev.findIndex((item) => item?.path === path);
+    if (index !== -1) {
+      return prev[index].children;
+    } else {
+      const item: DataNode = {
+        // key: curr,
+        path,
+        value: curr,
+        label: curr,
+        children: [],
+      };
+      prev.push(item);
+      return item.children!;
+    }
+  }, treeData);
+};
+
 /**
  * @description 将权限列表转成级联选择器要求的数据格式
  */
 export const formarPermsToCascader = () => {
-  return Object.keys(permissions).reduce<DataNode[]>((prev, moduleKey) => {
-    const module = permissions[moduleKey];
-    Object.keys(module).forEach((key) => {
-      module[key].split(':').reduce((p, k, currentIndex, arr) => {
-        const value = arr.slice(0, currentIndex + 1).join(':');
-        const index = p.findIndex((item) => item?.value === value);
-        if (Number.isInteger(index) && index !== -1) {
-          return p[index].children;
-        } else {
-          const item: DataNode = {
-            // key: k,
-            title: k,
-            label: k,
-            value,
-            children: [],
-          };
-          p.push(item);
-          return item.children!;
-        }
-      }, prev);
+  return Object.values(permissions).reduce<DataNode[]>((prev, module) => {
+    Object.values(module).forEach((permStr) => {
+      str2tree(permStr, prev);
     });
     return prev;
   }, []);

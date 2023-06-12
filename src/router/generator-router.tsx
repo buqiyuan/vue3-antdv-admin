@@ -7,7 +7,7 @@ import type { RouteRecordRaw } from 'vue-router';
 import RouterView from '@/layout/routerView/index.vue';
 import { isUrl } from '@/utils/is';
 import { uniqueSlash } from '@/utils/urlUtils';
-import { constantRouterComponents } from '@/router/asyncModules';
+import { asyncRoutes } from '@/router/asyncModules';
 import common from '@/router/staticModules';
 import router, { routes } from '@/router';
 import NotFound from '@/views/error/404.vue';
@@ -84,7 +84,7 @@ export function filterAsyncRoute(
           isExt && openMode === 2 ? (
             <IFramePage src={fullPath} />
           ) : (
-            constantRouterComponents[viewPath] || NotFound
+            asyncRoutes[viewPath] || NotFound
           );
         route.component = Component;
 

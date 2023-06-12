@@ -140,7 +140,7 @@
 
 <style lang="less" scoped>
   :deep(.ant-table-wrapper) {
-    padding: 0 6px 6px 6px;
+    padding: 0 6px 6px;
 
     .ant-table {
       .ant-table-title {

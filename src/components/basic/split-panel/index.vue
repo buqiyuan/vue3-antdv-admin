@@ -60,8 +60,8 @@
     .scalable {
       position: relative;
       width: 240px;
-      max-width: 50vw;
       min-width: 100px;
+      max-width: 50vw;
       overflow: auto;
 
       .left-content {
@@ -70,16 +70,16 @@
       }
 
       .separator {
+        display: flex;
         position: absolute;
         top: 0;
         right: 0;
-        display: flex;
-        width: 14px;
-        height: 100%;
-        cursor: col-resize;
-        box-shadow: -4px -2px 4px -5px rgba(0, 0, 0, 0.35), 4px 3px 4px -5px rgba(0, 0, 0, 0.35);
         align-items: center;
         justify-content: center;
+        width: 14px;
+        height: 100%;
+        box-shadow: -4px -2px 4px -5px rgb(0 0 0 / 35%), 4px 3px 4px -5px rgb(0 0 0 / 35%);
+        cursor: col-resize;
 
         i {
           width: 1px;

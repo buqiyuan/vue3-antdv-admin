@@ -148,31 +148,28 @@
 
 <style lang="less" scoped>
   .lockscreen {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 9999;
     display: flex;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
     overflow: hidden;
-    color: white;
     background: #000;
+    color: white;
 
     &.unLockLogin {
-      background-color: rgba(25, 28, 34, 0.78);
+      background-color: rgb(25 28 34 / 78%);
       backdrop-filter: blur(7px);
     }
 
     .login-box {
+      display: flex;
       position: absolute;
       top: 45%;
       left: 50%;
-      display: flex;
-      transform: translate(-50%, -50%);
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
 
       > * {
         margin-bottom: 14px;
@@ -187,8 +184,8 @@
       position: absolute;
       top: 12vh;
       left: 50%;
-      font-size: 34px;
       transform: translateX(-50%);
+      font-size: 34px;
 
       .tips {
         color: white;
@@ -246,15 +243,15 @@
         position: relative;
 
         &.offline::before {
+          content: '';
           position: absolute;
+          z-index: 10;
           top: 50%;
           left: 50%;
-          z-index: 10;
           width: 2px;
           height: 28px;
-          background-color: red;
-          content: '';
           transform: translate(-50%, -50%) rotate(45deg);
+          background-color: red;
         }
       }
     }

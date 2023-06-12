@@ -82,20 +82,20 @@
 </script>
 
 <style lang="less" scoped>
-  @import '@/styles/theme.less';
+  @import url('@/styles/theme.less');
 
   .themeBgColor(box);
 
   .box {
     display: flex;
-    padding: 12px;
+    flex-direction: column;
     width: 100%;
     height: calc(100vh - 280px);
-    flex-direction: column;
+    padding: 12px;
 
     img {
-      min-height: 0;
       flex: 1;
+      min-height: 0;
     }
 
     .ant-form {

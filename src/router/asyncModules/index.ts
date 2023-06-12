@@ -1,17 +1,15 @@
 // generate components map
-export const constantRouterComponents = {};
+export const asyncRoutes = require
+  .context('@/views', true, /\.vue$/, 'lazy')
+  .keys()
+  .reduce((routes, url) => {
+    if (!/\/(login|components)\//.test(url)) {
+      const path = url.replace('./', '');
+      // 这里的 `webpackChunkName` 不会生效，需要使用 import.meta.webpackContext 代替 require.context
+      routes[path] = () => import(/* webpackChunkName: "[request]" */ `@/views/${path}`);
+    }
 
-// auto load
-const modulesFiles = require.context('.', true, /\.ts$/);
+    return routes;
+  }, {});
 
-modulesFiles.keys().forEach((path) => {
-  if (path.startsWith('./index.')) return;
-  const value = modulesFiles(path).default;
-
-  // mouted
-  Object.entries(value).forEach(([path, comp]) => {
-    constantRouterComponents[path] = comp;
-  });
-});
-
-console.log('constantRouterComponents', constantRouterComponents);
+console.log('asyncRoutes', asyncRoutes);

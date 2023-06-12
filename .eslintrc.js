@@ -1,3 +1,6 @@
+/**
+ * @type {import('eslint').ESLint.ConfigData}
+ */
 module.exports = {
   root: true,
   env: {
@@ -16,12 +19,12 @@ module.exports = {
       tsx: true,
     },
   },
-  plugins: ['@typescript-eslint', 'prettier', 'import'],
+  plugins: ['vue', '@typescript-eslint', 'import'],
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'plugin:vue/vue3-recommended',
-    'prettier',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
   ],
   overrides: [
     {
@@ -32,6 +35,8 @@ module.exports = {
     },
   ],
   rules: {
+    'no-unused-vars': 'off',
+
     // js/ts
     // 'no-console': ['warn', { allow: ['error'] }],
     'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'],
@@ -58,13 +63,6 @@ module.exports = {
     // '@typescript-eslint/consistent-type-imports': ['error', { disallowTypeAnnotations: false }],
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-unused-vars': [
-      'error',
-      {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-      },
-    ],
-    'no-unused-vars': [
       'error',
       {
         argsIgnorePattern: '^_',
