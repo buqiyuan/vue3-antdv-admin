@@ -212,7 +212,7 @@
   });
 
   const getLabel = computed(() => {
-    const label = props.schema.label || '';
+    const label = props.schema.label;
     return isFunction(label) ? label(unref(getValues)) : label;
   });
 
