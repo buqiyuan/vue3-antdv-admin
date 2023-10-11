@@ -185,8 +185,8 @@
 <style lang="less" scoped>
   .sys-server-stat-container {
     padding: 20px;
-    column-count: 2;
     column-gap: 10px;
+    column-count: 2;
 
     .stat-card {
       margin-bottom: 10px;
@@ -194,9 +194,9 @@
       transform: translateZ(0);
 
       .disk-info {
-        width: 100%;
         display: flex;
         flex-direction: row;
+        width: 100%;
 
         &--item {
           width: 50%;

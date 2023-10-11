@@ -38,7 +38,7 @@
 <style lang="less">
   .svg-icon {
     overflow: hidden;
-    vertical-align: -0.15em;
     fill: currentcolor;
+    vertical-align: -0.15em;
   }
 </style>

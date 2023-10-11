@@ -81,7 +81,7 @@
     );
   }
   function deleteField() {
-    dynamicFormRef?.removeSchemaByFiled('field11');
+    dynamicFormRef?.removeSchemaByField('field11');
   }
 </script>
 

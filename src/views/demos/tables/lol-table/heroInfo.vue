@@ -79,9 +79,9 @@
     }
 
     .slick-slide img {
-      border: 5px solid #fff;
       display: block;
       margin: auto;
+      border: 5px solid #fff;
     }
 
     .slick-arrow {
@@ -89,7 +89,7 @@
     }
 
     .slick-thumb {
-      bottom: 0px;
+      bottom: 0;
     }
 
     .slick-thumb li {
@@ -107,18 +107,19 @@
       filter: grayscale(0%);
     }
   }
+
   /* For demo */
 
   /* For demo */
   .posters :deep(.ant-carousel) {
     .slick-arrow.custom-slick-arrow {
+      z-index: 1;
       width: 25px;
       height: 25px;
-      font-size: 25px;
-      color: #fff;
-      background-color: rgba(31, 45, 61, 0.11);
       opacity: 0.3;
-      z-index: 1;
+      background-color: rgb(31 45 61 / 11%);
+      color: #fff;
+      font-size: 25px;
     }
 
     .slick-prev {

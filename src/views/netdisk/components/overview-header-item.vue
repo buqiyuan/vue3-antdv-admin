@@ -36,24 +36,24 @@
     overflow-y: hidden;
 
     .title {
-      font-size: 12px;
       color: #999;
+      font-size: 12px;
     }
 
     .value {
       display: inline-block;
-      margin: 10px 0;
       height: 40px;
-      font-weight: 500;
+      margin: 10px 0;
       font-size: 24px;
+      font-weight: 500;
       line-height: 40px;
     }
 
     .suffix {
       display: inline-block;
-      font-size: 14px;
       margin-left: 5px;
       color: #6d6d6d;
+      font-size: 14px;
     }
   }
 </style>
