@@ -10,7 +10,6 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
-import DefineOptions from 'unplugin-vue-define-options/vite';
 import pkg from './package.json';
 import type { UserConfig, ConfigEnv } from 'vite';
 
@@ -53,7 +52,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     plugins: [
       vue(),
       Unocss(),
-      DefineOptions(), // https://github.com/sxzz/unplugin-vue-define-options
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
@@ -82,43 +80,29 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           setupProdMockServer();
           `,
       }),
-      // https://github.com/antfu/unplugin-vue-components
-      //让 unplugin-vue-components 只有在生产环境生效
-      {
-        ...Components({
-          resolvers: [AntDesignVueResolver()],
-        }),
-        apply: 'build',
-      },
-      // 开发环境动态加入ui库框架引入
-      {
-        name: 'dev-auto-import-antdv',
-        transform(code, id) {
-          if (/src\/main.ts$/.test(id)) {
-            const result = code.split('\n');
-            const script = `
-              import * as components from 'ant-design-vue/es/components';
-              const filters = ['AButton'];
-              Object.entries(components).forEach(([key, comp]) => {
-                if (comp.install && !filters.includes(comp.name)) {
-                  app.use(comp);
-                }
-              });
-            `;
-            // 解决首次加载isCustomElement的问题
-            result.splice(result.length - 2, 0, script);
-            return {
-              code: result.join('\n'),
-              map: null,
-            };
-          }
-        },
-        apply: 'serve',
-      },
+      Components({
+        dts: 'types/components.d.ts',
+        types: [
+          {
+            from: './src/components/basic/button/',
+            names: ['AButton'],
+          },
+          {
+            from: 'vue-router',
+            names: ['RouterLink', 'RouterView'],
+          },
+        ],
+        resolvers: [
+          AntDesignVueResolver({
+            importStyle: false, // css in js
+            exclude: ['Button'],
+          }),
+        ],
+      }),
       // https://github.com/fi3ework/vite-plugin-checker
       checker({
         typescript: true,
-        // vueTsc: true,
+        vueTsc: true,
         eslint: {
           lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
         },
@@ -130,8 +114,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           javascriptEnabled: true,
           modifyVars: {},
           additionalData: `
-            @import "ant-design-vue/lib/style/themes/default.less";
-            @import "@/styles/variables.less";
+            @primary-color: #00b96b; 
+            @header-height: 60px; 
           `,
         },
         // scss: {

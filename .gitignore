@@ -29,4 +29,5 @@ yarn-error.log*
 *.sw?
 
 # auto generate file
-components.d.ts
+types/auto-imports.d.ts
+types/components.d.ts

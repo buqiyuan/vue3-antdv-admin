@@ -51,7 +51,7 @@
     aoaToSheetXlsx({
       data: tableData
         .map((item) => {
-          return colFilterKeys.reduce((p, k) => {
+          return colFilterKeys.reduce<Recordable>((p, k: string) => {
             p[k] = Array.isArray(item[k]) ? item[k].toString() : item[k];
             return p;
           }, {});

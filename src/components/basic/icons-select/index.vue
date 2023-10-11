@@ -1,5 +1,5 @@
 <template>
-  <Popover v-model:visible="visible" placement="bottomLeft" trigger="focus">
+  <Popover v-model:open="visible" placement="bottomLeft" trigger="focus">
     <template #content>
       <div class="select-box">
         <template v-for="iconItem in glyphs" :key="iconItem.font_class">

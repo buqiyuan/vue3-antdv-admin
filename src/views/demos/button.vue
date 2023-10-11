@@ -5,7 +5,7 @@
       <Divider orientation="left">扩展按钮类型</Divider>
       <Space>
         <AButton type="primary">primary</AButton>
-        <AButton type="primary" danger>danger</AButton>
+        <AButton type="error">error</AButton>
         <AButton type="warning">warning</AButton>
         <AButton type="success">success</AButton>
       </Space>

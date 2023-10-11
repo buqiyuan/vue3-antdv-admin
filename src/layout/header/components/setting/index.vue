@@ -1,12 +1,12 @@
 <template>
   <SettingOutlined @click="showDrawer" />
-  <Drawer v-model:visible="visible" placement="right" :closable="false">
+  <Drawer v-model:open="visible" placement="right" :closable="false">
     <Descriptions title="整体风格" :column="5">
       <Descriptions.Item v-for="theme in themeStyle" :key="theme.value">
         <Tooltip :title="theme.label">
           <div
             class="style-checbox-item"
-            :class="{ active: themeStore.navTheme === theme.value }"
+            :class="{ active: layoutSetting.navTheme === theme.value }"
             @click="setNavTheme(theme.value)"
           >
             <svg-icon :name="theme.value" size="50"></svg-icon>
@@ -18,7 +18,7 @@
       <Descriptions.Item v-for="item in themeColors" :key="item.key">
         <div class="style-checbox-item">
           <Tooltip :title="item.title">
-            <Tag :color="item.value" @click="setThemeColor({ primaryColor: item.value })">
+            <Tag :color="item.value" @click="setThemeColor(item.value)">
               <span :style="{ visibility: getThemeColorVisible(item.value) }"> ✔ </span>
             </Tag>
           </Tooltip>
@@ -33,7 +33,7 @@
                 type="color"
                 class="absolute inset-0"
                 :style="colorPickerStyle"
-                @input="setThemeColor({ primaryColor: customColor })"
+                @input="setThemeColor(customColor!)"
               />
               <span :style="{ visibility: getThemeColorVisible(customColor) }"> ✔ </span>
             </Tag>
@@ -45,7 +45,7 @@
       <Descriptions.Item v-for="item in layouts" :key="item.value">
         <div
           class="style-checbox-item"
-          :class="{ active: themeStore.layout === item.value }"
+          :class="{ active: layoutSetting.layout === item.value }"
           @click="setLayout(item.value)"
         >
           <svg-icon :name="item.value" size="50"></svg-icon>
@@ -58,34 +58,37 @@
 <script lang="ts" setup>
   import { ref, computed, type StyleValue } from 'vue';
   import { SettingOutlined } from '@ant-design/icons-vue';
+  import { storeToRefs } from 'pinia';
   import { Drawer, Descriptions, Tag, Tooltip } from 'ant-design-vue';
   import { layouts, themeColors, themeStyle } from './constant';
-  import type { ThemeName, Theme, ThemeState } from '@/store/modules/projectConfig';
-  import { useThemeStore } from '@/store/modules/projectConfig';
+  import type { ThemeColor } from './constant';
+  import type { LayoutSetting } from '@/store/modules/layoutSetting';
+  import { useLayoutSettingStore } from '@/store/modules/layoutSetting';
 
   defineOptions({
     name: 'ProjectSetting',
   });
 
-  const themeStore = useThemeStore();
-  const customColor = ref(themeStore.primaryColor);
+  const layoutSettingStore = useLayoutSettingStore();
+  const { layoutSetting } = storeToRefs(layoutSettingStore);
+  const customColor = ref(layoutSetting.value.colorPrimary);
   const visible = ref(false);
 
-  const colorPickerStyle = computed(() => ({ '--custom-color': customColor.value } as StyleValue));
+  const colorPickerStyle = computed(() => ({ '--custom-color': customColor.value }) as StyleValue);
 
-  const setNavTheme = (theme: ThemeName) => {
-    themeStore.setTheme({ navTheme: theme });
+  const setNavTheme = (theme: ThemeColor) => {
+    layoutSettingStore.updateLayoutSetting({ navTheme: theme });
   };
-  const setLayout = (layout: ThemeState['layout']) => {
-    themeStore.setTheme({ layout });
+  const setLayout = (layout: LayoutSetting['layout']) => {
+    layoutSettingStore.updateLayoutSetting({ layout });
   };
 
-  const setThemeColor = ({ primaryColor }: Theme) => {
-    themeStore.fillColor({ primaryColor });
+  const setThemeColor = (colorPrimary: string) => {
+    layoutSettingStore.updateLayoutSetting({ colorPrimary });
   };
 
   const getThemeColorVisible = (color) =>
-    themeStore.primaryColor === color ? 'visible' : 'hidden';
+    layoutSetting.value.colorPrimary === color ? 'visible' : 'hidden';
 
   // const getImageUrl = (theme: ThemeName) => {
   //   return new URL(`/src/assets/icons/${theme}.svg`, import.meta.url).href;
@@ -101,11 +104,11 @@
     position: relative;
     cursor: pointer;
 
-    &.active:after {
+    &.active::after {
       content: '✔';
       position: absolute;
-      bottom: 10px;
       right: 12px;
+      bottom: 10px;
       color: @primary-color;
     }
   }
@@ -113,10 +116,10 @@
   input[type='color'] {
     width: 40px;
     height: 40px;
-    border: 0;
     padding: 0;
+    border: 0;
     outline: none;
-    -webkit-appearance: none;
+    appearance: none;
 
     &::-webkit-color-swatch-wrapper {
       background: var(--custom-color);

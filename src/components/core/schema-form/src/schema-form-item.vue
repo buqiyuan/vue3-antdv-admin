@@ -1,6 +1,6 @@
 <template>
   <Col v-if="getShow.isIfShow" v-show="getShow.isShow" v-bind="schema.colProps">
-    <Divider v-if="schema.component === 'Divider'" v-bind="getComponentProps">
+    <Divider v-if="schema.component === 'Divider'" v-bind="Object.assign(getComponentProps)">
       <component :is="renderLabelHelpMessage"></component>
     </Divider>
     <Form.Item

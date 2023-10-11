@@ -1,5 +1,12 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
+  // https://github.com/lokalise/i18n-ally/issues/994
+  "ts-node": {
+    "compilerOptions": {
+      "module": "es2015",
+      "moduleResolution": "node"
+    }
+  },
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -11,8 +18,6 @@
     "strictFunctionTypes": false,
     "jsx": "preserve",
     "baseUrl": ".",
-    // fix i18-ally 没有找到文案文件。
-    "preserveValueImports": false,
     "allowJs": true,
     "sourceMap": true,
     "esModuleInterop": true,
@@ -22,7 +27,7 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "removeComments": true,
-    "types": ["node", "vite/client", "unplugin-vue-define-options/macros-global"],
+    "types": ["node", "vite/client"],
     "paths": {
       "@/*": ["src/*"]
     }

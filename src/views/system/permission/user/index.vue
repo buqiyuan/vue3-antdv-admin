@@ -71,7 +71,7 @@
             <SwapOutlined /> 转移
           </a-button>
           <a-button
-            type="danger"
+            type="error"
             :disabled="!isCheckRows || !$auth('sys.user.delete')"
             @click="delRowConfirm(rowSelection.selectedRowKeys)"
           >

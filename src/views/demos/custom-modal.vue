@@ -22,7 +22,7 @@
         <a-button type="primary" @click="handleOpenHookModal">hook纯函数式</a-button>
       </Space>
     </a-card>
-    <DraggableModal v-model:visible="state.visible" @ok="onOk" />
+    <DraggableModal v-model:open="state.visible" @ok="onOk" />
     <UseModalComp></UseModalComp>
   </div>
 </template>

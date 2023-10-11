@@ -87,7 +87,7 @@
     name: 'SystemMonitorServe',
   });
 
-  let intervalId = -1;
+  let intervalId;
 
   const sysInfo = reactive({
     runtime: {

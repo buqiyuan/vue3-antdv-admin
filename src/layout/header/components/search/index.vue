@@ -1,12 +1,7 @@
 <template>
   <Tooltip :title="$t('common.searchText')" placement="bottom" :mouse-enter-delay="0.5">
     <slot><SearchOutlined @click="visible = true" /></slot>
-    <DraggableModal
-      v-model:visible="visible"
-      title="搜索菜单"
-      :keyboard="false"
-      @cancel="handleClose"
-    >
+    <DraggableModal v-model:open="visible" title="搜索菜单" :keyboard="false" @cancel="handleClose">
       <a-input
         ref="inputRef"
         v-model:value="keyword"

@@ -241,8 +241,9 @@
     :deep(.tabs) {
       .ant-tabs-nav {
         @apply bg-white dark:bg-black;
-        padding: 4px 20px 0 10px;
+
         margin: 0;
+        padding: 4px 20px 0 10px;
         user-select: none;
       }
 
@@ -252,8 +253,8 @@
 
       .ant-tabs-tab-remove {
         display: flex;
-        padding: 0;
         margin: 0;
+        padding: 0;
 
         .anticon-close {
           padding-left: 6px;
@@ -266,15 +267,15 @@
         }
 
         .anticon-close {
-          width: 0;
           visibility: hidden;
+          width: 0;
           transition: width 0.3s;
         }
 
         &:hover {
           .anticon-close {
-            width: 16px;
             visibility: visible;
+            width: 16px;
             padding-left: 6px;
           }
 

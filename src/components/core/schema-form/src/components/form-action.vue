@@ -3,7 +3,7 @@
     <div style="width: 100%" :style="{ textAlign: actionColOpt.style.textAlign }">
       <Form.Item>
         <slot name="resetBefore"></slot>
-        <Button
+        <a-button
           v-if="showResetButton"
           type="default"
           class="mr-2"
@@ -11,10 +11,10 @@
           @click="resetFields"
         >
           {{ getResetBtnOptions.text }}
-        </Button>
+        </a-button>
         <slot name="submitBefore"></slot>
 
-        <Button
+        <a-button
           v-if="showSubmitButton"
           type="primary"
           class="mr-2"
@@ -22,10 +22,10 @@
           @click="submit"
         >
           {{ getSubmitBtnOptions.text }}
-        </Button>
+        </a-button>
 
         <slot name="advanceBefore"></slot>
-        <Button
+        <a-button
           v-if="showAdvancedButton && !hideAdvanceBtn"
           type="link"
           size="small"
@@ -33,7 +33,7 @@
         >
           {{ isAdvanced ? t('component.form.putAway') : t('component.form.unfold') }}
           <BasicArrow class="ml-1" :expand="!isAdvanced" />
-        </Button>
+        </a-button>
         <slot name="advanceAfter"></slot>
       </Form.Item>
     </div>
@@ -45,7 +45,6 @@
   import { useFormContext } from '../hooks/useFormContext';
   import type { ColEx } from '../types/component';
   import type { ButtonProps } from '@/components/basic/button';
-  import { Button } from '@/components/basic/button';
   import { BasicArrow } from '@/components/basic/basic-arrow';
   import { useI18n } from '@/hooks/useI18n';
 

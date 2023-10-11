@@ -1,7 +1,7 @@
 <template>
   <Spin :spinning="saving">
     <div class="editable-cell">
-      <Popover :visible="!!errorMsgs?.length" placement="topRight">
+      <Popover :open="!!errorMsgs?.length" placement="topRight">
         <template #content>
           <template v-for="err in errorMsgs" :key="err">
             <a-typography-text type="danger">{{ err }}</a-typography-text>
@@ -177,6 +177,10 @@
       right: 0;
       transform: translateY(-50%);
     }
+  }
+
+  :deep(.ant-form-item) {
+    margin: 0;
   }
 
   :deep(.ant-form-item-explain) {
