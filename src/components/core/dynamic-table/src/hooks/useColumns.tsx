@@ -54,6 +54,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
       } as TableColumn);
     }
 
+    // @ts-ignore
     innerColumns.value = columns.map((item) => {
       const customRender = item.customRender;
 

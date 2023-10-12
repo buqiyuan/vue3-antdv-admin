@@ -1,13 +1,13 @@
 <template>
   <transition name="slide-up">
-    <LockScreen v-if="isLock && isMouted && $route.name != LOGIN_NAME" />
+    <LockScreenPage v-if="isLock && isMouted && $route.name != LOGIN_NAME" />
   </transition>
 </template>
 
 <script setup lang="ts">
   import { computed, ref, onMounted, onUnmounted } from 'vue';
   import { useRoute } from 'vue-router';
-  import LockScreen from './lockscreen.vue';
+  import LockScreenPage from './lockscreen-page.vue';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { LOGIN_NAME } from '@/router/constant';
 

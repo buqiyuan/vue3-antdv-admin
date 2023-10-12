@@ -1,15 +1,15 @@
 <template>
-  <ConfigProvider :theme="btnTheme">
+  <ProConfigProvider :theme="btnTheme">
     <Button v-bind="{ ...$attrs, ...props }" :type="buttonType">
       <template v-for="(_, key) in $slots" #[key]>
         <slot :name="key"></slot>
       </template>
     </Button>
-  </ConfigProvider>
+  </ProConfigProvider>
 </template>
 <script lang="ts" setup>
   import { computed } from 'vue';
-  import { Button, ConfigProvider } from 'ant-design-vue';
+  import { Button } from 'ant-design-vue';
   import { buttonProps, buttonColorPrimary, aButtonTypes } from './button';
   import type { ButtonType, AButtonType } from './button';
 

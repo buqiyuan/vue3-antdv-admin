@@ -74,18 +74,18 @@
       }
     }
 
-    @keyframes moveToTop {
+    @keyframes move-to-top {
       90% {
         opacity: 1;
       }
 
       100% {
-        opacity: 0.1;
         transform: translate(-50%, -180px);
+        opacity: 0.1;
       }
     }
 
-    @keyframes hueRotate {
+    @keyframes hue-rotate {
       100% {
         filter: contrast(15) hue-rotate(360deg);
       }
@@ -110,18 +110,18 @@
         width: @width;
         height: @width;
         transform: translate(-50%, -50%);
-        animation: moveToTop unit(~`(Math.round(Math.random() * 6) + 3) `, s) ease-in-out
+        animation: move-to-top unit(~`(Math.round(Math.random() * 6) + 3) `, s) ease-in-out
           unit(~`-(Math.random() * 5000 / 1000) `, s) infinite;
       }
     }
 
     .number {
       position: absolute;
-      top: 27%;
       z-index: 10;
+      top: 27%;
       width: 300px;
-      font-size: 32px;
       color: #fff;
+      font-size: 32px;
       text-align: center;
     }
 
@@ -129,41 +129,41 @@
       width: 300px;
       height: 400px;
       overflow: hidden;
+      animation: hue-rotate 10s infinite linear;
       background-color: #000;
       filter: contrast(15) hue-rotate(0);
-      animation: hueRotate 10s infinite linear;
 
       .circle {
         position: relative;
+        box-sizing: border-box;
         width: 300px;
         height: 300px;
         filter: blur(8px);
-        box-sizing: border-box;
 
         &::after {
+          content: '';
           position: absolute;
           top: 40%;
           left: 50%;
           width: 200px;
           height: 200px;
-          background-color: #00ff6f;
-          border-radius: 42% 38% 62% 49% / 45%;
-          content: '';
           transform: translate(-50%, -50%) rotate(0);
           animation: trotate 10s infinite linear;
+          border-radius: 42% 38% 62% 49% / 45%;
+          background-color: #00ff6f;
         }
 
         &::before {
+          content: '';
           position: absolute;
+          z-index: 10;
           top: 40%;
           left: 50%;
-          z-index: 10;
           width: 176px;
           height: 176px;
-          background-color: #000;
-          border-radius: 50%;
-          content: '';
           transform: translate(-50%, -50%);
+          border-radius: 50%;
+          background-color: #000;
         }
       }
 
@@ -173,15 +173,15 @@
         left: 50%;
         width: 100px;
         height: 40px;
-        background-color: #00ff6f;
-        border-radius: 100px 100px 0 0;
-        filter: blur(5px);
         transform: translate(-50%, 0);
+        border-radius: 100px 100px 0 0;
+        background-color: #00ff6f;
+        filter: blur(5px);
 
         li {
           position: absolute;
-          background: #00ff6f;
           border-radius: 50%;
+          background: #00ff6f;
         }
       }
     }
