@@ -42,14 +42,14 @@ export const useModal = () => {
   };
 
   const hide = () => {
-    setProps({ visible: false });
+    setProps({ open: false });
   };
 
   const show = async (props: HookModalProps) => {
     setProps({
       ...props,
       closeModal: hide,
-      visible: true,
+      open: true,
     });
 
     await nextTick();

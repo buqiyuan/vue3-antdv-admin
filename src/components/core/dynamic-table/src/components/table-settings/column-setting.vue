@@ -7,7 +7,7 @@
       placement="bottomLeft"
       trigger="click"
       overlay-class-name="cloumn-list"
-      @visible-change="handleVisibleChange"
+      @open-change="handleVisibleChange"
     >
       <template #title>
         <div class="popover-title">
@@ -83,17 +83,12 @@
   import { useSortable } from '@/hooks/useSortable';
   import { isNullAndUnDef } from '@/utils/is';
 
-  type TableColumnType<T = any> = TableColumn<T> & {
-    /** 目的是解决：类型实例化过深，且可能无限 */
-    formItemProps?: any;
-  };
-
   const table = useTableContext();
   let inited = false;
-  const defaultColumns = cloneDeep<TableColumnType[]>(table.columns);
+  const defaultColumns = cloneDeep<TableColumn[]>(table.columns);
   const defaultShowIndex = !!table.showIndex;
   const defaultBordered = table.bordered;
-  const tableColumns = ref<TableColumnType[]>([]);
+  const tableColumns = ref<TableColumn[]>([]);
 
   const checkAll = computed<boolean>({
     get() {
@@ -110,6 +105,7 @@
 
   // 初始化选中状态
   const initCheckStatus = () => {
+    // @ts-ignore
     tableColumns.value = cloneDeep(defaultColumns);
     checkIndex.value = defaultShowIndex;
     checkBordered.value = defaultBordered;

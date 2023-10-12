@@ -9,7 +9,7 @@ import { formarPermsToCascader, str2tree } from '@/core/permission';
 const isMenu = (type: API.MenuListResultItem['type']) => type === 1;
 const isPerm = (type: API.MenuListResultItem['type']) => type === 2;
 
-export const menuSchemas: FormSchema<API.MenuAddParams>[] = [
+export const useMenuSchemas = (): FormSchema<API.MenuAddParams>[] => [
   {
     field: 'type',
     component: 'RadioGroup',

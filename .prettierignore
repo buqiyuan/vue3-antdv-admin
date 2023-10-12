@@ -1,7 +1,6 @@
 /dist/*
 .local
 .output.js
-commitlint.config.js
 /node_modules/**
 
 **/*.svg

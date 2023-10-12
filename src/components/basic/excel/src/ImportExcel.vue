@@ -36,7 +36,7 @@
     emits: ['success', 'error'],
     setup(props, { emit }) {
       const inputRef = ref<HTMLInputElement | null>(null);
-      const loadingRef = ref<boolean>(false);
+      const loadingRef = ref<Boolean>(false);
 
       /**
        * @description: 第一行作为头部

@@ -1,9 +1,16 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
+  // https://github.com/lokalise/i18n-ally/issues/994
+  "ts-node": {
+    "compilerOptions": {
+      "module": "es2015",
+      "moduleResolution": "node"
+    }
+  },
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "noLib": false,
     "forceConsistentCasingInFileNames": true,
@@ -11,32 +18,29 @@
     "strictFunctionTypes": false,
     "jsx": "preserve",
     "baseUrl": ".",
-    // fix i18-ally 没有找到文案文件。
-    "preserveValueImports": false,
     "allowJs": true,
     "sourceMap": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "experimentalDecorators": true,
     "lib": ["dom", "esnext"],
     "noImplicitAny": false,
     "skipLibCheck": true,
     "removeComments": true,
-    "types": ["webpack-env", "unplugin-vue-define-options/macros-global"],
+    "types": ["node", "vite/client"],
     "paths": {
       "@/*": ["src/*"]
     }
   },
   "include": [
+    "**/*.d.ts",
     "mock/**/*",
     "src/**/*.ts",
-    "**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "types/**/*.d.ts",
-    "types/**/*.ts"
+    "types/**/*.ts",
+    "vite.config.ts"
   ],
   "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"]
 }

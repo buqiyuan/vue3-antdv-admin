@@ -111,8 +111,8 @@ export class SocketIOWrapper {
     this.changeStatus(SocketStatus.CONNECTING);
 
     // 初始化SocketIO实例
-    this.socketInstance = IO(process.env.VUE_APP_BASE_SOCKET_NSP, {
-      path: process.env.VUE_APP_BASE_SOCKET_PATH,
+    this.socketInstance = IO(import.meta.env.VITE_BASE_SOCKET_NSP, {
+      path: import.meta.env.VITE_BASE_SOCKET_PATH,
       transports: ['websocket'],
       query: { token },
     });

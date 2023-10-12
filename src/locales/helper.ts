@@ -11,11 +11,11 @@ export function setLoadLocalePool(cb: (loadLocalePool: LocaleType[]) => void) {
   cb(loadLocalePool);
 }
 
-export function genMessage(langs: __WebpackModuleApi.RequireContext, prefix = 'lang') {
+export function genMessage(langs: Record<string, Record<string, any>>, prefix = 'lang') {
   const obj: Recordable = {};
 
-  langs.keys().forEach((key) => {
-    const langFileModule = langs(key).default;
+  Object.keys(langs).forEach((key) => {
+    const langFileModule = langs[key].default;
     let fileName = key.replace(`./${prefix}/`, '').replace(/^\.\//, '');
     const lastIndex = fileName.lastIndexOf('.');
     fileName = fileName.substring(0, lastIndex);

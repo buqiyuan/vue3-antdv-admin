@@ -1,38 +1,40 @@
 <template>
   <teleport :to="getContainer()">
-    <div ref="modalWrapRef" class="draggable-modal" :class="{ fullscreen: fullscreenModel }">
-      <Modal
-        v-bind="omit(props, ['visible', 'onCancel', 'onOk', 'onUpdate:visible'])"
-        v-model:visible="visibleModel"
-        :mask-closable="false"
-        :get-container="() => modalWrapRef"
-        :width="innerWidth || width"
-        @ok="emit('ok')"
-        @cancel="emit('cancel')"
-      >
-        <template #title>
-          <slot name="title">{{ $attrs.title || '标题' }}</slot>
-        </template>
-        <template #closeIcon>
-          <slot name="closeIcon">
-            <Space class="ant-modal-operate" @click.stop>
-              <fullscreen-outlined v-if="!fullscreenModel" @click="fullscreenModel = true" />
-              <fullscreen-exit-outlined v-else @click="restore" />
-              <close-outlined @click="closeModal" />
-            </Space>
+    <ProConfigProvider>
+      <div ref="modalWrapRef" class="draggable-modal" :class="{ fullscreen: fullscreenModel }">
+        <Modal
+          v-bind="omit(props, ['open', 'onCancel', 'onOk', 'onUpdate:open'])"
+          v-model:open="visibleModel"
+          :mask-closable="false"
+          :get-container="() => modalWrapRef"
+          :width="innerWidth || width"
+          @ok="emit('ok')"
+          @cancel="emit('cancel')"
+        >
+          <template #title>
+            <slot name="title">{{ $attrs.title || '标题' }}</slot>
+          </template>
+          <template #closeIcon>
+            <slot name="closeIcon">
+              <Space class="ant-modal-operate" @click.stop>
+                <FullscreenOutlined v-if="!fullscreenModel" @click="fullscreenModel = true" />
+                <FullscreenExitOutlined v-else @click="restore" />
+                <CloseOutlined @click="closeModal" />
+              </Space>
+            </slot>
+          </template>
+          <slot>
+            ① 窗口可以拖动；<br />
+            ② 窗口可以通过八个方向改变大小；<br />
+            ③ 窗口可以最小化、最大化、还原、关闭；<br />
+            ④ 限制窗口最小宽度/高度。
           </slot>
-        </template>
-        <slot>
-          ① 窗口可以拖动；<br />
-          ② 窗口可以通过八个方向改变大小；<br />
-          ③ 窗口可以最小化、最大化、还原、关闭；<br />
-          ④ 限制窗口最小宽度/高度。
-        </slot>
-        <template v-if="$slots.footer" #footer>
-          <slot name="footer"></slot>
-        </template>
-      </Modal>
-    </div>
+          <template v-if="$slots.footer" #footer>
+            <slot name="footer"></slot>
+          </template>
+        </Modal>
+      </div>
+    </ProConfigProvider>
   </teleport>
 </template>
 
@@ -57,10 +59,10 @@
     },
   });
 
-  const emit = defineEmits(['update:visible', 'update:fullscreen', 'ok', 'cancel']);
+  const emit = defineEmits(['update:open', 'update:fullscreen', 'ok', 'cancel']);
 
   const route = useRoute();
-  const visibleModel = useVModel(props, 'visible');
+  const visibleModel = useVModel(props, 'open');
   const fullscreenModel = ref(props.fullscreen);
   const innerWidth = ref('');
 
@@ -303,9 +305,15 @@
       min-height: 200px;
       padding: 0;
 
+      .ant-modal-header {
+        user-select: none;
+      }
+
       .ant-modal-close {
         top: 6px;
-        right: 6px;
+        right: 30px;
+        background-color: transparent;
+        cursor: inherit;
 
         &:hover,
         &:focus {

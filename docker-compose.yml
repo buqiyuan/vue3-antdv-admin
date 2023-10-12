@@ -7,6 +7,6 @@ services:
       context: .
       dockerfile: Dockerfile
       target: production
-    image: buqiyuan/vue3-antd-admin:latest
+    image: buqiyuan/vue3-antdv-admin:latest
     env_file:
       - .env

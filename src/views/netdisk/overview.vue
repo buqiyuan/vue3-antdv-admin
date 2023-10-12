@@ -185,12 +185,12 @@
       flowSize.value = Number(fs[0]);
       flowUnit.value = fs[1];
       hitSize.value = data.hitSize;
-      // chart
+      // @ts-ignore
       flowChartOption.value.xAxis!.data = data.flowTrend.times;
       flowChartOption.value.series![0].data = data.flowTrend.datas.map((e) =>
         (e / 1024 / 1024).toFixed(),
       );
-
+      // @ts-ignore
       spaceChartOption.value.xAxis!.data = data.sizeTrend.times;
       spaceChartOption.value.series![0].data = data.sizeTrend.datas.map((e) =>
         (e / 1024 / 1024).toFixed(),

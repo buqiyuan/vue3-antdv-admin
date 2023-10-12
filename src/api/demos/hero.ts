@@ -38,7 +38,7 @@ export function getLolHeroList(query: API.PageParams) {
 /**
  * @description 获取英雄联盟英雄列表
  */
-export function getLolHeroInfo(query: { id: string | string[] }) {
+export function getLolHeroInfo(query: { id: number | string }) {
   return request<BaseResponse>(
     {
       url: '/demos/lol/hero_info',

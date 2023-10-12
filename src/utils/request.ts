@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { message as $message } from 'ant-design-vue';
-import { uniqueSlash } from './urlUtils';
 import type { AxiosRequestConfig } from 'axios';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
 import { useUserStore } from '@/store/modules/user';
-// import {ExclamationCircleOutlined} from '@ant-design/icons'
+import { uniqueSlash } from '@/utils/urlUtils';
 
 export interface RequestOptions {
   /** 当前接口权限, 不需要鉴权的接口请忽略， 格式：sys:user:add */
@@ -21,12 +20,11 @@ export interface RequestOptions {
 }
 
 const UNKNOWN_ERROR = '未知错误，请重试';
-// 是否生产环境
-// const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
+
 /** 真实请求的路径前缀 */
-const baseApiUrl = process.env.VUE_APP_BASE_API;
+const baseApiUrl = import.meta.env.VITE_BASE_API;
 /** mock请求路径前缀 */
-const baseMockUrl = process.env.VUE_APP_MOCK_API;
+const baseMockUrl = import.meta.env.VITE_MOCK_API;
 
 const service = axios.create({
   // baseURL: baseApiUrl,
@@ -115,10 +113,7 @@ export const request = async <T = any>(
     }
     const fullUrl = `${(isMock ? baseMockUrl : baseApiUrl) + config.url}`;
     config.url = uniqueSlash(fullUrl);
-    // if (IS_PROD) {
-    //   // 保持api请求的协议与当前访问的站点协议一致
-    //   config.url.replace(/^https?:/g, location.protocol);
-    // }
+
     const res = await service.request(config);
     successMsg && $message.success(successMsg);
     errorMsg && $message.error(errorMsg);

@@ -6,15 +6,6 @@
 
 <script lang="ts" setup>
   import { computed, type CSSProperties } from 'vue';
-
-  const importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
-    requireContext.keys().forEach(requireContext);
-  try {
-    importAll(require.context('@/assets/icons', true, /\.svg$/));
-  } catch (error) {
-    console.log(error);
-  }
-
   defineOptions({
     name: 'SvgIcon',
   });

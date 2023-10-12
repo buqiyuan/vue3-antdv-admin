@@ -1,7 +1,7 @@
 <template>
   <Spin :spinning="saving">
     <div class="editable-cell">
-      <Popover :visible="!!errorMsgs?.length" placement="topRight">
+      <Popover :open="!!errorMsgs?.length" placement="topRight">
         <template #content>
           <template v-for="err in errorMsgs" :key="err">
             <a-typography-text type="danger">{{ err }}</a-typography-text>
@@ -19,7 +19,7 @@
               <slot :name="item" v-bind="data || {}"></slot>
             </template>
           </SchemaFormItem>
-          <a-col v-if="getIsCellEdit" :span="4" class="flex items-center">
+          <a-col v-if="getIsCellEdit" :span="4" class="!flex items-center">
             <CheckOutlined @click="handleSaveCell" />
             <CloseOutlined @click="handleCancelSaveCell" />
           </a-col>
@@ -118,19 +118,15 @@
       };
 
       const handleSaveCell = async () => {
-        try {
-          const { rowKey, column } = props;
-          await validateCell(rowKey!, dataIndex.value);
-          if (isAsyncFunction(tableContext?.onSave)) {
-            saving.value = true;
-            await tableContext
-              .onSave(rowKey!, editFormModel.value[rowKey!], column?.record)
-              .finally(() => (saving.value = false));
-            cancelCellEditable(rowKey!, dataIndex.value);
-            isCellEdit.value = false;
-          }
-        } catch (error) {
-          console.error(error);
+        const { rowKey, column } = props;
+        await validateCell(rowKey!, dataIndex.value);
+        if (isAsyncFunction(tableContext?.onSave)) {
+          saving.value = true;
+          await tableContext
+            .onSave(rowKey!, editFormModel.value[rowKey!], column?.record)
+            .finally(() => (saving.value = false));
+          cancelCellEditable(rowKey!, dataIndex.value);
+          isCellEdit.value = false;
         }
       };
 
@@ -181,6 +177,10 @@
       right: 0;
       transform: translateY(-50%);
     }
+  }
+
+  :deep(.ant-form-item) {
+    margin: 0;
   }
 
   :deep(.ant-form-item-explain) {

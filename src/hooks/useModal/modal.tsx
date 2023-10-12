@@ -15,7 +15,7 @@ export const MyModal = defineComponent({
       type: [String, Function] as PropType<string | JSX.Element | (() => JSX.Element)>,
     },
     closeModal: Function,
-    visible: Boolean,
+    open: Boolean,
     isAppChild: Boolean,
   },
   setup(props, { attrs, expose }) {
@@ -33,15 +33,15 @@ export const MyModal = defineComponent({
 
       return {
         ...omit(_props, ['onCancel', 'onOk', 'closeModal', 'isAppChild', 'content']),
-        visible: _props.visible,
+        open: _props.open,
         confirmLoading: confirmLoading.value,
         onCancel: handleCancel,
         onOk: handleConfirm,
       };
     });
 
-    const setVisible = (visible: boolean) => {
-      propsRef.value.visible = visible;
+    const setVisible = (open: boolean) => {
+      propsRef.value.open = open;
     };
 
     const setProps = (props: HookModalProps) => {
@@ -52,7 +52,7 @@ export const MyModal = defineComponent({
     };
 
     watch(
-      () => propsRef.value.visible,
+      () => propsRef.value.open,
       (val) => {
         Object.is(val, false) && props.closeModal?.();
       },

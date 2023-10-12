@@ -1,12 +1,6 @@
 <template>
   <div class="file-upload-drawer-container">
-    <Drawer
-      :title="title"
-      :width="400"
-      :visible="visible"
-      :mask-closable="false"
-      @close="handleClose"
-    >
+    <Drawer :title="title" :width="400" :open="visible" :mask-closable="false" @close="handleClose">
       <Spin :spinning="loading" class="upload-inner-box">
         <Upload.Dragger
           ref="uploadRef"

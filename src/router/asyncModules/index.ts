@@ -1,15 +1,15 @@
-// generate components map
-export const asyncRoutes = require
-  .context('@/views', true, /\.vue$/, 'lazy')
-  .keys()
-  .reduce((routes, url) => {
-    if (!/\/(login|components)\//.test(url)) {
-      const path = url.replace('./', '');
-      // 这里的 `webpackChunkName` 不会生效，需要使用 import.meta.webpackContext 代替 require.context
-      routes[path] = () => import(/* webpackChunkName: "[request]" */ `@/views/${path}`);
-    }
+// auto load
+const modulesFiles = import.meta.glob<Recordable>('../../views/**/*.vue');
+// console.log('modulesFiles', modulesFiles);
 
-    return routes;
-  }, {});
+// generate components map
+export const asyncRoutes = Object.entries(modulesFiles).reduce((routes, [url, importFn]) => {
+  if (!/\/(login|components)\//.test(url)) {
+    const path = url.replace('../../views/', '');
+    routes[path] = importFn;
+  }
+
+  return routes;
+}, {});
 
 console.log('asyncRoutes', asyncRoutes);

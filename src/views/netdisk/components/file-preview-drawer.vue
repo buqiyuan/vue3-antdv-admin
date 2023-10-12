@@ -1,5 +1,5 @@
 <template>
-  <Drawer title="文件详情" :width="500" :visible="visible" @close="handleClose">
+  <Drawer title="文件详情" :width="500" :open="visible" @close="handleClose">
     <Spin :spinning="loading" class="preview-drawer-inner-box">
       <Space direction="vertical">
         <Image
@@ -37,7 +37,7 @@
                 :loading="updateMarkLoading"
                 :disabled="!$auth('netdisk.manage.mark')"
                 type="primary"
-                size="mini"
+                size="small"
                 @click="updateMark"
                 >更新</a-button
               >
@@ -58,6 +58,14 @@
   import * as netdiskManage from '@/api/netdisk';
   import { verifyAuth } from '@/core/permission';
 
+  type DetailInfo = MergePropertyTypes<
+    API.FileInfo,
+    {
+      name: string;
+      fsize: string;
+    }
+  >;
+
   defineOptions({
     name: 'FilePreviewDrawer',
   });
@@ -77,7 +85,7 @@
   const fileName = ref('');
   const filePath = ref('');
 
-  const detailInfo = ref<Partial<API.FileInfo & { name: string; fsize: string }>>({});
+  const detailInfo = ref<Partial<DetailInfo>>({});
   const previewSrc = ref('');
   const mark = ref('');
   const updateMarkLoading = ref(false);

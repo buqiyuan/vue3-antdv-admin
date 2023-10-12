@@ -28,6 +28,9 @@ export const formatDept2Tree = (
         formData: item,
         children: arr.length ? arr : null,
       });
+    })
+    .sort((a, b) => {
+      return a.orderNum - b.orderNum;
     });
 };
 

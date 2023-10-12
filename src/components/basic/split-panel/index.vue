@@ -78,7 +78,9 @@
         justify-content: center;
         width: 14px;
         height: 100%;
-        box-shadow: -4px -2px 4px -5px rgb(0 0 0 / 35%), 4px 3px 4px -5px rgb(0 0 0 / 35%);
+        box-shadow:
+          -4px -2px 4px -5px rgb(0 0 0 / 35%),
+          4px 3px 4px -5px rgb(0 0 0 / 35%);
         cursor: col-resize;
 
         i {

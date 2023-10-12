@@ -7,7 +7,7 @@
         >回到首页</RouterLink
       >
     </div>
-    <img src="~@/assets/404.gif" alt="" />
+    <img src="@/assets/404.gif" alt="" />
   </div>
 </template>
 

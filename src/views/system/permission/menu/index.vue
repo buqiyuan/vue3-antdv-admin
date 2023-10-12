@@ -14,7 +14,7 @@
   import { ref } from 'vue';
   import { cloneDeep } from 'lodash-es';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
-  import { menuSchemas } from './formSchemas';
+  import { useMenuSchemas } from './formSchemas';
   import type { TreeSelectProps } from 'ant-design-vue';
   import { getMenuList, updateMenu, createMenu, deleteMenu } from '@/api/system/menu';
   import { useTable } from '@/components/core/dynamic-table';
@@ -66,7 +66,7 @@
       },
       formProps: {
         labelWidth: 100,
-        schemas: menuSchemas,
+        schemas: useMenuSchemas(),
       },
     });
 

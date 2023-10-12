@@ -20,7 +20,7 @@
   import { Menu, type MenuTheme } from 'ant-design-vue';
   import MenuItem from './menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
-  import { useThemeStore } from '@/store/modules/projectConfig';
+  import { useLayoutSettingStore } from '@/store/modules/layoutSetting';
   import { LOGIN_NAME } from '@/router/constant';
 
   const props = defineProps({
@@ -33,7 +33,7 @@
     },
   });
   const userStore = useUserStore();
-  const themeStore = useThemeStore();
+  const layoutSettingStore = useLayoutSettingStore();
   // 当前路由
   const currentRoute = useRoute();
   const router = useRouter();
@@ -45,7 +45,7 @@
   const menus = computed(() => userStore.menus);
   console.log('menus', menus.value);
   /** 侧边栏布局 */
-  const isSideMenu = computed(() => themeStore.layout === 'sidemenu');
+  const isSideMenu = computed(() => layoutSettingStore.layoutSetting.layout === 'sidemenu');
   const getRouteByName = (name: string) => router.getRoutes().find((n) => n.name === name);
   // 根据activeMenu获取指定的menu
   const getTargetMenuByActiveMenuName = (activeMenu: string) => {
@@ -122,3 +122,4 @@
     }
   }
 </style>
+@/store/modules/layout

@@ -1,16 +1,15 @@
-# vue3-antd-admin
+# vue3-antdv-admin
 
-> 基于 vue-cli5.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
+> 基于 vite4.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
 
-基于 vue-cli5.x / vite2.x + vue3.x + antd-design-vue3.x + typescript4.x 的后台管理系统模板
+基于 vite4.x + vue3.x + antd-design-vue4.x + typescript5.x 的后台管理系统模板
 
 - 账号：rootadmin，密码：123456
-- 在线预览（ [gitee](http://buqiyuan.gitee.io/vue3-antd-admin/) / [vercel](https://vue3-antd-admin.vercel.app/) ）
+- 在线预览（ [gitee](http://buqiyuan.gitee.io/vue3-antdv-admin/) / [vercel](https://vue3-antdv-admin.vercel.app/) ）
 - [swagger 文档](https://nest-api.buqiyuan.site/swagger-api/)
 - [后台地址](https://github.com/buqiyuan/nest-admin)
-- [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
-- [vite 版](https://github.com/buqiyuan/vite-vue3-admin)
-- [gitee 地址](https://gitee.com/buqiyuan/vue3-antd-admin)
+- [vue-cli版](https://github.com/buqiyuan/vue3-antd-admin/tree/vue-cli)
+- [gitee 地址](https://gitee.com/buqiyuan/vue3-antdv-admin)
 - 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
 
 部分设计参考了 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
@@ -20,33 +19,33 @@
 - 获取项目代码
 
 ```bash
-git clone https://github.com/buqiyuan/vue3-antd-admin
+git clone --depth 1 https://github.com/buqiyuan/vue3-antdv-admin
 ```
 
 - 安装依赖
 
 ```bash
-cd vue3-antd-admin
+cd vue3-antdv-admin
 
-yarn install
+pnpm install
 
 ```
 
 - 运行
 
 ```bash
-yarn serve
+pnpm dev
 ```
 
 - 打包
 
 ```bash
-yarn build
+pnpm build
 ```
 
 ## vscode 配置
 
-安装项目根目录.vscode 推荐的插件，再安装 Volar，并禁用 Vetur，重启 vscode 即可，更多详细的 vue3 IDE 配置点[这里](https://cn.vuejs.org/guide/typescript/overview.html#volar-takeover-mode)。
+安装项目根目录 `.vscode` 推荐的插件，再安装 `Volar`，并禁用 `Vetur`，重启 vscode 即可。
 
 > 使用了 Vue3.x 全家桶、ant-design-vue3.x 和 typescript4.x，实践 vue3.x 的新特性以及玩法，不得不说 vue3.x 的 Composition API 相比于 vue2.x 的 Options API 灵活很多，让我们可以灵活地组合组件逻辑，我们可以很轻松的使用 hooks 的形式去代替以前 mixins 等的写法。更多 hooks 可以参考[vueuse](https://vueuse.org/functions.html)
 
@@ -59,12 +58,8 @@ yarn build
 - [x] 动态表格(完善中)
 - [x] 动态表单(完善中)
 - [ ] 电商 SKU 功能演示
-- [ ] 纯前端导出 PDF 自动分页
+- [ ] 纯前端导出 PDF 动态分页
 - [ ] 其他...
-
-## 更新日志
-
-[CHANGELOG](./CHANGELOG.md)
 
 ## Git 贡献提交规范
 
@@ -84,11 +79,9 @@ yarn build
   - `types` 类型定义文件更改
   - `wip` 开发中
 
-### QQ 交流群（2022-3-8）
+## 更新日志
 
-[![加入QQ群](https://img.shields.io/badge/570108996-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi)
-
-<div><img src="https://cdn.jsdelivr.net/gh/buqiyuan/MyImageHosting/imgs/vue3-antdv-admin/qq_group.jpg" height="280" /></div>
+[CHANGELOG](./CHANGELOG.md)
 
 ## 赞赏
 
