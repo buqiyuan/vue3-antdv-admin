@@ -1,6 +1,6 @@
 FROM node:lts-alpine as builder
 
-ENV PROJECT_DIR=/vite-vue3-admin
+ENV PROJECT_DIR=/vue3-antdv-admin
 
 WORKDIR $PROJECT_DIR
 
@@ -25,7 +25,7 @@ ENV SERVER_PORT 7001
 # websocket 服务端口
 ENV WS_PORT 7002
 
-COPY  --from=builder /vite-vue3-admin/dist/ /usr/share/nginx/html
+COPY  --from=builder /vue3-antdv-admin/dist/ /usr/share/nginx/html
 COPY ./default.conf.template /etc/nginx/templates/
 
 EXPOSE 80

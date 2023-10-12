@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/vite-vue3-admin:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/vue3-antdv-admin:latest
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

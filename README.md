@@ -1,16 +1,16 @@
-# vite-vue3-admin
+# vue3-antdv-admin
 
-> 基于 vite3.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
+> 基于 vite4.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
 
-基于 vite3.x + vue3.x + antd-design-vue3.x + typescript4.x 的后台管理系统模板
+基于 vite4.x + vue3.x + antd-design-vue4.x + typescript5.x 的后台管理系统模板
 
 - 账号：rootadmin，密码：123456
-- 在线预览（ [gitee](http://buqiyuan.gitee.io/vite-vue3-admin/) / [vercel](https://vite-vue3-admin.vercel.app/) ）
+- 在线预览（ [gitee](http://buqiyuan.gitee.io/vue3-antdv-admin/) / [vercel](https://vue3-antdv-admin.vercel.app/) ）
 - [swagger 文档](https://nest-api.buqiyuan.site/swagger-api/)
 - [后台地址](https://github.com/buqiyuan/nest-admin)
 - [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
-- [vue-cli](https://github.com/buqiyuan/vite-vue3-admin)
-- [gitee 地址](https://gitee.com/buqiyuan/vite-vue3-admin)
+- [vue-cli](https://github.com/buqiyuan/vue3-antdv-admin)
+- [gitee 地址](https://gitee.com/buqiyuan/vue3-antdv-admin)
 - 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
 
 部分设计参考了 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
@@ -20,13 +20,13 @@
 - 获取项目代码
 
 ```bash
-git clone https://github.com/buqiyuan/vite-vue3-admin
+git clone --depth 1 https://github.com/buqiyuan/vue3-antdv-admin
 ```
 
 - 安装依赖
 
 ```bash
-cd vite-vue3-admin
+cd vue3-antdv-admin
 
 pnpm install
 

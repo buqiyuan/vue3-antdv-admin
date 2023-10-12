@@ -21,4 +21,4 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           body: |
-            Please refer to [CHANGELOG.md](https://github.com/buqiyuan/vite-vue3-admin/blob/main/CHANGELOG.md) for details.
+            Please refer to [CHANGELOG.md](https://github.com/buqiyuan/vue3-antdv-admin/blob/main/CHANGELOG.md) for details.

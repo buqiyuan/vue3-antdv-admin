@@ -1,5 +1,5 @@
 {
-  "name": "vite-vue3-admin",
+  "name": "vue3-antdv-admin",
   "version": "1.1.0",
   "author": {
     "name": "buqiyuan",
@@ -108,9 +108,9 @@
   "__npminstall_done": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/buqiyuan/vite-vue3-admin"
+    "url": "https://github.com/buqiyuan/vue3-antdv-admin"
   },
-  "homepage": "https://buqiyuan.gitee.io/vite-vue3-admin",
+  "homepage": "https://buqiyuan.gitee.io/vue3-antdv-admin",
   "keywords": [
     "vue",
     "ant-design-vue",

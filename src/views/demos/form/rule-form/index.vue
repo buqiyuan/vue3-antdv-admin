@@ -11,7 +11,7 @@
         <a
           class="text-blue-500"
           target="_blank"
-          href="https://github.com/buqiyuan/vite-vue3-admin/blob/main/src/views/demos/form/rule-form/index.vue"
+          href="https://github.com/buqiyuan/vue3-antdv-admin/blob/main/src/views/demos/form/rule-form/index.vue"
         >
           查看源码
         </a>
