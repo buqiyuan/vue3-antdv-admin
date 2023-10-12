@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     createTime: '2021-09-20 15:09:20',
     updateTime: '2021-09-20 15:09:20',

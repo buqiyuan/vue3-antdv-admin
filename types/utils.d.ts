@@ -1,5 +1,7 @@
-/** 提取Promise返回值 */
-type UnboxPromise<T extends Promise<any>> = T extends Promise<infer U> ? U : never;
+/** 合并同名属性(覆盖式) */
+type MergePropertyTypes<T, U> = {
+  [K in keyof T]: K extends keyof U ? U[K] : T[K];
+} & U;
 
 /** 将联合类型转为交叉类型 */
 declare type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (

@@ -29,10 +29,14 @@ async function createI18nOptions() {
   };
 }
 
-const options = await createI18nOptions();
-export const i18n = createI18n(options);
+export const getI18n = (async () => createI18n(await createI18nOptions()))();
+
+export let i18n: Awaited<typeof getI18n>;
+
+getI18n.then((res) => (i18n = res));
 
 // setup i18n instance with global
 export async function setupI18n(app: App) {
+  await getI18n;
   app.use(i18n);
 }

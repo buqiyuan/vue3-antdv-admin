@@ -82,7 +82,7 @@
 </script>
 
 <style lang="less" scoped>
-  @import url('@/styles/theme.less');
+  @import '@/styles/theme.less';
 
   .themeBgColor(box);
 

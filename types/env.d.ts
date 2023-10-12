@@ -1,27 +1,21 @@
-/**
- * @description 环境变量类型声明
- */
-declare namespace NodeJS {
-  interface Process {
-    env: {
-      ENV: 'development' | 'production';
+/// <reference types="vite/client" />
 
-      /** 网站前缀 */
-      BASE_URL: string;
+interface ImportMetaEnv {
+  /** 网站标题 */
+  readonly VITE_APP_TITLE: string;
+  /** 网站部署的目录 */
+  readonly VITE_BASE_URL: string;
+  /** API 接口路径 */
+  readonly VITE_BASE_API: string;
+  /** socket 请求路径前缀 */
+  readonly VITE_BASE_SOCKET_PATH: string;
+  /** socket 命名空间 */
+  readonly VITE_BASE_SOCKET_NSP: string;
+  /** mock API 路径 */
+  readonly VITE_MOCK_API: string;
+  // 更多环境变量...
+}
 
-      /** API请求路径 */
-      VUE_APP_BASE_API: string;
-      /** socket路径 */
-      VUE_APP_BASE_SOCKET_PATH: string;
-      /** socket命名空间 */
-      VUE_APP_BASE_SOCKET_NSP: string;
-
-      /** mock api请求路径 */
-      VUE_APP_MOCK_API: string;
-      GITHUB_AUTH_TOKEN: string;
-      NODE_ENV: 'development' | 'production';
-      PORT?: string;
-      PWD: string;
-    };
-  }
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
 }

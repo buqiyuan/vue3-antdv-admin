@@ -5,7 +5,7 @@ import { WsAxios } from './WsAxios';
  * @type {WsAxios}
  */
 const wsAxios = new WsAxios({
-  url: process.env.VUE_APP_WEBSOCKET_API,
+  url: import.meta.env.VITE_WEBSOCKET_API,
   time: 6000,
   ping: () => ({
     source: 'h5',

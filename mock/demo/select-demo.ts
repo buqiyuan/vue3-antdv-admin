@@ -1,8 +1,9 @@
-const { resultSuccess } = require('../utils');
+import { resultSuccess } from '../_util';
+import type { MockMethod } from 'vite-plugin-mock';
 
 const demoList = (keyword, count = 20) => {
   const result = {
-    list: [],
+    list: [] as any[],
   };
   for (let index = 0; index < count; index++) {
     result.list.push({
@@ -13,14 +14,15 @@ const demoList = (keyword, count = 20) => {
   return result;
 };
 
-module.exports = [
+export default [
   {
-    url: '/select/getDemoOptions',
-    type: 'get',
+    url: '/mock-api/select/getDemoOptions',
     timeout: 1000,
+    method: 'get',
     response: ({ query }) => {
       const { keyword, count } = query;
+      console.log(keyword);
       return resultSuccess(demoList(keyword, count));
     },
   },
-];
+] as MockMethod[];

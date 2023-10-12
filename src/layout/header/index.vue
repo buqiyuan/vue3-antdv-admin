@@ -62,7 +62,7 @@
 
 <script lang="tsx" setup>
   import { computed, nextTick, type CSSProperties } from 'vue';
-  import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
+  import { useRouter, useRoute, type RouteRecordRaw } from 'vue-router';
   import {
     QuestionCircleOutlined,
     MenuFoldOutlined,
@@ -89,7 +89,7 @@
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { LOGIN_NAME } from '@/router/constant';
   import { TitleI18n } from '@/components/basic/title-i18n';
-  import { useThemeStore } from '@/store/modules/projectConfig';
+  import { useLayoutSettingStore } from '@/store/modules/layoutSetting';
 
   defineProps({
     collapsed: {
@@ -101,7 +101,7 @@
   });
   const emit = defineEmits(['update:collapsed']);
   const userStore = useUserStore();
-  const themeStore = useThemeStore();
+  const layoutSettingStore = useLayoutSettingStore();
   const lockscreenStore = useLockscreenStore();
   const keepAliveStore = useKeepAliveStore();
 
@@ -109,7 +109,7 @@
   const route = useRoute();
   const userInfo = computed(() => userStore.userInfo);
   const headerStyle = computed<CSSProperties>(() => {
-    const { navTheme, layout } = themeStore;
+    const { navTheme, layout } = layoutSettingStore.layoutSetting;
     const isDark = navTheme === 'dark' && layout === 'topmenu';
     return {
       backgroundColor: navTheme === 'realDark' || isDark ? '' : 'rgba(255, 255, 255, 0.85)',

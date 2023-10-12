@@ -1,3 +1,7 @@
+import { theme } from 'ant-design-vue';
+
+const { defaultAlgorithm, darkAlgorithm } = theme;
+
 export const themeStyle = [
   {
     label: '亮色主题风格',
@@ -14,46 +18,54 @@ export const themeStyle = [
 ] as const;
 
 /** 主题色 */
+export const themeColor = {
+  light: defaultAlgorithm,
+  dark: defaultAlgorithm,
+  realDark: darkAlgorithm,
+} as const;
+export type ThemeColor = keyof typeof themeColor;
+
+/** 主题色 */
 export const themeColors = [
   {
     title: '拂晓蓝（默认）',
-    key: 'daybreak',
-    value: 'rgb(24, 144, 255)',
+    key: 'techBlue',
+    value: '#1677FF',
   },
   {
     title: '薄暮',
     key: 'dust',
-    value: 'rgb(245, 34, 45)',
+    value: '#F5222D',
   },
   {
     title: '火山',
     key: 'volcano',
-    value: 'rgb(250, 84, 28)',
+    value: '#FA541C',
   },
   {
     title: '日暮',
     key: 'sunset',
-    value: 'rgb(250, 173, 20)',
+    value: '#FAAD14',
   },
   {
     title: '明青',
     key: 'cyan',
-    value: 'rgb(19, 194, 194)',
+    value: '#13C2C2',
   },
   {
     title: '极光绿',
     key: 'green',
-    value: 'rgb(82, 196, 26)',
+    value: '#52C41A',
   },
   {
     title: '极客蓝',
     key: 'geekblue',
-    value: 'rgb(47, 84, 235)',
+    value: '#2F54EB',
   },
   {
     title: '酱紫',
     key: 'purple',
-    value: 'rgb(114, 46, 209)',
+    value: '#722ED1',
   },
 ] as const;
 

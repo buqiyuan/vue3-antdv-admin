@@ -9,7 +9,7 @@
         <a
           class="text-blue-500"
           target="_blank"
-          href="https://github.com/buqiyuan/vue3-antd-admin/blob/main/src/views/demos/custom-modal.vue"
+          href="https://github.com/buqiyuan/vite-vue3-admin/blob/main/src/views/demos/custom-modal.vue"
         >
           查看源码
         </a>
@@ -22,7 +22,7 @@
         <a-button type="primary" @click="handleOpenHookModal">hook纯函数式</a-button>
       </Space>
     </a-card>
-    <DraggableModal v-model:visible="state.visible" @ok="onOk" />
+    <DraggableModal v-model:open="state.visible" @ok="onOk" />
     <UseModalComp></UseModalComp>
   </div>
 </template>

@@ -1,20 +1,21 @@
 <template>
-  <Button
-    v-bind="{ ...$attrs, ...props }"
-    :type="buttonType"
-    :class="[`ant-btn-${type}`, { 'basic-btn': colorVar }]"
-  >
-    <template v-for="(_, key) in $slots" #[key]>
-      <slot :name="key"></slot>
-    </template>
-  </Button>
+  <ConfigProvider :theme="btnTheme">
+    <Button v-bind="{ ...$attrs, ...props }" :type="buttonType">
+      <template v-for="(_, key) in $slots" #[key]>
+        <slot :name="key"></slot>
+      </template>
+    </Button>
+  </ConfigProvider>
 </template>
 <script lang="ts" setup>
-  import { computed, type ComputedRef } from 'vue';
-  import { Button } from 'ant-design-vue';
-  import { buttonProps, typeColorMap, buttonTypes } from './button';
-  import type { ButtonType } from './button';
-  import type { ButtonType as AButtonType } from 'ant-design-vue/es/button';
+  import { computed } from 'vue';
+  import { Button, ConfigProvider } from 'ant-design-vue';
+  import { buttonProps, buttonColorPrimary, aButtonTypes } from './button';
+  import type { ButtonType, AButtonType } from './button';
+
+  defineOptions({
+    name: 'AButton',
+  });
 
   const props = defineProps({
     ...buttonProps(),
@@ -25,24 +26,26 @@
     color: String,
   });
 
-  const buttonType = computed(() => {
-    const type = props.type!;
-    return buttonTypes.includes(type)
-      ? (type as ButtonType)
-      : Reflect.has(typeColorMap, type) || props.color
-      ? 'primary'
-      : 'default';
-  }) as ComputedRef<AButtonType>;
+  const isCustomType = computed(() => Reflect.has(buttonColorPrimary, props.type!));
 
-  const colorVar = computed(() => {
-    return props.color || typeColorMap[props.type!];
+  const buttonType = computed<AButtonType>(() => {
+    if (props.type && aButtonTypes.includes(props.type)) {
+      return props.type as AButtonType;
+    } else if (props.color || isCustomType.value) {
+      return 'primary';
+    }
+    return 'default';
+  });
+
+  const btnTheme = computed(() => {
+    const type = props.type!;
+    if (props.color || isCustomType.value) {
+      return {
+        token: {
+          colorPrimary: props.color || buttonColorPrimary[type],
+        },
+      };
+    }
+    return undefined;
   });
 </script>
-
-<style scoped>
-  .basic-btn {
-    --ant-primary-color: v-bind(colorVar);
-    --ant-primary-color-hover: v-bind(colorVar);
-    --ant-primary-color-active: v-bind(colorVar);
-  }
-</style>

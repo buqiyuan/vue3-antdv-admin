@@ -117,7 +117,7 @@
     width: 100vw;
     height: 100vh;
     padding-top: 240px;
-    background: url('~@/assets/login.svg');
+    background: url('@/assets/login.svg');
     background-size: 100%;
 
     .login-logo {

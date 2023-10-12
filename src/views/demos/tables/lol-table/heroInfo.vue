@@ -63,7 +63,7 @@
   const heroInfo = ref<any>({});
 
   onMounted(async () => {
-    const { data } = await getLolHeroInfo({ id: route.params.id });
+    const { data } = await getLolHeroInfo({ id: route.params.id as string });
     heroInfo.value = data;
     tabsViewStore.updateTabTitle(`${route.meta.title}(${heroInfo.value.title})`);
   });

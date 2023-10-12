@@ -3,7 +3,7 @@ import { createFromIconfontCN } from '@ant-design/icons-vue';
 import type { PropType } from 'vue';
 import { isString } from '@/utils/is';
 
-let scriptUrls = [`${process.env.BASE_URL}iconfont.js`];
+let scriptUrls = [`${import.meta.env.BASE_URL}iconfont.js`];
 
 let MyIconFont = createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',

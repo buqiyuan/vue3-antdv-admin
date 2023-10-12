@@ -37,35 +37,35 @@
               :disabled="!$auth('sys.task.once')"
               @confirm="handleOnce(record)"
             >
-              <Button type="link" size="small" :disabled="!$auth('sys.task.once')">
+              <a-button type="link" size="small" :disabled="!$auth('sys.task.once')">
                 <template #icon><ToolOutlined /></template>仅一次
-              </Button>
+              </a-button>
             </Popconfirm>
             <Popconfirm
               title="确认运行该任务吗?"
               :disabled="!$auth('sys.task.start') || !(record.status === 0)"
               @confirm="handleStart(record)"
             >
-              <Button
+              <a-button
                 type="link"
                 size="small"
                 :disabled="!$auth('sys.task.start') || !(record.status === 0)"
               >
                 <template #icon><CaretRightOutlined /></template>运行
-              </Button>
+              </a-button>
             </Popconfirm>
             <Popconfirm
               title="确认停止该任务吗?"
               :disabled="!$auth('sys.task.stop') || !(record.status === 1)"
               @confirm="handleStop(record)"
             >
-              <Button
+              <a-button
                 type="link"
                 size="small"
                 :disabled="!$auth('sys.task.stop') || !(record.status === 1)"
               >
                 <template #icon><PoweroffOutlined /></template>停止
-              </Button>
+              </a-button>
             </Popconfirm>
           </Descriptions.Item>
         </Descriptions>
@@ -76,7 +76,7 @@
 
 <script lang="ts" setup>
   import { ToolOutlined, CaretRightOutlined, PoweroffOutlined } from '@ant-design/icons-vue';
-  import { Descriptions, Tooltip, Popconfirm, Button } from 'ant-design-vue';
+  import { Descriptions, Tooltip, Popconfirm } from 'ant-design-vue';
   import { baseColumns } from './columns';
   import { taskSchemas } from './formSchemas';
   import type { TableListItem, TableColumnItem } from './columns';

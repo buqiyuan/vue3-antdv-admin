@@ -76,17 +76,13 @@
               {
                 label: '保存',
                 onClick: async () => {
-                  try {
-                    const result = await validateRow(record.id);
-                    message.loading({ content: '保存中...', key: record.id });
-                    console.log('result', result);
-                    console.log('保存', getEditFormModel(record.id));
-                    await waitTime(2000);
-                    cancelEditable(record.id);
-                    message.success({ content: '保存成功!', key: record.id, duration: 2 });
-                  } catch (error) {
-                    console.error(error);
-                  }
+                  const result = await validateRow(record.id);
+                  message.loading({ content: '保存中...', key: record.id });
+                  console.log('result', result);
+                  console.log('保存', getEditFormModel(record.id));
+                  await waitTime(2000);
+                  cancelEditable(record.id);
+                  message.success({ content: '保存成功!', key: record.id, duration: 2 });
                 },
               },
               {
