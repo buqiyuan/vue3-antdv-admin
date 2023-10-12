@@ -8,8 +8,7 @@
 - 在线预览（ [gitee](http://buqiyuan.gitee.io/vue3-antdv-admin/) / [vercel](https://vue3-antdv-admin.vercel.app/) ）
 - [swagger 文档](https://nest-api.buqiyuan.site/swagger-api/)
 - [后台地址](https://github.com/buqiyuan/nest-admin)
-- [react 版 coding](https://github.com/buqiyuan/react-antd-admin)
-- [vue-cli](https://github.com/buqiyuan/vue3-antdv-admin)
+- [vue-cli版](https://github.com/buqiyuan/vue3-antd-admin/tree/vue-cli)
 - [gitee 地址](https://gitee.com/buqiyuan/vue3-antdv-admin)
 - 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
 
@@ -35,7 +34,7 @@ pnpm install
 - 运行
 
 ```bash
-pnpm serve
+pnpm dev
 ```
 
 - 打包
@@ -46,7 +45,7 @@ pnpm build
 
 ## vscode 配置
 
-安装项目根目录.vscode 推荐的插件，再安装 Volar，并禁用 Vetur，重启 vscode 即可。
+安装项目根目录 `.vscode` 推荐的插件，再安装 `Volar`，并禁用 `Vetur`，重启 vscode 即可。
 
 > 使用了 Vue3.x 全家桶、ant-design-vue3.x 和 typescript4.x，实践 vue3.x 的新特性以及玩法，不得不说 vue3.x 的 Composition API 相比于 vue2.x 的 Options API 灵活很多，让我们可以灵活地组合组件逻辑，我们可以很轻松的使用 hooks 的形式去代替以前 mixins 等的写法。更多 hooks 可以参考[vueuse](https://vueuse.org/functions.html)
 
@@ -83,12 +82,6 @@ pnpm build
 ## 更新日志
 
 [CHANGELOG](./CHANGELOG.md)
-
-### QQ 交流群（2022-3-8）
-
-[![加入QQ群](https://img.shields.io/badge/570108996-blue.svg)](https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi)
-
-<div><img src="https://cdn.jsdelivr.net/gh/buqiyuan/MyImageHosting/imgs/vue3-antdv-admin/qq_group.jpg" height="280" /></div>
 
 ## 赞赏
 
