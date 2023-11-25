@@ -10,6 +10,13 @@ import {
   setupGlobalMethods,
   setupCustomComponents,
 } from '@/plugins';
+import '@bqy/mock-server';
+
+if (import.meta.hot) {
+  import.meta.hot.on('mockServer:add-mock-file', (data) => {
+    console.log('mockServer:add-mock-file', data);
+  });
+}
 
 const app = createApp(App);
 

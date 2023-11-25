@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { message as $message } from 'ant-design-vue';
+import axios, { CanceledError } from 'axios';
+import { message as $message, Modal } from 'ant-design-vue';
 import type { AxiosRequestConfig } from 'axios';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
@@ -26,9 +26,11 @@ const baseApiUrl = import.meta.env.VITE_BASE_API;
 /** mock请求路径前缀 */
 const baseMockUrl = import.meta.env.VITE_MOCK_API;
 
+const controller = new AbortController();
 const service = axios.create({
   // baseURL: baseApiUrl,
   timeout: 6000,
+  signal: controller.signal,
 });
 
 service.interceptors.request.use(
@@ -54,20 +56,22 @@ service.interceptors.response.use(
       $message.error(res.message || UNKNOWN_ERROR);
 
       // Illegal token
-      if (res.code === 11001 || res.code === 11002) {
-        window.localStorage.clear();
-        window.location.reload();
+      if ([11001, 11002].includes(res.code)) {
+        // 取消后续所有请求
+        controller.abort();
+        // window.localStorage.clear();
+        // window.location.reload();
         // to re-login
-        // Modal.confirm({
-        //   title: '警告',
-        //   content: res.message || '账号异常，您可以取消停留在该页上，或重新登录',
-        //   okText: '重新登录',
-        //   cancelText: '取消',
-        //   onOk: () => {
-        //     localStorage.clear();
-        //     window.location.reload();
-        //   }
-        // });
+        Modal.confirm({
+          title: '警告',
+          content: res.message || '账号异常，您可以取消停留在该页上，或重新登录',
+          okText: '重新登录',
+          cancelText: '取消',
+          onOk: () => {
+            localStorage.clear();
+            window.location.reload();
+          },
+        });
       }
 
       // throw other
@@ -79,10 +83,12 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    // 处理 422 或者 500 的错误异常提示
-    const errMsg = error?.response?.data?.message ?? UNKNOWN_ERROR;
-    $message.error({ content: errMsg, key: errMsg });
-    error.message = errMsg;
+    if (!(error instanceof CanceledError)) {
+      // 处理 422 或者 500 的错误异常提示
+      const errMsg = error?.response?.data?.message ?? UNKNOWN_ERROR;
+      $message.error({ content: errMsg, key: errMsg });
+      error.message = errMsg;
+    }
     return Promise.reject(error);
   },
 );
@@ -109,7 +115,7 @@ export const request = async <T = any>(
     const { successMsg, errorMsg, permCode, isMock, isGetDataDirectly = true } = options;
     // 如果当前是需要鉴权的接口 并且没有权限的话 则终止请求发起
     if (permCode && !useUserStore().perms.includes(permCode)) {
-      return $message.error('你没有访问该接口的权限，请联系管理员！');
+      return $message.error('没有访问该接口的权限，请联系管理员！');
     }
     const fullUrl = `${(isMock ? baseMockUrl : baseApiUrl) + config.url}`;
     config.url = uniqueSlash(fullUrl);

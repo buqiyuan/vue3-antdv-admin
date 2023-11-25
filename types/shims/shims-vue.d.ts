@@ -4,9 +4,8 @@ import type { PermissionType } from '@/core/permission/modules/types';
 //     import * as vue from 'vue';
 //     export declare const render: vue.RootRenderFunction<Element | DocumentFragment>
 // }
-
-declare module '@vue/runtime-core' {
-  export interface ComponentCustomProperties {
+declare module 'vue' {
+  interface ComponentCustomProperties {
     $auth: (perm: PermissionType) => boolean;
     Reflect: Reflect;
   }

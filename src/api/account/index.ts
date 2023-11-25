@@ -19,7 +19,7 @@ export function updatePassword(data: any) {
 
 export function getInfo() {
   return request<API.AdminUserInfo>({
-    url: 'account/info',
+    url: 'account/profile',
     method: 'get',
   });
 }

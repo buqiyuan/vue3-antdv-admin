@@ -61,8 +61,8 @@
     loading: false,
     captcha: '',
     formInline: {
-      username: '',
-      password: '',
+      username: 'admin',
+      password: 'a123456',
       verifyCode: '',
       captchaId: '',
     },
