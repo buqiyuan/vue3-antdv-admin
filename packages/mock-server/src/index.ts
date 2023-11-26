@@ -44,7 +44,7 @@ const initializeMocks = async () => {
     worker.start({
       onUnhandledRequest: 'bypass',
       serviceWorker: {
-        url: `${import.meta.env.BASE_URL}/mockServiceWorker.js?t=${Date.now()}`.replace(
+        url: `${import.meta.env.BASE_URL || ''}/mockServiceWorker.mjs?t=${Date.now()}`.replace(
           /\/{2,}/g,
           '/',
         ),
