@@ -779,9 +779,8 @@ self.addEventListener("fetch", function(event) {
   if (activeClientIds.size === 0) {
     return;
   }
-  const isd = isMatchHandler(request);
-  console.log("isMockRequest", request.url, isd);
-  if (isd === false) {
+  const isMockRequest = isMatchHandler(request);
+  if (isMockRequest === false) {
     return;
   }
   const requestId = crypto.randomUUID();

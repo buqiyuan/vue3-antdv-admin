@@ -10,15 +10,10 @@ import {
   setupGlobalMethods,
   setupCustomComponents,
 } from '@/plugins';
-import '@bqy/mock-server';
-
-if (import.meta.hot) {
-  import.meta.hot.on('mockServer:add-mock-file', (data) => {
-    console.log('mockServer:add-mock-file', data);
-  });
-}
 
 const app = createApp(App);
+
+fetch('/mock-api/user/1');
 
 function setupPlugins() {
   // 注册全局常用的ant-design-vue组件

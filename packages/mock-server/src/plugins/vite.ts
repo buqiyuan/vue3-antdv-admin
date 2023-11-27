@@ -1,18 +1,60 @@
 import { copyFile } from 'node:fs';
 import { join } from 'node:path';
-import chokidar from 'chokidar';
-import type { Plugin } from 'vite';
+import { PluginOptions } from '../types';
+import { MockFileWatcher } from './MockFileWatcher';
+import type { Plugin, ResolvedConfig } from 'vite';
 
-type Options = {
-  publicDir?: string;
-};
+export default (options: PluginOptions = {}): Plugin => {
+  const virtualModuleId = 'virtual:vite-plugin-msw';
+  const resolvedVirtualModuleId = `\0${virtualModuleId}`;
 
-export const partialConfigPlugin = (options: Options = {}): Plugin => {
-  console.log('options', options);
+  let resolvedConfig: ResolvedConfig;
+  // const { mockDir = 'mocks' } = options;
+  options.mockDir ||= 'mocks';
 
   return {
-    name: '@bqy:mock-server',
+    name: 'vite-plugin-msw',
+    resolveId(id) {
+      if (id === virtualModuleId) {
+        return resolvedVirtualModuleId;
+      }
+      return;
+    },
+    load(id) {
+      if (id === resolvedVirtualModuleId) {
+        const { pathname } = new URL(options.mockDir!, 'http://localhost');
+        return `
+          export const mockModules = import.meta.glob('${pathname}/*.ts', {
+            eager: true,
+            import: 'default',
+          }); 
+        `;
+      }
+      return;
+    },
+    // config() {
+    //   return {
+    //     define: {
+    //       __VITE_PLUGIN_MSW_OPTIONS__: options,
+    //     },
+    //   };
+    // },
+    transformIndexHtml: {
+      order: 'pre',
+      handler(html) {
+        const scriptStr = `
+          <script type="module">
+            import '@bqy/mock-server';
+          </script>
+        `;
+        return html.replace(/<body>/, `<body>${scriptStr}`);
+      },
+    },
     configResolved(config) {
+      resolvedConfig = config;
+      resolvedConfig;
+      // console.log('resolvedConfig', resolvedConfig);
+
       const publicDir = options.publicDir || config.publicDir;
       // console.log('publicDir:', publicDir);
       if (publicDir) {
@@ -29,24 +71,17 @@ export const partialConfigPlugin = (options: Options = {}): Plugin => {
       }
     },
     configureServer(server) {
-      let watcher;
-      server.ws.on('connection', () => {
-        if (watcher) {
+      let mockFileWatcher: MockFileWatcher;
+      server.ws.on('connection', async () => {
+        if (mockFileWatcher) {
+          mockFileWatcher.restart();
           return;
         }
-        // Initialize watcher.
-        watcher = chokidar.watch('packages/**/mocks/*.ts', {
-          ignored: /(^|[/\\])\../, // ignore dotfiles
-          persistent: true,
-        });
 
-        // mock 文件变更时，通知前端 Mock Service Worker 更新 Mock 路由系统数据
-        watcher.on('change', (path) => {
-          server.ws.send('mockServer:update-mock-file', { path });
-          console.log(`File ${path} has been changed`);
-        });
+        mockFileWatcher = new MockFileWatcher(server, options);
+        mockFileWatcher.start();
       });
     },
-    apply: 'serve',
+    // apply: 'serve',
   };
 };

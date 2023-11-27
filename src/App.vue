@@ -14,7 +14,6 @@
   import { LockScreen } from '@/components/basic/lockscreen';
 
   const route = useRoute();
-
   watchEffect(() => {
     if (route.meta?.title) {
       // 翻译网页标题

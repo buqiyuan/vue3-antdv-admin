@@ -11,7 +11,7 @@ export default defineConfig([
     format: ['cjs', 'esm'],
   },
   {
-    entry: ['src/index.ts'],
+    entry: ['src/browser/index.ts'],
     splitting: false,
     outDir: 'dist',
     format: ['esm'],
@@ -21,6 +21,8 @@ export default defineConfig([
      */
     platform: 'browser',
     minify: false,
+    // 排除自定义的 vite 虚拟模块
+    external: ['virtual:vite-plugin-msw'],
   },
   {
     entry: ['src/mockServiceWorker.js'],

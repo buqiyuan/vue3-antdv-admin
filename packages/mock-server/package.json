@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "description": "",
   "module": "./dist/index.mjs",
+  "main": "./dist/index.mjs",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.mjs"
     },
     "./vite": {
       "import": "./dist/vite.mjs",

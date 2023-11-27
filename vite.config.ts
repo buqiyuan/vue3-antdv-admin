@@ -4,13 +4,12 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import checker from 'vite-plugin-checker';
-import { viteMockServe } from 'vite-plugin-mock';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
-import { partialConfigPlugin } from '@bqy/mock-server/vite';
+import mockServerPlugin from '@bqy/mock-server/vite';
 import pkg from './package.json';
 import type { UserConfig, ConfigEnv } from 'vite';
 
@@ -52,7 +51,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
-      partialConfigPlugin(),
+      mockServerPlugin({ enableProd: isBuild }),
       legacy({
         targets: ['defaults', 'not IE 11', 'chrome 79', 'maintained node versions'],
         additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
@@ -64,18 +63,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         iconDirs: [resolve(CWD, 'src/assets/icons')],
         // Specify symbolId format
         symbolId: 'svg-icon-[dir]-[name]',
-      }),
-      viteMockServe({
-        ignore: /^_/,
-        mockPath: 'mock',
-        localEnabled: !isBuild,
-        prodEnabled: isBuild,
-        logger: true,
-        injectCode: `
-          import { setupProdMockServer } from '../mock/_createProductionServer';
-
-          setupProdMockServer();
-          `,
       }),
       Components({
         dts: 'types/components.d.ts',
