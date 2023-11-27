@@ -1,15 +1,18 @@
 import { mockModules } from 'virtual:vite-plugin-msw';
 import { mockServerEvent } from '../constants';
-import type { SetupWorker } from 'msw/browser';
 import type { RequestHandler } from 'msw';
+import type { SetupWorker } from 'msw/browser';
 
 export class ClientHotUpdater {
   moduleCache = new Map<string, RequestHandler[]>();
   handlers: RequestHandler[] = [];
 
   constructor(private worker: SetupWorker) {
-    this.handlers = Object.values(mockModules).flatMap((n) => n);
+    this.updateHandlers(Object.values(mockModules));
     this.resetHandlers();
+
+    // console.log('mockModules', mockModules);
+    // console.log('handlers', this.handlers);
   }
 
   init() {
@@ -22,12 +25,12 @@ export class ClientHotUpdater {
 
     // 此代码仅在开发阶段有效
     if (import.meta.hot) {
-      // 通知服务端，前端已就绪
+      // 通知插件服务端，前端已就绪
       import.meta.hot.send(mockServerEvent.clientReady);
 
       // 当 Mock 文件添加时
       import.meta.hot.on(mockServerEvent.add, async ({ path }) => {
-        // console.log('mockServer:add-mock-file', path);
+        console.log('mockServer:add-mock-file', path);
         const module = await import(/* @vite-ignore */ `/${path}?t=${Date.now()}`);
         this.moduleCache.set(path, module.default);
         this.updateHandlersAndInformSW();
@@ -53,6 +56,16 @@ export class ClientHotUpdater {
     this.worker.resetHandlers(...this.handlers);
   }
 
+  updateHandlers(_modules?: RequestHandler[][]) {
+    const modules = _modules || [...this.moduleCache.values()];
+    this.handlers = modules
+      .flatMap((n) => n)
+      .filter((n) => {
+        // console.log(n instanceof HttpHandler);
+        return n.constructor.name === 'HttpHandler';
+      });
+  }
+
   updateHandlersAndInformSW() {
     this.updateHandlers();
     this.resetHandlers();
@@ -74,9 +87,5 @@ export class ClientHotUpdater {
       type: 'updateMockHeaders',
       mockHeaders: this.getMockHeaders(),
     };
-  }
-
-  updateHandlers() {
-    this.handlers = [...this.moduleCache.values()].flatMap((n) => n);
   }
 }

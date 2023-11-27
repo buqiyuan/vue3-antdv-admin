@@ -4,3 +4,7 @@ export const mockServerEvent = {
   remove: 'mockServer:remove-mock-file',
   clientReady: 'mockServer:client-ready',
 } as const;
+
+export const extensions = ['ts', 'js', 'mjs', 'cjs', 'cts', 'mts'];
+
+export const DEFAULT_MOCK_DIR = 'mocks';

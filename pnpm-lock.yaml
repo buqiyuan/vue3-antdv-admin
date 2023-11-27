@@ -231,9 +231,6 @@ importers:
 
   packages/mock-server:
     devDependencies:
-      '@faker-js/faker':
-        specifier: ^8.3.1
-        version: 8.3.1
       '@umijs/openapi':
         specifier: ^1.9.2
         version: 1.9.2(chokidar@3.5.3)

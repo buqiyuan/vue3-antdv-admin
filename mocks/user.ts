@@ -1,6 +1,5 @@
 import { http, HttpResponse, delay } from 'msw';
 import { faker } from '@faker-js/faker/locale/zh_CN';
-import type { RequestHandler } from 'msw';
 
 export default [
   http.get('/mock-api/user/:id', async () => {
@@ -21,4 +20,4 @@ export default [
       data: '登录成功',
     });
   }),
-] as RequestHandler[];
+];

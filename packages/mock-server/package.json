@@ -24,7 +24,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@faker-js/faker": "^8.3.1",
     "@umijs/openapi": "^1.9.2",
     "chokidar": "^3.5.3",
     "msw": "^2.0.9",

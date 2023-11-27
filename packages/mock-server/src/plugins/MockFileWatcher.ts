@@ -1,11 +1,9 @@
 import { join } from 'node:path';
 import chokidar from 'chokidar';
 import { PluginOptions } from '../types';
-import { mockServerEvent } from '../constants';
+import { DEFAULT_MOCK_DIR, extensions, mockServerEvent } from '../constants';
 import type { FSWatcher } from 'chokidar';
 import type { ViteDevServer } from 'vite';
-
-const extensions = ['ts', 'js', 'mjs', 'cjs', 'cts', 'mts'];
 
 export class MockFileWatcher {
   watcher!: FSWatcher;
@@ -14,11 +12,6 @@ export class MockFileWatcher {
     private server: ViteDevServer,
     public options: PluginOptions,
   ) {
-    this.options = {
-      mockDir: 'mocks',
-      ...this.options,
-    };
-
     this.server.ws.on('close', () => {
       this.close();
     });
@@ -26,16 +19,19 @@ export class MockFileWatcher {
 
   isClientReady() {
     return new Promise((resolve) => {
-      this.server.ws.on(mockServerEvent.clientReady, (data) => {
+      const cb = (data) => {
+        this.server.ws.off(mockServerEvent.clientReady, cb);
         resolve(data);
-      });
+      };
+      this.server.ws.on(mockServerEvent.clientReady, cb);
     });
   }
 
   async start() {
     await this.isClientReady();
+    console.log('isClientReady');
 
-    const { mockDir } = this.options;
+    const { mockDir = DEFAULT_MOCK_DIR } = this.options;
 
     const watchPaths = `${join(mockDir!, `./**/*.{${extensions.join(',')}}`)}`;
     console.log('watchPaths', watchPaths);

@@ -1,6 +1,7 @@
 import { copyFile } from 'node:fs';
 import { join } from 'node:path';
 import { PluginOptions } from '../types';
+import { DEFAULT_MOCK_DIR, extensions } from '../constants';
 import { MockFileWatcher } from './MockFileWatcher';
 import type { Plugin, ResolvedConfig } from 'vite';
 
@@ -10,7 +11,7 @@ export default (options: PluginOptions = {}): Plugin => {
 
   let resolvedConfig: ResolvedConfig;
   // const { mockDir = 'mocks' } = options;
-  options.mockDir ||= 'mocks';
+  options.mockDir ||= DEFAULT_MOCK_DIR;
 
   return {
     name: 'vite-plugin-msw',
@@ -24,7 +25,7 @@ export default (options: PluginOptions = {}): Plugin => {
       if (id === resolvedVirtualModuleId) {
         const { pathname } = new URL(options.mockDir!, 'http://localhost');
         return `
-          export const mockModules = import.meta.glob('${pathname}/*.ts', {
+          export const mockModules = import.meta.glob('${pathname}/*.{${extensions.join(',')}}', {
             eager: true,
             import: 'default',
           }); 
@@ -72,9 +73,9 @@ export default (options: PluginOptions = {}): Plugin => {
     },
     configureServer(server) {
       let mockFileWatcher: MockFileWatcher;
+
       server.ws.on('connection', async () => {
         if (mockFileWatcher) {
-          mockFileWatcher.restart();
           return;
         }
 

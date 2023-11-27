@@ -13,7 +13,7 @@ import {
 
 const app = createApp(App);
 
-fetch('/mock-api/user/1');
+fetch('/mock-api/user/1').then((r) => r.json());
 
 function setupPlugins() {
   // 注册全局常用的ant-design-vue组件
