@@ -1,12 +1,12 @@
 import type { ColumnsType } from 'ant-design-vue/es/table';
-import type { FormSchema } from '@/components/core/schema-form';
+import type { FormSchema, GetFieldKeys } from '@/components/core/schema-form';
 import type { ActionItem } from './tableAction';
 import type { TableActionType } from '@/components/core/dynamic-table/src/types';
 import type { DataIndex } from 'ant-design-vue/es/vc-table/interface';
 
 export type ColumnType<T> = ColumnsType<T>[number];
 
-export type CustomRenderParams<T = any> = Omit<
+export type CustomRenderParams<T extends object = Recordable> = Omit<
   Parameters<NonNullable<ColumnType<T>['customRender']>>[number],
   'column'
 > & { column: TableColumn<T> };
@@ -30,8 +30,8 @@ export type CustomRenderParams<T = any> = Omit<
 /**
  * 表格属性
  */
-export type TableColumn<T = Recordable> = ColumnType<T> & {
-  dataIndex?: keyof T | ColumnKeyFlagType | Omit<DataIndex, string>;
+export type TableColumn<T extends object = Recordable> = ColumnType<T> & {
+  dataIndex?: GetFieldKeys<T> | ColumnKeyFlagType | Omit<DataIndex, string>;
   /** 指定搜索的字段 */
   searchField?: string;
   /** 在查询表单中不展示此项 */

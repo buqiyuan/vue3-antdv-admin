@@ -1,42 +1,62 @@
-interface Permissions {
-  [key: string]: {
-    [key: string]: string;
-  };
-}
-
-const modulesPermissionFiles = import.meta.glob<Recordable>('./**/*.ts', { eager: true });
-/**
- * 根据接口路径生成接口权限码, eg: sys/user/add => sys:user:add
- * @param str 接口路径
- * @returns {string}
- */
-export const generatePermCode = (str: string) => str.replace(/\//g, ':');
-
-const filterDirs = ['/index.ts', './types.ts'];
-
 /**
  * @description 权限列表
  */
-export const permissions: Permissions = Object.keys(modulesPermissionFiles).reduce(
-  (modules, modulePath) => {
-    if (filterDirs.some((n) => modulePath.includes(n))) return modules;
-    // set './app.js' => 'app'
-    // set './sys/app.js' => 'sysApp'
-    const moduleName = modulePath
-      .replace(/^\.\/(.*)\.\w+$/, '$1')
-      .replace(/[-_/][a-z]/gi, (s) => s.substring(1).toUpperCase());
-    const value = modulesPermissionFiles[modulePath].default;
+export const permissions = [
+  'system:user:list',
+  'system:role:list',
+  'system:menu:list',
+  'system:online:list',
+  'system:log:login:list',
+  'system:serve:stat',
+  'system:task:list',
+  'dashboard:workbench',
+  'dashboard:analysis',
+  'system:user:read',
+  'system:user:create',
+  'system:user:delete',
+  'system:user:update',
+  'system:role:create',
+  'system:role:delete',
+  'system:role:update',
+  'system:role:read',
+  'system:menu:create',
+  'system:menu:delete',
+  'system:menu:update',
+  'system:menu:read',
+  'system:online:kick',
+  'system:task:create',
+  'system:task:delete',
+  'system:task:once',
+  'system:task:read',
+  'system:task:start',
+  'system:task:stop',
+  'system:task:update',
+  'system:log:task:list',
+  'system:tools:email',
+  'tools:email:send',
+  'tools:storage:list',
+  'upload',
+  'tools:storage:delete',
+  'system:user:password',
+  'system:dict:list',
+  'system:dict:create',
+  'system:dict:update',
+  'system:dict:delete',
+  'system:dict:info',
+  'system:dept:list',
+  'system:dept:create',
+  'system:dept:update',
+  'system:dept:delete',
+  'system:dept:read',
+  'app:health:network',
+  'app:health: database',
+  'todo:create',
+  'todo:update',
+  'todo:delete',
+  'todo:read',
+  'todo:list',
+] as const;
 
-    // pass sys/user/add => sys:user:add
-    const permissionModule = Object.keys(value).reduce((obj, key) => {
-      obj[key] = generatePermCode(value[key]);
-      return obj;
-    }, {});
+export type PermissionType = (typeof permissions)[number];
 
-    modules[moduleName] = permissionModule;
-    // console.log('permissions modules', modules);
-    return modules;
-  },
-  {},
-);
 console.log('permissions', permissions);

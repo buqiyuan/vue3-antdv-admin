@@ -1,4 +1,4 @@
-import type { PermissionType } from '@/core/permission/modules/types';
+import type { PermissionType } from '@/core/permission/modules/';
 
 // declare module '*.vue' {
 //     import * as vue from 'vue';

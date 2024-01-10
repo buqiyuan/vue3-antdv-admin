@@ -1,4 +1,4 @@
-import { computed, ref, unref, watch } from 'vue';
+import { computed, reactive, ref, unref, watch } from 'vue';
 import { omit } from 'lodash-es';
 import { useScroll } from './useScroll';
 import type { Slots } from 'vue';
@@ -14,6 +14,11 @@ export type UseTableStateParams = {
   props: DynamicTableProps;
   slots: Slots;
 };
+
+interface SearchState {
+  sortInfo: Recordable;
+  filterInfo: Record<string, string[]>;
+}
 
 export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const { t } = useI18n();
@@ -40,6 +45,11 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const editableRowKeys = ref(new Set<Key>());
   /** 当前所有正在被编辑的单元格key的格式为：`${recordKey}.${dataIndex}`，仅`editableType`为`cell`时有效  */
   const editableCellKeys = ref(new Set<Key>());
+  /** 表格排序或过滤时的搜索参数 */
+  const searchState = reactive<SearchState>({
+    sortInfo: {},
+    filterInfo: {},
+  });
 
   if (!Object.is(props.pagination, false)) {
     paginationRef.value = {
@@ -123,5 +133,6 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     editFormErrorMsgs,
     editableCellKeys,
     editableRowKeys,
+    searchState,
   };
 };

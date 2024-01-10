@@ -126,7 +126,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
   }
 
   /** 获取当前行的form schema */
-  const getColumnFormSchema = (item: TableColumn, record: Recordable): FormSchema<string> => {
+  const getColumnFormSchema = (item: TableColumn, record: Recordable): FormSchema => {
     const key = getColumnKey(item) as string;
     /** 是否继承搜索表单的属性 */
     const isExtendSearchFormProps = !Object.is(

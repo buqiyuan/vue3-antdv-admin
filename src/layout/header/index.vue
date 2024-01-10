@@ -37,7 +37,7 @@
       <FullScreen />
       <LocalePicker />
       <Dropdown placement="bottomRight">
-        <Avatar :src="userInfo.headImg" :alt="userInfo.name">{{ userInfo.name }}</Avatar>
+        <Avatar :src="userInfo.avatar" :alt="userInfo.username">{{ userInfo.username }}</Avatar>
         <template #overlay>
           <Menu>
             <Menu.Item @click="$router.push({ name: 'account-about' })">

@@ -2,6 +2,7 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   // https://github.com/lokalise/i18n-ally/issues/994
   "ts-node": {
+    "esm": true,
     "compilerOptions": {
       "module": "es2015",
       "moduleResolution": "node"
@@ -21,6 +22,7 @@
     "allowJs": true,
     "sourceMap": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "lib": ["dom", "esnext"],
@@ -35,6 +37,7 @@
   "include": [
     "**/*.d.ts",
     "mock/**/*",
+    "mocks/**/*",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",

@@ -1,15 +1,9 @@
 import { tableProps } from 'ant-design-vue/es/table';
+import tableConfig from './dynamic-table.config';
 import type DynamicTable from './dynamic-table.vue';
 import type { PropType, ExtractPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
-import type {
-  LoadDataParams,
-  TableColumn,
-  OnChangeCallbackParams,
-  EditableType,
-  OnSave,
-  OnCancel,
-} from './types/';
+import type { TableColumn, OnChangeCallbackParams, EditableType, OnSave, OnCancel } from './types/';
 import type { SchemaFormProps } from '@/components/core/schema-form';
 import type { GetRowKey } from 'ant-design-vue/es/table/interface';
 import { isBoolean } from '@/utils/is';
@@ -36,14 +30,27 @@ export const dynamicTableProps = {
     required: true,
     default: () => [],
   },
+  sortFn: {
+    type: Function as PropType<(sortInfo: OnChangeCallbackParams[2]) => any>,
+    default: tableConfig.defaultSortFn,
+  },
+  filterFn: {
+    type: Function as PropType<(data: OnChangeCallbackParams[1]) => any>,
+    default: tableConfig.defaultFilterFn,
+  },
+  /** 接口请求配置 */
+  fetchConfig: {
+    type: Object as PropType<Partial<typeof tableConfig.fetchConfig>>,
+    default: () => tableConfig.fetchConfig,
+  },
   /** 表格数据请求函数 */
   dataRequest: {
     // 获取列表数据函数API
     type: Function as PropType<
       (
-        params?: LoadDataParams,
+        params?: Recordable,
         onChangeParams?: OnChangeCallbackParams,
-      ) => Promise<API.TableListResult>
+      ) => Promise<API.TableListResult | any[]>
     >,
   },
   /** 是否显示索引号 */
@@ -121,6 +128,7 @@ export type DynamicTableProps = ExtractPropTypes<typeof dynamicTableProps>;
 export const dynamicTableEmits = {
   change: (...rest: OnChangeCallbackParams) => rest.length === 4,
   'toggle-advanced': (isAdvanced: boolean) => isBoolean(isAdvanced),
+  'fetch-error': (error) => error,
 };
 
 export type DynamicTableEmits = typeof dynamicTableEmits;

@@ -117,8 +117,8 @@
   },
   "[vue]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true,
-      "source.fixAll.stylelint": true
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.stylelint": "explicit"
     }
   },
   "i18n-ally.localesPaths": ["src/locales/lang"],
@@ -129,5 +129,10 @@
   "i18n-ally.enabledParsers": ["ts"],
   "i18n-ally.sourceLanguage": "en",
   "i18n-ally.displayLanguage": "zh-CN",
-  "i18n-ally.enabledFrameworks": ["vue", "react"]
+  "i18n-ally.enabledFrameworks": ["vue", "react"],
+  "[typescript][typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  }
 }

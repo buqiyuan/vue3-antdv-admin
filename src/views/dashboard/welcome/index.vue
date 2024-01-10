@@ -34,7 +34,7 @@
 
   // import performanceMonitor from '@/utils/performanceMonitor'
 
-  const loginIp = useUserStore().userInfo?.loginIp;
+  const loginIp = useUserStore().userInfo?.phone;
   const wsStore = useWsStore();
   // 是否联网
   const { online } = useOnline();

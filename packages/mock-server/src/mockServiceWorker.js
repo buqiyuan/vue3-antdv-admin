@@ -10,7 +10,7 @@
 
 import { isMatchHandler } from './utils/isMatchHandler';
 
-const INTEGRITY_CHECKSUM = '0877fcdc026242810f5bfde0d7178db4';
+const INTEGRITY_CHECKSUM = 'c5f7f8e188b673ea4e677df7ea3c5a39';
 const IS_MOCKED_RESPONSE = Symbol('isMockedResponse');
 const activeClientIds = new Set();
 

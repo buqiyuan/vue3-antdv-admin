@@ -107,7 +107,7 @@ export const columns: TableColumn<ListItemType>[] = [
               options: getClothesByGender(formModel.gender),
             },
           });
-          formModel['clothes'] = undefined;
+          formModel['clothes'] = '';
         },
       }),
     },

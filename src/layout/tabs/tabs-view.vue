@@ -42,6 +42,13 @@
                   <minus-outlined />
                   {{ $t('layout.multipleTab.closeAll') }}
                 </Menu.Item>
+                <template v-if="isDevMode">
+                  <Menu.Divider />
+                  <Menu.Item key="7" @click="openPageFile(pageItem)">
+                    <column-width-outlined />
+                    打开页面文件
+                  </Menu.Item>
+                </template>
               </Menu>
             </template>
           </Dropdown>
@@ -72,6 +79,7 @@
                 <minus-outlined />
                 {{ $t('layout.multipleTab.closeAll') }}
               </Menu.Item>
+              <Menu.Divider />
             </Menu>
           </template>
         </Dropdown>
@@ -107,6 +115,7 @@
     ColumnWidthOutlined,
     MinusOutlined,
   } from '@ant-design/icons-vue';
+  import { isFunction } from 'lodash-es';
   import { Dropdown, Tabs, message, Menu } from 'ant-design-vue';
   import type { RouteLocation } from 'vue-router';
   import { Storage } from '@/utils/Storage';
@@ -115,6 +124,7 @@
   import { useKeepAliveStore } from '@/store/modules/keepAlive';
   import { REDIRECT_NAME } from '@/router/constant';
   import { TitleI18n } from '@/components/basic/title-i18n';
+  import { isDevMode } from '@/constants/env';
 
   type RouteItem = Omit<RouteLocation, 'matched' | 'redirectedFrom'>;
 
@@ -227,6 +237,35 @@
     // tabsViewMutations.closeAllTabs()
     tabsViewStore.closeAllTabs();
     router.replace('/');
+  };
+
+  /** 打开页面所在的文件(仅在开发环境有效) */
+  const openPageFile = async (pageItem) => {
+    if (!isDevMode) {
+      console.warn('仅在开发环境有效');
+      return;
+    }
+
+    const routes = router.getRoutes();
+    const target = routes.find((n) => n.name === pageItem.name);
+    if (target) {
+      const comp = target.components?.default;
+      // @ts-ignore
+      let __file = comp?.__file as string;
+      if (isFunction(comp)) {
+        try {
+          // @ts-ignore
+          const res = await comp();
+          __file = res?.default?.__file;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      if (__file) {
+        const filePath = `/__open-in-editor?file=${__file}`;
+        fetch(filePath);
+      }
+    }
   };
 </script>
 

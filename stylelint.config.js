@@ -15,9 +15,18 @@ module.exports = {
       customSyntax: 'postcss-less',
       extends: ['stylelint-config-standard', 'stylelint-config-recommended-vue'],
     },
+    {
+      files: ['*.scss', '**/*.scss'],
+      customSyntax: 'postcss-scss',
+      extends: ['stylelint-config-standard-scss', 'stylelint-config-recommended-vue/scss'],
+      rule: {
+        'scss/percent-placeholder-pattern': null,
+      },
+    },
   ],
   rules: {
-    'value-keyword-case': null,
+    'prettier/prettier': true,
+    'media-feature-range-notation': null,
     'selector-not-notation': null,
     'import-notation': null,
     'function-no-unknown': null,
@@ -31,7 +40,7 @@ module.exports = {
     'selector-pseudo-element-no-unknown': [
       true,
       {
-        ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted'],
+        ignorePseudoElements: ['v-deep'],
       },
     ],
     'at-rule-no-unknown': [
@@ -53,7 +62,6 @@ module.exports = {
       },
     ],
     'no-empty-source': null,
-    'string-quotes': null,
     'named-grid-areas-no-invalid': null,
     'no-descending-specificity': null,
     'font-family-no-missing-generic-family-keyword': null,

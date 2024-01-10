@@ -51,7 +51,7 @@
   import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
   import { useRoute } from 'vue-router';
   import { Carousel, Card } from 'ant-design-vue';
-  import { getLolHeroInfo } from '@/api/demos/hero';
+  import { getLolHeroInfo } from '@/api/demo/hero';
   import { useTabsViewStore } from '@/store/modules/tabsView';
 
   defineOptions({

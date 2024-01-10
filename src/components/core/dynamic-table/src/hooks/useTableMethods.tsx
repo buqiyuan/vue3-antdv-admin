@@ -1,12 +1,13 @@
 import { unref, nextTick, getCurrentInstance } from 'vue';
-import { isObject, isFunction } from 'lodash-es';
+import { isObject, isFunction, isBoolean, get } from 'lodash-es';
 import { useInfiniteScroll } from '@vueuse/core';
+import tableConfig from '../dynamic-table.config';
 import { useEditable } from './useEditable';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { Pagination, TableState } from './useTableState';
 import type { FormProps } from 'ant-design-vue';
-import { isAsyncFunction, isBoolean } from '@/utils/is';
+import { warn } from '@/utils/log';
 
 export type UseInfiniteScrollParams = Parameters<typeof useInfiniteScroll>;
 
@@ -18,11 +19,16 @@ export type UseTableMethodsContext = {
   emit: DynamicTableEmitFn;
 };
 
-let retryFetchCount = 2;
-
 export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) => {
-  const { innerPropsRef, tableData, loadingRef, queryFormRef, paginationRef, editFormErrorMsgs } =
-    state;
+  const {
+    innerPropsRef,
+    tableData,
+    loadingRef,
+    queryFormRef,
+    paginationRef,
+    editFormErrorMsgs,
+    searchState,
+  } = state;
   // 可编辑行
   const editableMethods = useEditable({ state, props });
 
@@ -34,7 +40,9 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @description 表格查询
    */
   const handleSubmit = (params, page = 1) => {
-    params.page = page;
+    updatePagination({
+      current: page,
+    });
     fetchData(params);
   };
 
@@ -44,70 +52,67 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @description 获取表格数据
    */
   const fetchData = async (params = {}, rest?: OnChangeCallbackParams) => {
-    const [pagination] = rest || [];
-    // 如果用户没有提供dataSource并且dataRequest是一个函数，那就进行接口请求
-    if (
-      Object.is(props.dataSource, undefined) &&
-      (isFunction(props.dataRequest) || isAsyncFunction(props.dataRequest))
-    ) {
+    console.log('rest', rest);
+    const { dataRequest, dataSource, fetchConfig } = props;
+
+    if (!dataRequest || !isFunction(dataRequest) || Array.isArray(dataSource)) {
+      return;
+    }
+    try {
+      let pageParams: Recordable = {};
+      const pagination = unref(paginationRef)!;
+
+      const { pageField, sizeField, listField, totalField } = {
+        ...tableConfig.fetchConfig,
+        ...fetchConfig,
+      };
+
+      // 是否启用了分页
+      const enablePagination = isObject(pagination);
+      if (enablePagination) {
+        pageParams = {
+          [pageField]: pagination.current,
+          [sizeField]: pagination.pageSize,
+        };
+      }
+      const { sortInfo = {}, filterInfo } = searchState;
+      let queryParams: Recordable = { ...pageParams, ...sortInfo, ...filterInfo, ...params };
       await nextTick();
       if (queryFormRef.value) {
         const values = await queryFormRef.value.validate();
-        params = {
+        queryParams = {
           ...queryFormRef.value.handleFormValues(values),
-          ...params,
+          ...queryParams,
         };
       }
-      const _pagination = unref(paginationRef)!;
-      // 是否启用了分页
-      const enablePagination = isObject(_pagination);
-      const queryParams = {
-        ...params,
-      };
-      if (enablePagination) {
-        Object.assign(queryParams, {
-          page: _pagination.current,
-          limit: _pagination.pageSize,
-          ...queryParams,
-        });
-      }
+
       loadingRef.value = true;
-      const data = await props
-        ?.dataRequest?.(queryParams, rest)
-        .finally(() => (loadingRef.value = false));
+      const res = await dataRequest(queryParams, rest);
 
-      if (data?.pagination) {
-        const { page, size, total } = data.pagination;
+      const isArrayResult = Array.isArray(res);
+      const resultItems: Recordable[] = isArrayResult ? res : get(res, listField);
+      const resultTotal: number = isArrayResult ? res.length : get(res, totalField);
 
-        if (enablePagination && _pagination?.current && retryFetchCount-- > 0) {
-          // 有分页时,删除当前页最后一条数据时 自动往前一页查询
-          if (data?.list.length === 0 && total > 0 && page > 1) {
-            _pagination.current--;
-            return reload();
-          }
+      if (enablePagination && Number(resultTotal)) {
+        const { current = 1, pageSize = tableConfig.defaultPageSize } = pagination;
+        const currentTotalPage = Math.ceil(resultTotal / pageSize);
+        if (current > currentTotalPage) {
+          updatePagination({
+            current: currentTotalPage,
+          });
+          return await fetchData(params, rest);
         }
-
-        updatePagination({
-          current: page,
-          pageSize: size,
-          total,
-        });
-      } else {
-        updatePagination(pagination);
       }
-      if (Array.isArray(data?.list)) {
-        tableData.value = data!.list;
-      } else if (Array.isArray(data)) {
-        tableData.value = data;
-      } else {
-        tableData.value = [];
-      }
-    } else {
-      updatePagination(pagination);
+      tableData.value = resultItems;
+      return tableData;
+    } catch (error) {
+      warn(`表格查询出错：${error}`);
+      emit('fetch-error', error);
+      tableData.value = [];
+      updatePagination({ total: 0 });
+    } finally {
+      loadingRef.value = false;
     }
-
-    retryFetchCount = 2;
-    return tableData;
   };
 
   /**
@@ -125,12 +130,27 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @description 分页改变
    */
   const handleTableChange = async (...rest: OnChangeCallbackParams) => {
-    // const [pagination, filters, sorter] = rest;
-    const [pagination] = rest;
+    const [pagination, filters, sorter] = rest;
+    const { sortFn, filterFn } = props;
+
     if (queryFormRef.value) {
       await queryFormRef.value.validate();
     }
     updatePagination(pagination);
+
+    const params: Recordable = {};
+    if (sorter && isFunction(sortFn)) {
+      const sortInfo = sortFn(sorter);
+      searchState.sortInfo = sortInfo;
+      params.sortInfo = sortInfo;
+    }
+
+    if (filters && isFunction(filterFn)) {
+      const filterInfo = filterFn(filters);
+      searchState.filterInfo = filterInfo;
+      params.filterInfo = filterInfo;
+    }
+
     await fetchData({}, rest);
     emit('change', ...rest);
   };

@@ -1,7 +1,7 @@
 import { Badge, Tag } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 
-export type TableListItem = API.SysTaskListItem;
+export type TableListItem = API.TaskEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
 
 const getStatusColor = (status) => {
@@ -26,11 +26,11 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '任务名称',
     dataIndex: 'name',
-    width: 240,
+    width: 180,
   },
   {
     title: '状态',
-    width: 120,
+    width: 100,
     dataIndex: 'status',
     align: 'center',
     customRender: ({ record }) => (
@@ -43,7 +43,7 @@ export const baseColumns: TableColumnItem[] = [
   },
   {
     title: '类型',
-    width: 100,
+    width: 80,
     align: 'center',
     dataIndex: 'type',
     customRender: ({ record }) => (
@@ -55,18 +55,17 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'service',
     hideInSearch: true,
     align: 'center',
-    width: 350,
+    width: 220,
   },
   {
     title: '执行参数',
     dataIndex: 'data',
     align: 'center',
     hideInSearch: true,
-    width: 450,
+    width: 220,
   },
   {
     title: '备注',
-    width: 250,
     align: 'center',
     dataIndex: 'remark',
   },

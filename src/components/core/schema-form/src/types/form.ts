@@ -1,7 +1,7 @@
 import type { RowProps } from 'ant-design-vue';
 import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
-import type { Component, VNode } from 'vue';
+import type { Component, UnwrapRef, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ColEx, ComponentMapType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
@@ -20,10 +20,10 @@ export type Rule = RuleObject & {
 /** 获取所有字段名 */
 export type GetFieldKeys<T> = Exclude<keyof T, symbol | number>;
 
-export interface RenderCallbackParams<T = string> {
+export interface RenderCallbackParams<T extends object = Recordable> {
   schema: FormSchema<T>;
-  formModel: T extends string ? Recordable : Record<GetFieldKeys<T>, any>;
-  field: T extends string ? string : GetFieldKeys<T>;
+  formModel: Objectable<T>;
+  field: GetFieldKeys<T>;
   values: any;
   /** 动态表单实例 */
   formInstance: SchemaFormType;
@@ -35,7 +35,7 @@ export interface RenderCallbackParams<T = string> {
   slotData?: Recordable;
 }
 /** 自定义VNode渲染器 */
-export type CustomRenderFn<T = any> = (
+export type CustomRenderFn<T extends object = Recordable> = (
   renderCallbackParams: RenderCallbackParams<T>,
 ) => VNode | VNode[] | string;
 
@@ -67,9 +67,9 @@ export interface FormActionType {
 export type RegisterFn = (formInstance: SchemaFormInstance) => void;
 
 /** 表单项 */
-export interface FormSchema<T = string> {
+export type FormSchema<T extends object = Recordable> = UnwrapRef<{
   /** 字段名 */
-  field: T extends string ? string : GetFieldKeys<T>;
+  field: GetFieldKeys<T>;
   // Event name triggered by internal value change, default change
   changeEvent?: string;
   // Variable name bound to v-model Default value
@@ -130,9 +130,9 @@ export interface FormSchema<T = string> {
   // Matching details components
   span?: number;
   /** 作用同v-show */
-  vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
+  vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => any);
   /** 作用同v-if */
-  vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
+  vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => any);
 
   // 渲染col内容需要外层包装form-item
   renderColContent?: CustomRenderFn<T>;
@@ -146,7 +146,7 @@ export interface FormSchema<T = string> {
   dynamicDisabled?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
   dynamicRules?: (renderCallbackParams: RenderCallbackParams<T>) => Rule[];
-}
+}>;
 export interface HelpComponentProps {
   maxWidth: string;
   // Whether to display the serial number

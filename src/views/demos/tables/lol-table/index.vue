@@ -28,7 +28,7 @@
   import { Alert, Card } from 'ant-design-vue';
   import { columns } from './columns';
   import { useTable } from '@/components/core/dynamic-table';
-  import { getLolHeroList } from '@/api/demos/hero';
+  import { getLolHeroList } from '@/api/demo/hero';
   import { useContextMenu } from '@/hooks/functions/useContextMenu';
   import { useExportExcelModal, jsonToSheetXlsx, aoaToSheetXlsx } from '@/components/basic/excel';
 

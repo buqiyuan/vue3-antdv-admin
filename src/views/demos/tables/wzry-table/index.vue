@@ -28,7 +28,7 @@
   import { useTable } from '@/components/core/dynamic-table';
   import { jsonToSheetXlsx } from '@/components/basic/excel';
 
-  import { getWzryHeroList } from '@/api/demos/hero';
+  import { getWzryHeroList } from '@/api/demo/hero';
 
   let tableData = [];
   const [DynamicTable, dynamicTableInstance] = useTable();

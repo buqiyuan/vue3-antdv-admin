@@ -25,10 +25,16 @@ export default (options: PluginOptions = {}): Plugin => {
       if (id === resolvedVirtualModuleId) {
         const { pathname } = new URL(options.mockDir!, 'http://localhost');
         return `
-          export const mockModules = import.meta.glob('${pathname}/*.{${extensions.join(',')}}', {
+          const modules = import.meta.glob('${pathname}/**/*.{${extensions.join(',')}}', {
             eager: true,
-            import: 'default',
           }); 
+
+          export const mockModules = Object.entries(modules).reduce((prev, [key, value]) => {
+            if (Array.isArray(value?.default)) {
+              prev[key] = value.default;
+            }
+            return prev;
+          }, {});
         `;
       }
       return;

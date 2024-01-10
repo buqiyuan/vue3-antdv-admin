@@ -3,30 +3,14 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { createRouterGuards } from './router-guards';
 
-import outsideLayout from './outsideLayout';
 import { whiteNameList } from './constant';
+import { basicRoutes } from './routes';
 import type { App } from 'vue';
-import type { RouteRecordRaw } from 'vue-router';
-
-export const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'Layout',
-    redirect: '/dashboard/welcome',
-    component: () => import(/* webpackChunkName: "layout" */ '@/layout/index.vue'),
-    meta: {
-      title: '首页',
-    },
-    children: [],
-  },
-  // Layout之外的路由
-  ...outsideLayout,
-];
 
 export const router = createRouter({
   // process.env.BASE_URL
   history: createWebHashHistory(''),
-  routes,
+  routes: basicRoutes,
 });
 
 // reset router

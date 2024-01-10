@@ -1,5 +1,5 @@
-// ../../node_modules/.pnpm/outvariant@1.4.0/node_modules/outvariant/lib/index.mjs
-var POSITIONALS_EXP = /(%?)(%([sdjo]))/g;
+// ../../node_modules/.pnpm/outvariant@1.4.2/node_modules/outvariant/lib/index.mjs
+var POSITIONALS_EXP = /(%?)(%([sdijo]))/g;
 function serializePositional(positional, flag) {
   switch (flag) {
     case "s":
@@ -69,13 +69,18 @@ var invariant = (predicate, message, ...positionals) => {
 };
 invariant.as = (ErrorConstructor, predicate, message, ...positionals) => {
   if (!predicate) {
-    const isConstructor = ErrorConstructor.prototype.name != null;
-    const error2 = isConstructor ? new ErrorConstructor(format(message, positionals)) : ErrorConstructor(format(message, positionals));
+    const formatMessage2 = positionals.length === 0 ? message : format(message, positionals);
+    let error2;
+    try {
+      error2 = Reflect.construct(ErrorConstructor, [formatMessage2]);
+    } catch (err) {
+      error2 = ErrorConstructor(formatMessage2);
+    }
     throw error2;
   }
 };
 
-// ../../node_modules/.pnpm/msw@2.0.9_typescript@4.9.5/node_modules/msw/lib/core/utils/internal/devUtils.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/internal/devUtils.mjs
 var LIBRARY_PREFIX = "[MSW]";
 function formatMessage(message, ...positionals) {
   const interpolatedMessage = format(message, ...positionals);
@@ -93,7 +98,7 @@ var devUtils = {
   error
 };
 
-// ../../node_modules/.pnpm/msw@2.0.9_typescript@4.9.5/node_modules/msw/lib/core/utils/internal/checkGlobals.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/internal/checkGlobals.mjs
 function checkGlobals() {
   invariant(
     typeof URL !== "undefined",
@@ -567,7 +572,7 @@ function pathToRegexp(path, keys, options) {
   return stringToRegexp(path, keys, options);
 }
 
-// ../../node_modules/.pnpm/@mswjs+interceptors@0.25.12/node_modules/@mswjs/interceptors/lib/browser/chunk-7II4SWKS.mjs
+// ../../node_modules/.pnpm/@mswjs+interceptors@0.25.13/node_modules/@mswjs/interceptors/lib/browser/chunk-3YG2666Q.mjs
 var encoder = new TextEncoder();
 
 // ../../node_modules/.pnpm/is-node-process@1.2.0/node_modules/is-node-process/lib/index.mjs
@@ -616,26 +621,26 @@ function green(text) {
 }
 var IS_NODE = isNodeProcess();
 
-// ../../node_modules/.pnpm/@mswjs+interceptors@0.25.12/node_modules/@mswjs/interceptors/lib/browser/chunk-S72SKXXQ.mjs
+// ../../node_modules/.pnpm/@mswjs+interceptors@0.25.13/node_modules/@mswjs/interceptors/lib/browser/chunk-S72SKXXQ.mjs
 var IS_PATCHED_MODULE = Symbol("isPatchedModule");
 
-// ../../node_modules/.pnpm/@mswjs+interceptors@0.25.12/node_modules/@mswjs/interceptors/lib/browser/index.mjs
+// ../../node_modules/.pnpm/@mswjs+interceptors@0.25.13/node_modules/@mswjs/interceptors/lib/browser/index.mjs
 function getCleanUrl(url, isAbsolute = true) {
   return [isAbsolute && url.origin, url.pathname].filter(Boolean).join("");
 }
 
-// ../../node_modules/.pnpm/msw@2.0.9_typescript@4.9.5/node_modules/msw/lib/core/utils/url/cleanUrl.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/url/cleanUrl.mjs
 var REDUNDANT_CHARACTERS_EXP = /[\?|#].*$/g;
 function cleanUrl(path) {
   return path.replace(REDUNDANT_CHARACTERS_EXP, "");
 }
 
-// ../../node_modules/.pnpm/msw@2.0.9_typescript@4.9.5/node_modules/msw/lib/core/utils/url/isAbsoluteUrl.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/url/isAbsoluteUrl.mjs
 function isAbsoluteUrl(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 }
 
-// ../../node_modules/.pnpm/msw@2.0.9_typescript@4.9.5/node_modules/msw/lib/core/utils/url/getAbsoluteUrl.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/url/getAbsoluteUrl.mjs
 function getAbsoluteUrl(path, baseUrl) {
   if (isAbsoluteUrl(path)) {
     return path;
@@ -650,7 +655,7 @@ function getAbsoluteUrl(path, baseUrl) {
   ) : path;
 }
 
-// ../../node_modules/.pnpm/msw@2.0.9_typescript@4.9.5/node_modules/msw/lib/core/utils/matching/normalizePath.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/matching/normalizePath.mjs
 function normalizePath(path, baseUrl) {
   if (path instanceof RegExp) {
     return path;
@@ -659,7 +664,7 @@ function normalizePath(path, baseUrl) {
   return cleanUrl(maybeAbsoluteUrl);
 }
 
-// ../../node_modules/.pnpm/msw@2.0.9_typescript@4.9.5/node_modules/msw/lib/core/utils/matching/matchRequestUrl.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/matching/matchRequestUrl.mjs
 function coercePath(path) {
   return path.replace(
     /([:a-zA-Z_-]*)(\*{1,2})+/g,
@@ -684,7 +689,7 @@ function matchRequestUrl(url, path, baseUrl) {
   };
 }
 
-// ../../node_modules/.pnpm/msw@2.0.9_typescript@4.9.5/node_modules/msw/lib/core/index.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/index.mjs
 checkGlobals();
 
 // src/utils/isMatchHandler.ts
@@ -706,7 +711,7 @@ var isMatchHandler = (request) => {
 };
 
 // src/mockServiceWorker.js
-var INTEGRITY_CHECKSUM = "0877fcdc026242810f5bfde0d7178db4";
+var INTEGRITY_CHECKSUM = "c5f7f8e188b673ea4e677df7ea3c5a39";
 var IS_MOCKED_RESPONSE = Symbol("isMockedResponse");
 var activeClientIds = /* @__PURE__ */ new Set();
 self.addEventListener("install", function() {

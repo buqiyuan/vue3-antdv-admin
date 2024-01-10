@@ -3,20 +3,15 @@ import { message as $message, Modal } from 'ant-design-vue';
 import type { AxiosRequestConfig } from 'axios';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
-import { useUserStore } from '@/store/modules/user';
-import { uniqueSlash } from '@/utils/urlUtils';
 
-export interface RequestOptions {
-  /** 当前接口权限, 不需要鉴权的接口请忽略， 格式：sys:user:add */
-  permCode?: string;
+export interface RequestOptions<Passive extends boolean = true> {
   /** 是否直接获取data，而忽略message等 */
-  isGetDataDirectly?: boolean;
+  isGetDataDirectly?: Passive;
   /** 请求成功是提示信息 */
   successMsg?: string;
   /** 请求失败是提示信息 */
   errorMsg?: string;
-  /** 是否mock数据请求 */
-  isMock?: boolean;
+  requestType?: 'json' | 'form';
 }
 
 const UNKNOWN_ERROR = '未知错误，请重试';
@@ -24,11 +19,11 @@ const UNKNOWN_ERROR = '未知错误，请重试';
 /** 真实请求的路径前缀 */
 const baseApiUrl = import.meta.env.VITE_BASE_API;
 /** mock请求路径前缀 */
-const baseMockUrl = import.meta.env.VITE_MOCK_API;
+// const baseMockUrl = import.meta.env.VITE_MOCK_API;
 
 const controller = new AbortController();
 const service = axios.create({
-  // baseURL: baseApiUrl,
+  baseURL: baseApiUrl,
   timeout: 6000,
   signal: controller.signal,
 });
@@ -38,7 +33,7 @@ service.interceptors.request.use(
     const token = Storage.get(ACCESS_TOKEN_KEY);
     if (token && config.headers) {
       // 请求头token信息，请根据实际情况进行修改
-      config.headers['Authorization'] = token;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
@@ -93,38 +88,47 @@ service.interceptors.response.use(
   },
 );
 
-export type Response<T = any> = {
-  code: number;
-  message: string;
+type BaseResponse<T = any> = Omit<API.ResOp, 'data'> & {
   data: T;
 };
 
-export type BaseResponse<T = any> = Promise<Response<T>>;
+export function request<T = any>(
+  url: string,
+  config: AxiosRequestConfig & RequestOptions<true>,
+): Promise<BaseResponse<T>['data']>;
 
+export function request<T = any>(
+  url: string,
+  config: AxiosRequestConfig & RequestOptions<false>,
+): Promise<BaseResponse<T>>;
 /**
  *
- * @param method - request methods
  * @param url - request url
- * @param data - request data or params
+ * @param config - AxiosRequestConfig
  */
-export const request = async <T = any>(
-  config: AxiosRequestConfig,
-  options: RequestOptions = {},
-): Promise<T> => {
+export async function request<T extends object, Passive extends boolean>(
+  url: string,
+  config: AxiosRequestConfig & RequestOptions<Passive> = {},
+) {
   try {
-    const { successMsg, errorMsg, permCode, isMock, isGetDataDirectly = true } = options;
-    // 如果当前是需要鉴权的接口 并且没有权限的话 则终止请求发起
-    if (permCode && !useUserStore().perms.includes(permCode)) {
-      return $message.error('没有访问该接口的权限，请联系管理员！');
-    }
-    const fullUrl = `${(isMock ? baseMockUrl : baseApiUrl) + config.url}`;
-    config.url = uniqueSlash(fullUrl);
+    // 兼容 from data 文件上传的情况
+    const { requestType, isGetDataDirectly = true, ...rest } = config;
 
-    const res = await service.request(config);
-    successMsg && $message.success(successMsg);
-    errorMsg && $message.error(errorMsg);
-    return isGetDataDirectly ? res.data : res;
+    const res = await service.request<T>({
+      url,
+      ...rest,
+      headers: {
+        ...rest.headers,
+        ...(requestType === 'form' ? { 'Content-Type': 'multipart/form-data' } : {}),
+      },
+    });
+
+    if (isGetDataDirectly) {
+      return res.data;
+    } else {
+      return res;
+    }
   } catch (error: any) {
     return Promise.reject(error);
   }
-};
+}

@@ -1,0 +1,113 @@
+<template>
+  <div>
+    <DynamicTable
+      header-title="菜单管理"
+      :data-request="Api.systemMenu.menuList"
+      :columns="columns"
+    >
+      <template #toolbar>
+        <a-button
+          type="primary"
+          :disabled="!$auth('system:menu:create')"
+          @click="openMenuModal({})"
+        >
+          新增
+        </a-button>
+      </template>
+    </DynamicTable>
+  </div>
+</template>
+
+<script lang="tsx" setup>
+  import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
+  import { useMenuSchemas } from './formSchemas';
+  import Api from '@/api/';
+  import { useTable } from '@/components/core/dynamic-table';
+  import { useFormModal } from '@/hooks/useModal/useFormModal';
+
+  defineOptions({
+    name: 'SysMenu',
+  });
+  const [DynamicTable, dynamicTableInstance] = useTable({
+    pagination: false,
+    size: 'small',
+    rowKey: 'id',
+    bordered: true,
+    scroll: { x: 2000 },
+  });
+  const [showModal] = useFormModal();
+
+  const openMenuModal = async (record: Partial<TableListItem>) => {
+    const [formRef] = await showModal({
+      modalProps: {
+        title: `${record.id ? '编辑' : '新增'}菜单`,
+        width: 700,
+        onFinish: async (values) => {
+          console.log('新增/编辑菜单', values);
+          record.id && (values.menuId = record.id);
+          if (values.type === 1 && values.component?.length) {
+            // @ts-ignore
+            values.component = values.component.join('/');
+          }
+          if (values.type === 2 && values.perms?.length) {
+            values.perms = values.perms.map((n) => n.join(':')).toString();
+          }
+          if (values.parentId === -1) {
+            Reflect.deleteProperty(values, 'parentId');
+          }
+          if (record.id) {
+            await Api.systemMenu.menuUpdate({ id: record.id }, values);
+          } else {
+            await Api.systemMenu.menuCreate(values);
+          }
+          dynamicTableInstance.reload();
+        },
+      },
+      formProps: {
+        labelWidth: 100,
+        schemas: useMenuSchemas(),
+      },
+    });
+
+    formRef?.setFieldsValue({
+      ...record,
+      icon: record.icon ?? '',
+      parentId: record.parentId ?? -1,
+    });
+    console.log('record', record);
+  };
+  const delRowConfirm = async (record: TableListItem) => {
+    await Api.systemMenu.menuDelete({ id: record.id });
+    dynamicTableInstance.reload();
+  };
+
+  const columns: TableColumnItem[] = [
+    ...baseColumns,
+    {
+      title: '操作',
+      width: 160,
+      dataIndex: 'ACTION',
+      hideInSearch: true,
+      align: 'center',
+      fixed: 'right',
+      actions: ({ record }) => [
+        {
+          label: '编辑',
+          auth: {
+            perm: 'system:menu:update',
+            effect: 'disable',
+          },
+          onClick: () => openMenuModal(record),
+        },
+        {
+          label: '删除',
+          auth: 'system:menu:delete',
+          popConfirm: {
+            title: '你确定要删除吗？',
+            onConfirm: () => delRowConfirm(record),
+          },
+        },
+      ],
+    },
+  ];
+</script>

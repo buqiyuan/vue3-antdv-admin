@@ -7,10 +7,9 @@
  */
 // import type { DataNode } from 'rc-tree-select/es/interface'
 
-import { permissions } from './modules/';
+import { permissions, type PermissionType } from './modules/';
 import type { TreeSelectProps } from 'ant-design-vue';
 import type { App } from 'vue';
-import type { PermissionType } from './modules/types';
 import { useUserStore } from '@/store/modules/user';
 
 type DataNode = NonNullable<TreeSelectProps['treeData']>[number];
@@ -39,7 +38,7 @@ export const str2tree = (str: string, treeData: DataNode[] = [], separator = ':'
  * @description 将权限列表转成级联选择器要求的数据格式
  */
 export const formarPermsToCascader = () => {
-  return Object.values(permissions).reduce<DataNode[]>((prev, module) => {
+  return permissions.reduce<DataNode[]>((prev, module) => {
     Object.values(module).forEach((permStr) => {
       str2tree(permStr, prev);
     });
@@ -52,8 +51,7 @@ export const formarPermsToCascader = () => {
  * @param {PermissionType} perm  权限码
  * @returns {boolean} true | false
  */
-export const verifyAuth = (perm: PermissionType) => {
-  const permCode = perm.split('.').join(':');
+export const verifyAuth = (permCode: PermissionType) => {
   const permissionList = useUserStore().perms;
 
   return permissionList.some((n) => n === permCode);

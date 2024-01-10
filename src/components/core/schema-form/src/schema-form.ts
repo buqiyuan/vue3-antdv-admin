@@ -115,11 +115,10 @@ export type SchemaFormEmits = typeof schemaFormEmits;
 
 export type SchemaFormEmitFn = EmitFn<SchemaFormEmits>;
 
-export type SchemaFormProps<T = any> = Partial<
-  ExtractPropTypes<typeof schemaFormProps> & {
+export type SchemaFormProps<T extends object = Recordable> = Partial<
+  ExtractPropTypes<Omit<typeof schemaFormProps, 'schemas'>> & {
     schemas: FormSchema<T>[];
   }
 >;
 
-// @ts-ignore:next-line
 export type SchemaFormInstance = InstanceType<typeof SchemaForm>;

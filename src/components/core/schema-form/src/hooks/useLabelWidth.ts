@@ -21,6 +21,7 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
       labelCol.style = {
         textAlign: 'left',
       };
+      // @ts-ignore
       return { labelCol, wrapperCol };
     }
     let width = labelWidth || globalLabelWidth;

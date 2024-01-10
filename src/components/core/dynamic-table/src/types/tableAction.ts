@@ -2,8 +2,8 @@ import type { Ref } from 'vue';
 import type { CustomRenderParams } from './column';
 import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
 import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
-import type { PermissionType } from '@/core/permission/modules/types';
 import type { TableMethods, UseEditableType } from '../hooks/';
+import type { PermissionType } from '@/core/permission/modules';
 
 export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading'> & {
   onClick?: Fn<CustomRenderParams, any>;
@@ -24,6 +24,7 @@ export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading'> & {
     | PermissionType
     | {
         perm: PermissionType;
+        /** 无权限时，按钮不可见或是处于禁用状态 */
         effect?: 'delete' | 'disable';
       };
 };
