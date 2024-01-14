@@ -68,7 +68,7 @@ export type ListItemType = (typeof tableData)[number];
 export const columns: TableColumn<ListItemType>[] = [
   {
     title: '姓名',
-    align: 'center',
+
     dataIndex: 'name',
     sorter: true,
     width: 300,
@@ -80,7 +80,7 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '性别',
-    align: 'center',
+
     dataIndex: 'gender',
     width: 120,
     resizable: true,
@@ -115,7 +115,7 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '衣服',
-    align: 'center',
+
     dataIndex: 'clothes',
     formItemProps: {
       component: 'Select',
@@ -123,7 +123,7 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '价格',
-    align: 'center',
+
     dataIndex: 'price',
     formItemProps: {
       component: 'Select',
@@ -132,7 +132,7 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '状态',
-    align: 'center',
+
     dataIndex: 'status',
     formItemProps: {
       component: 'Select',

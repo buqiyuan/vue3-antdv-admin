@@ -6,7 +6,7 @@ import { request, type RequestOptions } from '@/utils/request';
 export async function roleList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.RoleListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<{
     items?: API.RoleEntity[];
@@ -32,7 +32,7 @@ export async function roleList(
 }
 
 /** 新增角色 POST /api/system/roles */
-export async function roleCreate(body: API.RoleDto, options?: { [key: string]: any }) {
+export async function roleCreate(body: API.RoleDto, options?: RequestOptions) {
   return request<any>('/api/system/roles', {
     method: 'POST',
     headers: {
@@ -47,7 +47,7 @@ export async function roleCreate(body: API.RoleDto, options?: { [key: string]: a
 export async function roleInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.RoleInfoParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.RoleInfo>(`/api/system/roles/${param0}`, {
@@ -62,7 +62,7 @@ export async function roleUpdate(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.RoleUpdateParams,
   body: API.RoleUpdateDto,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/roles/${param0}`, {
@@ -80,7 +80,7 @@ export async function roleUpdate(
 export async function roleDelete(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.RoleDeleteParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/roles/${param0}`, {

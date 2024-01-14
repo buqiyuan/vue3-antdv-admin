@@ -85,7 +85,7 @@
       width: 160,
       dataIndex: 'ACTION',
       hideInSearch: true,
-      align: 'center',
+
       fixed: 'right',
       actions: ({ record }) => [
         {

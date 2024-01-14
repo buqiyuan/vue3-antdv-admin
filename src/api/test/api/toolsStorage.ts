@@ -3,7 +3,7 @@
 import { request, type RequestOptions } from '@/utils/request';
 
 /** 删除文件 POST /api/storage/delete */
-export async function storageDelete(body: API.StorageDeleteDto, options?: { [key: string]: any }) {
+export async function storageDelete(body: API.StorageDeleteDto, options?: RequestOptions) {
   return request<any>('/api/storage/delete', {
     method: 'POST',
     headers: {
@@ -18,9 +18,18 @@ export async function storageDelete(body: API.StorageDeleteDto, options?: { [key
 export async function storageList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.StorageListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
-  return request<API.StorageInfo>('/api/storage/list', {
+  return request<{
+    items?: API.StorageInfo[];
+    meta?: {
+      itemCount?: number;
+      totalItems?: number;
+      itemsPerPage?: number;
+      totalPages?: number;
+      currentPage?: number;
+    };
+  }>('/api/storage/list', {
     method: 'GET',
     params: {
       // page has a default value: 1

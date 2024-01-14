@@ -1,4 +1,5 @@
 import type { SorterResult } from 'ant-design-vue/es/table/interface';
+import type { AlignType } from 'ant-design-vue/es/vc-table/interface';
 
 /** 表格配置 */
 export default {
@@ -16,6 +17,8 @@ export default {
   pageSizeOptions: ['10', '50', '80', '100'],
   // Default display quantity on one page
   defaultPageSize: 10,
+  // Default layout of table cells
+  defaultAlign: 'center' as AlignType,
   // Custom general sort function
   defaultSortFn: (sortInfo: SorterResult) => {
     const { field, order } = sortInfo;

@@ -6,7 +6,7 @@ import { request, type RequestOptions } from '@/utils/request';
 export async function userList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.UserListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<{
     items?: API.UserEntity[];
@@ -32,7 +32,7 @@ export async function userList(
 }
 
 /** 新增用户 POST /api/system/users */
-export async function userCreate(body: API.UserDto, options?: { [key: string]: any }) {
+export async function userCreate(body: API.UserDto, options?: RequestOptions) {
   return request<any>('/api/system/users', {
     method: 'POST',
     headers: {
@@ -47,7 +47,7 @@ export async function userCreate(body: API.UserDto, options?: { [key: string]: a
 export async function userRead(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.UserReadParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.UserEntity>(`/api/system/users/${param0}`, {
@@ -62,7 +62,7 @@ export async function userUpdate(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.UserUpdateParams,
   body: API.UserUpdateDto,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/users/${param0}`, {
@@ -80,7 +80,7 @@ export async function userUpdate(
 export async function userDelete(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.UserDeleteParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/users/${param0}`, {
@@ -95,7 +95,7 @@ export async function userPassword(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.UserPasswordParams,
   body: API.UserPasswordDto,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/users/${param0}/password`, {

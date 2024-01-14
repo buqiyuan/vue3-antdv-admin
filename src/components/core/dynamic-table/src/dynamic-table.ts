@@ -46,12 +46,7 @@ export const dynamicTableProps = {
   /** 表格数据请求函数 */
   dataRequest: {
     // 获取列表数据函数API
-    type: Function as PropType<
-      (
-        params?: Recordable,
-        onChangeParams?: OnChangeCallbackParams,
-      ) => Promise<API.TableListResult | any[]>
-    >,
+    type: Function as PropType<(params: Recordable) => Promise<API.TableListResult | any[]>>,
   },
   /** 是否显示索引号 */
   showIndex: {
@@ -134,5 +129,5 @@ export const dynamicTableEmits = {
 export type DynamicTableEmits = typeof dynamicTableEmits;
 
 export type DynamicTableEmitFn = EmitFn<DynamicTableEmits>;
-// @ts-ignore
+
 export type DynamicTableInstance = InstanceType<typeof DynamicTable>;

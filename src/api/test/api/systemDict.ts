@@ -2,13 +2,13 @@
 /* eslint-disable */
 import { request, type RequestOptions } from '@/utils/request';
 
-/** 获取字典配置列表 GET /api/system/dicts */
+/** 获取字典配置列表 GET /api/dicts */
 export async function dictList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.DictListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
-  return request<API.DictEntity[]>('/api/system/dicts', {
+  return request<API.DictEntity[]>('/api/dicts', {
     method: 'GET',
     params: {
       // page has a default value: 1
@@ -22,9 +22,9 @@ export async function dictList(
   });
 }
 
-/** 新增字典配置 POST /api/system/dicts */
-export async function dictCreate(body: API.DictDto, options?: { [key: string]: any }) {
-  return request<any>('/api/system/dicts', {
+/** 新增字典配置 POST /api/dicts */
+export async function dictCreate(body: API.DictDto, options?: RequestOptions) {
+  return request<any>('/api/dicts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,29 +34,29 @@ export async function dictCreate(body: API.DictDto, options?: { [key: string]: a
   });
 }
 
-/** 查询字典配置信息 GET /api/system/dicts/${param0} */
+/** 查询字典配置信息 GET /api/dicts/${param0} */
 export async function dictInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.DictInfoParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.DictEntity>(`/api/system/dicts/${param0}`, {
+  return request<API.DictEntity>(`/api/dicts/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });
 }
 
-/** 更新字典配置 POST /api/system/dicts/${param0} */
+/** 更新字典配置 POST /api/dicts/${param0} */
 export async function dictUpdate(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.DictUpdateParams,
   body: API.DictDto,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/api/system/dicts/${param0}`, {
+  return request<any>(`/api/dicts/${param0}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -67,14 +67,14 @@ export async function dictUpdate(
   });
 }
 
-/** 删除指定的字典配置 DELETE /api/system/dicts/${param0} */
+/** 删除指定的字典配置 DELETE /api/dicts/${param0} */
 export async function dictDelete(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.DictDeleteParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/api/system/dicts/${param0}`, {
+  return request<any>(`/api/dicts/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),

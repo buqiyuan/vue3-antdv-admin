@@ -30,7 +30,7 @@ const AvatarRender = defineComponent({
 export const columns: TableColumn[] = [
   {
     title: '头像',
-    align: 'center',
+
     width: 100,
     hideInSearch: true,
     dataIndex: 'avatar',
@@ -38,17 +38,17 @@ export const columns: TableColumn[] = [
   },
   {
     title: '英雄名称',
-    align: 'center',
+
     dataIndex: 'title',
   },
   {
     title: '英雄称号',
-    align: 'center',
+
     dataIndex: 'name',
   },
   {
     title: '定位',
-    align: 'center',
+
     dataIndex: 'roles',
     customRender: ({ record }) => (
       <div>
@@ -62,7 +62,7 @@ export const columns: TableColumn[] = [
   },
   {
     title: '操作',
-    align: 'center',
+
     width: 120,
     dataIndex: 'ACTION',
     actions: ({ record }) => [

@@ -215,7 +215,7 @@
       title: '操作',
       width: 230,
       dataIndex: 'ACTION',
-      align: 'center',
+
       fixed: 'right',
       actions: ({ record }) => [
         {

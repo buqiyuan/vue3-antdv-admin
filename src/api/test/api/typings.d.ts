@@ -44,6 +44,8 @@ declare namespace API {
     remark: string;
   };
 
+  type Buffer = {};
+
   type CaptchaCaptchaByImgParams = {
     /** 验证码宽度 */
     width?: number;
@@ -141,7 +143,7 @@ declare namespace API {
     /** 参数值 */
     value: string;
     /** 备注 */
-    remark: string;
+    remark?: string;
   };
 
   type DictEntity = {
@@ -189,9 +191,14 @@ declare namespace API {
     /** 收件人邮箱 */
     to: string;
     /** 标题 */
-    subject: number;
+    subject: string;
     /** 正文 */
     content: string;
+  };
+
+  type FileUploadDto = {
+    /** 文件 */
+    file: Buffer;
   };
 
   type ImageCaptcha = {
@@ -214,9 +221,9 @@ declare namespace API {
     /** 用户名 */
     username: string;
     /** 验证码 */
-    code: string;
+    code?: string;
     /** 发送时间 */
-    time: string[];
+    time?: string[];
     _t?: number;
   };
 
@@ -257,11 +264,11 @@ declare namespace API {
     /** 用户名 */
     username: string;
     /** 登录IP */
-    ip: string;
+    ip?: string;
     /** 登录地点 */
-    address: string;
+    address?: string;
     /** 登录时间 */
-    time: string[];
+    time?: string[];
     _t?: number;
   };
 
@@ -273,9 +280,9 @@ declare namespace API {
     /** 用户名 */
     username: string;
     /** 登录IP */
-    ip: string;
+    ip?: string;
     /** 登录时间 */
-    time: string[];
+    time?: string[];
     _t?: number;
   };
 
@@ -447,6 +454,53 @@ declare namespace API {
 
   type Pagination = {};
 
+  type ParamConfigDeleteParams = {
+    id: number;
+  };
+
+  type ParamConfigDto = {
+    /** 参数名称 */
+    name: string;
+    /** 参数键名 */
+    key: string;
+    /** 参数值 */
+    value: string;
+    /** 备注 */
+    remark?: string;
+  };
+
+  type ParamConfigEntity = {
+    /** 配置名 */
+    name: string;
+    /** 配置键名 */
+    key: string;
+    /** 配置值 */
+    value: string;
+    /** 配置描述 */
+    remark: string;
+    id: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+
+  type ParamConfigInfoParams = {
+    id: number;
+  };
+
+  type ParamConfigListParams = {
+    page?: number;
+    pageSize?: number;
+    field?: string;
+    order?: 'ASC' | 'DESC';
+    /** 参数名称 */
+    name: string;
+    _t?: number;
+  };
+
+  type ParamConfigUpdateParams = {
+    id: number;
+  };
+
   type PasswordUpdateDto = {
     /** 旧密码 */
     oldPassword: string;
@@ -487,11 +541,11 @@ declare namespace API {
     /** 角色值 */
     value: string;
     /** 角色备注 */
-    remark: string;
+    remark?: string;
     /** 状态 */
-    status: number;
+    status: 0 | 1;
     /** 关联菜单、权限编号 */
-    menuIds: string[];
+    menuIds?: number[];
   };
 
   type RoleEntity = {
@@ -547,9 +601,9 @@ declare namespace API {
     /** 角色备注 */
     remark?: string;
     /** 状态 */
-    status?: number;
+    status?: 0 | 1;
     /** 关联菜单、权限编号 */
-    menuIds?: string[];
+    menuIds?: number[];
   };
 
   type RoleUpdateParams = {
@@ -639,9 +693,9 @@ declare namespace API {
     /** 调用的服务 */
     service: string;
     /** 任务类别：cron | interval */
-    type: number;
+    type: 0 | 1;
     /** 任务状态 */
-    status: number;
+    status: 0 | 1;
     /** 开始时间 */
     startTime?: string;
     /** 结束时间 */
@@ -651,7 +705,7 @@ declare namespace API {
     /** cron表达式 */
     cron: string;
     /** 执行间隔，毫秒单位 */
-    every: number;
+    every?: number;
     /** 执行参数 */
     data?: string;
     /** 任务备注 */
@@ -702,9 +756,9 @@ declare namespace API {
     /** 调用的服务 */
     service?: string;
     /** 任务类别：cron | interval */
-    type?: number;
+    type?: 0 | 1;
     /** 任务状态 */
-    status?: number;
+    status?: 0 | 1;
     /** 开始时间 */
     startTime?: string;
     /** 结束时间 */
@@ -753,9 +807,9 @@ declare namespace API {
     /** 调用的服务 */
     service?: string;
     /** 任务类别：cron | interval */
-    type?: number;
+    type?: 0 | 1;
     /** 任务状态 */
-    status?: number;
+    status?: 0 | 1;
     /** 开始时间 */
     startTime?: string;
     /** 结束时间 */
@@ -837,19 +891,19 @@ declare namespace API {
     /** 归属角色 */
     roleIds: number[];
     /** 归属大区 */
-    deptId: number;
+    deptId?: number;
     /** 呢称 */
     nickname: string;
     /** 邮箱 */
     email: string;
     /** 手机号 */
-    phone: string;
+    phone?: string;
     /** QQ */
-    qq: string;
+    qq?: string;
     /** 备注 */
-    remark: string;
+    remark?: string;
     /** 状态 */
-    status: number;
+    status: 0 | 1;
   };
 
   type UserEntity = {
@@ -895,7 +949,7 @@ declare namespace API {
     /** 备注 */
     remark?: string;
     /** 状态 */
-    status?: number;
+    status?: 0 | 1;
     _t?: number;
   };
 
@@ -932,7 +986,7 @@ declare namespace API {
     /** 备注 */
     remark?: string;
     /** 状态 */
-    status?: number;
+    status?: 0 | 1;
   };
 
   type UserUpdateParams = {

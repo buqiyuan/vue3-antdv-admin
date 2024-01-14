@@ -4,11 +4,13 @@ import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
 import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
 import type { TableMethods, UseEditableType } from '../hooks/';
 import type { PermissionType } from '@/core/permission/modules';
+import type { ButtonType } from '@/components/basic/button';
 
-export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading'> & {
+export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading' | 'type'> & {
   onClick?: Fn<CustomRenderParams, any>;
   label?: string;
-  color?: 'success' | 'error' | 'warning';
+  color?: string;
+  type?: ButtonType;
   loading?: Ref<ButtonProps['loading']> | ButtonProps['loading'];
   icon?: string;
   popConfirm?: PopConfirm;

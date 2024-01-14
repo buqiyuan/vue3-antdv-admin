@@ -4,7 +4,7 @@ import type { TableColumn } from '@/components/core/dynamic-table';
 export const columns: TableColumn[] = [
   {
     title: '头像',
-    align: 'center',
+
     width: 100,
     hideInSearch: true,
     dataIndex: 'faceimg',
@@ -14,22 +14,22 @@ export const columns: TableColumn[] = [
   },
   {
     title: '英雄名称',
-    align: 'center',
+
     dataIndex: 'cname',
   },
   {
     title: '英雄称号',
-    align: 'center',
+
     dataIndex: 'title',
   },
   {
     title: '定位',
-    align: 'center',
+
     dataIndex: 'occupation',
   },
   {
     title: '皮肤',
-    align: 'center',
+
     dataIndex: 'skin_name',
     formItemProps: {
       component: 'Select',
@@ -46,7 +46,7 @@ export const columns: TableColumn[] = [
   },
   {
     title: '操作',
-    align: 'center',
+
     width: 120,
     dataIndex: 'ACTION',
     actions: ({ record }) => [

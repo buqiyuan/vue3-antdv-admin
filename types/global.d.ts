@@ -7,12 +7,15 @@ import type {
   EmitsOptions,
   PropType as VuePropType,
 } from 'vue';
+import type { TinyMCE } from 'tinymce';
 
 declare global {
   const __APP_INFO__: {
     pkg: typeof packageJSON;
     lastBuildTime: string;
   };
+  const tinymce: TinyMCE;
+
   // declare interface Window {
   //   // Global vue app instance
   //   __APP__: App<Element>;

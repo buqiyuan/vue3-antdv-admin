@@ -13,14 +13,14 @@ export const baseColumns: TableColumnItem[] = [
     title: '排序',
     dataIndex: 'orderNo',
     width: 50,
-    align: 'center',
+
     hideInSearch: true,
   },
   {
     title: '创建时间',
     dataIndex: 'createdAt',
     width: 200,
-    align: 'center',
+
     hideInSearch: true,
     customRender: ({ record }) => formatToDateTime(record.createdAt),
   },

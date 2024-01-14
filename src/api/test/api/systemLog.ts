@@ -6,7 +6,7 @@ import { request, type RequestOptions } from '@/utils/request';
 export async function logCaptchaList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.LogCaptchaListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<{
     items?: API.CaptchaLogEntity[];
@@ -35,7 +35,7 @@ export async function logCaptchaList(
 export async function logLoginLogPage(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.LogLoginLogPageParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<{
     items?: API.LoginLogInfo[];
@@ -64,7 +64,7 @@ export async function logLoginLogPage(
 export async function logTaskList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.LogTaskListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<{
     items?: API.TaskLogEntity[];

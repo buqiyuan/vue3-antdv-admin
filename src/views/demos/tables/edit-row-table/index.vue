@@ -30,12 +30,7 @@
   import { ref, computed } from 'vue';
   import { Alert, Card, Select, message } from 'ant-design-vue';
   import { columns, tableData } from './columns';
-  import type {
-    OnChangeCallbackParams,
-    EditableType,
-    OnSave,
-    OnCancel,
-  } from '@/components/core/dynamic-table';
+  import type { EditableType, OnSave, OnCancel } from '@/components/core/dynamic-table';
   import { useTable } from '@/components/core/dynamic-table';
   import { waitTime } from '@/utils/common';
 
@@ -47,12 +42,8 @@
 
   const editableType = ref<EditableType>('cell');
 
-  const loadData = async (
-    params,
-    onChangeParams: OnChangeCallbackParams,
-  ): Promise<API.TableListResult> => {
+  const loadData = async (params): Promise<API.TableListResult> => {
     console.log('params', params);
-    console.log('onChangeParams', onChangeParams);
     await waitTime(500);
 
     return {
@@ -65,7 +56,7 @@
     ...columns,
     {
       title: '操作',
-      align: 'center',
+
       hideInTable: editableType.value === 'cell',
       width: 200,
       dataIndex: 'ACTION',

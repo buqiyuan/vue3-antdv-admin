@@ -15,13 +15,13 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '用户名',
     width: 120,
-    align: 'center',
+
     dataIndex: 'username',
   },
   {
     title: '呢称',
     width: 120,
-    align: 'center',
+
     hideInSearch: true,
     dataIndex: 'nickname',
   },
@@ -29,7 +29,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '所在部门',
     dataIndex: 'dept',
     hideInSearch: true,
-    align: 'center',
+
     width: 180,
     customRender: ({ record }) => {
       return <Tag>{record.dept?.name}</Tag>;
@@ -38,7 +38,7 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '所属角色',
     dataIndex: 'roleNames',
-    align: 'center',
+
     hideInSearch: true,
     width: 220,
     customRender: ({ record }) => (
@@ -54,19 +54,19 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '邮箱',
     width: 120,
-    align: 'center',
+
     dataIndex: 'email',
   },
   {
     title: '手机',
     width: 120,
-    align: 'center',
+
     dataIndex: 'phone',
   },
   {
     title: '备注',
     width: 120,
-    align: 'center',
+
     dataIndex: 'remark',
   },
   {

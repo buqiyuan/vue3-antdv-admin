@@ -2,6 +2,7 @@ import { ref, watchEffect, unref, useSlots } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { EditableCell } from '../components/';
 import { ColumnKeyFlag, type CustomRenderParams } from '../types/column';
+import tableConfig from '../dynamic-table.config';
 import type { Slots } from 'vue';
 import type {
   TableActionType,
@@ -60,6 +61,8 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
 
       const rowKey = props.rowKey as string;
       const columnKey = getColumnKey(item) as string;
+
+      item.align ||= tableConfig.defaultAlign;
 
       item.customRender = (options) => {
         const { record, index, text } = options as CustomRenderParams<Recordable<any>>;

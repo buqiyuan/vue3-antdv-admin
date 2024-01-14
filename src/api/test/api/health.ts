@@ -3,7 +3,7 @@
 import { request, type RequestOptions } from '@/utils/request';
 
 /** 此处后端没有提供注释 GET /api/health/database */
-export async function healthCheckDatabase(options?: { [key: string]: any }) {
+export async function healthCheckDatabase(options?: RequestOptions) {
   return request<{
     status?: string;
     info?: Record<string, any>;
@@ -16,7 +16,7 @@ export async function healthCheckDatabase(options?: { [key: string]: any }) {
 }
 
 /** 此处后端没有提供注释 GET /api/health/disk */
-export async function healthCheckDisk(options?: { [key: string]: any }) {
+export async function healthCheckDisk(options?: RequestOptions) {
   return request<{
     status?: string;
     info?: Record<string, any>;
@@ -29,7 +29,7 @@ export async function healthCheckDisk(options?: { [key: string]: any }) {
 }
 
 /** 此处后端没有提供注释 GET /api/health/memory-heap */
-export async function healthCheckMemoryHeap(options?: { [key: string]: any }) {
+export async function healthCheckMemoryHeap(options?: RequestOptions) {
   return request<{
     status?: string;
     info?: Record<string, any>;
@@ -42,7 +42,7 @@ export async function healthCheckMemoryHeap(options?: { [key: string]: any }) {
 }
 
 /** 此处后端没有提供注释 GET /api/health/memory-rss */
-export async function healthCheckMemoryRss(options?: { [key: string]: any }) {
+export async function healthCheckMemoryRss(options?: RequestOptions) {
   return request<{
     status?: string;
     info?: Record<string, any>;
@@ -55,7 +55,7 @@ export async function healthCheckMemoryRss(options?: { [key: string]: any }) {
 }
 
 /** 此处后端没有提供注释 GET /api/health/network */
-export async function healthCheckNetwork(options?: { [key: string]: any }) {
+export async function healthCheckNetwork(options?: RequestOptions) {
   return request<{
     status?: string;
     info?: Record<string, any>;

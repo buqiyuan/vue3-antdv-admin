@@ -34,7 +34,7 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'updatedAt',
     sorter: true,
     width: 160,
-    align: 'center',
+
     customRender: ({ record }) => formatToDateTime(record.createdAt),
   },
 ];

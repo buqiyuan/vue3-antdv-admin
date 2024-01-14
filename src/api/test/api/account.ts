@@ -3,7 +3,7 @@
 import { request, type RequestOptions } from '@/utils/request';
 
 /** 账户登出 GET /api/account/logout */
-export async function accountLogout(options?: { [key: string]: any }) {
+export async function accountLogout(options?: RequestOptions) {
   return request<any>('/api/account/logout', {
     method: 'GET',
     ...(options || {}),
@@ -11,7 +11,7 @@ export async function accountLogout(options?: { [key: string]: any }) {
 }
 
 /** 获取菜单列表 GET /api/account/menus */
-export async function accountMenu(options?: { [key: string]: any }) {
+export async function accountMenu(options?: RequestOptions) {
   return request<API.MenuEntity[]>('/api/account/menus', {
     method: 'GET',
     ...(options || {}),
@@ -19,10 +19,7 @@ export async function accountMenu(options?: { [key: string]: any }) {
 }
 
 /** 更改账户密码 POST /api/account/password */
-export async function accountPassword(
-  body: API.PasswordUpdateDto,
-  options?: { [key: string]: any },
-) {
+export async function accountPassword(body: API.PasswordUpdateDto, options?: RequestOptions) {
   return request<any>('/api/account/password', {
     method: 'POST',
     headers: {
@@ -34,7 +31,7 @@ export async function accountPassword(
 }
 
 /** 获取权限列表 GET /api/account/permissions */
-export async function accountPermissions(options?: { [key: string]: any }) {
+export async function accountPermissions(options?: RequestOptions) {
   return request<string[]>('/api/account/permissions', {
     method: 'GET',
     ...(options || {}),
@@ -42,7 +39,7 @@ export async function accountPermissions(options?: { [key: string]: any }) {
 }
 
 /** 获取账户资料 GET /api/account/profile */
-export async function accountProfile(options?: { [key: string]: any }) {
+export async function accountProfile(options?: RequestOptions) {
   return request<API.AccountInfo>('/api/account/profile', {
     method: 'GET',
     ...(options || {}),
@@ -50,7 +47,7 @@ export async function accountProfile(options?: { [key: string]: any }) {
 }
 
 /** 更改账户资料 PUT /api/account/update */
-export async function accountUpdate(body: API.AccountUpdateDto, options?: { [key: string]: any }) {
+export async function accountUpdate(body: API.AccountUpdateDto, options?: RequestOptions) {
   return request<any>('/api/account/update', {
     method: 'PUT',
     headers: {

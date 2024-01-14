@@ -179,7 +179,7 @@
       title: '操作',
       width: 220,
       dataIndex: 'ACTION',
-      align: 'center',
+
       fixed: 'right',
       actions: ({ record }) => [
         {

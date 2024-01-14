@@ -6,7 +6,7 @@ import { request, type RequestOptions } from '@/utils/request';
 export async function deptList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.DeptListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<API.DeptEntity[]>('/api/system/depts', {
     method: 'GET',
@@ -18,7 +18,7 @@ export async function deptList(
 }
 
 /** 创建部门 POST /api/system/depts */
-export async function deptCreate(body: API.DeptDto, options?: { [key: string]: any }) {
+export async function deptCreate(body: API.DeptDto, options?: RequestOptions) {
   return request<any>('/api/system/depts', {
     method: 'POST',
     headers: {
@@ -33,7 +33,7 @@ export async function deptCreate(body: API.DeptDto, options?: { [key: string]: a
 export async function deptInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.DeptInfoParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.DeptEntity>(`/api/system/depts/${param0}`, {
@@ -48,7 +48,7 @@ export async function deptUpdate(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.DeptUpdateParams,
   body: API.DeptDto,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/depts/${param0}`, {
@@ -66,7 +66,7 @@ export async function deptUpdate(
 export async function deptDelete(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.DeptDeleteParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/depts/${param0}`, {

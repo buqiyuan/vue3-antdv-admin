@@ -45,38 +45,38 @@
       title: 'ID',
       dataIndex: 'id',
       width: 80,
-      align: 'center',
+
       hideInSearch: true,
     },
     {
       title: '任务编号',
       dataIndex: ['task', 'id'],
-      align: 'center',
+
       width: 80,
     },
     {
       title: '任务名称',
       dataIndex: ['task', 'name'],
-      align: 'center',
+
       width: 140,
     },
     {
       title: '异常信息',
       dataIndex: 'detail',
-      align: 'center',
+
       customRender: ({ record }) => record.detail ?? '无',
     },
     {
       title: '耗时',
       dataIndex: 'consumeTime',
-      align: 'center',
+
       width: 80,
       customRender: ({ record }) => <Tag>{record.consumeTime}ms</Tag>,
     },
     {
       title: '状态',
       dataIndex: 'status',
-      align: 'center',
+
       width: 100,
       customRender: ({ record }) => {
         const status = ~~record.status;
@@ -86,7 +86,7 @@
     {
       title: '执行时间',
       dataIndex: 'createdAt',
-      align: 'center',
+
       width: 165,
       customRender: ({ record }) => {
         return formatToDateTime(record.createdAt);

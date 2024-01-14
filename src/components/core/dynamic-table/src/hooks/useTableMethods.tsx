@@ -51,8 +51,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @param {boolean} flush 是否将页数重置到第一页
    * @description 获取表格数据
    */
-  const fetchData = async (params = {}, rest?: OnChangeCallbackParams) => {
-    console.log('rest', rest);
+  const fetchData = async (params = {}) => {
     const { dataRequest, dataSource, fetchConfig } = props;
 
     if (!dataRequest || !isFunction(dataRequest) || Array.isArray(dataSource)) {
@@ -87,7 +86,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       }
 
       loadingRef.value = true;
-      const res = await dataRequest(queryParams, rest);
+      const res = await dataRequest(queryParams);
 
       const isArrayResult = Array.isArray(res);
       const resultItems: Recordable[] = isArrayResult ? res : get(res, listField);
@@ -100,7 +99,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
           updatePagination({
             current: currentTotalPage,
           });
-          return await fetchData(params, rest);
+          return await fetchData(params);
         }
       }
       tableData.value = resultItems;
@@ -151,7 +150,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       params.filterInfo = filterInfo;
     }
 
-    await fetchData({}, rest);
+    await fetchData({});
     emit('change', ...rest);
   };
 

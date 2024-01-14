@@ -6,7 +6,7 @@ import { request, type RequestOptions } from '@/utils/request';
 export async function menuList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.MenuListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<API.MenuItemInfo[]>('/api/system/menus', {
     method: 'GET',
@@ -27,7 +27,7 @@ export async function menuList(
 }
 
 /** 新增菜单或权限 POST /api/system/menus */
-export async function menuCreate(body: API.MenuDto, options?: { [key: string]: any }) {
+export async function menuCreate(body: API.MenuDto, options?: RequestOptions) {
   return request<any>('/api/system/menus', {
     method: 'POST',
     headers: {
@@ -42,7 +42,7 @@ export async function menuCreate(body: API.MenuDto, options?: { [key: string]: a
 export async function menuInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.MenuInfoParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/menus/${param0}`, {
@@ -57,7 +57,7 @@ export async function menuUpdate(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.MenuUpdateParams,
   body: API.MenuUpdateDto,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/menus/${param0}`, {
@@ -75,7 +75,7 @@ export async function menuUpdate(
 export async function menuDelete(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.MenuDeleteParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/menus/${param0}`, {

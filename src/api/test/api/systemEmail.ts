@@ -3,7 +3,7 @@
 import { request, type RequestOptions } from '@/utils/request';
 
 /** 发送邮件 POST /api/email/send */
-export async function emailSend(body: API.EmailSendDto, options?: { [key: string]: any }) {
+export async function emailSend(body: API.EmailSendDto, options?: RequestOptions) {
   return request<any>('/api/email/send', {
     method: 'POST',
     headers: {

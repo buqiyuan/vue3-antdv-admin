@@ -1,16 +1,21 @@
 import axios, { CanceledError } from 'axios';
 import { message as $message, Modal } from 'ant-design-vue';
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
+import { ResultEnum } from '@/enums/httpEnum';
 
-export interface RequestOptions<Passive extends boolean = true> {
-  /** 是否直接获取data，而忽略message等 */
-  isGetDataDirectly?: Passive;
+export interface RequestOptions<Passive extends boolean = true> extends AxiosRequestConfig {
+  /** 是否直接将数据从响应中提取出，例如直接返回 res.data，而忽略 res.code 等信息 */
+  isReturnResult?: Passive;
   /** 请求成功是提示信息 */
   successMsg?: string;
   /** 请求失败是提示信息 */
   errorMsg?: string;
+  /** 成功时，是否显示后端返回的成功信息 */
+  showSuccessMsg?: boolean;
+  /** 失败时，是否显示后端返回的失败信息 */
+  showErrorMsg?: boolean;
   requestType?: 'json' | 'form';
 }
 
@@ -43,11 +48,11 @@ service.interceptors.request.use(
 );
 
 service.interceptors.response.use(
-  (response) => {
+  (response: AxiosResponse<BaseResponse>) => {
     const res = response.data;
 
     // if the custom code is not 200, it is judged as an error.
-    if (res.code !== 200) {
+    if (res.code !== ResultEnum.SUCCESS) {
       $message.error(res.message || UNKNOWN_ERROR);
 
       // Illegal token
@@ -74,7 +79,7 @@ service.interceptors.response.use(
       error.code = res.code;
       return Promise.reject(error);
     } else {
-      return res;
+      return response;
     }
   },
   (error) => {
@@ -94,39 +99,53 @@ type BaseResponse<T = any> = Omit<API.ResOp, 'data'> & {
 
 export function request<T = any>(
   url: string,
-  config: AxiosRequestConfig & RequestOptions<true>,
+  config: RequestOptions<true>,
 ): Promise<BaseResponse<T>['data']>;
 
 export function request<T = any>(
   url: string,
-  config: AxiosRequestConfig & RequestOptions<false>,
+  config: RequestOptions<false>,
 ): Promise<BaseResponse<T>>;
 /**
  *
  * @param url - request url
  * @param config - AxiosRequestConfig
  */
-export async function request<T extends object, Passive extends boolean>(
+export async function request<T = BaseResponse, Passive extends boolean = true>(
   url: string,
-  config: AxiosRequestConfig & RequestOptions<Passive> = {},
+  config: RequestOptions<Passive> = {},
 ) {
   try {
     // 兼容 from data 文件上传的情况
-    const { requestType, isGetDataDirectly = true, ...rest } = config;
+    const { requestType, isReturnResult = true, ...rest } = config;
 
-    const res = await service.request<T>({
+    const response = (await service.request<T>({
       url,
       ...rest,
       headers: {
         ...rest.headers,
         ...(requestType === 'form' ? { 'Content-Type': 'multipart/form-data' } : {}),
       },
-    });
+    })) as AxiosResponse<BaseResponse>;
+    const { data } = response;
+    const { code, message } = data || {};
 
-    if (isGetDataDirectly) {
-      return res.data;
+    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+
+    if (hasSuccess) {
+      const { successMsg, showSuccessMsg } = config;
+      if (successMsg) {
+        $message.success(successMsg);
+      } else if (showSuccessMsg && message) {
+        $message.success(message);
+      }
+    }
+
+    // 页面代码需要获取 code，data，message 等信息时，需要将 isReturnResult 设置为 false
+    if (!isReturnResult) {
+      return data;
     } else {
-      return res;
+      return data.data;
     }
   } catch (error: any) {
     return Promise.reject(error);

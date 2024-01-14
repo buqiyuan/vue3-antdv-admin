@@ -1,5 +1,5 @@
 import type { RowProps } from 'ant-design-vue';
-import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
+import type { RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
 import type { Component, UnwrapRef, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
@@ -41,27 +41,6 @@ export type CustomRenderFn<T extends object = Recordable> = (
 
 export interface ButtonProps extends AntdButtonProps {
   text?: string;
-}
-
-export interface FormActionType {
-  formModel?: Recordable;
-  submit: () => Promise<void>;
-  setFieldsValue: <T>(values: T) => Promise<void>;
-  resetFields: () => Promise<void>;
-  getFieldsValue: () => any;
-  clearValidate: (name?: string | string[]) => Promise<void>;
-  updateSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
-  resetSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
-  setSchemaFormProps: (formProps: Partial<FormSchema>) => Promise<void>;
-  removeSchemaByField: (field: string | string[]) => Promise<void>;
-  appendSchemaByField: (
-    schema: FormSchema,
-    prefixField: string | undefined,
-    first?: boolean | undefined,
-  ) => Promise<void>;
-  validateFields: (nameList?: NamePath[]) => Promise<any>;
-  validate: (nameList?: NamePath[]) => Promise<any>;
-  scrollToField: (name: NamePath, options?: ScrollOptions) => Promise<void>;
 }
 
 export type RegisterFn = (formInstance: SchemaFormInstance) => void;

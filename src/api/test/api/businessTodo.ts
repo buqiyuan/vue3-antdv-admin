@@ -6,7 +6,7 @@ import { request, type RequestOptions } from '@/utils/request';
 export async function todoList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TodoListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<API.TodoEntity[]>('/api/todos', {
     method: 'GET',
@@ -23,7 +23,7 @@ export async function todoList(
 }
 
 /** 创建Todo POST /api/todos */
-export async function todoCreate(body: API.TodoDto, options?: { [key: string]: any }) {
+export async function todoCreate(body: API.TodoDto, options?: RequestOptions) {
   return request<any>('/api/todos', {
     method: 'POST',
     headers: {
@@ -38,7 +38,7 @@ export async function todoCreate(body: API.TodoDto, options?: { [key: string]: a
 export async function todoInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TodoInfoParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.TodoEntity>(`/api/todos/${param0}`, {
@@ -53,7 +53,7 @@ export async function todoUpdate(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TodoUpdateParams,
   body: API.TodoUpdateDto,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/todos/${param0}`, {
@@ -71,7 +71,7 @@ export async function todoUpdate(
 export async function todoDelete(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TodoDeleteParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/todos/${param0}`, {

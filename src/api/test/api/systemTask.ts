@@ -6,7 +6,7 @@ import { request, type RequestOptions } from '@/utils/request';
 export async function taskList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TaskListParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   return request<{
     items?: API.TaskEntity[];
@@ -25,6 +25,9 @@ export async function taskList(
       // pageSize has a default value: 10
       pageSize: '10',
 
+      // limit has a default value: -1
+      limit: '-1',
+
       ...params,
     },
     ...(options || {}),
@@ -32,7 +35,7 @@ export async function taskList(
 }
 
 /** 添加任务 POST /api/system/tasks */
-export async function taskCreate(body: API.TaskDto, options?: { [key: string]: any }) {
+export async function taskCreate(body: API.TaskDto, options?: RequestOptions) {
   return request<any>('/api/system/tasks', {
     method: 'POST',
     headers: {
@@ -47,7 +50,7 @@ export async function taskCreate(body: API.TaskDto, options?: { [key: string]: a
 export async function taskInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TaskInfoParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.TaskEntity>(`/api/system/tasks/${param0}`, {
@@ -62,7 +65,7 @@ export async function taskUpdate(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TaskUpdateParams,
   body: API.TaskUpdateDto,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}`, {
@@ -80,7 +83,7 @@ export async function taskUpdate(
 export async function taskDelete(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TaskDeleteParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}`, {
@@ -94,7 +97,7 @@ export async function taskDelete(
 export async function taskOnce(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TaskOnceParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}/once`, {
@@ -108,7 +111,7 @@ export async function taskOnce(
 export async function taskStart(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TaskStartParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}/start`, {
@@ -122,7 +125,7 @@ export async function taskStart(
 export async function taskStop(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.TaskStopParams,
-  options?: { [key: string]: any },
+  options?: RequestOptions,
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}/stop`, {
