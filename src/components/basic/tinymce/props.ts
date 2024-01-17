@@ -31,8 +31,4 @@ export const tinymceProps = {
     required: false,
     default: 'auto',
   },
-  showImageUpload: {
-    type: Boolean,
-    default: true,
-  },
 };

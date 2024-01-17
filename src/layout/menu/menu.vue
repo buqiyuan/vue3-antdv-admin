@@ -99,8 +99,8 @@
   const clickMenuItem = ({ key }) => {
     if (key === currentRoute.name) return;
     const targetRoute = getRouteByName(key);
-    const { isExt, openMode } = targetRoute?.meta || {};
-    if (isExt && openMode !== 2) {
+    const { isExt, extOpenMode } = targetRoute?.meta || {};
+    if (isExt && extOpenMode !== 2) {
       window.open(key);
     } else {
       router.push({ name: key });

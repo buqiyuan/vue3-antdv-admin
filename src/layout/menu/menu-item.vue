@@ -41,7 +41,7 @@
   const filterMenus = computed(() => {
     return [...props.menus]
       .filter((n) => !n.meta?.hideInMenu)
-      .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
+      .sort((a, b) => ~~a.meta?.orderNo! - ~~b.meta?.orderNo!);
   });
 
   const isShowSubMenu = (menuItem: RouteRecordRaw) => {

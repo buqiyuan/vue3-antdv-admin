@@ -11,12 +11,12 @@ export async function menuList(
   return request<API.MenuItemInfo[]>('/api/system/menus', {
     method: 'GET',
     params: {
-      // openMode has a default value: 1
-      openMode: '1',
+      // extOpenMode has a default value: 1
+      extOpenMode: '1',
       // show has a default value: 1
       show: '1',
-      // keepalive has a default value: 1
-      keepalive: '1',
+      // keepAlive has a default value: 1
+      keepAlive: '1',
       // status has a default value: 1
       status: '1',
 

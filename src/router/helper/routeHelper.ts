@@ -6,10 +6,16 @@ import ComponentNotFound from '@/views/error/comp-not-found.vue';
 import { rootRoute } from '@/router/routes';
 import router from '@/router';
 import basic from '@/router/routes/basic';
+// import routeModules from '@/router/routes/modules';
 
 export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
   routeList.forEach((route) => {
     const compPath = route.component as unknown as string;
+
+    if (typeof route.meta === 'object') {
+      const { show = 1 } = route.meta;
+      route.meta.hideInMenu ??= !show;
+    }
 
     if (compPath === 'LAYOUT') {
       route.component = RouterView;
@@ -29,7 +35,7 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
   return routeList;
 };
 
-export const generateDynamicRoute = (menus: RouteRecordRaw[]) => {
+export const generateDynamicRoutes = (menus: RouteRecordRaw[]) => {
   const routes = transformMenuToRoutes(menus);
   rootRoute.children = [...routes, ...basic];
   router.addRoute(rootRoute);

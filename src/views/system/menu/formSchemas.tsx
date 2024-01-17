@@ -1,5 +1,5 @@
 import type { FormSchema } from '@/components/core/schema-form/';
-import IconsSelect from '@/components/basic/icons-select/index.vue';
+import { IconPicker } from '@/components/basic/icon';
 import { asyncRoutes } from '@/router/asyncModules';
 import { str2tree } from '@/core/permission';
 import Api from '@/api/';
@@ -86,7 +86,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
   },
   {
     field: 'icon',
-    component: () => IconsSelect,
+    component: () => IconPicker,
     label: '节点图标',
     vIf: ({ formModel }) => !isPerm(formModel['type']),
   },
@@ -102,10 +102,10 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     },
   },
   {
-    field: 'external',
+    field: 'isExt',
     component: 'RadioGroup',
     label: '是否外链',
-    defaultValue: 0,
+    defaultValue: false,
     colProps: {
       span: 12,
     },
@@ -113,18 +113,18 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
       optionType: 'button',
       buttonStyle: 'solid',
       options: [
-        { label: '是', value: 1 },
-        { label: '否', value: 0 },
+        { label: '是', value: true },
+        { label: '否', value: false },
       ],
     },
     vIf: ({ formModel }) => !isPerm(formModel['type']),
   },
   {
-    field: 'openMode',
+    field: 'extOpenMode',
     component: 'RadioGroup',
     label: '打开方式',
     defaultValue: 1,
-    vIf: ({ formModel }) => !isPerm(formModel['type']) && formModel['external'],
+    vIf: ({ formModel }) => !isPerm(formModel['type']) && formModel['isExt'],
     colProps: {
       span: 12,
     },
@@ -144,7 +144,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     },
   },
   {
-    field: 'keepalive',
+    field: 'keepAlive',
     component: 'RadioGroup',
     label: '是否缓存',
     defaultValue: 0,

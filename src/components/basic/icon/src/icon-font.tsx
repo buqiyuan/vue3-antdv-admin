@@ -5,6 +5,7 @@ import { isString } from '@/utils/is';
 
 let scriptUrls = [`${import.meta.env.BASE_URL}iconfont.js`];
 
+// 文档：https://antdv.com/components/icon-cn#components-icon-demo-iconfont
 let MyIconFont = createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
   // scriptUrl: '//at.alicdn.com/t/font_2184398_zflo1kjcemp.js',

@@ -29,6 +29,14 @@ declare namespace API {
     avatar: string;
   };
 
+  type AccountMenus = {
+    meta: MenuMeta;
+    id: number;
+    path: string;
+    name: string;
+    component: string;
+  };
+
   type AccountUpdateDto = {
     /** 用户呢称 */
     nickname: string;
@@ -309,13 +317,13 @@ declare namespace API {
     /** 前端路由地址 */
     path: string;
     /** 是否外链 */
-    external: 0 | 1;
+    isExt: boolean;
     /** 外链打开方式 */
-    openMode: 1 | 2;
+    extOpenMode: 1 | 2;
     /** 菜单是否显示 */
     show: 0 | 1;
-    /** 开启页面缓存 */
-    keepalive: 0 | 1;
+    /** 是否开启页面缓存 */
+    keepAlive: 0 | 1;
     /** 状态 */
     status: 0 | 1;
     /** 菜单图标 */
@@ -335,9 +343,9 @@ declare namespace API {
     icon: string;
     orderNo: number;
     component: string;
-    external: number;
-    openMode: number;
-    keepalive: number;
+    isExt: boolean;
+    extOpenMode: number;
+    keepAlive: number;
     show: number;
     status: number;
     roles: RoleEntity[];
@@ -360,9 +368,9 @@ declare namespace API {
     icon: string;
     orderNo: number;
     component: string;
-    external: number;
-    openMode: number;
-    keepalive: number;
+    isExt: boolean;
+    extOpenMode: number;
+    keepAlive: number;
     show: number;
     status: number;
     roles: RoleEntity[];
@@ -383,13 +391,13 @@ declare namespace API {
     /** 前端路由地址 */
     path?: string;
     /** 是否外链 */
-    external?: 0 | 1;
+    isExt?: boolean;
     /** 外链打开方式 */
-    openMode?: 1 | 2;
+    extOpenMode?: 1 | 2;
     /** 菜单是否显示 */
     show?: 0 | 1;
-    /** 开启页面缓存 */
-    keepalive?: 0 | 1;
+    /** 是否开启页面缓存 */
+    keepAlive?: 0 | 1;
     /** 状态 */
     status?: 0 | 1;
     /** 菜单图标 */
@@ -398,6 +406,20 @@ declare namespace API {
     permission?: string;
     /** 菜单路由路径或外链 */
     component?: string;
+  };
+
+  type MenuMeta = {
+    title: string;
+    permission?: string;
+    type?: number;
+    icon?: string;
+    orderNo?: number;
+    component?: string;
+    isExt?: boolean;
+    extOpenMode?: number;
+    keepAlive?: number;
+    show?: number;
+    status?: number;
   };
 
   type MenuUpdateDto = {
@@ -412,13 +434,13 @@ declare namespace API {
     /** 前端路由地址 */
     path?: string;
     /** 是否外链 */
-    external?: 0 | 1;
+    isExt?: boolean;
     /** 外链打开方式 */
-    openMode?: 1 | 2;
+    extOpenMode?: 1 | 2;
     /** 菜单是否显示 */
     show?: 0 | 1;
-    /** 开启页面缓存 */
-    keepalive?: 0 | 1;
+    /** 是否开启页面缓存 */
+    keepAlive?: 0 | 1;
     /** 状态 */
     status?: 0 | 1;
     /** 菜单图标 */

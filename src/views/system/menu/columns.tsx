@@ -1,4 +1,5 @@
 import type { TableColumn } from '@/components/core/dynamic-table';
+import { Icon } from '@/components/basic/icon';
 
 export type TableListItem = API.MenuItemInfo;
 export type TableColumnItem = TableColumn<TableListItem>;
@@ -32,7 +33,7 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'icon',
 
     hideInSearch: true,
-    customRender: ({ record }) => record.icon && <icon-font type={record.icon} size="22" />,
+    customRender: ({ record }) => record.icon && <Icon icon={record.icon} size="22" />,
   },
   {
     title: '类型',
@@ -54,7 +55,7 @@ export const baseColumns: TableColumnItem[] = [
 
     width: 80,
     hideInSearch: true,
-    customRender: ({ record }) => record.type === 1 && (record.keepalive ? '是' : '否'),
+    customRender: ({ record }) => record.type === 1 && (record.keepAlive ? '是' : '否'),
   },
   {
     title: '文件路径',

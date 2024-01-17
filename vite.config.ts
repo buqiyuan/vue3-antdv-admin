@@ -9,7 +9,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
-// import mockServerPlugin from '@bqy/mock-server/vite';
+import mockServerPlugin from '@bqy/mock-server/vite';
 import pkg from './package.json';
 import type { UserConfig, ConfigEnv } from 'vite';
 
@@ -26,11 +26,11 @@ const __APP_INFO__ = {
 };
 
 // https://vitejs.dev/config/
-export default ({ mode }: ConfigEnv): UserConfig => {
+export default ({ command, mode }: ConfigEnv): UserConfig => {
   // 环境变量
   const { VITE_BASE_URL, VITE_DROP_CONSOLE } = loadEnv(mode, CWD);
 
-  // const isBuild = command === 'build';
+  const isBuild = command === 'build';
 
   return {
     base: VITE_BASE_URL,
@@ -51,7 +51,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
-      // mockServerPlugin({ enableProd: isBuild }),
+      mockServerPlugin({ enableProd: isBuild }),
       legacy({
         targets: ['defaults', 'not IE 11', 'chrome 79', 'maintained node versions'],
         additionalLegacyPolyfills: ['regenerator-runtime/runtime'],

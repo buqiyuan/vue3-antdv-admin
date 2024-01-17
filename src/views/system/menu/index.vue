@@ -1,21 +1,11 @@
 <template>
-  <div>
-    <DynamicTable
-      header-title="菜单管理"
-      :data-request="Api.systemMenu.menuList"
-      :columns="columns"
-    >
-      <template #toolbar>
-        <a-button
-          type="primary"
-          :disabled="!$auth('system:menu:create')"
-          @click="openMenuModal({})"
-        >
-          新增
-        </a-button>
-      </template>
-    </DynamicTable>
-  </div>
+  <DynamicTable header-title="菜单管理" :data-request="Api.systemMenu.menuList" :columns="columns">
+    <template #toolbar>
+      <a-button type="primary" :disabled="!$auth('system:menu:create')" @click="openMenuModal({})">
+        新增
+      </a-button>
+    </template>
+  </DynamicTable>
 </template>
 
 <script lang="tsx" setup>
@@ -73,6 +63,7 @@
       ...record,
       icon: record.icon ?? '',
       parentId: record.parentId ?? -1,
+      component: record.component?.split('/'),
     });
     console.log('record', record);
   };

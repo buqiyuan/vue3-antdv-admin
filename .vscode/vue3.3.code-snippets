@@ -11,7 +11,7 @@
       "<template>",
       "\t<div>test</div>",
       "</template>\n",
-      "<style lang='scss' scoped>\n",
+      "<style lang='less' scoped>\n",
       "</style>",
       "$2"
     ],

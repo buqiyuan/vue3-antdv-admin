@@ -12,7 +12,7 @@ export async function accountLogout(options?: RequestOptions) {
 
 /** 获取菜单列表 GET /api/account/menus */
 export async function accountMenu(options?: RequestOptions) {
-  return request<API.MenuEntity[]>('/api/account/menus', {
+  return request<API.AccountMenus[]>('/api/account/menus', {
     method: 'GET',
     ...(options || {}),
   });

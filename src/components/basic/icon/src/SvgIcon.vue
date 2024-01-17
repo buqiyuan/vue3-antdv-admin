@@ -6,24 +6,13 @@
 
 <script lang="ts" setup>
   import { computed, type CSSProperties } from 'vue';
+  import { svgIconProps } from './props';
+
   defineOptions({
     name: 'SvgIcon',
   });
 
-  const props = defineProps({
-    prefix: {
-      type: String,
-      default: 'svg-icon',
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: [Number, String],
-      default: 16,
-    },
-  });
+  const props = defineProps(svgIconProps);
   const symbolId = computed(() => `#${props.prefix}-${props.name}`);
   const getStyle = computed((): CSSProperties => {
     const { size } = props;

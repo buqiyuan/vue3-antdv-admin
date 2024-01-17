@@ -23,10 +23,7 @@ const routes: Array<RouteRecordRaw> = [
           icon: 'icon-zhuomian',
           keepAlive: true,
         },
-        component: () =>
-          import(
-            /* webpackChunkName: "demos-custom-a-custom-modal" */ '@/views/demos/custom-modal.vue'
-          ),
+        component: () => import('@/views/demos/custom-modal.vue'),
       },
       {
         path: 'button',
@@ -36,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
           icon: 'icon-zhuomian',
           keepAlive: true,
         },
-        component: () => import(/* webpackChunkName: "demos-button" */ '@/views/demos/button.vue'),
+        component: () => import('@/views/demos/button.vue'),
       },
       {
         path: 'form',
@@ -57,10 +54,7 @@ const routes: Array<RouteRecordRaw> = [
               icon: 'icon-zhuomian',
               keepAlive: true,
             },
-            component: () =>
-              import(
-                /* webpackChunkName: "basic-form" */ '@/views/demos/form/basic-form/index.vue'
-              ),
+            component: () => import('@/views/demos/form/basic-form/index.vue'),
           },
           {
             path: 'rule',
@@ -133,10 +127,7 @@ const routes: Array<RouteRecordRaw> = [
               icon: 'icon-zhuomian',
               keepAlive: false,
             },
-            component: () =>
-              import(
-                /* webpackChunkName: "search-table" */ '@/views/demos/tables/search-table/index.vue'
-              ),
+            component: () => import('@/views/demos/tables/search-table/index.vue'),
           },
           {
             path: 'edit-row-table',
@@ -146,10 +137,7 @@ const routes: Array<RouteRecordRaw> = [
               icon: 'icon-zhuomian',
               keepAlive: false,
             },
-            component: () =>
-              import(
-                /* webpackChunkName: "edit-row-table" */ '@/views/demos/tables/edit-row-table/index.vue'
-              ),
+            component: () => import('@/views/demos/tables/edit-row-table/index.vue'),
           },
           {
             path: 'wzry',
@@ -159,10 +147,7 @@ const routes: Array<RouteRecordRaw> = [
               icon: 'icon-zhuomian',
               keepAlive: false,
             },
-            component: () =>
-              import(
-                /* webpackChunkName: "wzry-table" */ '@/views/demos/tables/wzry-table/index.vue'
-              ),
+            component: () => import('@/views/demos/tables/wzry-table/index.vue'),
           },
           {
             path: 'lol',
@@ -172,10 +157,7 @@ const routes: Array<RouteRecordRaw> = [
               icon: 'icon-zhuomian',
               keepAlive: true,
             },
-            component: () =>
-              import(
-                /* webpackChunkName: "lol-table" */ '@/views/demos/tables/lol-table/index.vue'
-              ),
+            component: () => import('@/views/demos/tables/lol-table/index.vue'),
           },
           {
             path: 'lol/:id',
@@ -187,10 +169,7 @@ const routes: Array<RouteRecordRaw> = [
               keepAlive: true,
               activeMenu: `${moduleName}-table-lol`,
             },
-            component: () =>
-              import(
-                /* webpackChunkName: "lol-info-table" */ '@/views/demos/tables/lol-table/heroInfo.vue'
-              ),
+            component: () => import('@/views/demos/tables/lol-table/heroInfo.vue'),
           },
         ],
       },
@@ -202,8 +181,7 @@ const routes: Array<RouteRecordRaw> = [
           icon: 'icon-zhuomian',
           keepAlive: true,
         },
-        component: () =>
-          import(/* webpackChunkName: "demos-button" */ '@/views/demos/icons/Iconfont.vue'),
+        component: () => import('@/views/demos/icons/Iconfont.vue'),
       },
       {
         path: 'nested-routes',
@@ -216,8 +194,7 @@ const routes: Array<RouteRecordRaw> = [
           hideChildrenInMenu: true,
           transitionName: false,
         },
-        component: () =>
-          import(/* webpackChunkName: "nested-routes" */ '@/views/demos/nested-routes/index.vue'),
+        component: () => import('@/views/demos/nested-routes/index.vue'),
         children: [
           {
             path: 'route-one',

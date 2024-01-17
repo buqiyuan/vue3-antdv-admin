@@ -27,7 +27,7 @@
       toolbar,
       menubar: 'file edit insert view format table',
       plugins,
-      language_url: langs['zh_CN'],
+      language_url: langs[langName.value],
       language: langName.value,
       branding: false,
       default_link_target: '_blank',

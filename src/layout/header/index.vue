@@ -172,8 +172,8 @@
     console.log('lastChild', menuItem, lastChild);
 
     const targetRoute = getRouteByName(lastChild?.name);
-    const { isExt, openMode } = targetRoute?.meta || {};
-    if (isExt && openMode !== 2) {
+    const { isExt, extOpenMode } = targetRoute?.meta || {};
+    if (isExt && extOpenMode !== 2) {
       window.open(lastChild?.name);
     } else {
       router.push({ name: lastChild?.name });

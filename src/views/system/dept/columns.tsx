@@ -8,6 +8,7 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '部门名称',
     dataIndex: 'name',
+    align: 'left',
   },
   {
     title: '排序',

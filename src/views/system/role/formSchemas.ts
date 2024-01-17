@@ -53,6 +53,7 @@ export const roleSchemas: FormSchema<API.RoleDto>[] = [
         overflow: 'auto',
         borderRadius: '6px',
         border: '1px solid #dcdfe6',
+        resize: 'vertical',
       },
     },
   },

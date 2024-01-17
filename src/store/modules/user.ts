@@ -6,7 +6,7 @@ import Api from '@/api/';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
 import { resetRouter } from '@/router';
-import { generateDynamicRoute } from '@/router/helper/routeHelper';
+import { generateDynamicRoutes } from '@/router/helper/routeHelper';
 
 interface UserState {
   token: string;
@@ -78,17 +78,10 @@ export const useUserStore = defineStore({
           accountPermissions(),
         ]);
         this.perms = perms;
-        // @ts-ignore
-        this.menus = menus;
+        this.menus = generateDynamicRoutes(menus as unknown as RouteRecordRaw[]);
         this.name = userInfo.username;
         this.avatar = userInfo.avatar;
         this.userInfo = userInfo;
-        // 生成路由
-        // const generatorResult = await generatorDynamicRouter(menus);
-        // @ts-ignore
-        generateDynamicRoute(menus);
-        // this.menus = generatorResult.menus.filter((item) => !item.meta?.hideInMenu);
-        // !wsStore.client && wsStore.initSocket();
 
         return { menus, perms, userInfo };
       } catch (error) {

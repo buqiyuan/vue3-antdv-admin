@@ -1,5 +1,14 @@
 import type { FormSchema } from '@/components/core/schema-form/';
+import type { IPropTypes } from '@tinymce/tinymce-vue/lib/es2015/main/ts/components/EditorPropTypes';
 import TinymceEditor from '@/components/basic/tinymce';
+import Api from '@/api/';
+
+const initOptions: IPropTypes['init'] = {
+  images_upload_handler: async (blobInfo) => {
+    const data = await Api.toolsUpload.uploadUpload({ file: blobInfo.blob() });
+    return data.filename;
+  },
+};
 
 export const sendSchemas: FormSchema<API.EmailSendDto>[] = [
   {
@@ -23,7 +32,7 @@ export const sendSchemas: FormSchema<API.EmailSendDto>[] = [
   {
     field: 'content',
     component: ({ formModel }) => {
-      return <TinymceEditor v-model={formModel.content} />;
+      return <TinymceEditor v-model={formModel.content} init={initOptions} />;
     },
     label: '正文',
     colProps: { md: 18 },

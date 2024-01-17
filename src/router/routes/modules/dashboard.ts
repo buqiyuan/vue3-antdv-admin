@@ -22,8 +22,7 @@ const routes: Array<RouteRecordRaw> = [
           title: t('routes.dashboard.workbench'),
           icon: 'icon-shouye',
         },
-        component: () =>
-          import(/* webpackChunkName: "dashboard-welcome" */ '@/views/dashboard/welcome/index.vue'),
+        component: () => import('@/views/dashboard/welcome/index.vue'),
       },
     ],
   },
