@@ -8,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
     component: RouterView,
     meta: {
       title: 'H5低代码平台',
-      icon: 'icon-externa-link',
+      icon: 'ant-design:link-outlined',
       isExt: true,
     },
   },

@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component: RouterView,
     meta: {
       title: t('routes.dashboard.dashboard'),
-      icon: 'icon-yibiaopan',
+      icon: 'ant-design:dashboard-outlined',
     },
     children: [
       {
@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${moduleName}-welcome`,
         meta: {
           title: t('routes.dashboard.workbench'),
-          icon: 'icon-shouye',
+          icon: 'ant-design:home-filled',
         },
         component: () => import('@/views/dashboard/welcome/index.vue'),
       },

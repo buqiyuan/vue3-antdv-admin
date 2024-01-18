@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import { enableMocking } from '@admin-pkg/mock-server';
 import App from './App.vue';
 import { setupRouter } from './router';
+import { setupIcons } from './components/basic/icon';
 import { setupStore } from '@/store';
 import { setupI18n } from '@/locales';
 import { setupAntd, setupAssets, setupDirectives, setupGlobalMethods } from '@/plugins';
@@ -9,6 +10,8 @@ import { setupAntd, setupAssets, setupDirectives, setupGlobalMethods } from '@/p
 const app = createApp(App);
 
 function setupPlugins() {
+  // 安装图标
+  setupIcons();
   // 注册全局常用的ant-design-vue组件
   setupAntd(app);
   // 引入静态资源

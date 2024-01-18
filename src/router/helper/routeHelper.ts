@@ -1,5 +1,5 @@
-import { type RouteRecordRaw } from 'vue-router';
 import { asyncRoutes } from '../asyncModules';
+import type { RouteRecordRaw } from 'vue-router';
 import RouterView from '@/layout/routerView/index.vue';
 import { warn } from '@/utils/log';
 import ComponentNotFound from '@/views/error/comp-not-found.vue';
@@ -14,6 +14,7 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
 
     if (typeof route.meta === 'object') {
       const { show = 1 } = route.meta;
+      // 是否在菜单中隐藏
       route.meta.hideInMenu ??= !show;
     }
 
@@ -37,9 +38,28 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
 
 export const generateDynamicRoutes = (menus: RouteRecordRaw[]) => {
   const routes = [...routeModules, ...transformMenuToRoutes(menus)];
-  rootRoute.children = [...routes, ...basic];
+  const allRoute = [...routes, ...basic];
+  genNamePathForRoutes(allRoute);
+  rootRoute.children = allRoute;
   router.addRoute(rootRoute);
   console.log('routes', routes, router.getRoutes());
 
   return routes;
+};
+
+/**
+ * 主要方便于设置 a-menu 的 open-keys，即控制左侧菜单应当展开哪些菜单
+ * @param {RouteRecordRaw[]} routes 需要添加 namePath 的路由
+ * @param {string[]} namePath
+ */
+export const genNamePathForRoutes = (routes: RouteRecordRaw[], parentNamePath: string[] = []) => {
+  routes.forEach((item) => {
+    if (item.meta && typeof item.name === 'string') {
+      item.meta.namePath = parentNamePath.concat(item.name);
+
+      if (item.children?.length) {
+        genNamePathForRoutes(item.children, item.meta.namePath);
+      }
+    }
+  });
 };

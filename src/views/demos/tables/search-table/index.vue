@@ -26,38 +26,37 @@
   import { Alert, Card } from 'ant-design-vue';
   import { columns, tableData } from './columns';
   import { useTable } from '@/components/core/dynamic-table';
+  import { waitTime } from '@/utils/common';
 
   const [DynamicTable, dynamicTableInstance] = useTable();
 
   const loadData = async (params): Promise<API.TableListResult> => {
     console.log('params', params);
+    await waitTime(500);
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          list: tableData,
-          ...params,
-        });
-        // 手动设置搜索表单的搜索项
-        dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
-          {
-            field: 'price',
-            componentProps: {
-              options: [
-                {
-                  label: '0-199',
-                  value: '0-199',
-                },
-                {
-                  label: '200-999',
-                  value: '200-999',
-                },
-              ],
+    // 手动设置搜索表单的搜索项
+    dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
+      {
+        field: 'price',
+        componentProps: {
+          options: [
+            {
+              label: '0-199',
+              value: '0-199',
             },
-          },
-        ]);
-      }, 500);
-    });
+            {
+              label: '200-999',
+              value: '200-999',
+            },
+          ],
+        },
+      },
+    ]);
+
+    return {
+      ...params,
+      items: tableData,
+    };
   };
 
   const handleResizeColumn = (w, col) => {

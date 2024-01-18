@@ -54,6 +54,11 @@
 
 <script setup lang="tsx">
   import { Descriptions, Card, Tag } from 'ant-design-vue';
+
+  defineOptions({
+    name: 'About',
+  });
+
   const { pkg, lastBuildTime } = __APP_INFO__;
   const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
 
@@ -74,8 +79,8 @@
 
   const description = `
     的前端项目是基于 Vue${getMajorVersion('vue')}.x、
-    Vite${getMajorVersion('vite')}.x、 
-    Ant-Design-Vue${getMajorVersion('ant-design-vue')}.x 、 
+    Vite${getMajorVersion('vite')}.x、
+    Ant-Design-Vue${getMajorVersion('ant-design-vue')}.x 、
     TypeScript${getMajorVersion('typescript')}.x 开发，
     内置了动态路由、权限验证、并提供了常用的功能组件，帮助你快速搭建企业级中后台产品原型。
     原则上不会限制任何代码用于商用。

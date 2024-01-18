@@ -98,10 +98,13 @@
   // 点击菜单
   const clickMenuItem = ({ key }) => {
     if (key === currentRoute.name) return;
+    const preSelectedKeys = state.selectedKeys;
     const targetRoute = getRouteByName(key);
     const { isExt, extOpenMode } = targetRoute?.meta || {};
-    if (isExt && extOpenMode !== 2) {
-      window.open(key);
+    if (targetRoute && isExt && extOpenMode === 1) {
+      queueMicrotask(() => {
+        state.selectedKeys = preSelectedKeys;
+      });
     } else {
       router.push({ name: key });
     }
@@ -122,4 +125,3 @@
     }
   }
 </style>
-@/store/modules/layout

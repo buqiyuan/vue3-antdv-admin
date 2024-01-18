@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component: RouterView,
     meta: {
       title: t('routes.demo.demo'),
-      icon: 'icon-zhuomian',
+      icon: 'ant-design:desktop-outlined',
     },
     children: [
       {
@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${moduleName}-custom-modal`,
         meta: {
           title: t('routes.demo.modal'),
-          icon: 'icon-zhuomian',
+          icon: 'ant-design:desktop-outlined',
           keepAlive: true,
         },
         component: () => import('@/views/demos/custom-modal.vue'),
@@ -30,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${moduleName}-button`,
         meta: {
           title: t('routes.demo.button'),
-          icon: 'icon-zhuomian',
+          icon: 'ant-design:desktop-outlined',
           keepAlive: true,
         },
         component: () => import('@/views/demos/button.vue'),
@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${moduleName}-form`,
         meta: {
           title: t('routes.demo.form.demo'),
-          icon: 'icon-zhuomian',
+          icon: 'ant-design:desktop-outlined',
           keepAlive: true,
         },
         redirect: { name: `${moduleName}-form-basic` },
@@ -51,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-form-basic`,
             meta: {
               title: t('routes.demo.form.basic'),
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: true,
             },
             component: () => import('@/views/demos/form/basic-form/index.vue'),
@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-form-rule`,
             meta: {
               title: t('routes.demo.form.rule'),
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: true,
             },
             component: () => import('@/views/demos/form/rule-form/index.vue'),
@@ -71,7 +71,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-form-dynamic`,
             meta: {
               title: t('routes.demo.form.dynamic'),
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: true,
             },
             component: () => import('@/views/demos/form/dynamic-form/index.vue'),
@@ -81,7 +81,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-form-use`,
             meta: {
               title: 'useForm',
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: true,
             },
             component: () => import('@/views/demos/form/use-form/index.vue'),
@@ -91,7 +91,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-form-custom`,
             meta: {
               title: t('routes.demo.form.customForm'),
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: true,
             },
             component: () => import('@/views/demos/form/custom-form/index.vue'),
@@ -101,7 +101,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-form-request`,
             meta: {
               title: '自定义请求表单',
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: true,
             },
             component: () => import('@/views/demos/form/request-form/index.vue'),
@@ -113,7 +113,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${moduleName}-table`,
         meta: {
           title: t('routes.demo.table.demo'),
-          icon: 'icon-zhuomian',
+          icon: 'ant-design:desktop-outlined',
           keepAlive: true,
         },
         redirect: { name: `${moduleName}-table-wzry` },
@@ -124,7 +124,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-query-form`,
             meta: {
               title: t('routes.demo.table.searchTable'),
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: false,
             },
             component: () => import('@/views/demos/tables/search-table/index.vue'),
@@ -134,7 +134,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-edit-row-table`,
             meta: {
               title: t('routes.demo.table.editRowTable'),
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: false,
             },
             component: () => import('@/views/demos/tables/edit-row-table/index.vue'),
@@ -144,7 +144,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-table-wzry`,
             meta: {
               title: t('routes.demo.table.wzry'),
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: false,
             },
             component: () => import('@/views/demos/tables/wzry-table/index.vue'),
@@ -154,7 +154,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-table-lol`,
             meta: {
               title: t('routes.demo.table.lol'),
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               keepAlive: true,
             },
             component: () => import('@/views/demos/tables/lol-table/index.vue'),
@@ -164,7 +164,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-table-lol-info`,
             meta: {
               title: '英雄详情',
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               hideInMenu: true,
               keepAlive: true,
               activeMenu: `${moduleName}-table-lol`,
@@ -178,7 +178,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${moduleName}-icons`,
         meta: {
           title: t('routes.demo.icon'),
-          icon: 'icon-zhuomian',
+          icon: 'ant-design:desktop-outlined',
           keepAlive: true,
         },
         component: () => import('@/views/demos/icons/Iconfont.vue'),
@@ -189,7 +189,7 @@ const routes: Array<RouteRecordRaw> = [
         redirect: { name: `${moduleName}-nested-routes-one` },
         meta: {
           title: '嵌套路由',
-          icon: 'icon-zhuomian',
+          icon: 'ant-design:desktop-outlined',
           keepAlive: true,
           hideChildrenInMenu: true,
           transitionName: false,
@@ -201,7 +201,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-nested-routes-one`,
             meta: {
               title: '路由一',
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               hideInMenu: true,
               activeMenu: `${moduleName}-nested-routes`,
             },
@@ -212,7 +212,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-nested-routes-two`,
             meta: {
               title: '路由二',
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               hideInMenu: true,
               activeMenu: `${moduleName}-nested-routes`,
             },
@@ -223,7 +223,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${moduleName}-nested-routes-three`,
             meta: {
               title: '路由三',
-              icon: 'icon-zhuomian',
+              icon: 'ant-design:desktop-outlined',
               hideInMenu: true,
               activeMenu: `${moduleName}-nested-routes`,
             },

@@ -1,4 +1,4 @@
-import { isNavigationFailure } from 'vue-router';
+import { NavigationFailureType, isNavigationFailure } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
 import { LOGIN_NAME, REDIRECT_NAME } from './constant';
 import type { WhiteNameList } from './constant';
@@ -59,12 +59,16 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
   };
 
   router.afterEach((to, from, failure) => {
+    // 跳过自己手动取消路由导航时的错误
+    if (isNavigationFailure(failure, NavigationFailureType.aborted)) {
+      NProgress.done();
+      // console.error('failed navigation', failure);
+      return;
+    }
+
     const keepAliveStore = useKeepAliveStore();
     const token = Storage.get(ACCESS_TOKEN_KEY, null);
 
-    if (isNavigationFailure(failure)) {
-      console.error('failed navigation', failure);
-    }
     // 在这里设置需要缓存的组件名称
     const toCompName = getComponentName(to);
     // 判断当前页面是否开启缓存，如果开启，则将当前页面的 componentName 信息存入 keep-alive 全局状态
@@ -96,6 +100,6 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
   });
 
   router.onError((error) => {
-    console.log(error, '路由错误');
+    console.error('路由错误', error);
   });
 }

@@ -4,6 +4,10 @@
   import Api from '@/api/';
   import { useForm } from '@/components/core/schema-form';
 
+  defineOptions({
+    name: 'ToolsEmail',
+  });
+
   const loading = ref(false);
 
   const [SchemaForm] = useForm({

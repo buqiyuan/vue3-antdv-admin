@@ -68,7 +68,6 @@ export type ListItemType = (typeof tableData)[number];
 export const columns: TableColumn<ListItemType>[] = [
   {
     title: '姓名',
-
     dataIndex: 'name',
     sorter: true,
     width: 300,
@@ -80,7 +79,6 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '性别',
-
     dataIndex: 'gender',
     width: 120,
     resizable: true,
@@ -99,7 +97,6 @@ export const columns: TableColumn<ListItemType>[] = [
         ],
         onChange() {
           console.log('tableInstance', tableInstance?.reload());
-
           // 根据当前选择的性别，更新衣服可选项
           formInstance?.updateSchema({
             field: 'clothes',
@@ -115,7 +112,6 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '衣服',
-
     dataIndex: 'clothes',
     formItemProps: {
       component: 'Select',
@@ -123,7 +119,6 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '价格',
-
     dataIndex: 'price',
     formItemProps: {
       component: 'Select',
@@ -132,7 +127,6 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '状态',
-
     dataIndex: 'status',
     formItemProps: {
       component: 'Select',

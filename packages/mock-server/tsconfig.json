@@ -7,6 +7,7 @@
     "outDir": "dist",
     "declaration": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strictNullChecks": true,
@@ -21,7 +22,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["node", "vite/client"]
+    "types": ["node", "vite/client"],
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts"],
 }

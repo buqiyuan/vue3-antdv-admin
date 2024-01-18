@@ -4,3 +4,5 @@ export { default as Icon } from './Icon.vue';
 export { default as IconFont } from './src/icon-font';
 
 export * from './src/props';
+
+export { setupIcons } from './src/icons.data';

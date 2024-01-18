@@ -173,8 +173,8 @@
 
     const targetRoute = getRouteByName(lastChild?.name);
     const { isExt, extOpenMode } = targetRoute?.meta || {};
-    if (isExt && extOpenMode !== 2) {
-      window.open(lastChild?.name);
+    if (isExt && extOpenMode === 1) {
+      window.open(lastChild?.path);
     } else {
       router.push({ name: lastChild?.name });
     }

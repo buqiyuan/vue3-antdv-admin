@@ -47,8 +47,8 @@
     await waitTime(500);
 
     return {
-      list: tableData,
       ...params,
+      items: tableData,
     };
   };
 
