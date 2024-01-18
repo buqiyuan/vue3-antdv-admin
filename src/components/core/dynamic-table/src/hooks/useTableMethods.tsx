@@ -90,9 +90,9 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
 
       const isArrayResult = Array.isArray(res);
       const resultItems: Recordable[] = isArrayResult ? res : get(res, listField);
-      const resultTotal: number = isArrayResult ? res.length : get(res, totalField);
+      const resultTotal: number = isArrayResult ? res.length : Number(get(res, totalField));
 
-      if (enablePagination && Number(resultTotal)) {
+      if (enablePagination && resultTotal) {
         const { current = 1, pageSize = tableConfig.defaultPageSize } = pagination;
         const currentTotalPage = Math.ceil(resultTotal / pageSize);
         if (current > currentTotalPage) {
@@ -103,6 +103,10 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
         }
       }
       tableData.value = resultItems;
+      updatePagination({ total: ~~resultTotal });
+      if (queryParams[pageField]) {
+        updatePagination({ current: queryParams[pageField] || 1 });
+      }
       return tableData;
     } catch (error) {
       warn(`表格查询出错：${error}`);

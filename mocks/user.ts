@@ -2,7 +2,7 @@ import { http, HttpResponse, delay } from 'msw';
 import { faker } from '@faker-js/faker/locale/zh_CN';
 
 export default [
-  http.get('/mock-api/user/:id', async () => {
+  http.get('/api/user/:id', async () => {
     await delay(1000);
     return HttpResponse.json(
       Array.from({ length: 10 }).map(() => ({
@@ -13,7 +13,7 @@ export default [
       })),
     );
   }),
-  http.get('/mock-api/login', async () => {
+  http.get('/api/login', async () => {
     await delay(1000);
     return HttpResponse.json({
       code: 200,

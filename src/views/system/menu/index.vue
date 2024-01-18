@@ -13,7 +13,7 @@
   import { useMenuSchemas } from './formSchemas';
   import Api from '@/api/';
   import { useTable } from '@/components/core/dynamic-table';
-  import { useFormModal } from '@/hooks/useModal/useFormModal';
+  import { useFormModal } from '@/hooks/useModal/';
 
   defineOptions({
     name: 'SysMenu',

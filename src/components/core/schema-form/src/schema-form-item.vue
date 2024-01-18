@@ -108,6 +108,7 @@
     }['true'];
   });
 
+  // @ts-ignore
   const getValues = computed<RenderCallbackParams>(() => {
     const { formModel, schema, tableInstance } = props;
 

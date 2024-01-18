@@ -63,7 +63,7 @@
   import { SplitPanel } from '@/components/basic/split-panel';
   import { useTable } from '@/components/core/dynamic-table';
   import Api from '@/api/';
-  import { useFormModal } from '@/hooks/useModal/index';
+  import { useFormModal } from '@/hooks/useModal/';
   import { findChildById } from '@/core/permission/utils';
 
   defineOptions({

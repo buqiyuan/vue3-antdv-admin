@@ -25,7 +25,7 @@
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { roleSchemas } from './formSchemas';
   import { useTable } from '@/components/core/dynamic-table';
-  import { useFormModal } from '@/hooks/useModal/useFormModal';
+  import { useFormModal } from '@/hooks/useModal/';
   import Api from '@/api/';
 
   defineOptions({

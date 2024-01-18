@@ -45,8 +45,10 @@ export interface ButtonProps extends AntdButtonProps {
 
 export type RegisterFn = (formInstance: SchemaFormInstance) => void;
 
+export type UnwrapFormSchema<T extends object = Recordable> = UnwrapRef<FormSchema<T>>;
+
 /** 表单项 */
-export type FormSchema<T extends object = Recordable> = UnwrapRef<{
+export type FormSchema<T extends object = Recordable> = {
   /** 字段名 */
   field: GetFieldKeys<T>;
   // Event name triggered by internal value change, default change
@@ -125,7 +127,7 @@ export type FormSchema<T extends object = Recordable> = UnwrapRef<{
   dynamicDisabled?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
   dynamicRules?: (renderCallbackParams: RenderCallbackParams<T>) => Rule[];
-}>;
+};
 export interface HelpComponentProps {
   maxWidth: string;
   // Whether to display the serial number

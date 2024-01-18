@@ -6,7 +6,7 @@ import ComponentNotFound from '@/views/error/comp-not-found.vue';
 import { rootRoute } from '@/router/routes';
 import router from '@/router';
 import basic from '@/router/routes/basic';
-// import routeModules from '@/router/routes/modules';
+import routeModules from '@/router/routes/modules';
 
 export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
   routeList.forEach((route) => {
@@ -36,7 +36,7 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
 };
 
 export const generateDynamicRoutes = (menus: RouteRecordRaw[]) => {
-  const routes = transformMenuToRoutes(menus);
+  const routes = [...routeModules, ...transformMenuToRoutes(menus)];
   rootRoute.children = [...routes, ...basic];
   router.addRoute(rootRoute);
   console.log('routes', routes, router.getRoutes());

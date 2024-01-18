@@ -9,7 +9,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
-import mockServerPlugin from '@bqy/mock-server/vite';
+import mockServerPlugin from '@admin-pkg/mock-server/vite';
 import pkg from './package.json';
 import type { UserConfig, ConfigEnv } from 'vite';
 
@@ -118,7 +118,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           // target: 'https://nest-api.buqiyuan.site/api/',
           target: 'http://127.0.0.1:5001',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          // rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/ws-api': {
           // target: 'wss://nest-api.buqiyuan.site',

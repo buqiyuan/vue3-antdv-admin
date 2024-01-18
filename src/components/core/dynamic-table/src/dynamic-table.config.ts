@@ -37,4 +37,4 @@ export default {
   defaultFilterFn: (data: Partial<Recordable<string[]>>) => {
     return data;
   },
-};
+} as const;

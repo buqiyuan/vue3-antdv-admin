@@ -31,7 +31,7 @@
   import { reactive } from 'vue';
   import { Alert, Space } from 'ant-design-vue';
   import { DraggableModal } from '@/components/core/draggable-modal';
-  import { useModal } from '@/hooks/useModal/';
+  import { useModal } from '@/hooks/useModal';
 
   defineOptions({
     name: 'CustomModal',

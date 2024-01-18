@@ -82,7 +82,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
 
         return isShowEditable ? (
           <EditableCell
-            schema={getColumnFormSchema(item, record)}
+            schema={getColumnFormSchema(item, record) as any}
             rowKey={record[rowKey] ?? index}
             editableType={innerProps.editableType}
             column={options}

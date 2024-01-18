@@ -14,7 +14,7 @@
     "preview": "npm run build && vite preview",
     "preview:dist": "vite preview",
     "deploy": "bash deploy.sh",
-    "openapi3": "pnpm -F @bqy/mock run openapi",
+    "openapi3": "pnpm -F @admin-pkg/mock run openapi",
     "openapi": "npx tsx openapi.config.ts",
     "clean:cache": "npx rimraf node_modules/.cache/ && npx rimraf node_modules/.vite",
     "clean:lib": "npx rimraf node_modules",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "~7.0.1",
-    "@bqy/mock-server": "workspace:*",
+    "@admin-pkg/mock-server": "workspace:*",
     "@iconify/vue": "^4.1.1",
     "@tinymce/tinymce-vue": "^5.1.1",
     "@vueuse/core": "~10.7.2",

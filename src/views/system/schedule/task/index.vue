@@ -85,7 +85,7 @@
   import { taskSchemas } from './formSchemas';
   import type { TableListItem, TableColumnItem } from './columns';
   import { useTable } from '@/components/core/dynamic-table';
-  import { useFormModal } from '@/hooks/useModal/useFormModal';
+  import { useFormModal } from '@/hooks/useModal/';
   import Api from '@/api/';
 
   defineOptions({

@@ -2,7 +2,7 @@ import { unref, toRaw } from 'vue';
 import { cloneDeep, isNil, uniqBy } from 'lodash-es';
 import dayjs from 'dayjs';
 import { dateItemType, handleInputNumberValue } from '../helper';
-import type { FormSchema } from '../types/form';
+import type { UnwrapFormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import type { FormState, FormMethods } from './index';
 import type { SchemaFormEmitFn } from '../schema-form';
@@ -13,6 +13,8 @@ type UseFormActionContext = FormState & {
   emit: SchemaFormEmitFn;
   handleFormValues: FormMethods['handleFormValues'];
 };
+
+type FormSchema = UnwrapFormSchema;
 
 export type FormEvents = ReturnType<typeof useFormEvents>;
 
@@ -205,7 +207,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
         }
       });
     });
-    formPropsRef.value.schemas = uniqBy(schemas, 'field');
+    formPropsRef.value.schemas = uniqBy<UnwrapFormSchema>(schemas, 'field');
     _setDefaultValue(formPropsRef.value.schemas!);
   };
 

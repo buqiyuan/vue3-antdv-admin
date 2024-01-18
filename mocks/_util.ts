@@ -22,7 +22,11 @@ export function resultPageSuccess<T = any>(
   return {
     ...resultSuccess({
       items: pageData,
-      total: list.length,
+      meta: {
+        currentPage: ~~page,
+        totalItems: list.length,
+        totalPages: Math.ceil(list.length / pageSize),
+      },
     }),
     message,
   };

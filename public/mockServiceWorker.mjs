@@ -80,7 +80,7 @@ invariant.as = (ErrorConstructor, predicate, message, ...positionals) => {
   }
 };
 
-// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/internal/devUtils.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@5.3.3/node_modules/msw/lib/core/utils/internal/devUtils.mjs
 var LIBRARY_PREFIX = "[MSW]";
 function formatMessage(message, ...positionals) {
   const interpolatedMessage = format(message, ...positionals);
@@ -98,7 +98,7 @@ var devUtils = {
   error
 };
 
-// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/internal/checkGlobals.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@5.3.3/node_modules/msw/lib/core/utils/internal/checkGlobals.mjs
 function checkGlobals() {
   invariant(
     typeof URL !== "undefined",
@@ -629,18 +629,18 @@ function getCleanUrl(url, isAbsolute = true) {
   return [isAbsolute && url.origin, url.pathname].filter(Boolean).join("");
 }
 
-// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/url/cleanUrl.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@5.3.3/node_modules/msw/lib/core/utils/url/cleanUrl.mjs
 var REDUNDANT_CHARACTERS_EXP = /[\?|#].*$/g;
 function cleanUrl(path) {
   return path.replace(REDUNDANT_CHARACTERS_EXP, "");
 }
 
-// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/url/isAbsoluteUrl.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@5.3.3/node_modules/msw/lib/core/utils/url/isAbsoluteUrl.mjs
 function isAbsoluteUrl(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 }
 
-// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/url/getAbsoluteUrl.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@5.3.3/node_modules/msw/lib/core/utils/url/getAbsoluteUrl.mjs
 function getAbsoluteUrl(path, baseUrl) {
   if (isAbsoluteUrl(path)) {
     return path;
@@ -655,7 +655,7 @@ function getAbsoluteUrl(path, baseUrl) {
   ) : path;
 }
 
-// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/matching/normalizePath.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@5.3.3/node_modules/msw/lib/core/utils/matching/normalizePath.mjs
 function normalizePath(path, baseUrl) {
   if (path instanceof RegExp) {
     return path;
@@ -664,7 +664,7 @@ function normalizePath(path, baseUrl) {
   return cleanUrl(maybeAbsoluteUrl);
 }
 
-// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/utils/matching/matchRequestUrl.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@5.3.3/node_modules/msw/lib/core/utils/matching/matchRequestUrl.mjs
 function coercePath(path) {
   return path.replace(
     /([:a-zA-Z_-]*)(\*{1,2})+/g,
@@ -689,7 +689,7 @@ function matchRequestUrl(url, path, baseUrl) {
   };
 }
 
-// ../../node_modules/.pnpm/msw@2.0.11_typescript@4.9.5/node_modules/msw/lib/core/index.mjs
+// ../../node_modules/.pnpm/msw@2.0.11_typescript@5.3.3/node_modules/msw/lib/core/index.mjs
 checkGlobals();
 
 // src/utils/isMatchHandler.ts

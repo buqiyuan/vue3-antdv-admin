@@ -7,7 +7,7 @@
       <DynamicTable
         size="small"
         bordered
-        :data-request="loadData"
+        :data-request="getLolHeroList"
         :columns="columns"
         row-key="heroid"
         export-file-name="表格自带导出"
@@ -42,7 +42,7 @@
   const [createContextMenu] = useContextMenu();
 
   const exportExcelModal = useExportExcelModal();
-  let tableData: any[] = [];
+  const tableData: any[] = [];
 
   const aoaToExcel = () => {
     const colFilters = columns.filter((n) => n.dataIndex !== 'INDEX');
@@ -76,12 +76,6 @@
         });
       },
     });
-  };
-
-  const loadData = async (params) => {
-    const { data } = await getLolHeroList(params);
-    tableData = data.list;
-    return data;
   };
 
   const customRow = (record) => {

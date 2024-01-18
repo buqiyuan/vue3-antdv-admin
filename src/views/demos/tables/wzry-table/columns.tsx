@@ -29,10 +29,21 @@ export const columns: TableColumn[] = [
   },
   {
     title: '皮肤',
-
     dataIndex: 'skin_name',
     formItemProps: {
       component: 'Select',
+      componentProps: {
+        options: [
+          {
+            label: '皮肤1',
+            value: 'aa',
+          },
+          {
+            label: '皮肤2',
+            value: 'bb',
+          },
+        ],
+      },
     },
     customRender: ({ record }) => (
       <div>

@@ -24,7 +24,7 @@ export const iconPickerProps = {
 
 export type IconProps = {
   type?: 'svg' | 'iconify' | 'icon-font';
-  icon: string;
+  icon: DefaultIconsType | string;
   color?: string;
   size?: string | number;
 };

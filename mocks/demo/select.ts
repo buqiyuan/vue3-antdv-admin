@@ -14,7 +14,7 @@ const demoList = (keyword, count = 20) => {
 };
 
 export default [
-  http.get('/mock-api/select/getDemoOptions', async ({ request }) => {
+  http.get('/api/select/getDemoOptions', async ({ request }) => {
     await delay(1000);
     const { keyword, count } = getQuery(request);
 

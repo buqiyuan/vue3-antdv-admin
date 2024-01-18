@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { enableMocking } from '@admin-pkg/mock-server';
 import App from './App.vue';
 import { setupRouter } from './router';
 import { setupStore } from '@/store';
@@ -6,8 +7,6 @@ import { setupI18n } from '@/locales';
 import { setupAntd, setupAssets, setupDirectives, setupGlobalMethods } from '@/plugins';
 
 const app = createApp(App);
-
-fetch('/mock-api/user/1').then((r) => r.json());
 
 function setupPlugins() {
   // 注册全局常用的ant-design-vue组件
@@ -21,6 +20,10 @@ function setupPlugins() {
 }
 
 async function setupApp() {
+  // 启用 mock
+  await enableMocking();
+  fetch('/api/user/1').then((r) => r.json());
+
   // 挂载vuex状态管理
   setupStore(app);
   // Multilingual configuration
