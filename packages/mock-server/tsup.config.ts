@@ -13,8 +13,9 @@ export default defineConfig([
   {
     entry: ['src/browser/index.ts'],
     splitting: false,
-    outDir: 'dist',
+    outDir: 'dist/browser',
     format: ['esm'],
+    dts: true,
     /**
      * fix build msw/browser err
      * @see: https://github.com/egoist/tsup/issues/978

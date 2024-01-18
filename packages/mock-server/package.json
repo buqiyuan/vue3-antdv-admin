@@ -1,13 +1,13 @@
 {
-  "name": "@bqy/mock-server",
+  "name": "@admin-pkg/mock-server",
   "version": "0.0.1",
   "description": "",
-  "module": "./dist/index.mjs",
-  "main": "./dist/index.mjs",
+  "module": "./dist/browser/index.mjs",
+  "main": "./dist/browser/index.mjs",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.mjs"
+      "import": "./dist/browser/index.mjs",
+      "require": "./dist/browser/index.mjs"
     },
     "./vite": {
       "import": "./dist/vite.mjs",
@@ -15,7 +15,6 @@
     }
   },
   "scripts": {
-    "openapi": "ts-node openapi.config.ts",
     "prepare": "npm run build",
     "dev": "rimraf dist && tsup --watch",
     "build": "rimraf dist && tsup"
@@ -24,7 +23,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@umijs/openapi": "^1.9.2",
     "chokidar": "^3.5.3",
     "msw": "^2.0.9",
     "tsup": "^8.0.1"

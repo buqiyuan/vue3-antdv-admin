@@ -46,17 +46,17 @@ export default (options: PluginOptions = {}): Plugin => {
     //     },
     //   };
     // },
-    transformIndexHtml: {
-      order: 'pre',
-      handler(html) {
-        const scriptStr = `
-          <script type="module">
-            import '@bqy/mock-server';
-          </script>
-        `;
-        return html.replace(/<body>/, `<body>${scriptStr}`);
-      },
-    },
+    // transformIndexHtml: {
+    //   order: 'pre',
+    //   handler(html) {
+    //     const scriptStr = `
+    //       <script type="module">
+    //         import '@admin-pkg/mock-server';
+    //       </script>
+    //     `;
+    //     return html.replace(/<body>/, `<body>${scriptStr}`);
+    //   },
+    // },
     configResolved(config) {
       resolvedConfig = config;
       resolvedConfig;
