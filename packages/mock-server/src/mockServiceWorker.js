@@ -2,15 +2,15 @@
 /* tslint:disable */
 
 /**
- * Mock Service Worker (2.0.8).
+ * Mock Service Worker (2.1.2).
  * @see https://github.com/mswjs/msw
  * - Please do NOT modify this file.
  * - Please do NOT serve this file on production.
  */
 
+// Inject by @admin-pkg/mock-server
 import { isMatchHandler } from './utils/isMatchHandler';
-
-const INTEGRITY_CHECKSUM = 'c5f7f8e188b673ea4e677df7ea3c5a39';
+const INTEGRITY_CHECKSUM = '223d191a56023cd36aa88c802961b911';
 const IS_MOCKED_RESPONSE = Symbol('isMockedResponse');
 const activeClientIds = new Set();
 
@@ -23,12 +23,13 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('message', async function (event) {
-  const clientId = event.source.id;
-
+  // Inject by @admin-pkg/mock-server
   if (event.data?.type === 'updateMockHeaders') {
     globalThis.mockHeaders = event.data.mockHeaders || [];
     // console.log('globalThis.mockHeaders', globalThis.mockHeaders);
   }
+
+  const clientId = event.source.id;
 
   if (!clientId || !self.clients) {
     return;
@@ -95,6 +96,13 @@ self.addEventListener('message', async function (event) {
 self.addEventListener('fetch', function (event) {
   const { request } = event;
 
+  // Inject by @admin-pkg/mock-server
+  const isMockRequest = isMatchHandler(request);
+  // console.log('isMockRequest', request.url, isMockRequest);
+  if (isMockRequest === false) {
+    return;
+  }
+
   // Bypass navigation requests.
   if (request.mode === 'navigate') {
     return;
@@ -110,11 +118,6 @@ self.addEventListener('fetch', function (event) {
   // Prevents the self-unregistered worked from handling requests
   // after it's been deleted (still remains active until the next reload).
   if (activeClientIds.size === 0) {
-    return;
-  }
-  const isMockRequest = isMatchHandler(request);
-  // console.log('isMockRequest', request.url, isMockRequest);
-  if (isMockRequest === false) {
     return;
   }
 
@@ -133,11 +136,6 @@ async function handleRequest(event, requestId) {
   if (client && activeClientIds.has(client.id)) {
     (async function () {
       const responseClone = response.clone();
-      // When performing original requests, response body will
-      // always be a ReadableStream, even for 204 responses.
-      // But when creating a new Response instance on the client,
-      // the body for a 204 response must be null.
-      const responseBody = response.status === 204 ? null : responseClone.body;
 
       sendToClient(
         client,
@@ -149,11 +147,11 @@ async function handleRequest(event, requestId) {
             type: responseClone.type,
             status: responseClone.status,
             statusText: responseClone.statusText,
-            body: responseBody,
+            body: responseClone.body,
             headers: Object.fromEntries(responseClone.headers.entries()),
           },
         },
-        [responseBody],
+        [responseClone.body],
       );
     })();
   }

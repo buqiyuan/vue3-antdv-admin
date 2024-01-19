@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { enableMocking } from '@admin-pkg/mock-server';
+import { setupMock } from '../mocks/';
 import App from './App.vue';
 import { setupRouter } from './router';
 import { setupIcons } from './components/basic/icon';
@@ -24,7 +24,7 @@ function setupPlugins() {
 
 async function setupApp() {
   // 启用 mock
-  await enableMocking();
+  await setupMock();
   fetch('/api/user/1').then((r) => r.json());
 
   // 挂载vuex状态管理

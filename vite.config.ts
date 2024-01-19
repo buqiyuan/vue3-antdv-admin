@@ -51,7 +51,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
-      mockServerPlugin({ enableProd: isBuild }),
+      mockServerPlugin({ build: isBuild }),
       legacy({
         targets: ['defaults', 'not IE 11', 'chrome 79', 'maintained node versions'],
         additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
