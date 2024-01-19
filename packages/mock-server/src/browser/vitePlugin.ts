@@ -30,6 +30,6 @@ interface BuildBrowserSupportOptions {
 }
 
 export const buildMswForBrowser = async ({ outDir }: BuildBrowserSupportOptions) => {
-  const outputPath = resolve(process.cwd(), outDir, localMswDistPath);
+  const outputPath = resolve(process.cwd(), outDir, swFileName);
   await copyFile(localMswDistPath, outputPath);
 };

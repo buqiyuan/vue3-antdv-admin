@@ -1,8 +1,9 @@
 import { http, HttpResponse, delay } from 'msw';
 import { faker } from '@faker-js/faker/locale/zh_CN';
+import { serverApi } from './_util';
 
 export default [
-  http.get('/api/user/:id', async () => {
+  http.get(serverApi('/user/:id'), async () => {
     await delay(1000);
     return HttpResponse.json(
       Array.from({ length: 10 }).map(() => ({
@@ -13,7 +14,7 @@ export default [
       })),
     );
   }),
-  http.get('/api/login', async () => {
+  http.get(serverApi('/login'), async () => {
     await delay(1000);
     return HttpResponse.json({
       code: 200,

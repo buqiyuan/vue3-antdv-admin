@@ -265,9 +265,6 @@ importers:
       tsup:
         specifier: ^8.0.1
         version: 8.0.1(postcss@8.4.33)(ts-node@10.9.2)(typescript@5.3.3)
-      vite:
-        specifier: ~5.0.11
-        version: 5.0.11(@types/node@20.10.5)(less@4.2.0)(lightningcss@1.23.0)(terser@5.27.0)
 
 packages:
 

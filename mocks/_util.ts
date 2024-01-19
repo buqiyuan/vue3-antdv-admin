@@ -2,6 +2,16 @@
 import type { DefaultBodyType, StrictRequest } from 'msw';
 import { ResultEnum } from '@/enums/httpEnum';
 
+const baseApiUrl = new URL(import.meta.env.VITE_BASE_API, location.origin).toString();
+
+/**
+ * msw 官方不支持配置 baseUrl, 需要自己手动处理
+ * @see https://github.com/mswjs/msw/issues/397#issuecomment-751230924
+ */
+export const serverApi = (path: string) => {
+  return new URL(path, baseApiUrl).toString();
+};
+
 export function resultSuccess<T = Recordable>(data: T, { message = 'ok' } = {}) {
   return {
     code: ResultEnum.SUCCESS,

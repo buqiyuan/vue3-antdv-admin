@@ -1,4 +1,5 @@
 import { matchRequestUrl } from 'msw';
+// import { log } from './log';
 
 const isStringEqual = (actual: string, expected: string) => {
   return actual.toLowerCase() === expected.toLowerCase();
@@ -15,13 +16,13 @@ const matchMethod = (method, actualMethod: string) => {
 export const isMatchHandler = (request: Request) => {
   const url = new URL(request.url);
   const mockHeaders: string[] = globalThis.mockHeaders || [];
-  // console.log('mockHeaders', mockHeaders);
+  // log('mockHeaders', mockHeaders);
   return mockHeaders.some((n) => {
     const [method, path] = n.split(' ');
 
     const hasMatchingMethod = matchMethod(method, request.method);
     const hasMatchingUrl = matchRequestUrl(url, path, url.origin).matches;
-
+    // log(n, '===', hasMatchingMethod && hasMatchingUrl);
     return hasMatchingMethod && hasMatchingUrl;
   });
 };

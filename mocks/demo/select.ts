@@ -1,5 +1,5 @@
 import { http, HttpResponse, delay } from 'msw';
-import { getQuery, resultSuccess } from '../_util';
+import { getQuery, resultSuccess, serverApi } from '../_util';
 
 const demoList = (keyword, count = 20) => {
   const result = [] as any[];
@@ -14,7 +14,7 @@ const demoList = (keyword, count = 20) => {
 };
 
 export default [
-  http.get('/api/select/getDemoOptions', async ({ request }) => {
+  http.get(serverApi('/select/getDemoOptions'), async ({ request }) => {
     await delay(1000);
     const { keyword, count } = getQuery(request);
 

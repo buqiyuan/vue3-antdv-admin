@@ -25,7 +25,7 @@ function setupPlugins() {
 async function setupApp() {
   // 启用 mock
   await setupMock();
-  fetch('/api/user/1').then((r) => r.json());
+  fetch(`${import.meta.env.VITE_BASE_API}/user/1`).then((r) => r.json());
 
   // 挂载vuex状态管理
   setupStore(app);

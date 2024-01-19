@@ -1,10 +1,10 @@
 import { HttpResponse, delay, http } from 'msw';
-import { getQuery, resultPageSuccess, resultSuccess } from '../../_util';
+import { getQuery, resultPageSuccess, resultSuccess, serverApi } from '../../_util';
 import heroListJson from './_heroList.json';
 import heroLoLListJson from './_lolHeroList.json';
 
 export default [
-  http.get('/api/demo/wzry/hero_list', async ({ request }) => {
+  http.get(serverApi('/demo/wzry/hero_list'), async ({ request }) => {
     await delay(500);
     const { page = 1, pageSize = 10, cname = '', title = '' } = getQuery(request);
 
@@ -14,7 +14,7 @@ export default [
 
     return HttpResponse.json(resultPageSuccess(page, pageSize, filterResult));
   }),
-  http.get('/api/demo/lol/hero_list', async ({ request }) => {
+  http.get(serverApi('/demo/lol/hero_list'), async ({ request }) => {
     // 接口地址: https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js
     await delay(500);
 
@@ -26,7 +26,7 @@ export default [
 
     return HttpResponse.json(resultPageSuccess(page, pageSize, filterResult));
   }),
-  http.get('/api/demo/lol/hero_info/:id', async ({ params }) => {
+  http.get(serverApi('/demo/lol/hero_info/:id'), async ({ params }) => {
     await delay(300);
     const { id } = params;
 

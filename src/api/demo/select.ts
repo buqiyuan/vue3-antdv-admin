@@ -6,7 +6,7 @@ interface DemoOptionsItem {
 }
 
 export async function optionsListApi(params?: Recordable) {
-  return request<DemoOptionsItem[]>('/api/select/getDemoOptions', {
+  return request<DemoOptionsItem[]>('/select/getDemoOptions', {
     method: 'GET',
     params,
   });

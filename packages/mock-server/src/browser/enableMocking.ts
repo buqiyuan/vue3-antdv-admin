@@ -2,12 +2,30 @@ import { setupWorker } from 'msw/browser';
 import { log } from '../utils/log';
 import type { RequestHandler } from 'msw';
 
+const genMessage = (handlers: RequestHandler[]) => {
+  return {
+    type: 'updateMockHeaders',
+    mockHeaders: handlers.map((n) => n.info.header),
+  };
+};
+
+const postMsg = (registration: ServiceWorkerRegistration, handlers: RequestHandler[]) => {
+  const serviceWorker = registration.active;
+  if (serviceWorker) {
+    serviceWorker.postMessage(genMessage(handlers));
+
+    registration.addEventListener('updatefound', () => {
+      serviceWorker.postMessage(genMessage(handlers));
+      // If updatefound is fired, it means that there's a new service worker being installed.
+      log(`Value of updateViaCache: ${registration.updateViaCache}`);
+    });
+  }
+};
+
 export const enableMocking = async (handlers: RequestHandler[]) => {
   const worker = setupWorker(...handlers);
 
-  if (import.meta.env.DEV) {
-    globalThis.__msw_worker = worker;
-  }
+  globalThis.__msw_worker = worker;
 
   const serviceWorkerRegistration = await worker.start({
     onUnhandledRequest: 'bypass',
@@ -19,27 +37,12 @@ export const enableMocking = async (handlers: RequestHandler[]) => {
     },
   });
 
-  const genMessage = () => {
-    return {
-      type: 'updateMockHeaders',
-      mockHeaders: handlers.map((n) => n.info.header),
-    };
-  };
-
-  const postMsg = (registration: ServiceWorkerRegistration) => {
-    registration.active?.postMessage(genMessage());
-    registration.addEventListener('updatefound', () => {
-      registration.active?.postMessage(genMessage());
-      log('Service Worker update found!');
-    });
-  };
-
   if (serviceWorkerRegistration) {
-    postMsg(serviceWorkerRegistration);
+    postMsg(serviceWorkerRegistration, handlers);
   } else if (navigator.serviceWorker) {
     navigator.serviceWorker.ready.then((registration) => {
       // log('serviceWorker ready', registration, this.genMessage());
-      postMsg(registration);
+      postMsg(registration, handlers);
     });
   }
 
