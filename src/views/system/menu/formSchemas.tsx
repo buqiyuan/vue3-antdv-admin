@@ -106,6 +106,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     component: 'RadioGroup',
     label: '是否外链',
     defaultValue: false,
+    helpMessage: '选择是外链则路由地址需要以`http(s)://`开头',
     colProps: {
       span: 12,
     },

@@ -118,7 +118,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           // target: 'https://nest-api.buqiyuan.site/api/',
           target: 'http://127.0.0.1:5001',
           changeOrigin: true,
-          // rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/ws-api': {
           // target: 'wss://nest-api.buqiyuan.site',

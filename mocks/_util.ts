@@ -1,6 +1,7 @@
 // Interface data format used to return a unified format
 import type { DefaultBodyType, StrictRequest } from 'msw';
 import { ResultEnum } from '@/enums/httpEnum';
+import { uniqueSlash } from '@/utils/urlUtils';
 
 const baseApiUrl = new URL(import.meta.env.VITE_BASE_API, location.origin).toString();
 
@@ -9,7 +10,7 @@ const baseApiUrl = new URL(import.meta.env.VITE_BASE_API, location.origin).toStr
  * @see https://github.com/mswjs/msw/issues/397#issuecomment-751230924
  */
 export const serverApi = (path: string) => {
-  return new URL(path, baseApiUrl).toString();
+  return uniqueSlash(baseApiUrl + path);
 };
 
 export function resultSuccess<T = Recordable>(data: T, { message = 'ok' } = {}) {

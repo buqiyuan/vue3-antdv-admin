@@ -17,6 +17,6 @@ export const setupMock = async () => {
     }
     return prev;
   }, []);
-
+  // console.log('handlers', handlers);
   await enableMocking(handlers);
 };
