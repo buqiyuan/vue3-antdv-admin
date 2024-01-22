@@ -39,7 +39,7 @@ export async function paramConfigCreate(body: API.ParamConfigDto, options?: Requ
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '创建成功' }),
   });
 }
 
@@ -72,7 +72,7 @@ export async function paramConfigUpdate(
     },
     params: { ...queryParams },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '更新成功' }),
   });
 }
 
@@ -86,6 +86,6 @@ export async function paramConfigDelete(
   return request<any>(`/api/system/param-config/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || { successMsg: '删除成功' }),
   });
 }

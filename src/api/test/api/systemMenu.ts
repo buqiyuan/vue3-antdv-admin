@@ -34,7 +34,7 @@ export async function menuCreate(body: API.MenuDto, options?: RequestOptions) {
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '创建成功' }),
   });
 }
 
@@ -67,7 +67,7 @@ export async function menuUpdate(
     },
     params: { ...queryParams },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '更新成功' }),
   });
 }
 
@@ -81,6 +81,6 @@ export async function menuDelete(
   return request<any>(`/api/system/menus/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || { successMsg: '删除成功' }),
   });
 }

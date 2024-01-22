@@ -10,7 +10,7 @@ export async function storageDelete(body: API.StorageDeleteDto, options?: Reques
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '删除成功' }),
   });
 }
 

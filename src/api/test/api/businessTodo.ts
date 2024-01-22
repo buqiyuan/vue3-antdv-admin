@@ -30,7 +30,7 @@ export async function todoCreate(body: API.TodoDto, options?: RequestOptions) {
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '创建成功' }),
   });
 }
 
@@ -63,7 +63,7 @@ export async function todoUpdate(
     },
     params: { ...queryParams },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '更新成功' }),
   });
 }
 
@@ -77,6 +77,6 @@ export async function todoDelete(
   return request<any>(`/api/todos/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || { successMsg: '删除成功' }),
   });
 }

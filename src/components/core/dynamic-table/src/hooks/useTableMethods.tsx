@@ -3,6 +3,7 @@ import { isObject, isFunction, isBoolean, get } from 'lodash-es';
 import { useInfiniteScroll } from '@vueuse/core';
 import tableConfig from '../dynamic-table.config';
 import { useEditable } from './useEditable';
+import { useTableExpand } from './useTableExpand';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { Pagination, TableState } from './useTableState';
@@ -31,6 +32,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   } = state;
   // 可编辑行
   const editableMethods = useEditable({ state, props });
+  const expandMethods = useTableExpand({ state, props, emit });
 
   const setProps = (props: Partial<DynamicTableProps>) => {
     innerPropsRef.value = { ...unref(innerPropsRef), ...props };
@@ -204,6 +206,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
 
   return {
     ...editableMethods,
+    ...expandMethods,
     setProps,
     handleSubmit,
     handleTableChange,

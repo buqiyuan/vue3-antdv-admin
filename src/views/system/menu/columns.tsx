@@ -1,5 +1,7 @@
+import { Tag } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import { Icon } from '@/components/basic/icon';
+import { formatToDateTime } from '@/utils/dateUtil';
 
 export type TableListItem = API.MenuItemInfo;
 export type TableColumnItem = TableColumn<TableListItem>;
@@ -24,21 +26,19 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '名称',
     dataIndex: 'name',
-    width: 240,
+    width: 200,
     fixed: 'left',
   },
   {
     title: '图标',
-    width: 80,
+    width: 50,
     dataIndex: 'icon',
-
     hideInSearch: true,
     customRender: ({ record }) => record.icon && <Icon icon={record.icon} size="22" />,
   },
   {
     title: '类型',
     width: 80,
-
     dataIndex: 'type',
     hideInSearch: true,
     customRender: ({ record }) => getMenuType(record.type),
@@ -46,41 +46,62 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '节点路由',
     dataIndex: 'path',
-
-    width: 240,
-  },
-  {
-    title: '路由缓存',
-    dataIndex: 'keepalive',
-
-    width: 80,
-    hideInSearch: true,
-    customRender: ({ record }) => record.type === 1 && (record.keepAlive ? '是' : '否'),
+    width: 180,
   },
   {
     title: '文件路径',
-    width: 280,
-
+    width: 180,
     dataIndex: 'component',
   },
   {
-    title: '权限',
-    width: 300,
-
+    title: '权限标识',
+    width: 180,
     dataIndex: 'permission',
   },
   {
     title: '排序号',
     width: 80,
-
     dataIndex: 'orderNo',
     hideInSearch: true,
   },
   {
+    title: '路由缓存',
+    dataIndex: 'keepalive',
+    width: 80,
+    hideInSearch: true,
+    customRender: ({ record }) => record.type === 1 && (record.keepAlive ? '是' : '否'),
+  },
+  {
+    title: '是否显示',
+    dataIndex: 'show',
+    width: 80,
+    customRender: ({ record }) => {
+      const show = record.show;
+      const enable = ~~show === 1;
+      const color = enable ? 'green' : 'red';
+      const text = enable ? '显示' : '隐藏';
+      return <Tag color={color}>{text}</Tag>;
+    },
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    width: 80,
+    customRender: ({ record }) => {
+      const status = record.status;
+      const enable = ~~status === 1;
+      const color = enable ? 'green' : 'red';
+      const text = enable ? '启用' : '停用';
+      return <Tag color={color}>{text}</Tag>;
+    },
+  },
+  {
     title: '更新时间',
     width: 180,
-
     dataIndex: 'updatedAt',
     hideInSearch: true,
+    customRender({ text }) {
+      return formatToDateTime(text);
+    },
   },
 ];

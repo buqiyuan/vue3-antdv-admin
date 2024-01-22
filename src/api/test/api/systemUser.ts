@@ -39,7 +39,7 @@ export async function userCreate(body: API.UserDto, options?: RequestOptions) {
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '创建成功' }),
   });
 }
 
@@ -72,7 +72,7 @@ export async function userUpdate(
     },
     params: { ...queryParams },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '更新成功' }),
   });
 }
 
@@ -86,7 +86,7 @@ export async function userDelete(
   return request<any>(`/api/system/users/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || { successMsg: '删除成功' }),
   });
 }
 

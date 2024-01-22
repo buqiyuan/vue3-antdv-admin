@@ -98,7 +98,7 @@
         },
         {
           label: '删除',
-          auth: 'system:param-config:delete',
+          // auth: 'system:param-config:delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record),

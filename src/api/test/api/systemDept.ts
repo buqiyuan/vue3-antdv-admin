@@ -25,7 +25,7 @@ export async function deptCreate(body: API.DeptDto, options?: RequestOptions) {
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '创建成功' }),
   });
 }
 
@@ -58,7 +58,7 @@ export async function deptUpdate(
     },
     params: { ...queryParams },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '更新成功' }),
   });
 }
 
@@ -72,6 +72,6 @@ export async function deptDelete(
   return request<any>(`/api/system/depts/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || { successMsg: '删除成功' }),
   });
 }

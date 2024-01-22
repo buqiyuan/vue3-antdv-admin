@@ -23,6 +23,10 @@ const postMsg = (registration: ServiceWorkerRegistration, handlers: RequestHandl
 };
 
 export const enableMocking = async (handlers: RequestHandler[]) => {
+  const scriptURL = `${import.meta.env.BASE_URL || ''}/mockServiceWorker.mjs`.replace(
+    /\/{2,}/g,
+    '/',
+  );
   const worker = setupWorker(...handlers);
 
   globalThis.__msw_worker = worker;
@@ -30,7 +34,7 @@ export const enableMocking = async (handlers: RequestHandler[]) => {
   const serviceWorkerRegistration = await worker.start({
     onUnhandledRequest: 'bypass',
     serviceWorker: {
-      url: `${import.meta.env.BASE_URL || ''}/mockServiceWorker.mjs`.replace(/\/{2,}/g, '/'),
+      url: scriptURL,
       options: {
         updateViaCache: 'none',
       },

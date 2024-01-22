@@ -30,7 +30,7 @@ export async function dictCreate(body: API.DictDto, options?: RequestOptions) {
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '创建成功' }),
   });
 }
 
@@ -63,7 +63,7 @@ export async function dictUpdate(
     },
     params: { ...queryParams },
     data: body,
-    ...(options || {}),
+    ...(options || { successMsg: '更新成功' }),
   });
 }
 
@@ -77,6 +77,6 @@ export async function dictDelete(
   return request<any>(`/api/dicts/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || { successMsg: '删除成功' }),
   });
 }

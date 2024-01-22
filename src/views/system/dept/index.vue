@@ -8,6 +8,12 @@
       bordered
       size="small"
     >
+      <template #afterHeaderTitle>
+        <div class="flex gap-2 ml-2">
+          <a-button @click="dynamicTableInstance.expandAll">展开全部</a-button>
+          <a-button @click="dynamicTableInstance.collapseAll">折叠全部</a-button>
+        </div>
+      </template>
       <template #toolbar>
         <a-button
           type="primary"

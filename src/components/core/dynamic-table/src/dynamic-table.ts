@@ -124,6 +124,8 @@ export const dynamicTableEmits = {
   change: (...rest: OnChangeCallbackParams) => rest.length === 4,
   'toggle-advanced': (isAdvanced: boolean) => isBoolean(isAdvanced),
   'fetch-error': (error) => error,
+  'update:expandedRowKeys': (keys: Key[]) => keys,
+  'expanded-rows-change': (keyValues: string[]) => Array.isArray(keyValues),
 };
 
 export type DynamicTableEmits = typeof dynamicTableEmits;

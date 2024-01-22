@@ -36,7 +36,7 @@
       >
         <Table
           ref="tableRef"
-          v-bind="getBindValues"
+          v-bind="tableProps"
           :columns="innerColumns"
           :data-source="tableData"
           @change="handleTableChange"
@@ -54,7 +54,7 @@
 </template>
 
 <script lang="tsx" setup>
-  import { useSlots } from 'vue';
+  import { useSlots, computed } from 'vue';
   import { Table } from 'ant-design-vue';
   import {
     useTableMethods,
@@ -136,6 +136,14 @@
   fetchData();
 
   defineExpose(instance);
+
+  const tableProps = computed(() => {
+    const { getExpandOption } = tableMethods;
+    return {
+      ...getBindValues.value,
+      ...getExpandOption.value,
+    };
+  });
 </script>
 
 <style lang="less" scoped>

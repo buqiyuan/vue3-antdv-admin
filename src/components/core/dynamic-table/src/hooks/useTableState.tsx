@@ -1,5 +1,6 @@
 import { computed, reactive, ref, unref, watch } from 'vue';
 import { omit } from 'lodash-es';
+import tableConfig from '../dynamic-table.config';
 import { useScroll } from './useScroll';
 import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
@@ -54,9 +55,9 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   if (!Object.is(props.pagination, false)) {
     paginationRef.value = {
       current: 1,
-      pageSize: 10,
+      pageSize: tableConfig.defaultPageSize,
       total: 0,
-      pageSizeOptions: ['10', '20', '50', '100'],
+      pageSizeOptions: [...tableConfig.pageSizeOptions],
       showQuickJumper: true,
       showSizeChanger: true, // 显示可改变每页数量
       showTotal: (total) => t('component.table.total', { total }), // 显示总数
