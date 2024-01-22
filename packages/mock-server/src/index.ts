@@ -1,11 +1,11 @@
 import { createNodeMiddleware } from './node/';
 import { buildMswForBrowser, createBrowserMiddleware } from './browser/vitePlugin';
-import type { RequestHandler } from 'msw';
+import type { HttpHandler } from 'msw';
 import type { Plugin } from 'vite';
 
 export interface VitePluginMswOptions {
   mode?: 'browser' | 'node';
-  handlers?: RequestHandler[];
+  handlers?: HttpHandler[];
   build?: boolean;
 }
 
@@ -35,7 +35,7 @@ const browserIntegration = ({ build }: BrowserIntegrationOptions): Plugin => {
   };
 };
 
-const getNodeIntegration = (handlers: RequestHandler[]): Plugin => {
+const getNodeIntegration = (handlers: HttpHandler[]): Plugin => {
   return {
     name: 'vite-plugin-msw:node-integration',
     configureServer(devServer) {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { randomUUID } from 'node:crypto';
-import { RequestHandler, handleRequest } from 'msw';
+import { HttpHandler, handleRequest } from 'msw';
 import { Emitter } from 'strict-event-emitter';
 import { Headers } from 'headers-polyfill';
 import { encodeBuffer } from '@mswjs/interceptors';
@@ -47,7 +47,7 @@ const sanitizeHeaders = (headers: IncomingHttpHeaders) =>
 
 export const createNodeMiddleware =
   (serverOrigin = `http://localhost`) =>
-  (...handlers: RequestHandler[]): Connect.NextHandleFunction => {
+  (...handlers: HttpHandler[]): Connect.NextHandleFunction => {
     return async (req, res, next) => {
       if (!req.method || !req.url) {
         next();

@@ -66,12 +66,12 @@
     "@faker-js/faker": "^8.3.1",
     "@iconify-json/ant-design": "^1.1.13",
     "@iconify-json/ep": "^1.1.14",
-    "@iconify/json": "^2.2.170",
+    "@iconify/json": "^2.2.172",
     "@types/lodash-es": "~4.17.12",
     "@types/node": "~20.10.5",
     "@typescript-eslint/eslint-plugin": "~6.19.0",
     "@typescript-eslint/parser": "~6.19.0",
-    "@umijs/openapi": "^1.9.4",
+    "@umijs/openapi": "^1.10.1",
     "@vitejs/plugin-legacy": "~5.2.0",
     "@vitejs/plugin-vue": "~5.0.3",
     "@vitejs/plugin-vue-jsx": "~3.1.0",
@@ -90,14 +90,14 @@
     "lightningcss": "^1.23.0",
     "lint-staged": "~15.2.0",
     "mockjs": "~1.1.0",
-    "msw": "^2.1.2",
+    "msw": "^2.1.3",
     "postcss": "~8.4.33",
     "postcss-html": "~1.6.0",
     "postcss-less": "~6.0.0",
     "prettier": "~3.2.4",
     "pretty-quick": "~3.1.3",
     "rimraf": "~5.0.5",
-    "stylelint": "~16.1.0",
+    "stylelint": "~16.2.0",
     "stylelint-config-property-sort-order-smacss": "^10.0.0",
     "stylelint-config-recommended": "~14.0.0",
     "stylelint-config-recommended-vue": "~1.5.0",
@@ -109,10 +109,10 @@
     "typescript": "~5.3.3",
     "unocss": "^0.58.3",
     "unplugin-vue-components": "~0.26.0",
-    "vite": "~5.0.11",
+    "vite": "~5.0.12",
     "vite-plugin-checker": "~0.6.2",
     "vite-plugin-svg-icons": "~2.0.1",
-    "vue-eslint-parser": "~9.4.0",
+    "vue-eslint-parser": "~9.4.1",
     "vue-tsc": "~1.8.27"
   },
   "__npminstall_done": false,
@@ -136,6 +136,11 @@
   },
   "target": "web",
   "packageManager": "^pnpm@6.32.4",
+  "dependenciesMeta": {
+    "@admin-pkg/mock-server": {
+      "injected": true
+    }
+  },
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
@@ -144,9 +149,6 @@
       "allowedVersions": {
         "postcss": "5"
       }
-    },
-    "patchedDependencies": {
-      "@umijs/openapi@1.9.4": "patches/@umijs__openapi@1.9.4.patch"
     }
   }
 }

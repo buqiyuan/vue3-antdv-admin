@@ -6,7 +6,7 @@ const re = /controller[-_ .](\w)/gi;
 // swagger-typescript-api
 generateService({
   schemaPath: 'http://127.0.0.1:5001/api-docs-json',
-  serversPath: './src/api/test',
+  serversPath: './src/api/backend',
   requestOptionsType: 'RequestOptions',
   // 自定义网络请求函数路径
   requestImportStatement: 'import { request, type RequestOptions } from "@/utils/request";',

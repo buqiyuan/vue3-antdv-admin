@@ -1,15 +1,15 @@
 import { setupWorker } from 'msw/browser';
 import { log } from '../utils/log';
-import type { RequestHandler } from 'msw';
+import type { HttpHandler } from 'msw';
 
-const genMessage = (handlers: RequestHandler[]) => {
+const genMessage = (handlers: HttpHandler[]) => {
   return {
     type: 'updateMockHeaders',
     mockHeaders: handlers.map((n) => n.info.header),
   };
 };
 
-const postMsg = (registration: ServiceWorkerRegistration, handlers: RequestHandler[]) => {
+const postMsg = (registration: ServiceWorkerRegistration, handlers: HttpHandler[]) => {
   const serviceWorker = registration.active;
   if (serviceWorker) {
     serviceWorker.postMessage(genMessage(handlers));
@@ -22,7 +22,7 @@ const postMsg = (registration: ServiceWorkerRegistration, handlers: RequestHandl
   }
 };
 
-export const enableMocking = async (handlers: RequestHandler[]) => {
+export const enableMocking = async (handlers: HttpHandler[]) => {
   const scriptURL = `${import.meta.env.BASE_URL || ''}/mockServiceWorker.mjs`.replace(
     /\/{2,}/g,
     '/',
