@@ -1,0 +1,110 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 509f8b5e039f06232c4ba6bbc09c0d0c652a2894..3dba6169d16db7b8639b0b305026bebad4327313 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,6 +1,7 @@
+ import type { OpenAPIObject, OperationObject, SchemaObject } from 'openapi3-ts';
+ export declare type GenerateServiceProps = {
+     requestLibPath?: string;
++    requestOptionsType?: string;
+     requestImportStatement?: string;
+     /**
+      * api 的前缀
+@@ -31,6 +32,8 @@ export declare type GenerateServiceProps = {
+         customFunctionName?: (data: OperationObject) => string;
+         /** 自定义类型名称 */
+         customTypeName?: (data: OperationObject) => string;
++        /** 自定义 options 默认值 */
++        customOptionsDefaultValue?: (data: OperationObject) => Record<string, any>;
+         /** 自定义类名 */
+         customClassName?: (tagName: string) => string;
+         /**
+@@ -97,4 +100,4 @@ export declare type GenerateServiceProps = {
+     isCamelCase?: boolean;
+ };
+ export declare const getSchema: (schemaPath: string) => Promise<any>;
+-export declare const generateService: ({ requestLibPath, schemaPath, mockFolder, nullable, ...rest }: GenerateServiceProps) => Promise<void>;
++export declare const generateService: ({ requestLibPath, schemaPath, mockFolder, nullable, requestOptionsType, ...rest }: GenerateServiceProps) => Promise<void>;
+diff --git a/dist/index.js b/dist/index.js
+index e88b6b1722e8bd2fdd56ef88c2877abaed138f82..d6d26521e63bb8e8a5852d528fa9737b522001a5 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -65,10 +65,11 @@ const getOpenAPIConfig = (schemaPath) => tslib_1.__awaiter(void 0, void 0, void
+ });
+ // 从 appName 生成 service 数据
+ const generateService = (_a) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+-    var { requestLibPath, schemaPath, mockFolder, nullable = false } = _a, rest = tslib_1.__rest(_a, ["requestLibPath", "schemaPath", "mockFolder", "nullable"]);
++    var { requestLibPath, schemaPath, mockFolder, nullable = false, requestOptionsType = '{[key: string]: any}' } = _a, rest = tslib_1.__rest(_a, ["requestLibPath", "schemaPath", "mockFolder", "nullable", "requestOptionsType"]);
+     const openAPI = yield getOpenAPIConfig(schemaPath);
+     const requestImportStatement = getImportStatement(requestLibPath);
+-    const serviceGenerator = new serviceGenerator_1.ServiceGenerator(Object.assign({ namespace: 'API', requestImportStatement, enumStyle: 'string-literal', nullable, isCamelCase: true }, rest), openAPI);
++    const serviceGenerator = new serviceGenerator_1.ServiceGenerator(Object.assign({ namespace: 'API', requestOptionsType,
++        requestImportStatement, enumStyle: 'string-literal', nullable, isCamelCase: true }, rest), openAPI);
+     serviceGenerator.genFile();
+     if (mockFolder) {
+         yield mockGenerator_1.mockGenerator({
+diff --git a/dist/serviceGenerator.d.ts b/dist/serviceGenerator.d.ts
+index fd75abc9a2bb85a2df18ae9dc3b250c0a9547cc5..43421f2cd448f11b0f767028ef293aff5bbcd348 100644
+--- a/dist/serviceGenerator.d.ts
++++ b/dist/serviceGenerator.d.ts
+@@ -47,6 +47,7 @@ declare class ServiceGenerator {
+             hasHeader: boolean;
+             params: Record<string, ParameterObject[]>;
+             hasParams: boolean;
++            options: Record<string, any>;
+             body: {
+                 required: any;
+                 propertiesList: {
+diff --git a/dist/serviceGenerator.js b/dist/serviceGenerator.js
+index a4d54b9942fbdeb5ef36c164d2cb96c5dc5be4c8..d78b96bac859ea189c625575d6a85b6b227b7bdc 100644
+--- a/dist/serviceGenerator.js
++++ b/dist/serviceGenerator.js
+@@ -284,7 +284,7 @@ class ServiceGenerator {
+         this.getServiceTP().forEach((tp) => {
+             // 根据当前数据源类型选择恰当的 controller 模版
+             const template = 'serviceController';
+-            const hasError = this.genFileFromTemplate(this.getFinalFileName(`${tp.className}.ts`), template, Object.assign({ namespace: this.config.namespace, requestImportStatement: this.config.requestImportStatement, disableTypeCheck: false }, tp));
++            const hasError = this.genFileFromTemplate(this.getFinalFileName(`${tp.className}.ts`), template, Object.assign({ namespace: this.config.namespace, requestOptionsType: this.config.requestOptionsType, requestImportStatement: this.config.requestImportStatement, disableTypeCheck: false }, tp));
+             prettierError.push(hasError);
+         });
+         if (prettierError.includes(true)) {
+@@ -323,7 +323,7 @@ class ServiceGenerator {
+             // 暂不支持变量
+             !api.path.includes('${'))
+                 .map((api) => {
+-                var _a, _b, _c;
++                var _a, _b, _c, _d, _e;
+                 const newApi = api;
+                 try {
+                     const allParams = this.getParamsTP(newApi.parameters, newApi.path);
+@@ -409,7 +409,7 @@ class ServiceGenerator {
+                                     : '',
+                             ]
+                                 .filter((s) => s)
+-                                .join(' '), hasHeader: !!(params && params.header) || !!(body && body.mediaType), params: finalParams, hasParams: Boolean(Object.keys(finalParams || {}).length), body,
++                                .join(' '), hasHeader: !!(params && params.header) || !!(body && body.mediaType), params: finalParams, hasParams: Boolean(Object.keys(finalParams || {}).length), options: ((_e = (_d = this.config.hook) === null || _d === void 0 ? void 0 : _d.customOptionsDefaultValue) === null || _e === void 0 ? void 0 : _e.call(_d, newApi)) || {}, body,
+                         file, hasFormData: formData, response });
+                 }
+                 catch (error) {
+diff --git a/templates/serviceController.njk b/templates/serviceController.njk
+index 68e93e884476f25f067791d557965b1500372fc4..2d38d804813085ebc37c796074cc1d7bf4b000a2 100644
+--- a/templates/serviceController.njk
++++ b/templates/serviceController.njk
+@@ -56,7 +56,7 @@ export async function {{ api.functionName }}(
+ {%- endfor -%}
+ {%- endif -%}
+ {{ "," if api.body or api.hasParams or api.file }}
+-  options {{ "?: {[key: string]: any}" if genType === "ts" }}
++  options {{ ("?: " + requestOptionsType) if genType === "ts" }}
+ ) {
+   {% if api.params and api.params.path -%}
+   const { {% for param in api.params.path %}'{{ param.name }}': {{ param.alias }}, {% endfor %}
+@@ -144,7 +144,7 @@ export async function {{ api.functionName }}(
+     data: body,
+     {%- endif %}
+     {%- endif %}
+-    ...(options || {}),
++    ...(options || {{api.options | dump}}),
+   });
+ }
+ 

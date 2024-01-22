@@ -33,8 +33,8 @@
     "test:br": "npx http-server dist --cors --brotli -c-1"
   },
   "dependencies": {
-    "@ant-design/icons-vue": "~7.0.1",
     "@admin-pkg/mock-server": "workspace:*",
+    "@ant-design/icons-vue": "~7.0.1",
     "@iconify/vue": "^4.1.1",
     "@tinymce/tinymce-vue": "^5.1.1",
     "@vueuse/core": "~10.7.2",
@@ -144,6 +144,9 @@
       "allowedVersions": {
         "postcss": "5"
       }
+    },
+    "patchedDependencies": {
+      "@umijs/openapi@1.9.4": "patches/@umijs__openapi@1.9.4.patch"
     }
   }
 }
