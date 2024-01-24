@@ -1,5 +1,5 @@
 import { type RouteMeta as VRouteMeta } from 'vue-router';
-import { type PermissionType } from '@/core/permission/modules/types';
+import { type PermissionType } from '@/core/permission/modules/';
 import { type LocaleType } from '@/locales/config';
 
 declare global {

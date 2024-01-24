@@ -192,8 +192,8 @@
         icon: <ExclamationCircleOutlined />,
         centered: true,
         onOk: async () => {
-          await userDelete({ id: userId[0] });
-          fetchDeptList();
+          await userDelete({ id: userId.join(',') });
+          dynamicTableInstance?.reload();
         },
       });
     } else {
@@ -213,13 +213,13 @@
     ...baseColumns,
     {
       title: '操作',
-      width: 230,
+      width: 80,
       dataIndex: 'ACTION',
-
       fixed: 'right',
       actions: ({ record }) => [
         {
-          label: '编辑',
+          icon: 'ant-design:edit-outlined',
+          tooltip: '编辑用户资料',
           auth: {
             perm: 'system:user:update',
             effect: 'disable',
@@ -232,10 +232,13 @@
         //   // onClick: () => openUpdatePasswordModal(record),
         // },
         {
-          label: '删除',
+          icon: 'ant-design:delete-outlined',
+          color: 'red',
+          tooltip: '删除此账号',
           auth: 'system:user:delete',
           popConfirm: {
             title: '你确定要删除吗？',
+            placement: 'left',
             onConfirm: () => delRowConfirm(record.id),
           },
         },

@@ -80,10 +80,9 @@
     ...baseColumns,
     {
       title: '操作',
-      width: 160,
+      width: 130,
       dataIndex: 'ACTION',
       hideInSearch: true,
-
       fixed: 'right',
       actions: ({ record }) => [
         {
@@ -99,6 +98,7 @@
           auth: 'system:dept:delete',
           popConfirm: {
             title: '你确定要删除吗？',
+            placement: 'left',
             onConfirm: () => delRowConfirm(record),
           },
         },

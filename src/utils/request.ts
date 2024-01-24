@@ -4,6 +4,7 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
 import { ResultEnum } from '@/enums/httpEnum';
+import { useUserStore } from '@/store/modules/user';
 
 export interface RequestOptions<Passive extends boolean = true> extends AxiosRequestConfig {
   /** 是否直接将数据从响应中提取出，例如直接返回 res.data，而忽略 res.code 等信息 */
@@ -79,6 +80,8 @@ service.interceptors.response.use(
       error.code = res.code;
       return Promise.reject(error);
     } else {
+      const userStore = useUserStore();
+      userStore.setServerConnectStatus(true);
       return response;
     }
   },

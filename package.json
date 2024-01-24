@@ -36,6 +36,7 @@
     "@admin-pkg/mock-server": "workspace:*",
     "@ant-design/icons-vue": "~7.0.1",
     "@iconify/vue": "^4.1.1",
+    "@microsoft/fetch-event-source": "^2.0.1",
     "@tinymce/tinymce-vue": "^5.1.1",
     "@vueuse/core": "~10.7.2",
     "ant-design-vue": "~4.1.1",

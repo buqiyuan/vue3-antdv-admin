@@ -26,8 +26,9 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '名称',
     dataIndex: 'name',
-    width: 200,
+    align: 'left',
     fixed: 'left',
+    width: 200,
   },
   {
     title: '图标',
@@ -59,8 +60,8 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'permission',
   },
   {
-    title: '排序号',
-    width: 80,
+    title: '排序',
+    width: 50,
     dataIndex: 'orderNo',
     hideInSearch: true,
   },

@@ -34,7 +34,7 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
   >();
 
   const advanceState = reactive<AdvanceState>({
-    isAdvanced: true,
+    isAdvanced: false,
     hideAdvanceBtn: false,
     isLoad: false,
     actionSpan: 6,

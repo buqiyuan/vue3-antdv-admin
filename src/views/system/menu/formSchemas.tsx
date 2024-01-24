@@ -4,10 +4,10 @@ import { asyncRoutes } from '@/router/asyncModules';
 import { str2tree } from '@/core/permission';
 import Api from '@/api/';
 
-/** 菜单类型 0: 目录 | 1: 菜单 | 2: 权限 */
-// const isDir = (type: API.MenuListResultItem['type']) => type === 0;
+/** 菜单类型 0: 目录 | 1: 菜单 | 2: 按钮 */
+const isDir = (type: API.MenuDto['type']) => type === 0;
 const isMenu = (type: API.MenuDto['type']) => type === 1;
-const isPerm = (type: API.MenuDto['type']) => type === 2;
+const isButton = (type: API.MenuDto['type']) => type === 2;
 
 export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
   {
@@ -36,7 +36,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
   {
     field: 'name',
     component: 'Input',
-    label: ({ formModel }) => (isPerm(formModel['type']) ? '权限名称' : '节点名称'),
+    label: ({ formModel }) => (isButton(formModel['type']) ? '权限名称' : '节点名称'),
     rules: [{ required: true, type: 'string' }],
   },
   {
@@ -61,15 +61,16 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     field: 'path',
     component: 'Input',
     label: '路由地址',
-    vIf: ({ formModel }) => !isPerm(formModel['type']),
+    vIf: ({ formModel }) => !isButton(formModel['type']),
     rules: [{ required: true, type: 'string' }],
   },
   {
     field: 'permission',
     component: 'Input',
     label: '权限',
-    vIf: ({ formModel }) => isPerm(formModel['type']),
-    rules: [{ required: true }],
+    helpMessage: `对应控制器中定义的权限字符，如：@Perm('system:menu:list'))`,
+    vIf: ({ formModel }) => !isDir(formModel['type']),
+    required: ({ formModel }) => isButton(formModel.type),
   },
   {
     field: 'component',
@@ -88,7 +89,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     field: 'icon',
     component: () => IconPicker,
     label: '节点图标',
-    vIf: ({ formModel }) => !isPerm(formModel['type']),
+    vIf: ({ formModel }) => !isButton(formModel['type']),
   },
   {
     field: 'orderNo',
@@ -118,14 +119,14 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
         { label: '否', value: false },
       ],
     },
-    vIf: ({ formModel }) => !isPerm(formModel['type']),
+    vIf: ({ formModel }) => !isButton(formModel['type']),
   },
   {
     field: 'extOpenMode',
     component: 'RadioGroup',
     label: '打开方式',
     defaultValue: 1,
-    vIf: ({ formModel }) => !isPerm(formModel['type']) && formModel['isExt'],
+    vIf: ({ formModel }) => !isButton(formModel['type']) && formModel['isExt'],
     colProps: {
       span: 12,
     },
@@ -179,7 +180,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
         { label: '否', value: 0 },
       ],
     },
-    vIf: ({ formModel }) => !isPerm(formModel['type']),
+    vIf: ({ formModel }) => !isButton(formModel['type']),
   },
   {
     field: 'status',

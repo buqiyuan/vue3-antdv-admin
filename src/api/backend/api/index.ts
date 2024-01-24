@@ -20,6 +20,7 @@ import * as systemEmail from './systemEmail';
 import * as toolsStorage from './toolsStorage';
 import * as toolsUpload from './toolsUpload';
 import * as health from './health';
+import * as systemSse from './systemSse';
 import * as businessTodo from './businessTodo';
 export default {
   auth,
@@ -40,5 +41,6 @@ export default {
   toolsStorage,
   toolsUpload,
   health,
+  systemSse,
   businessTodo,
 };

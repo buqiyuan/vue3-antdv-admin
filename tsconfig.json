@@ -25,6 +25,7 @@
     "allowSyntheticDefaultImports": true,
     "strictFunctionTypes": false,
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "allowJs": true,
     "lib": ["dom", "esnext"],
     "noImplicitAny": false,

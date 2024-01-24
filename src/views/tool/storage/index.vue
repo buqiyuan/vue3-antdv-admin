@@ -16,7 +16,7 @@
           cancel-text="取消"
           @confirm="handleDelete"
         >
-          <a-button :disabled="!$auth('tools:storage:delete') || !checkedKeys.length" type="error">
+          <a-button :disabled="!$auth('tool:storage:delete') || !checkedKeys.length" type="error">
             删除
           </a-button>
         </a-popconfirm>

@@ -158,10 +158,6 @@
       .ant-image:hover {
         cursor: zoom-in;
       }
-
-      .ant-btn {
-        margin-right: 10px;
-      }
     }
   }
 

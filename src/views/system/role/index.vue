@@ -3,6 +3,7 @@
     <DynamicTable
       row-key="id"
       header-title="角色管理"
+      title-tooltip="超级管理员默认拥有所有资源访问权限且不支持修改"
       :data-request="Api.systemRole.roleList"
       :columns="columns"
       bordered
@@ -107,10 +108,9 @@
     ...baseColumns,
     {
       title: '操作',
-      width: 160,
+      width: 130,
       dataIndex: 'ACTION',
       hideInSearch: true,
-
       fixed: 'right',
       actions: ({ record }) => [
         {
@@ -126,6 +126,7 @@
           auth: 'system:role:delete',
           popConfirm: {
             title: '你确定要删除吗？',
+            placement: 'left',
             onConfirm: () => delRowConfirm(record),
           },
         },

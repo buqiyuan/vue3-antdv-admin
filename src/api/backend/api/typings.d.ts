@@ -659,6 +659,10 @@ declare namespace API {
     memory: Memory;
   };
 
+  type SseSseParams = {
+    uid: number;
+  };
+
   type StorageDeleteDto = {
     /** 需要删除的文件ID列表 */
     ids: number[];
@@ -902,7 +906,7 @@ declare namespace API {
   };
 
   type UserDeleteParams = {
-    id: number;
+    id: string | number;
   };
 
   type UserDto = {
