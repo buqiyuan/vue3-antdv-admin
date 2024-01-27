@@ -53,7 +53,7 @@
 
   const handleMenuItemClick = (item: RouteRecordRaw) => {
     const { isExt, extOpenMode } = item.meta || {};
-    if (isExt && extOpenMode === 1) {
+    if (isExt && extOpenMode !== 2) {
       window.open(item.path);
     }
   };

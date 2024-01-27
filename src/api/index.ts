@@ -1,1 +1,5 @@
-export { default } from './backend/api';
+import Api from './backend/api';
+
+export { Api };
+
+export default Api;

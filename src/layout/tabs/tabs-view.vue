@@ -85,21 +85,19 @@
         </Dropdown>
       </template>
     </Tabs>
-    <div class="tabs-view-content">
-      <router-view v-slot="{ Component }">
-        <template v-if="Component">
-          <transition
-            :name="Object.is(route.meta?.transitionName, false) ? '' : 'fade-transform'"
-            mode="out-in"
-            appear
-          >
-            <keep-alive :include="keepAliveComponents">
-              <component :is="Component" :key="route.fullPath" />
-            </keep-alive>
-          </transition>
-        </template>
-      </router-view>
-    </div>
+    <router-view v-slot="{ Component }" class="tabs-view-content">
+      <template v-if="Component">
+        <transition
+          :name="Object.is(route.meta?.transitionName, false) ? '' : 'fade-transform'"
+          mode="out-in"
+          appear
+        >
+          <keep-alive :include="keepAliveComponents">
+            <component :is="Component" :key="route.fullPath" />
+          </keep-alive>
+        </transition>
+      </template>
+    </router-view>
   </div>
 </template>
 

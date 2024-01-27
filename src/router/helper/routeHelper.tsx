@@ -1,5 +1,6 @@
 import { asyncRoutes } from '../asyncModules';
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteMeta, RouteRecordRaw } from 'vue-router';
+import IFramePage from '@/components/basic/iframe-page';
 import RouterView from '@/layout/routerView/index.vue';
 import { warn } from '@/utils/log';
 import ComponentNotFound from '@/views/error/comp-not-found.vue';
@@ -10,22 +11,27 @@ import routeModules from '@/router/routes/modules';
 
 export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
   routeList.forEach((route) => {
+    route.meta ||= {} as RouteMeta;
+    const { show = 1, type, isExt, extOpenMode } = route.meta;
     const compPath = route.component as unknown as string;
 
-    if (typeof route.meta === 'object') {
-      const { show = 1 } = route.meta;
-      // 是否在菜单中隐藏
-      route.meta.hideInMenu ??= !show;
-    }
+    // 是否在菜单中隐藏
+    route.meta.hideInMenu ??= !show;
 
-    if (compPath === 'LAYOUT') {
+    if (type === 0) {
       route.component = RouterView;
-    } else {
-      route.component = asyncRoutes[compPath];
-      // 前端 src/views 目录下无对应路由组件
-      if (!route.component) {
-        route.component = ComponentNotFound;
-        warn(`在src/views/下找不到 ${compPath}.vue 或 ${compPath}.tsx, 请自行创建!`);
+    } else if (type === 1) {
+      // 内嵌页面
+      if (isExt && extOpenMode === 2) {
+        route.component = <IFramePage src={route.path} />;
+        route.path = route.path.replace(new RegExp('://'), '/');
+      } else {
+        route.component = asyncRoutes[compPath];
+        // 前端 src/views 目录下无对应路由组件
+        if (!route.component) {
+          route.component = ComponentNotFound;
+          warn(`在src/views/下找不到 ${compPath}.vue 或 ${compPath}.tsx, 请自行创建!`);
+        }
       }
     }
 

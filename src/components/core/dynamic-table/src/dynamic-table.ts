@@ -26,7 +26,7 @@ export const dynamicTableProps = {
   },
   /** 表格列配置 */
   columns: {
-    type: Array as PropType<TableColumn[]>,
+    type: Array as PropType<TableColumn<any>[]>,
     required: true,
     default: () => [],
   },

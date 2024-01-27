@@ -1,5 +1,6 @@
 import type { FormSchema } from '@/components/core/schema-form/';
 import Api from '@/api/';
+import { findPath } from '@/utils/common';
 
 export const roleSchemas: FormSchema<API.DeptDto>[] = [
   {
@@ -19,8 +20,10 @@ export const roleSchemas: FormSchema<API.DeptDto>[] = [
         value: 'id',
       },
       getPopupContainer: () => document.body,
-      request: () => {
-        return Api.systemDept.deptList({});
+      request: async ({ schema, formModel }) => {
+        const deptTree = await Api.systemDept.deptList({});
+        schema.componentProps.treeDefaultExpandedKeys = findPath(deptTree, formModel['parentId']);
+        return deptTree;
       },
     },
   },

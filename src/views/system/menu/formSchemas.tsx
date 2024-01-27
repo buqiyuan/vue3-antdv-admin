@@ -3,6 +3,7 @@ import { IconPicker } from '@/components/basic/icon';
 import { asyncRoutes } from '@/router/asyncModules';
 import { str2tree } from '@/core/permission';
 import Api from '@/api/';
+import { findPath } from '@/utils/common';
 
 /** 菜单类型 0: 目录 | 1: 菜单 | 2: 按钮 */
 const isDir = (type: API.MenuDto['type']) => type === 0;
@@ -49,8 +50,12 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
         key: 'id',
         value: 'id',
       },
-      request: async () => {
+      request: async ({ schema, formModel }) => {
         const menuTree = await Api.systemMenu.menuList({});
+        const treeDefaultExpandedKeys = [-1].concat(
+          findPath(menuTree, formModel['parentId']) || [],
+        );
+        schema.componentProps.treeDefaultExpandedKeys = treeDefaultExpandedKeys;
         return [{ id: -1, name: '一级菜单', children: menuTree }];
       },
       getPopupContainer: () => document.body,

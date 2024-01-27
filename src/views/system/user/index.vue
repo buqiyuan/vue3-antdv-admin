@@ -1,17 +1,7 @@
 <template>
   <SplitPanel>
     <template #left-content>
-      <div class="flex justify-between">
-        <div>组织架构</div>
-      </div>
-      <Tree
-        v-model:expandedKeys="state.expandedKeys"
-        auto-expand-parent
-        :tree-data="state.deptTree"
-        :field-names="{ key: 'id', title: 'name' }"
-        @select="onTreeSelect"
-      >
-      </Tree>
+      <DeptTree @select="onTreeSelect" @init="onDeptTreeInitData" />
     </template>
     <template #right-content>
       <DynamicTable
@@ -37,14 +27,14 @@
             :disabled="!$auth('system:user:create')"
             @click="openUserModal({})"
           >
-            <PlusOutlined /> 新增
+            <Icon icon="ant-design:plus-outlined" /> 新增
           </a-button>
           <a-button
             type="error"
             :disabled="!isCheckRows || !$auth('system:user:delete')"
             @click="delRowConfirm(rowSelection.selectedRowKeys)"
           >
-            <DeleteOutlined /> 删除
+            <Icon icon="ant-design:delete-outlined" /> 删除
           </a-button>
         </template>
       </DynamicTable>
@@ -53,39 +43,28 @@
 </template>
 
 <script setup lang="tsx">
-  import { ref, reactive, computed, onMounted } from 'vue';
-  import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue';
-  import { Tree, Modal, Alert } from 'ant-design-vue';
+  import { ref, computed } from 'vue';
+  import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+  import { Modal, Alert } from 'ant-design-vue';
   import { userSchemas } from './formSchemas';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
+  import DeptTree from './DeptTree.vue';
   import type { LoadDataParams } from '@/components/core/dynamic-table';
-  import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
   import { SplitPanel } from '@/components/basic/split-panel';
   import { useTable } from '@/components/core/dynamic-table';
   import Api from '@/api/';
   import { useFormModal } from '@/hooks/useModal/';
-  import { findChildById } from '@/core/permission/utils';
+  import { findPath } from '@/utils/common';
 
   defineOptions({
     name: 'SystemUser',
   });
 
-  interface State {
-    expandedKeys: number[];
-    departmentIds: number[];
-    deptTree: TreeDataItem[];
-  }
-
   const [DynamicTable, dynamicTableInstance] = useTable({ formProps: { autoSubmitOnEnter: true } });
   const [showModal] = useFormModal();
 
-  const deptListLoading = ref(false);
-
-  const state = reactive<State>({
-    expandedKeys: [],
-    departmentIds: [],
-    deptTree: [],
-  });
+  const selectedDeptId = ref<number>();
+  const deptTree = ref<any[]>([]);
 
   const rowSelection = ref({
     selectedRowKeys: [] as number[],
@@ -101,7 +80,7 @@
   const loadTableData = async (params: LoadDataParams) => {
     const data = await Api.systemUser.userList({
       ...params,
-      deptId: state.departmentIds[0],
+      deptId: selectedDeptId.value,
     });
     rowSelection.value.selectedRowKeys = [];
     return data;
@@ -164,21 +143,11 @@
       {
         field: 'deptId',
         componentProps: {
-          treeDefaultExpandedKeys: findChildById(record?.dept?.id, state.deptTree)?.keyPath || [],
-          treeData: state.deptTree,
+          treeDefaultExpandedKeys: findPath(deptTree.value, formRef?.getFieldsValue().deptId) || [],
+          treeData: deptTree.value,
         },
       },
     ]);
-  };
-
-  /**
-   * 获取部门列表
-   */
-  const fetchDeptList = async () => {
-    deptListLoading.value = true;
-    const dept = await Api.systemDept.deptList({}).finally(() => (deptListLoading.value = false));
-    state.deptTree = dept as unknown as TreeDataItem[];
-    state.expandedKeys = [...state.expandedKeys, ...state.deptTree.map((n) => Number(n.key))];
   };
 
   /**
@@ -201,12 +170,12 @@
     }
   };
 
-  /**
-   * 点击部门
-   */
-  const onTreeSelect = (selectedKeys: number[]) => {
-    state.departmentIds = selectedKeys;
-    dynamicTableInstance?.reload?.();
+  const onTreeSelect = (id: number) => {
+    selectedDeptId.value = id;
+    dynamicTableInstance?.reload();
+  };
+  const onDeptTreeInitData = (treeData) => {
+    deptTree.value = treeData;
   };
 
   const columns: TableColumnItem[] = [
@@ -226,11 +195,6 @@
           },
           onClick: () => openUserModal(record),
         },
-        // {
-        //   label: '改密',
-        //   auth: 'system.user.password',
-        //   // onClick: () => openUpdatePasswordModal(record),
-        // },
         {
           icon: 'ant-design:delete-outlined',
           color: 'red',
@@ -245,10 +209,6 @@
       ],
     },
   ];
-
-  onMounted(() => {
-    fetchDeptList();
-  });
 </script>
 
 <style></style>

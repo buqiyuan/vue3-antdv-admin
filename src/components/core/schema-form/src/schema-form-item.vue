@@ -383,36 +383,34 @@
     return rules;
   });
 
-  const fetchRemoteData = async (request) => {
-    if (request) {
-      const { component } = unref(schema);
+  const fetchRemoteData = async (request: PromiseFn<RenderCallbackParams, any>) => {
+    const { component } = unref(schema);
 
-      try {
-        const newSchema = {
-          ...unref(schema),
-          loading: true,
-          componentProps: {
-            ...unref(getComponentProps),
-            options: [],
-          } as ComponentProps,
-        };
-        updateSchema(newSchema);
-        const result = await request(unref(getValues));
-        if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
-          newSchema.componentProps.options = result;
-        } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
-          newSchema.componentProps.treeData = result;
-        }
-        if (newSchema.componentProps) {
-          newSchema.componentProps.requestResult = result;
-        }
-        newSchema.loading = false;
-        updateSchema(newSchema);
-      } finally {
-        nextTick(() => {
-          schema.value.loading = false;
-        });
+    try {
+      const newSchema = Object.assign(schema.value, {
+        loading: true,
+        componentProps: {
+          ...unref(getComponentProps),
+          options: [],
+        },
+      });
+      const componentProps = newSchema.componentProps as ComponentProps;
+      updateSchema(newSchema);
+      // @ts-ignore
+      const result = await request({ ...unref(getValues), schema: newSchema });
+      if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
+        componentProps.options = result;
+      } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
+        componentProps.treeData = result;
       }
+      if (newSchema.componentProps) {
+        newSchema.componentProps.requestResult = result;
+      }
+      newSchema.loading = false;
+      updateSchema(newSchema);
+    } finally {
+      await nextTick();
+      schema.value.loading = false;
     }
   };
 

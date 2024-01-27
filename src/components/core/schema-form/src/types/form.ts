@@ -21,7 +21,9 @@ export type Rule = RuleObject & {
 export type GetFieldKeys<T> = Exclude<keyof T, symbol | number>;
 
 export interface RenderCallbackParams<T extends object = Recordable> {
-  schema: FormSchema<T>;
+  schema: Omit<FormSchema<T>, 'componentProps'> & {
+    componentProps: ComponentProps;
+  };
   formModel: Objectable<T>;
   field: GetFieldKeys<T>;
   values: any;

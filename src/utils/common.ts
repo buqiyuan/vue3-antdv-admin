@@ -158,3 +158,32 @@ export const waitTime = <T>(time = 100, data: any = true): Promise<T> => {
     }, time);
   });
 };
+
+export function findPath<T extends Key>(
+  tree: Recordable[],
+  targetId: T,
+  field = 'id',
+  currentPath: T[] = [],
+): T[] | null {
+  // 遍历树中的每个节点
+  for (const node of tree) {
+    // 将当前节点的 ID 添加到路径中
+    const path = [...currentPath, node[field]];
+
+    // 如果找到目标节点，返回路径
+    if (node.id === targetId) {
+      return path;
+    }
+
+    // 如果当前节点有子节点，则递归查找子节点
+    if (node.children && node.children.length > 0) {
+      const childPath = findPath(node.children, targetId, field, path);
+      if (childPath) {
+        return childPath;
+      }
+    }
+  }
+
+  // 没有找到目标节点，返回 null
+  return null;
+}
