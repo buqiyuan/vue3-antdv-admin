@@ -1,6 +1,6 @@
 import type { FormSchema } from '@/components/core/schema-form/';
 
-export const baseSchemas: FormSchema<API.DictDto>[] = [
+export const baseSchemas: FormSchema<API.ParamConfigDto>[] = [
   {
     field: 'name',
     component: 'Input',

@@ -1,7 +1,7 @@
 <template>
   <div>
     <SchemaForm
-      v-if="search"
+      v-if="getProps.search"
       ref="queryFormRef"
       class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
       submit-on-reset
@@ -81,8 +81,15 @@
 
   // 表格内部状态
   const tableState = useTableState({ props, slots });
-  const { tableRef, tableData, queryFormRef, editTableFormRef, getBindValues, editFormModel } =
-    tableState;
+  const {
+    tableRef,
+    tableData,
+    queryFormRef,
+    editTableFormRef,
+    getProps,
+    getBindValues,
+    editFormModel,
+  } = tableState;
   // 表格内部方法
   const tableMethods = useTableMethods({ state: tableState, props, emit });
   const { setProps, fetchData, handleSubmit, reload, handleTableChange, handleEditFormValidate } =
@@ -108,11 +115,12 @@
   });
 
   // 搜索表单
-  const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = useTableForm({
+  const tableForm = useTableForm({
     tableState,
     tableMethods,
     slots,
   });
+  const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = tableForm;
 
   // 表单导出
   const exportData2ExcelHooks = useExportData2Excel({
@@ -125,6 +133,7 @@
   const instance = {
     ...props,
     ...tableState,
+    ...tableForm,
     ...tableMethods,
     ...editableHooks,
     ...exportData2ExcelHooks,

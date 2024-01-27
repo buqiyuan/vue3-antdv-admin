@@ -1,10 +1,4 @@
 declare namespace API {
-  type AbstractEntity = {
-    id: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-
   type AccessTokenEntity = {
     id: string;
     value: string;
@@ -70,6 +64,12 @@ declare namespace API {
     code: string;
     /** 验证码提供方 */
     provider: Record<string, any>;
+    id: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+
+  type CommonEntity = {
     id: number;
     createdAt: string;
     updatedAt: string;
@@ -144,25 +144,25 @@ declare namespace API {
   };
 
   type DictDto = {
-    /** 参数名称 */
+    /** 字典名称 */
     name: string;
-    /** 参数键名 */
-    key: string;
-    /** 参数值 */
-    value: string;
+    /** 状态 */
+    status?: number;
     /** 备注 */
     remark?: string;
   };
 
   type DictEntity = {
-    /** 配置名 */
+    /** 字典名称 */
     name: string;
-    /** 配置键名 */
-    key: string;
-    /** 配置值 */
-    value: string;
-    /** 配置描述 */
+    /**  状态 */
+    status: number;
+    /** 备注 */
     remark: string;
+    createBy: number;
+    updateBy: number;
+    creator: string;
+    updater: string;
     id: number;
     createdAt: string;
     updatedAt: string;
@@ -177,7 +177,7 @@ declare namespace API {
     pageSize?: number;
     field?: string;
     order?: 'ASC' | 'DESC';
-    /** 参数名称 */
+    /** 字典名称 */
     name: string;
     _t?: number;
   };

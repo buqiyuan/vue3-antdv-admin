@@ -2,7 +2,7 @@ import type { TableColumn } from '@/components/core/dynamic-table';
 import type { FormSchema } from '@/components/core/schema-form';
 import { formatToDateTime } from '@/utils/dateUtil';
 
-export type TableListItem = API.DictEntity;
+export type TableListItem = API.ParamConfigEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
 
 export const baseColumns: TableColumnItem[] = [

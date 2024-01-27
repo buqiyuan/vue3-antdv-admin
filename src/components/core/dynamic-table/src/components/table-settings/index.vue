@@ -1,5 +1,6 @@
 <template>
   <Space :size="8">
+    <SearchSetting />
     <RefreshSetting />
     <ColumnSetting />
     <SizeSetting />
@@ -11,4 +12,5 @@
   import SizeSetting from './size-setting.vue';
   import RefreshSetting from './refresh-setting.vue';
   import ColumnSetting from './column-setting.vue';
+  import SearchSetting from './search-setting.vue';
 </script>

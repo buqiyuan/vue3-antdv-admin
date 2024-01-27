@@ -1,3 +1,4 @@
+import { Tag } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import type { FormSchema } from '@/components/core/schema-form';
 import { formatToDateTime } from '@/utils/dateUtil';
@@ -13,17 +14,20 @@ export const baseColumns: TableColumnItem[] = [
     width: 60,
   },
   {
-    title: '参数名称',
-    width: 150,
+    title: '字典名称',
     dataIndex: 'name',
   },
   {
-    title: 'key',
-    dataIndex: 'key',
-  },
-  {
-    title: 'value',
-    dataIndex: 'value',
+    title: '状态',
+    dataIndex: 'status',
+    width: 80,
+    customRender: ({ record }) => {
+      const status = record.status;
+      const enable = ~~status === 1;
+      const color = enable ? 'green' : 'red';
+      const text = enable ? '启用' : '停用';
+      return <Tag color={color}>{text}</Tag>;
+    },
   },
   {
     title: '备注',

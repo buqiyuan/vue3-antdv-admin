@@ -4,26 +4,20 @@ export const baseSchemas: FormSchema<API.DictDto>[] = [
   {
     field: 'name',
     component: 'Input',
-    label: '参数名称',
+    label: '字典名称',
     rules: [{ required: true, type: 'string' }],
   },
   {
-    field: 'key',
-    component: 'Input',
-    label: 'key',
-    colProps: {
-      span: 24,
+    field: 'status',
+    label: '状态',
+    component: 'RadioGroup',
+    defaultValue: 1,
+    componentProps: {
+      options: [
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 },
+      ],
     },
-    required: true,
-  },
-  {
-    field: 'value',
-    component: 'Input',
-    label: 'value',
-    colProps: {
-      span: 24,
-    },
-    required: true,
   },
   {
     field: 'remark',
@@ -32,6 +26,5 @@ export const baseSchemas: FormSchema<API.DictDto>[] = [
     colProps: {
       span: 24,
     },
-    required: true,
   },
 ];

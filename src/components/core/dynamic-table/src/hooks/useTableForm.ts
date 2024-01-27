@@ -5,6 +5,8 @@ import type { TableState } from './useTableState';
 import type { ComputedRef, Slots } from 'vue';
 import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form';
 
+export type TableForm = ReturnType<typeof useTableForm>;
+
 export type UseTableFormContext = {
   tableState: TableState;
   tableMethods: TableMethods;

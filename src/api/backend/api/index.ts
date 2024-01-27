@@ -9,10 +9,10 @@ import * as authEmail from './authEmail';
 import * as systemUser from './systemUser';
 import * as systemRole from './systemRole';
 import * as systemMenu from './systemMenu';
-import * as systemDict from './systemDict';
+import * as systemParamConfig from './systemParamConfig';
 import * as systemLog from './systemLog';
 import * as systemDept from './systemDept';
-import * as systemParamConfig from './systemParamConfig';
+import * as systemDict from './systemDict';
 import * as systemTask from './systemTask';
 import * as systemOnline from './systemOnline';
 import * as systemServe from './systemServe';
@@ -30,10 +30,10 @@ export default {
   systemUser,
   systemRole,
   systemMenu,
-  systemDict,
+  systemParamConfig,
   systemLog,
   systemDept,
-  systemParamConfig,
+  systemDict,
   systemTask,
   systemOnline,
   systemServe,
