@@ -3,7 +3,7 @@ import type { CustomRenderParams } from './column';
 import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
 import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
 import type { TableMethods, UseEditableType } from '../hooks/';
-import type { PermissionType } from '@/core/permission/modules';
+import type { PermissionType } from '@/permission/permCode';
 import type { ButtonType } from '@/components/basic/button';
 
 export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading' | 'type'> & {

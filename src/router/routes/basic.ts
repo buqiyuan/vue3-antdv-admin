@@ -54,7 +54,7 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
 
 export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
   path: '/:pathMatch(.*)*',
-  name: 'NotFound',
+  name: PAGE_NOT_FOUND_NAME,
   meta: {
     title: 'PageNotFound',
     hideInMenu: true,
@@ -63,7 +63,7 @@ export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
   component: RouterView,
   children: [
     {
-      path: '/:path(.*)*',
+      path: '/:pathMatch(.*)*',
       name: PAGE_NOT_FOUND_NAME,
       component: () => import('@/views/error/404.vue'),
       meta: {

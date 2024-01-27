@@ -1,6 +1,5 @@
 import { ref, watch } from 'vue';
 import { defineStore } from 'pinia';
-import { useWsStore } from './ws';
 import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
 import Api from '@/api/';
@@ -121,8 +120,7 @@ export const useUserStore = defineStore('user', () => {
   /** 登出 */
   const logout = async () => {
     await Api.account.accountLogout();
-    const wsStore = useWsStore();
-    wsStore.closeSocket();
+    closeEventSource();
     resetToken();
     resetRouter();
   };

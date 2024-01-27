@@ -1,6 +1,6 @@
 import { NavigationFailureType, isNavigationFailure } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
-import { LOGIN_NAME, REDIRECT_NAME } from './constant';
+import { LOGIN_NAME, PAGE_NOT_FOUND_NAME, REDIRECT_NAME } from './constant';
 import type { WhiteNameList } from './constant';
 import type { Router, RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
@@ -31,8 +31,12 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
             userStore.resetToken();
             return next({ name: LOGIN_NAME });
           }
-          if (!hasRoute) {
-            // 如果该路由不存在，可能是动态注册的路由，它还没准备好，需要再重定向一次到该路由
+          // 解决警告：No match found for location with path "XXXXXXX"
+          if (to.name === PAGE_NOT_FOUND_NAME) {
+            next({ path: to.fullPath, replace: true });
+          }
+          // 如果该路由不存在，可能是动态注册的路由，它还没准备好，需要再重定向一次到该路由
+          else if (!hasRoute) {
             next({ ...to, replace: true });
           } else {
             next();

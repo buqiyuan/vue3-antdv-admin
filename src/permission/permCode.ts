@@ -1,5 +1,5 @@
 /**
- * @description 权限列表
+ * @description 权限列表(数据从后端取)
  */
 export const permissions = [
   'system:user:list',
@@ -64,4 +64,4 @@ export const permissions = [
 
 export type PermissionType = (typeof permissions)[number];
 
-console.log('permissions', permissions);
+// console.log('permissions', permissions);

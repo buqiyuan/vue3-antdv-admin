@@ -25,7 +25,7 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
       if (isExt && extOpenMode === 2) {
         route.component = <IFramePage src={route.path} />;
         route.path = route.path.replace(new RegExp('://'), '/');
-      } else {
+      } else if (compPath) {
         route.component = asyncRoutes[compPath];
         // 前端 src/views 目录下无对应路由组件
         if (!route.component) {

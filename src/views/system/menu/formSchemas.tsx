@@ -1,9 +1,8 @@
 import type { FormSchema } from '@/components/core/schema-form/';
 import { IconPicker } from '@/components/basic/icon';
 import { asyncRoutes } from '@/router/asyncModules';
-import { str2tree } from '@/core/permission';
 import Api from '@/api/';
-import { findPath } from '@/utils/common';
+import { findPath, str2tree } from '@/utils/common';
 
 /** 菜单类型 0: 目录 | 1: 菜单 | 2: 按钮 */
 const isDir = (type: API.MenuDto['type']) => type === 0;

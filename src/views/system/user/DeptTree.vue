@@ -71,7 +71,7 @@
 </script>
 
 <template>
-  <div class="header">
+  <div :style="{ '--border': 1 }" class="header">
     <div class="title">组织架构</div>
     <a-input-search v-model:value="searchValue" size="small" placeholder="搜索" />
     <a-dropdown>

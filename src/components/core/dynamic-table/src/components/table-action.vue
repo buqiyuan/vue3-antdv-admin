@@ -20,7 +20,7 @@
   import { Popconfirm, Tooltip, type TooltipProps } from 'ant-design-vue';
   import type { ActionItem } from '../types/tableAction';
   import type { CustomRenderParams } from '../types/column';
-  import { verifyAuth } from '@/core/permission/';
+  import { hasPermission } from '@/permission';
   import { Icon } from '@/components/basic/icon';
   import { isAsyncFunction } from '@/utils/is';
 
@@ -67,7 +67,7 @@
           return true;
         }
         if (isString(auth)) {
-          const isValid = verifyAuth(auth);
+          const isValid = hasPermission(auth);
           item.disabled ??= !isValid;
           if (item.disabled && !isValid) {
             item.title = '对不起，您没有该操作权限！';
@@ -75,7 +75,7 @@
           return isValid;
         }
         if (isObject(auth)) {
-          const isValid = verifyAuth(auth.perm);
+          const isValid = hasPermission(auth.perm);
           const isDisable = auth.effect !== 'delete';
           item.disabled ??= !isValid && isDisable;
           if (item.disabled && !isValid) {
