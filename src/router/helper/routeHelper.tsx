@@ -63,6 +63,10 @@ export const genNamePathForRoutes = (routes: RouteRecordRaw[], parentNamePath: s
     if (item.meta && typeof item.name === 'string') {
       item.meta.namePath = parentNamePath.concat(item.name);
 
+      if (item.meta?.hideInMenu) {
+        item.meta.activeMenu ||= parentNamePath.at(-1);
+      }
+
       if (item.children?.length) {
         genNamePathForRoutes(item.children, item.meta.namePath);
       }

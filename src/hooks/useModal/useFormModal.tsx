@@ -17,7 +17,7 @@ export function useFormModal<T extends object = Recordable>() {
     const formRef = ref<SchemaFormInstance>();
 
     const onCancel = (e: MouseEvent) => {
-      formRef.value?.resetFields();
+      // formRef.value?.resetFields();
       modalProps?.onCancel?.(e);
     };
 
@@ -34,7 +34,7 @@ export function useFormModal<T extends object = Recordable>() {
 
     const onSubmit = async (values) => {
       await modalProps?.onFinish?.(values);
-      formRef.value?.resetFields();
+      // formRef.value?.resetFields();
       ModalRender.hide();
     };
 

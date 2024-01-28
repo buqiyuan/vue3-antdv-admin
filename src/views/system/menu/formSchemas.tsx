@@ -187,6 +187,19 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     vIf: ({ formModel }) => !isButton(formModel['type']),
   },
   {
+    field: 'activeMenu',
+    component: 'Input',
+    label: '高亮菜单项',
+    colProps: {
+      span: 12,
+    },
+    helpMessage: '值为某个的节点名称(可设置当前路由高亮的菜单项，多用于详情页)',
+    componentProps: {
+      placeholder: '需要高亮的菜单项(节点名称)',
+    },
+    vIf: ({ formModel }) => !formModel['show'] && !isButton(formModel['type']),
+  },
+  {
     field: 'status',
     label: '状态',
     component: 'RadioGroup',

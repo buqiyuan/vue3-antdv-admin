@@ -139,50 +139,131 @@ declare namespace API {
     id: number;
   };
 
-  type DictDeleteParams = {
+  type DictItemDeleteParams = {
     id: number;
   };
 
-  type DictDto = {
-    /** 字典名称 */
-    name: string;
+  type DictItemDto = {
+    /** 创建者 */
+    creator?: string;
+    /** 更新者 */
+    updater?: string;
+    /** 字典项键名 */
+    label?: string;
+    /** 字典项值 */
+    value?: string;
     /** 状态 */
     status?: number;
     /** 备注 */
     remark?: string;
+    /** 字典类型 ID */
+    typeId: number;
+    id?: number;
+    createdAt?: string;
+    updatedAt?: string;
+    type?: DictTypeEntity;
+    orderNo?: number;
   };
 
-  type DictEntity = {
-    /** 字典名称 */
-    name: string;
+  type DictItemEntity = {
+    /** 创建者 */
+    creator: string;
+    /** 更新者 */
+    updater: string;
+    /** 字典项键名 */
+    label: string;
+    /** 字典项值 */
+    value: string;
     /**  状态 */
     status: number;
     /** 备注 */
     remark: string;
-    createBy: number;
-    updateBy: number;
-    creator: string;
-    updater: string;
+    type: DictTypeEntity;
+    orderNo: number;
     id: number;
     createdAt: string;
     updatedAt: string;
   };
 
-  type DictInfoParams = {
+  type DictItemInfoParams = {
     id: number;
   };
 
-  type DictListParams = {
+  type DictItemListParams = {
     page?: number;
     pageSize?: number;
     field?: string;
     order?: 'ASC' | 'DESC';
-    /** 字典名称 */
-    name: string;
+    /** 字典类型 ID */
+    typeId: number;
+    /** 字典项键名 */
+    label?: string;
+    /** 字典项值 */
+    value?: string;
     _t?: number;
   };
 
-  type DictUpdateParams = {
+  type DictItemUpdateParams = {
+    id: number;
+  };
+
+  type DictTypeDeleteParams = {
+    id: number;
+  };
+
+  type DictTypeDto = {
+    /** 创建者 */
+    creator?: string;
+    /** 更新者 */
+    updater?: string;
+    /** 字典类型名称 */
+    name?: string;
+    /** 字典类型code */
+    code?: string;
+    /** 状态 */
+    status?: number;
+    /** 备注 */
+    remark?: string;
+    id?: number;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
+  type DictTypeEntity = {
+    /** 创建者 */
+    creator: string;
+    /** 更新者 */
+    updater: string;
+    /** 字典名称 */
+    name: string;
+    /** 字典类型 */
+    code: string;
+    /**  状态 */
+    status: number;
+    /** 备注 */
+    remark: string;
+    id: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+
+  type DictTypeInfoParams = {
+    id: number;
+  };
+
+  type DictTypeListParams = {
+    page?: number;
+    pageSize?: number;
+    field?: string;
+    order?: 'ASC' | 'DESC';
+    /** 字典类型名称 */
+    name: string;
+    /** 字典类型code */
+    code: string;
+    _t?: number;
+  };
+
+  type DictTypeUpdateParams = {
     id: number;
   };
 
@@ -326,6 +407,8 @@ declare namespace API {
     extOpenMode: 1 | 2;
     /** 菜单是否显示 */
     show: 0 | 1;
+    /** 设置当前路由高亮的菜单项，一般用于详情页 */
+    activeMenu?: string;
     /** 是否开启页面缓存 */
     keepAlive: 0 | 1;
     /** 状态 */
@@ -351,6 +434,7 @@ declare namespace API {
     extOpenMode: number;
     keepAlive: number;
     show: number;
+    activeMenu: string;
     status: number;
     roles: RoleEntity[];
     id: number;
@@ -376,6 +460,7 @@ declare namespace API {
     extOpenMode: number;
     keepAlive: number;
     show: number;
+    activeMenu: string;
     status: number;
     roles: RoleEntity[];
     id: number;
@@ -400,6 +485,8 @@ declare namespace API {
     extOpenMode?: 1 | 2;
     /** 菜单是否显示 */
     show?: 0 | 1;
+    /** 设置当前路由高亮的菜单项，一般用于详情页 */
+    activeMenu?: string;
     /** 是否开启页面缓存 */
     keepAlive?: 0 | 1;
     /** 状态 */
@@ -423,6 +510,7 @@ declare namespace API {
     extOpenMode?: number;
     keepAlive?: number;
     show?: number;
+    activeMenu?: string;
     status?: number;
   };
 
@@ -443,6 +531,8 @@ declare namespace API {
     extOpenMode?: 1 | 2;
     /** 菜单是否显示 */
     show?: 0 | 1;
+    /** 设置当前路由高亮的菜单项，一般用于详情页 */
+    activeMenu?: string;
     /** 是否开启页面缓存 */
     keepAlive?: 0 | 1;
     /** 状态 */

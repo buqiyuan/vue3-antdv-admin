@@ -1,7 +1,7 @@
 import { tableProps } from 'ant-design-vue/es/table';
 import tableConfig from './dynamic-table.config';
 import type DynamicTable from './dynamic-table.vue';
-import type { PropType, ExtractPropTypes } from 'vue';
+import type { PropType, ExtractPublicPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
 import type { TableColumn, OnChangeCallbackParams, EditableType, OnSave, OnCancel } from './types/';
 import type { SchemaFormProps } from '@/components/core/schema-form';
@@ -47,6 +47,10 @@ export const dynamicTableProps = {
   dataRequest: {
     // 获取列表数据函数API
     type: Function as PropType<(params: Recordable) => Promise<API.TableListResult | any[]>>,
+  },
+  // 额外的请求参数
+  searchParams: {
+    type: Object as PropType<Recordable>,
   },
   /** 是否显示索引号 */
   showIndex: {
@@ -118,7 +122,7 @@ export const dynamicTableProps = {
   onlyOneLineEditorAlertMessage: String,
 } as const;
 
-export type DynamicTableProps = ExtractPropTypes<typeof dynamicTableProps>;
+export type DynamicTableProps = ExtractPublicPropTypes<typeof dynamicTableProps>;
 
 export const dynamicTableEmits = {
   change: (...rest: OnChangeCallbackParams) => rest.length === 4,

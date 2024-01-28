@@ -1,7 +1,7 @@
 import { formProps, type FormProps } from 'ant-design-vue/es/form';
 import type SchemaForm from './schema-form.vue';
 import type { ColEx } from './types/component';
-import type { ExtractPropTypes, ComponentInternalInstance, CSSProperties } from 'vue';
+import type { ExtractPublicPropTypes, ComponentInternalInstance, CSSProperties } from 'vue';
 import type { FieldMapToTime, FormSchema, RowProps } from './types/form';
 import type { ButtonProps } from '@/components/basic/button';
 import type { TableActionType } from '@/components/core/dynamic-table';
@@ -116,9 +116,11 @@ export type SchemaFormEmits = typeof schemaFormEmits;
 export type SchemaFormEmitFn = EmitFn<SchemaFormEmits>;
 
 export type SchemaFormProps<T extends object = Recordable> = Partial<
-  ExtractPropTypes<Omit<typeof schemaFormProps, 'schemas'>> & {
+  ExtractPublicPropTypes<Omit<typeof schemaFormProps, 'schemas'>> & {
     schemas: FormSchema<T>[];
-  }
+  } & EmitsToProps<SchemaFormEmits>
 >;
+
+// export type SchemaFormProps = ExtractPublicPropTypes<typeof schemaFormProps>;
 
 export type SchemaFormInstance = InstanceType<typeof SchemaForm>;

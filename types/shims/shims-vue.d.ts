@@ -12,6 +12,7 @@ declare module 'vue' {
     // 参见：https://github.com/vuejs/core/pull/3399
     vAuth?: PermissionType;
     Reflect: Reflect;
+    suspenseStatus: '' | 'pending' | 'resolve' | 'fallback';
   }
 }
 

@@ -1,7 +1,7 @@
 /**
- * @description 权限列表(数据从后端取)
+ * @description 权限列表(数据从后端取), 仅供开发时提供 ts 类型提示，无实际作用
  */
-export const permissions = [
+const permissions = [
   'system:user:list',
   'system:role:list',
   'system:menu:list',
@@ -38,11 +38,16 @@ export const permissions = [
   'upload:upload',
   'tool:storage:delete',
   'system:user:password',
-  'system:dict:list',
-  'system:dict:create',
-  'system:dict:update',
-  'system:dict:delete',
-  'system:dict:info',
+  'system:dict-type:list',
+  'system:dict-type:create',
+  'system:dict-type:update',
+  'system:dict-type:delete',
+  'system:dict-type:info',
+  'system:dict-item:list',
+  'system:dict-item:create',
+  'system:dict-item:update',
+  'system:dict-item:delete',
+  'system:dict-item:info',
   'system:param-config:list',
   'system:param-config:create',
   'system:param-config:update',

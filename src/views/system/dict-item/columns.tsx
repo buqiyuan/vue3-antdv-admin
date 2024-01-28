@@ -3,7 +3,7 @@ import type { TableColumn } from '@/components/core/dynamic-table';
 import type { FormSchema } from '@/components/core/schema-form';
 import { formatToDateTime } from '@/utils/dateUtil';
 
-export type TableListItem = API.DictEntity;
+export type TableListItem = API.DictItemEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
 
 export const baseColumns: TableColumnItem[] = [
@@ -14,8 +14,16 @@ export const baseColumns: TableColumnItem[] = [
     width: 60,
   },
   {
-    title: '字典名称',
-    dataIndex: 'name',
+    title: '字典项键名',
+    dataIndex: 'label',
+  },
+  {
+    title: '字典项值',
+    dataIndex: 'value',
+  },
+  {
+    title: '排序',
+    dataIndex: 'orderNo',
   },
   {
     title: '状态',
@@ -43,10 +51,26 @@ export const baseColumns: TableColumnItem[] = [
   },
 ];
 
-export const searchFormSchema: FormSchema[] = [
+export const getSearchFormSchemas = (dictTypeList: any[], onChange: Function): FormSchema[] => [
   {
-    field: 'name',
-    label: '名称',
+    field: 'typeId',
+    label: '字典类型',
+    component: 'Select',
+    colProps: { span: 8 },
+    componentProps: {
+      options: dictTypeList,
+      onChange,
+    },
+  },
+  {
+    field: 'label',
+    label: '字典项键名',
+    component: 'Input',
+    colProps: { span: 8 },
+  },
+  {
+    field: 'value',
+    label: '字典项值',
     component: 'Input',
     colProps: { span: 8 },
   },

@@ -82,7 +82,7 @@
     ...baseColumns,
     {
       title: '操作',
-      width: 90,
+      width: 140,
       dataIndex: 'ACTION',
       hideInSearch: true,
       fixed: 'right',
@@ -94,6 +94,15 @@
             effect: 'disable',
           },
           onClick: () => openMenuModal(record),
+        },
+        {
+          label: '新增',
+          auth: {
+            perm: 'system:menu:create',
+            effect: 'disable',
+          },
+          disabled: record.type === 2,
+          onClick: () => openMenuModal({ parentId: record.id }),
         },
         {
           label: '删除',

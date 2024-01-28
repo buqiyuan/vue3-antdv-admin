@@ -1,5 +1,5 @@
 <template>
-  <template v-if="getFormProps?.schemas?.length">
+  <template v-if="getFormProps?.schemas?.length && search">
     <Tooltip placement="top">
       <template #title>
         <span>{{ getProps.search ? '隐藏搜索' : '显示搜索' }}</span>
@@ -13,7 +13,7 @@
   import { Tooltip } from 'ant-design-vue';
   import { useTableContext } from '../../hooks/useTableContext';
 
-  const { getProps, setProps, getFormProps } = useTableContext();
+  const { getProps, setProps, getFormProps, search } = useTableContext();
 
   function toggle() {
     setProps({

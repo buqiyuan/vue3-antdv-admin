@@ -12,7 +12,8 @@ import * as systemMenu from './systemMenu';
 import * as systemParamConfig from './systemParamConfig';
 import * as systemLog from './systemLog';
 import * as systemDept from './systemDept';
-import * as systemDict from './systemDict';
+import * as systemDictType from './systemDictType';
+import * as systemDictItem from './systemDictItem';
 import * as systemTask from './systemTask';
 import * as systemOnline from './systemOnline';
 import * as systemServe from './systemServe';
@@ -33,7 +34,8 @@ export default {
   systemParamConfig,
   systemLog,
   systemDept,
-  systemDict,
+  systemDictType,
+  systemDictItem,
   systemTask,
   systemOnline,
   systemServe,

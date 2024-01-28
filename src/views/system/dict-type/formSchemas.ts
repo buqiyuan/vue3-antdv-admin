@@ -1,10 +1,16 @@
 import type { FormSchema } from '@/components/core/schema-form/';
 
-export const baseSchemas: FormSchema<API.DictDto>[] = [
+export const baseSchemas: FormSchema<API.DictTypeDto>[] = [
   {
     field: 'name',
     component: 'Input',
     label: '字典名称',
+    rules: [{ required: true, type: 'string' }],
+  },
+  {
+    field: 'code',
+    component: 'Input',
+    label: '字典编码',
     rules: [{ required: true, type: 'string' }],
   },
   {

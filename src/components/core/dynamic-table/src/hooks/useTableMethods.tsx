@@ -1,4 +1,4 @@
-import { unref, nextTick, getCurrentInstance } from 'vue';
+import { unref, nextTick, getCurrentInstance, watch } from 'vue';
 import { isObject, isFunction, isBoolean, get } from 'lodash-es';
 import { useInfiniteScroll } from '@vueuse/core';
 import tableConfig from '../dynamic-table.config';
@@ -34,6 +34,13 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   const editableMethods = useEditable({ state, props });
   const expandMethods = useTableExpand({ state, props, emit });
 
+  watch(
+    () => props.searchParams,
+    () => {
+      fetchData();
+    },
+  );
+
   const setProps = (props: Partial<DynamicTableProps>) => {
     innerPropsRef.value = { ...unref(innerPropsRef), ...props };
   };
@@ -54,7 +61,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @description 获取表格数据
    */
   const fetchData = async (params = {}) => {
-    const { dataRequest, dataSource, fetchConfig } = props;
+    const { dataRequest, dataSource, fetchConfig, searchParams } = props;
 
     if (!dataRequest || !isFunction(dataRequest) || Array.isArray(dataSource)) {
       return;
@@ -77,7 +84,14 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
         };
       }
       const { sortInfo = {}, filterInfo } = searchState;
-      let queryParams: Recordable = { ...pageParams, ...sortInfo, ...filterInfo, ...params };
+      // 表格查询参数
+      let queryParams: Recordable = {
+        ...pageParams,
+        ...sortInfo,
+        ...filterInfo,
+        ...searchParams,
+        ...params,
+      };
       await nextTick();
       if (queryFormRef.value) {
         const values = await queryFormRef.value.validate();
@@ -123,12 +137,12 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   /**
    * @description 刷新表格
    */
-  const reload = async (resetPageIndex = false) => {
+  const reload = (resetPageIndex = false) => {
     const pagination = unref(paginationRef);
     if (Object.is(resetPageIndex, true) && isObject(pagination)) {
       pagination.current = 1;
     }
-    return await fetchData();
+    return fetchData();
   };
 
   /**

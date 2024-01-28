@@ -5,6 +5,7 @@ import type {
   VNodeChild,
   SetupContext,
   EmitsOptions,
+  ObjectEmitsOptions,
   PropType as VuePropType,
 } from 'vue';
 import type { TinyMCE } from 'tinymce';
@@ -63,6 +64,24 @@ declare global {
   declare function parseFloat(string: string | number): number;
 
   declare type EmitFn<E = EmitsOptions> = SetupContext<E>['emit'];
+  /** copy from `@vue/runtime-core` */
+  declare type EmitsToProps<T extends EmitsOptions> = T extends string[]
+    ? {
+        [K in `on${Capitalize<T[number]>}`]?: (...args: any[]) => any;
+      }
+    : T extends ObjectEmitsOptions
+      ? {
+          [K in `on${Capitalize<string & keyof T>}`]?: K extends `on${infer C}`
+            ? (
+                ...args: T[Uncapitalize<C>] extends (...args: infer P) => any
+                  ? P
+                  : T[Uncapitalize<C>] extends null
+                    ? any[]
+                    : never
+              ) => any
+            : never;
+        }
+      : {};
 
   namespace JSX {
     // tslint:disable no-empty-interface

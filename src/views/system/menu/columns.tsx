@@ -12,11 +12,11 @@ export type TableColumnItem = TableColumn<TableListItem>;
 const getMenuType = (type) => {
   switch (type) {
     case 0:
-      return '目录';
+      return <Tag color="warning">目录</Tag>;
     case 1:
-      return '菜单';
+      return <Tag color="success">菜单</Tag>;
     case 2:
-      return '权限';
+      return <Tag color="error">权限</Tag>;
     default:
       return '';
   }
@@ -32,7 +32,7 @@ export const baseColumns: TableColumnItem[] = [
   },
   {
     title: '图标',
-    width: 50,
+    width: 40,
     dataIndex: 'icon',
     hideInSearch: true,
     customRender: ({ record }) => record.icon && <Icon icon={record.icon} size="22" />,
@@ -58,6 +58,8 @@ export const baseColumns: TableColumnItem[] = [
     title: '权限标识',
     width: 180,
     dataIndex: 'permission',
+    customRender: ({ record }) =>
+      record.permission && <Tag color="processing">{record.permission}</Tag>,
   },
   {
     title: '排序',
