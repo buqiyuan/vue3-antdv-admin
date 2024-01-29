@@ -26,8 +26,8 @@ export const sendSchemas: FormSchema<API.EmailSendDto>[] = [
     componentProps: {
       placeholder: '请输入邮箱地址,多个地址英文逗号,隔开',
     },
-    required: true,
     colProps: { md: 18 },
+    rules: [{ type: 'email', required: true, message: '请输入有效的邮箱地址' }],
   },
   {
     field: 'content',

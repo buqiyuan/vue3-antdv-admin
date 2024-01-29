@@ -48,6 +48,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '节点路由',
     dataIndex: 'path',
     width: 180,
+    ellipsis: true,
   },
   {
     title: '文件路径',

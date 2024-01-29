@@ -122,7 +122,8 @@ export const dynamicTableProps = {
   onlyOneLineEditorAlertMessage: String,
 } as const;
 
-export type DynamicTableProps = ExtractPublicPropTypes<typeof dynamicTableProps>;
+export type DynamicTableProps = ExtractPublicPropTypes<typeof dynamicTableProps> &
+  EmitsToProps<DynamicTableEmits>;
 
 export const dynamicTableEmits = {
   change: (...rest: OnChangeCallbackParams) => rest.length === 4,
