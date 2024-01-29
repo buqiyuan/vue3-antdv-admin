@@ -1,6 +1,7 @@
 {
   "name": "vue3-antdv-admin",
   "version": "2.0.0",
+  "packageManager": "pnpm@8.10.2",
   "author": {
     "name": "buqiyuan",
     "email": "1743369777@qq.com",
@@ -134,7 +135,6 @@
     "node": ">=14"
   },
   "target": "web",
-  "packageManager": "^pnpm@6.32.4",
   "dependenciesMeta": {
     "@admin-pkg/mock-server": {
       "injected": true
