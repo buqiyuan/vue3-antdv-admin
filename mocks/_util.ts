@@ -3,7 +3,7 @@ import type { DefaultBodyType, StrictRequest } from 'msw';
 import { ResultEnum } from '@/enums/httpEnum';
 import { uniqueSlash } from '@/utils/urlUtils';
 
-const baseApiUrl = new URL(import.meta.env.VITE_BASE_API, location.origin).toString();
+const baseApiUrl = new URL(import.meta.env.VITE_BASE_API_URL, location.origin).toString();
 
 /**
  * msw 官方不支持配置 baseUrl, 需要自己手动处理

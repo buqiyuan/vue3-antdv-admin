@@ -1,7 +1,7 @@
 <template>
-  <a-button type="primary" :disabled="!$auth('upload:upload')" @click="visible = true"
-    >上传</a-button
-  >
+  <a-button type="primary" :disabled="!$auth('upload:upload')" @click="visible = true">
+    上传
+  </a-button>
 
   <DraggableModal
     v-model:open="visible"

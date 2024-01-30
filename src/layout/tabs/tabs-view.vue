@@ -171,7 +171,7 @@
 
   // 在页面关闭或刷新之前，保存数据
   window.addEventListener('beforeunload', () => {
-    Storage.set(TABS_ROUTES, JSON.stringify(tabsList.value));
+    Storage.set(TABS_ROUTES, JSON.stringify([tabsViewStore.getCurrentTab]));
   });
 
   // 目标路由是否等于当前路由

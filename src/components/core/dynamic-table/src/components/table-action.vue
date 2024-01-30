@@ -56,6 +56,7 @@
     rowKey: [String, Number] as PropType<Key>,
   });
 
+  const clickFnFlag = '__TABLE_ACTION';
   const loadingMap = ref(new Map<string, boolean>());
 
   const getActions = computed(() => {
@@ -87,7 +88,7 @@
       .map((item, index) => {
         const onClick = item.onClick;
 
-        if (isAsyncFunction(onClick)) {
+        if (isAsyncFunction(onClick) && !Reflect.get(onClick, clickFnFlag)) {
           item.onClick = async () => {
             const key = getKey(item, index);
             loadingMap.value.set(key, true);
@@ -95,6 +96,7 @@
               loadingMap.value.delete(key);
             });
           };
+          Reflect.set(item.onClick, clickFnFlag, true);
         }
         if (item.icon) {
           item.icon = <Icon icon={item.icon} class={{ 'mr-1': !!item.label }} />;

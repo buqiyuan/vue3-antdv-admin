@@ -1004,6 +1004,8 @@ declare namespace API {
   };
 
   type UserDto = {
+    /** 头像 */
+    avatar?: string;
     /** 登录账号 */
     username: string;
     /** 登录密码 */
@@ -1050,6 +1052,8 @@ declare namespace API {
     pageSize?: number;
     field?: string;
     order?: 'ASC' | 'DESC';
+    /** 头像 */
+    avatar?: string;
     /** 登录账号 */
     username?: string;
     /** 登录密码 */
@@ -1087,6 +1091,8 @@ declare namespace API {
   };
 
   type UserUpdateDto = {
+    /** 头像 */
+    avatar?: string;
     /** 登录账号 */
     username?: string;
     /** 登录密码 */

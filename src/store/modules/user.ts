@@ -42,7 +42,7 @@ export const useUserStore = defineStore('user', () => {
     }
     const uid = userInfo.value.id;
     const sseUrl = uniqueSlash(
-      `${import.meta.env.VITE_BASE_API}/api/sse/${uid}?token=${token.value}`,
+      `${import.meta.env.VITE_BASE_API_URL}/api/sse/${uid}?token=${token.value}`,
     );
 
     eventSource = new EventSource(sseUrl);
@@ -79,9 +79,9 @@ export const useUserStore = defineStore('user', () => {
   };
   /** 登录成功保存token */
   const setToken = (_token: string) => {
-    token.value = _token ?? '';
-    const ex = 7 * 24 * 60 * 60 * 1000;
-    Storage.set(ACCESS_TOKEN_KEY, token.value, ex);
+    token.value = _token;
+    // const ex = 7 * 24 * 60 * 60 * 1000;
+    Storage.set(ACCESS_TOKEN_KEY, token.value);
   };
   /** 登录 */
   const login = async (params: API.LoginDto) => {

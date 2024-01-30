@@ -1,7 +1,13 @@
+import AvatarUpload from './AvatarUpload.vue';
 import type { FormSchema } from '@/components/core/schema-form/';
 import Api from '@/api/';
 
 export const userSchemas: FormSchema<API.UserDto>[] = [
+  {
+    field: 'avatar',
+    component: () => AvatarUpload,
+    label: '头像',
+  },
   {
     field: 'deptId',
     component: 'TreeSelect',
