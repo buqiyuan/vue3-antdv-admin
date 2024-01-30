@@ -1,12 +1,14 @@
-import { unref, nextTick, getCurrentInstance } from 'vue';
-import { isObject, isFunction } from 'lodash-es';
+import { unref, nextTick, getCurrentInstance, watch } from 'vue';
+import { isObject, isFunction, isBoolean, get } from 'lodash-es';
 import { useInfiniteScroll } from '@vueuse/core';
+import tableConfig from '../dynamic-table.config';
 import { useEditable } from './useEditable';
+import { useTableExpand } from './useTableExpand';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { Pagination, TableState } from './useTableState';
 import type { FormProps } from 'ant-design-vue';
-import { isAsyncFunction, isBoolean } from '@/utils/is';
+import { warn } from '@/utils/log';
 
 export type UseInfiniteScrollParams = Parameters<typeof useInfiniteScroll>;
 
@@ -18,13 +20,26 @@ export type UseTableMethodsContext = {
   emit: DynamicTableEmitFn;
 };
 
-let retryFetchCount = 2;
-
 export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) => {
-  const { innerPropsRef, tableData, loadingRef, queryFormRef, paginationRef, editFormErrorMsgs } =
-    state;
+  const {
+    innerPropsRef,
+    tableData,
+    loadingRef,
+    queryFormRef,
+    paginationRef,
+    editFormErrorMsgs,
+    searchState,
+  } = state;
   // 可编辑行
   const editableMethods = useEditable({ state, props });
+  const expandMethods = useTableExpand({ state, props, emit });
+
+  watch(
+    () => props.searchParams,
+    () => {
+      fetchData();
+    },
+  );
 
   const setProps = (props: Partial<DynamicTableProps>) => {
     innerPropsRef.value = { ...unref(innerPropsRef), ...props };
@@ -34,7 +49,9 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @description 表格查询
    */
   const handleSubmit = (params, page = 1) => {
-    params.page = page;
+    updatePagination({
+      current: page,
+    });
     fetchData(params);
   };
 
@@ -43,95 +60,117 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @param {boolean} flush 是否将页数重置到第一页
    * @description 获取表格数据
    */
-  const fetchData = async (params = {}, rest?: OnChangeCallbackParams) => {
-    const [pagination] = rest || [];
-    // 如果用户没有提供dataSource并且dataRequest是一个函数，那就进行接口请求
-    if (
-      Object.is(props.dataSource, undefined) &&
-      (isFunction(props.dataRequest) || isAsyncFunction(props.dataRequest))
-    ) {
+  const fetchData = async (params = {}) => {
+    const { dataRequest, dataSource, fetchConfig, searchParams } = props;
+
+    if (!dataRequest || !isFunction(dataRequest) || Array.isArray(dataSource)) {
+      return;
+    }
+    try {
+      let pageParams: Recordable = {};
+      const pagination = unref(paginationRef)!;
+
+      const { pageField, sizeField, listField, totalField } = {
+        ...tableConfig.fetchConfig,
+        ...fetchConfig,
+      };
+
+      // 是否启用了分页
+      const enablePagination = isObject(pagination);
+      if (enablePagination) {
+        pageParams = {
+          [pageField]: pagination.current,
+          [sizeField]: pagination.pageSize,
+        };
+      }
+      const { sortInfo = {}, filterInfo } = searchState;
+      // 表格查询参数
+      let queryParams: Recordable = {
+        ...pageParams,
+        ...sortInfo,
+        ...filterInfo,
+        ...searchParams,
+        ...params,
+      };
       await nextTick();
       if (queryFormRef.value) {
         const values = await queryFormRef.value.validate();
-        params = {
+        queryParams = {
           ...queryFormRef.value.handleFormValues(values),
-          ...params,
+          ...queryParams,
         };
       }
-      const _pagination = unref(paginationRef)!;
-      // 是否启用了分页
-      const enablePagination = isObject(_pagination);
-      const queryParams = {
-        ...params,
-      };
-      if (enablePagination) {
-        Object.assign(queryParams, {
-          page: _pagination.current,
-          limit: _pagination.pageSize,
-          ...queryParams,
-        });
-      }
+
       loadingRef.value = true;
-      const data = await props
-        ?.dataRequest?.(queryParams, rest)
-        .finally(() => (loadingRef.value = false));
+      const res = await dataRequest(queryParams);
 
-      if (data?.pagination) {
-        const { page, size, total } = data.pagination;
+      const isArrayResult = Array.isArray(res);
+      const resultItems: Recordable[] = isArrayResult ? res : get(res, listField);
+      const resultTotal: number = isArrayResult ? res.length : Number(get(res, totalField));
 
-        if (enablePagination && _pagination?.current && retryFetchCount-- > 0) {
-          // 有分页时,删除当前页最后一条数据时 自动往前一页查询
-          if (data?.list.length === 0 && total > 0 && page > 1) {
-            _pagination.current--;
-            return reload();
-          }
+      if (enablePagination && resultTotal) {
+        const { current = 1, pageSize = tableConfig.defaultPageSize } = pagination;
+        const currentTotalPage = Math.ceil(resultTotal / pageSize);
+        if (current > currentTotalPage) {
+          updatePagination({
+            current: currentTotalPage,
+          });
+          return await fetchData(params);
         }
-
-        updatePagination({
-          current: page,
-          pageSize: size,
-          total,
-        });
-      } else {
-        updatePagination(pagination);
       }
-      if (Array.isArray(data?.list)) {
-        tableData.value = data!.list;
-      } else if (Array.isArray(data)) {
-        tableData.value = data;
-      } else {
-        tableData.value = [];
+      tableData.value = resultItems;
+      updatePagination({ total: ~~resultTotal });
+      if (queryParams[pageField]) {
+        updatePagination({ current: queryParams[pageField] || 1 });
       }
-    } else {
-      updatePagination(pagination);
+      return tableData;
+    } catch (error) {
+      warn(`表格查询出错：${error}`);
+      emit('fetch-error', error);
+      tableData.value = [];
+      updatePagination({ total: 0 });
+    } finally {
+      loadingRef.value = false;
     }
-
-    retryFetchCount = 2;
-    return tableData;
   };
 
   /**
    * @description 刷新表格
    */
-  const reload = async (resetPageIndex = false) => {
+  const reload = (resetPageIndex = false) => {
     const pagination = unref(paginationRef);
     if (Object.is(resetPageIndex, true) && isObject(pagination)) {
       pagination.current = 1;
     }
-    return await fetchData();
+    return fetchData();
   };
 
   /**
    * @description 分页改变
    */
   const handleTableChange = async (...rest: OnChangeCallbackParams) => {
-    // const [pagination, filters, sorter] = rest;
-    const [pagination] = rest;
+    const [pagination, filters, sorter] = rest;
+    const { sortFn, filterFn } = props;
+
     if (queryFormRef.value) {
       await queryFormRef.value.validate();
     }
     updatePagination(pagination);
-    await fetchData({}, rest);
+
+    const params: Recordable = {};
+    if (sorter && isFunction(sortFn)) {
+      const sortInfo = sortFn(sorter);
+      searchState.sortInfo = sortInfo;
+      params.sortInfo = sortInfo;
+    }
+
+    if (filters && isFunction(filterFn)) {
+      const filterInfo = filterFn(filters);
+      searchState.filterInfo = filterInfo;
+      params.filterInfo = filterInfo;
+    }
+
+    await fetchData({});
     emit('change', ...rest);
   };
 
@@ -181,6 +220,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
 
   return {
     ...editableMethods,
+    ...expandMethods,
     setProps,
     handleSubmit,
     handleTableChange,

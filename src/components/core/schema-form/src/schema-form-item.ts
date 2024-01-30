@@ -1,5 +1,5 @@
 import type { TableActionType } from '@/components/core/dynamic-table';
-import type { FormSchema } from './types';
+import type { UnwrapFormSchema } from './types';
 
 export const schemaFormItemProps = {
   formModel: {
@@ -7,7 +7,7 @@ export const schemaFormItemProps = {
     default: () => ({}),
   },
   schema: {
-    type: Object as PropType<FormSchema>,
+    type: Object as PropType<UnwrapFormSchema>,
     default: () => ({}),
   },
   // 动态表格实例

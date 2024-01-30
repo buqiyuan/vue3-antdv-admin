@@ -54,15 +54,15 @@
   import { useRoute, useRouter } from 'vue-router';
   import { message, Modal } from 'ant-design-vue';
   import { useUserStore } from '@/store/modules/user';
-  import { getImageCaptcha } from '@/api/login';
+  import Api from '@/api/';
   import { to } from '@/utils/awaitTo';
 
   const state = reactive({
     loading: false,
     captcha: '',
     formInline: {
-      username: '',
-      password: '',
+      username: 'admin',
+      password: 'a123456',
       verifyCode: '',
       captchaId: '',
     },
@@ -74,9 +74,9 @@
   const userStore = useUserStore();
 
   const setCaptcha = async () => {
-    const { id, img } = await getImageCaptcha({ width: 100, height: 50 });
-    state.captcha = img;
-    state.formInline.captchaId = id;
+    const data = await Api.captcha.captchaCaptchaByImg({ width: 100, height: 50 });
+    state.captcha = data.img;
+    state.formInline.captchaId = data.id;
   };
   setCaptcha();
 

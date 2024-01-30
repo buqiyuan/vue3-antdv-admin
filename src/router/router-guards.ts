@@ -1,6 +1,6 @@
-import { isNavigationFailure } from 'vue-router';
+import { NavigationFailureType, isNavigationFailure } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
-import { LOGIN_NAME, REDIRECT_NAME } from './constant';
+import { LOGIN_NAME, PAGE_NOT_FOUND_NAME, REDIRECT_NAME } from './constant';
 import type { WhiteNameList } from './constant';
 import type { Router, RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
@@ -31,8 +31,12 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
             userStore.resetToken();
             return next({ name: LOGIN_NAME });
           }
-          if (!hasRoute) {
-            // 如果该路由不存在，可能是动态注册的路由，它还没准备好，需要再重定向一次到该路由
+          // 解决警告：No match found for location with path "XXXXXXX"
+          if (to.name === PAGE_NOT_FOUND_NAME) {
+            next({ path: to.fullPath, replace: true });
+          }
+          // 如果该路由不存在，可能是动态注册的路由，它还没准备好，需要再重定向一次到该路由
+          else if (!hasRoute) {
             next({ ...to, replace: true });
           } else {
             next();
@@ -59,12 +63,16 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
   };
 
   router.afterEach((to, from, failure) => {
+    // 跳过自己手动取消路由导航时的错误
+    if (isNavigationFailure(failure, NavigationFailureType.aborted)) {
+      NProgress.done();
+      // console.error('failed navigation', failure);
+      return;
+    }
+
     const keepAliveStore = useKeepAliveStore();
     const token = Storage.get(ACCESS_TOKEN_KEY, null);
 
-    if (isNavigationFailure(failure)) {
-      console.error('failed navigation', failure);
-    }
     // 在这里设置需要缓存的组件名称
     const toCompName = getComponentName(to);
     // 判断当前页面是否开启缓存，如果开启，则将当前页面的 componentName 信息存入 keep-alive 全局状态
@@ -96,6 +104,6 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
   });
 
   router.onError((error) => {
-    console.log(error, '路由错误');
+    console.error('路由错误', error);
   });
 }

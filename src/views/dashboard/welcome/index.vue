@@ -11,22 +11,20 @@
       <Descriptions.Item label="网络状态">
         <Badge :status="online ? 'processing' : 'default'" :text="online ? '在线' : '离线'" />
       </Descriptions.Item>
-      <Descriptions.Item label="WebSocket连接情况">
+      <!-- <Descriptions.Item label="WebSocket连接情况">
         <Badge :status="statusTextColor" :text="statusText" />
-      </Descriptions.Item>
+      </Descriptions.Item> -->
     </Descriptions>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, watchEffect } from 'vue';
+  import { ref, watchEffect } from 'vue';
   import { Descriptions, Badge } from 'ant-design-vue';
   import BrowserType from '@/utils/browser-type';
   import { useBattery } from '@/hooks/useBattery';
   import { useOnline } from '@/hooks/useOnline';
   import { useUserStore } from '@/store/modules/user';
-  import { useWsStore } from '@/store/modules/ws';
-  import { SocketStatus } from '@/core/socket/socket-io';
 
   defineOptions({
     name: 'DashboardWelcome',
@@ -34,34 +32,13 @@
 
   // import performanceMonitor from '@/utils/performanceMonitor'
 
-  const loginIp = useUserStore().userInfo?.loginIp;
-  const wsStore = useWsStore();
+  const loginIp = useUserStore().userInfo?.phone;
   // 是否联网
   const { online } = useOnline();
   // 获取电池信息
   const { battery, batteryStatus, calcDischargingTime } = useBattery();
   // 获取浏览器信息
   const browserInfo = ref(BrowserType('zh-cn'));
-
-  const statusText = computed(() => {
-    if (wsStore.status === SocketStatus.CONNECTED) {
-      return '正常';
-    } else if (wsStore.status === SocketStatus.CONNECTING) {
-      return '连接中...';
-    } else {
-      return '已断开';
-    }
-  });
-
-  const statusTextColor = computed(() => {
-    if (wsStore.status === SocketStatus.CONNECTED) {
-      return 'success';
-    } else if (wsStore.status === SocketStatus.CONNECTING) {
-      return 'warning';
-    } else {
-      return 'error';
-    }
-  });
 
   watchEffect(() => {
     Object.assign(browserInfo.value, {

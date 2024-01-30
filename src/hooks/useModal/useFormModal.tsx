@@ -5,19 +5,19 @@ import type { SchemaFormInstance, SchemaFormProps } from '@/components/core/sche
 import type { FormModalProps } from './types';
 import SchemaForm from '@/components/core/schema-form';
 
-interface ShowModalProps<T = Recordable> {
+interface ShowModalProps<T extends object = Recordable> {
   modalProps: FormModalProps<T>;
-  formProps: Partial<SchemaFormProps>;
+  formProps: Partial<SchemaFormProps<T>>;
 }
 
-export function useFormModal<T = any>() {
+export function useFormModal<T extends object = Recordable>() {
   const [ModalRender] = useModal();
 
-  const showModal = async <P extends T>({ modalProps, formProps }: ShowModalProps<P>) => {
+  const showModal = async <P extends object = T>({ modalProps, formProps }: ShowModalProps<P>) => {
     const formRef = ref<SchemaFormInstance>();
 
     const onCancel = (e: MouseEvent) => {
-      formRef.value?.resetFields();
+      // formRef.value?.resetFields();
       modalProps?.onCancel?.(e);
     };
 
@@ -34,7 +34,7 @@ export function useFormModal<T = any>() {
 
     const onSubmit = async (values) => {
       await modalProps?.onFinish?.(values);
-      formRef.value?.resetFields();
+      // formRef.value?.resetFields();
       ModalRender.hide();
     };
 
@@ -46,6 +46,7 @@ export function useFormModal<T = any>() {
       content: () => {
         const _formProps = Object.assign({}, { showActionButtonGroup: false }, formProps);
 
+        // @ts-ignore
         return <SchemaForm ref={formRef} {..._formProps}></SchemaForm>;
       },
     });

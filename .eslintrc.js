@@ -28,7 +28,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ['*.ts', '*.tsx', '*.vue'],
+      files: ['*.ts', '*.js', '*.tsx', '*.vue'],
       rules: {
         'no-undef': 'off',
       },

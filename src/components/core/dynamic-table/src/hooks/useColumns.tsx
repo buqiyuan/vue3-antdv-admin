@@ -2,6 +2,7 @@ import { ref, watchEffect, unref, useSlots } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { EditableCell } from '../components/';
 import { ColumnKeyFlag, type CustomRenderParams } from '../types/column';
+import tableConfig from '../dynamic-table.config';
 import type { Slots } from 'vue';
 import type {
   TableActionType,
@@ -61,6 +62,8 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
       const rowKey = props.rowKey as string;
       const columnKey = getColumnKey(item) as string;
 
+      item.align ||= tableConfig.defaultAlign;
+
       item.customRender = (options) => {
         const { record, index, text } = options as CustomRenderParams<Recordable<any>>;
         /** 当前行是否开启了编辑行模式 */
@@ -79,7 +82,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
 
         return isShowEditable ? (
           <EditableCell
-            schema={getColumnFormSchema(item, record)}
+            schema={getColumnFormSchema(item, record) as any}
             rowKey={record[rowKey] ?? index}
             editableType={innerProps.editableType}
             column={options}
@@ -126,7 +129,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
   }
 
   /** 获取当前行的form schema */
-  const getColumnFormSchema = (item: TableColumn, record: Recordable): FormSchema<string> => {
+  const getColumnFormSchema = (item: TableColumn, record: Recordable): FormSchema => {
     const key = getColumnKey(item) as string;
     /** 是否继承搜索表单的属性 */
     const isExtendSearchFormProps = !Object.is(

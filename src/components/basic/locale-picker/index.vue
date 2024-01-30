@@ -16,7 +16,7 @@
   import { Dropdown, Menu } from 'ant-design-vue';
   import { useLocale } from '@/locales/useLocale';
   import { type LocaleType, localeList } from '@/locales/config';
-  import { SvgIcon } from '@/components/basic/svg-icon';
+  import { SvgIcon } from '@/components/basic/icon';
 
   const props = defineProps({
     /**

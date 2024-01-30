@@ -1,7 +1,7 @@
 import { nextTick, ref, unref, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 import DynamicTable from '../../index';
-import type { Ref, SetupContext } from 'vue';
+import type { FunctionalComponent, Ref } from 'vue';
 import type { DynamicTableInstance, DynamicTableProps } from '../dynamic-table';
 
 export function useTable(props?: Partial<DynamicTableProps>) {
@@ -15,19 +15,20 @@ export function useTable(props?: Partial<DynamicTableProps>) {
     }
     return table;
   }
+
   watch(
     () => props,
     async () => {
       if (props) {
-        // console.log('table onMounted');
+        // console.log('table onMounted', { ...props });
         await nextTick();
         const tableInstance = await getTableInstance();
         tableInstance?.setProps?.(props);
       }
     },
     {
-      immediate: true,
       deep: true,
+      flush: 'post',
     },
   );
 
@@ -46,9 +47,9 @@ export function useTable(props?: Partial<DynamicTableProps>) {
     },
   });
 
-  const DynamicTableRender = (
-    compProps: Partial<DynamicTableProps>,
-    { attrs, slots }: SetupContext,
+  const DynamicTableRender: FunctionalComponent<DynamicTableProps> = (
+    compProps,
+    { attrs, slots },
   ) => {
     return (
       <DynamicTable

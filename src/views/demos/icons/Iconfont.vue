@@ -47,7 +47,7 @@
 <script lang="ts" setup>
   import { reactive } from 'vue';
   import { Alert, Descriptions, Image } from 'ant-design-vue';
-  import { IconFont } from '@/components/basic/iconfont';
+  import { IconFont } from '@/components/basic/icon';
 
   defineOptions({
     name: 'CustomIcon',

@@ -1,5 +1,5 @@
 import { type RouteMeta as VRouteMeta } from 'vue-router';
-import { type PermissionType } from '@/core/permission/modules/types';
+import { type PermissionType } from '@/permission/permCode/';
 import { type LocaleType } from '@/locales/config';
 
 declare global {
@@ -39,13 +39,13 @@ declare module 'vue-router' {
     /** 设置当前路由高亮的菜单项，值为route fullPath或route name,一般用于详情页 */
     activeMenu?: string;
     /** 菜单排序号 */
-    orderNum?: number;
+    orderNo?: number;
     /** 是否外链 */
     isExt?: boolean;
     /** 外链打开方式
      * 1: 新窗口打开
-     * 2: iframe
+     * 2: 内嵌 iframe
      */
-    openMode?: 1 | 2;
+    extOpenMode?: 1 | 2;
   }
 }

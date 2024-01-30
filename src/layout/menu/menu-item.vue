@@ -14,7 +14,7 @@
     </template>
     <!-- 菜单 -->
     <template v-else>
-      <Menu.Item :key="item?.name">
+      <Menu.Item :key="item?.name" @click="handleMenuItemClick(item)">
         <MenuItemContent :item="item" />
       </Menu.Item>
     </template>
@@ -41,7 +41,7 @@
   const filterMenus = computed(() => {
     return [...props.menus]
       .filter((n) => !n.meta?.hideInMenu)
-      .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
+      .sort((a, b) => ~~a.meta?.orderNo! - ~~b.meta?.orderNo!);
   });
 
   const isShowSubMenu = (menuItem: RouteRecordRaw) => {
@@ -49,6 +49,13 @@
       menuItem?.meta?.type === 0 ||
       (!Object.is(menuItem?.meta?.hideChildrenInMenu, true) && menuItem?.children?.length)
     );
+  };
+
+  const handleMenuItemClick = (item: RouteRecordRaw) => {
+    const { isExt, extOpenMode } = item.meta || {};
+    if (isExt && extOpenMode !== 2) {
+      window.open(item.path);
+    }
   };
 </script>
 

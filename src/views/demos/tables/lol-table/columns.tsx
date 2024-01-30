@@ -16,8 +16,7 @@ const AvatarRender = defineComponent({
         />
         <div hidden>
           <Image.PreviewGroup
-            // @ts-ignore
-            preview={{ open: visible.value, onOpenChange: (vis) => (visible.value = vis) }}
+            preview={{ visible: visible.value, onVisibleChange: (vis) => (visible.value = vis) }}
           >
             {props.record?.posters.map((item) => <Image src={item} key={item} />)}
           </Image.PreviewGroup>
@@ -30,7 +29,6 @@ const AvatarRender = defineComponent({
 export const columns: TableColumn[] = [
   {
     title: '头像',
-    align: 'center',
     width: 100,
     hideInSearch: true,
     dataIndex: 'avatar',
@@ -38,17 +36,14 @@ export const columns: TableColumn[] = [
   },
   {
     title: '英雄名称',
-    align: 'center',
     dataIndex: 'title',
   },
   {
     title: '英雄称号',
-    align: 'center',
     dataIndex: 'name',
   },
   {
     title: '定位',
-    align: 'center',
     dataIndex: 'roles',
     customRender: ({ record }) => (
       <div>
@@ -62,7 +57,6 @@ export const columns: TableColumn[] = [
   },
   {
     title: '操作',
-    align: 'center',
     width: 120,
     dataIndex: 'ACTION',
     actions: ({ record }) => [

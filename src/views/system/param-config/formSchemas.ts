@@ -1,6 +1,6 @@
 import type { FormSchema } from '@/components/core/schema-form/';
 
-export const getSchemas = (configId = -1): FormSchema<API.CreateParamConfigParams>[] => [
+export const baseSchemas: FormSchema<API.ParamConfigDto>[] = [
   {
     field: 'name',
     component: 'Input',
@@ -10,19 +10,28 @@ export const getSchemas = (configId = -1): FormSchema<API.CreateParamConfigParam
   {
     field: 'key',
     component: 'Input',
-    label: '参数键名',
-    rules: [{ required: true, type: 'string' }],
-    dynamicDisabled: () => configId !== -1,
+    label: 'key',
+    colProps: {
+      span: 24,
+    },
+    required: true,
   },
   {
     field: 'value',
     component: 'Input',
-    label: '参数值',
-    rules: [{ required: true, type: 'string' }],
+    label: 'value',
+    colProps: {
+      span: 24,
+    },
+    required: true,
   },
   {
     field: 'remark',
     component: 'InputTextArea',
     label: '备注',
+    colProps: {
+      span: 24,
+    },
+    required: true,
   },
 ];

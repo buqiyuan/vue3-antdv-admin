@@ -1,11 +1,15 @@
 <template>
   <div class="flex justify-between p-16px">
-    <slot name="headerTitle">
-      <div class="title">
-        {{ title }}
-        <BasicHelp v-if="titleTooltip" class="ml-6px pt-3px" :text="titleTooltip" />
-      </div>
-    </slot>
+    <div class="flex">
+      <slot name="headerTitle">
+        <div class="title">
+          {{ title }}
+          <BasicHelp v-if="titleTooltip" class="ml-6px pt-3px" :text="titleTooltip" />
+        </div>
+      </slot>
+
+      <slot name="afterHeaderTitle"></slot>
+    </div>
 
     <div>
       <Space>

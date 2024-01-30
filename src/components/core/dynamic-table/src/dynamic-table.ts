@@ -1,15 +1,9 @@
 import { tableProps } from 'ant-design-vue/es/table';
+import tableConfig from './dynamic-table.config';
 import type DynamicTable from './dynamic-table.vue';
-import type { PropType, ExtractPropTypes } from 'vue';
+import type { PropType, ExtractPublicPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
-import type {
-  LoadDataParams,
-  TableColumn,
-  OnChangeCallbackParams,
-  EditableType,
-  OnSave,
-  OnCancel,
-} from './types/';
+import type { TableColumn, OnChangeCallbackParams, EditableType, OnSave, OnCancel } from './types/';
 import type { SchemaFormProps } from '@/components/core/schema-form';
 import type { GetRowKey } from 'ant-design-vue/es/table/interface';
 import { isBoolean } from '@/utils/is';
@@ -32,19 +26,31 @@ export const dynamicTableProps = {
   },
   /** 表格列配置 */
   columns: {
-    type: Array as PropType<TableColumn[]>,
+    type: Array as PropType<TableColumn<any>[]>,
     required: true,
     default: () => [],
+  },
+  sortFn: {
+    type: Function as PropType<(sortInfo: OnChangeCallbackParams[2]) => any>,
+    default: tableConfig.defaultSortFn,
+  },
+  filterFn: {
+    type: Function as PropType<(data: OnChangeCallbackParams[1]) => any>,
+    default: tableConfig.defaultFilterFn,
+  },
+  /** 接口请求配置 */
+  fetchConfig: {
+    type: Object as PropType<Partial<typeof tableConfig.fetchConfig>>,
+    default: () => tableConfig.fetchConfig,
   },
   /** 表格数据请求函数 */
   dataRequest: {
     // 获取列表数据函数API
-    type: Function as PropType<
-      (
-        params?: LoadDataParams,
-        onChangeParams?: OnChangeCallbackParams,
-      ) => Promise<API.TableListResult>
-    >,
+    type: Function as PropType<(params: Recordable) => Promise<API.TableListResult | any[]>>,
+  },
+  // 额外的请求参数
+  searchParams: {
+    type: Object as PropType<Recordable>,
   },
   /** 是否显示索引号 */
   showIndex: {
@@ -116,15 +122,19 @@ export const dynamicTableProps = {
   onlyOneLineEditorAlertMessage: String,
 } as const;
 
-export type DynamicTableProps = ExtractPropTypes<typeof dynamicTableProps>;
+export type DynamicTableProps = ExtractPublicPropTypes<typeof dynamicTableProps> &
+  EmitsToProps<DynamicTableEmits>;
 
 export const dynamicTableEmits = {
   change: (...rest: OnChangeCallbackParams) => rest.length === 4,
   'toggle-advanced': (isAdvanced: boolean) => isBoolean(isAdvanced),
+  'fetch-error': (error) => error,
+  'update:expandedRowKeys': (keys: Key[]) => keys,
+  'expanded-rows-change': (keyValues: string[]) => Array.isArray(keyValues),
 };
 
 export type DynamicTableEmits = typeof dynamicTableEmits;
 
 export type DynamicTableEmitFn = EmitFn<DynamicTableEmits>;
-// @ts-ignore
+
 export type DynamicTableInstance = InstanceType<typeof DynamicTable>;

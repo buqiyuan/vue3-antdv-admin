@@ -17,7 +17,7 @@ export type ListItemType = (typeof tableData)[number];
 export const columns: TableColumn<ListItemType>[] = [
   {
     title: '姓名',
-    align: 'center',
+
     dataIndex: 'name',
     sorter: true,
     /** 默认开启编辑, 仅`editableType`为`cell`时有效 */
@@ -38,7 +38,7 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '性别',
-    align: 'center',
+
     dataIndex: 'gender',
     /** 搜索表单配置 */
     formItemProps: {
@@ -64,7 +64,7 @@ export const columns: TableColumn<ListItemType>[] = [
               options: getClothesByGender(formModel.gender),
             },
           });
-          formModel['clothes'] = undefined;
+          formModel['clothes'] = '';
         },
       }),
     },
@@ -84,7 +84,7 @@ export const columns: TableColumn<ListItemType>[] = [
               options: getClothesByGender(formModel.gender),
             },
           });
-          formModel['clothes'] = undefined;
+          formModel['clothes'] = '';
         },
       }),
     },
@@ -92,7 +92,7 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '衣服',
-    align: 'center',
+
     dataIndex: 'clothes',
     formItemProps: {
       component: 'Select',
@@ -136,7 +136,7 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '价格',
-    align: 'center',
+
     dataIndex: 'price',
     editFormItemProps: {
       component: 'InputNumber',
@@ -146,7 +146,7 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '状态',
-    align: 'center',
+
     dataIndex: 'status',
     formItemProps: {
       component: 'Select',

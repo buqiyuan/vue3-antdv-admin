@@ -37,7 +37,6 @@
             :api="optionsListApi"
             show-search
             option-filter-prop="label"
-            result-field="list"
             label-field="name"
             value-field="id"
           />
@@ -48,7 +47,6 @@
             :api="optionsListApi"
             show-search
             :filter-option="false"
-            result-field="list"
             label-field="name"
             value-field="id"
             :params="searchParams"
@@ -66,7 +64,7 @@
   import { Alert, message, Select } from 'ant-design-vue';
   import { schemas } from './form-schema';
   import { useForm, ApiSelect } from '@/components/core/schema-form';
-  import { optionsListApi } from '@/api/demos/select';
+  import { optionsListApi } from '@/api/demo/select';
 
   defineOptions({
     name: 'DemosFormBasicForm',

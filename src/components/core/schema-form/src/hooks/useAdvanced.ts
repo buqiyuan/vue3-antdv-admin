@@ -110,7 +110,9 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
       }
 
       if (isFunction(vShow)) {
+        // @ts-ignore
         isShow = vShow({
+          // @ts-ignore
           schema,
           formModel,
           field: schema.field,

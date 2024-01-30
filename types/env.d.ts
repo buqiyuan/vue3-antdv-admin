@@ -6,7 +6,7 @@ interface ImportMetaEnv {
   /** 网站部署的目录 */
   readonly VITE_BASE_URL: string;
   /** API 接口路径 */
-  readonly VITE_BASE_API: string;
+  readonly VITE_BASE_API_URL: string;
   /** socket 请求路径前缀 */
   readonly VITE_BASE_SOCKET_PATH: string;
   /** socket 命名空间 */

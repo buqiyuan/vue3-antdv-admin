@@ -1,0 +1,8 @@
+a:focus,
+a:active,
+button,
+div,
+svg,
+span {
+  outline: none;
+}

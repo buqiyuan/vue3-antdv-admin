@@ -1,4 +1,4 @@
-<template> <div>路由三</div> </template>
+<template><div>路由三</div></template>
 
 <script lang="ts" setup>
   defineOptions({

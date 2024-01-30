@@ -2,7 +2,7 @@ import type { App } from 'vue';
 
 // import useFormModal from '@/hooks/useFormModal'
 // import useModal from '@/hooks/useModal/index';
-import permission from '@/core/permission/';
+import permission from '@/permission';
 /**
  * 注册全局方法
  * @param app

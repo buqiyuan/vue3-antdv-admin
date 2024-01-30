@@ -5,7 +5,7 @@
     "body": [
       "<script setup lang='ts'>",
       "defineOptions({",
-      "\tname: ''",
+      "\tname: '${TM_FILENAME_BASE}'",
       "})",
       "</script>\n",
       "<template>",

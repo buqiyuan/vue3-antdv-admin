@@ -37,7 +37,7 @@
       <FullScreen />
       <LocalePicker />
       <Dropdown placement="bottomRight">
-        <Avatar :src="userInfo.headImg" :alt="userInfo.name">{{ userInfo.name }}</Avatar>
+        <Avatar :src="userInfo.avatar" :alt="userInfo.username">{{ userInfo.username }}</Avatar>
         <template #overlay>
           <Menu>
             <Menu.Item @click="$router.push({ name: 'account-about' })">
@@ -172,9 +172,9 @@
     console.log('lastChild', menuItem, lastChild);
 
     const targetRoute = getRouteByName(lastChild?.name);
-    const { isExt, openMode } = targetRoute?.meta || {};
-    if (isExt && openMode !== 2) {
-      window.open(lastChild?.name);
+    const { isExt, extOpenMode } = targetRoute?.meta || {};
+    if (isExt && extOpenMode === 1) {
+      window.open(lastChild?.path);
     } else {
       router.push({ name: lastChild?.name });
     }

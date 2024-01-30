@@ -8,7 +8,7 @@
         ref="dynamicTableRef"
         size="small"
         bordered
-        :data-request="loadData"
+        :data-request="getWzryHeroList"
         :columns="columns"
         row-key="heroid"
         @toggle-advanced="toggleAdvanced"
@@ -28,15 +28,14 @@
   import { useTable } from '@/components/core/dynamic-table';
   import { jsonToSheetXlsx } from '@/components/basic/excel';
 
-  import { getWzryHeroList } from '@/api/demos/hero';
+  import { getWzryHeroList } from '@/api/demo/hero';
 
-  let tableData = [];
   const [DynamicTable, dynamicTableInstance] = useTable();
 
   function defaultHeader() {
     // 默认Object.keys(data[0])作为header
     jsonToSheetXlsx({
-      data: tableData,
+      data: dynamicTableInstance.tableData,
       filename: '使用key作为默认头部.xlsx',
     });
   }
@@ -44,7 +43,7 @@
   // 自定义头部
   function customHeader() {
     jsonToSheetXlsx({
-      data: tableData,
+      data: dynamicTableInstance.tableData,
       header: {
         heroid: 'ID',
         cname: '英雄名称',
@@ -81,30 +80,6 @@
       //   },
       // ]);
     }
-  };
-
-  const loadData = async (params) => {
-    const { data } = await getWzryHeroList(params);
-
-    tableData = data.list;
-    dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
-      {
-        field: 'skin_name',
-        componentProps: {
-          options: [
-            {
-              label: '皮肤1',
-              value: 'aa',
-            },
-            {
-              label: '皮肤2',
-              value: 'bb',
-            },
-          ],
-        },
-      },
-    ]);
-    return data;
   };
 </script>
 

@@ -1,11 +1,11 @@
-import { installUseModal } from './useModal';
+import { installUseModal, useModal } from './useModal';
+import { useFormModal } from './useFormModal';
 import type { App } from 'vue';
 
-export { useModal, type ModalInstance } from './useModal';
-export { useFormModal } from './useFormModal';
-
-export const install = (app: App) => {
+const install = (app: App) => {
   installUseModal(app);
 };
+
+export { useModal, useFormModal, install };
 
 export default install;

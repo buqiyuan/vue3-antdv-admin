@@ -1,42 +1,48 @@
 import type { TableColumn } from '@/components/core/dynamic-table';
-// import { Avatar, Space, Tag } from 'ant-design-vue';
+import type { FormSchema } from '@/components/core/schema-form';
+import { formatToDateTime } from '@/utils/dateUtil';
 
-export type TableListItem = API.ParamConfigListItem;
+export type TableListItem = API.ParamConfigEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
 
 export const baseColumns: TableColumnItem[] = [
   {
+    title: 'ID',
+    dataIndex: 'id',
+    sorter: true,
+    width: 60,
+  },
+  {
     title: '参数名称',
-    width: 220,
-    align: 'center',
+    width: 150,
     dataIndex: 'name',
   },
   {
-    title: '参数键名',
-    width: 220,
-    align: 'center',
+    title: 'key',
     dataIndex: 'key',
   },
   {
-    title: '参数值',
+    title: 'value',
     dataIndex: 'value',
-    width: 320,
-    align: 'center',
   },
   {
     title: '备注',
     dataIndex: 'remark',
-    width: 300,
-    align: 'center',
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'createdAt',
-    align: 'center',
   },
   {
     title: '更新时间',
-    align: 'center',
     dataIndex: 'updatedAt',
+    sorter: true,
+    width: 160,
+    customRender: ({ record }) => formatToDateTime(record.createdAt),
+  },
+];
+
+export const searchFormSchema: FormSchema[] = [
+  {
+    field: 'name',
+    label: '名称',
+    component: 'Input',
+    colProps: { span: 8 },
   },
 ];

@@ -80,7 +80,7 @@
   import { reactive, computed, toRefs, onMounted, onBeforeUnmount } from 'vue';
   import { Card, Descriptions, Tag } from 'ant-design-vue';
   import { formatSizeUnits } from '@/utils';
-  import { getServeStat } from '@/api/system/serve';
+  import Api from '@/api/';
   import Progress from '@/components/basic/progress/index.vue';
 
   defineOptions({
@@ -118,7 +118,7 @@
     },
   });
 
-  const { runtime, disk, memory, cpu } = toRefs<API.SysServeStat>(sysInfo);
+  const { runtime, disk, memory, cpu } = toRefs<API.ServeStatInfo>(sysInfo);
 
   const formatDiskUnit = computed(() => {
     return {
@@ -151,7 +151,7 @@
   });
 
   const refresh = async () => {
-    const data = await getServeStat();
+    const data = await Api.systemServe.serveStat();
     runtime.value = data.runtime;
     disk.value = data.disk;
     memory.value = data.memory;

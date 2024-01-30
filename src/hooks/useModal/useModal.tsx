@@ -1,6 +1,6 @@
 import { createVNode, ref, render, getCurrentInstance, nextTick } from 'vue';
 import { MyModal, type MyModalInstance } from './modal';
-import type { App, ComponentInternalInstance, SetupContext } from 'vue';
+import type { App, ComponentInternalInstance, FunctionalComponent } from 'vue';
 import type { HookModalProps } from './types';
 
 let _app: App;
@@ -55,7 +55,13 @@ export const useModal = () => {
     await nextTick();
   };
 
-  const ModalRender = (props: HookModalProps, { attrs, slots }: SetupContext) => {
+  interface ModalRenderComp<T> extends FunctionalComponent<T> {
+    show: typeof show;
+    hide: typeof hide;
+    setProps: typeof setProps;
+  }
+
+  const ModalRender: ModalRenderComp<HookModalProps> = (props, { attrs, slots }) => {
     isAppChild.value = true;
     return <MyModal ref={modalRef} {...{ ...attrs, ...props }} v-slots={slots} />;
   };

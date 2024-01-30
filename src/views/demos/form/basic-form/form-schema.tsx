@@ -1,7 +1,7 @@
 import { UploadOutlined } from '@ant-design/icons-vue';
 import { Radio, Button } from 'ant-design-vue';
 import type { FormSchema } from '@/components/core/schema-form';
-import { optionsListApi } from '@/api/demos/select';
+import { optionsListApi } from '@/api/demo/select';
 import { waitTime } from '@/utils/common';
 
 const provincesOptions = [
@@ -58,7 +58,7 @@ const citiesOptionsData = {
 const fetchOptionList = async () => {
   await waitTime(3000);
   const data = await optionsListApi();
-  return data.list.map((item) => ({
+  return data.map((item) => ({
     label: item.name,
     value: item.id,
   }));

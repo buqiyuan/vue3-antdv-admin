@@ -3,10 +3,7 @@
     <Card>
       <Card.Meta title="关于">
         <template #description>
-          <BlankLink :url="pkg.author.url" :text="pkg.name" />的前端项目是基于Vue3.x、Vite4.x、
-          Ant-Design-Vue4.x 、TypeScript5.x开发，
-          内置了动态路由、权限验证、并提供了常用的功能组件，帮助你快速搭建企业级中后台产品原型。
-          原则上不会限制任何代码用于商用。
+          <BlankLink :url="pkg.author.url" :text="pkg.name" />{{ description }}
         </template>
       </Card.Meta>
     </Card>
@@ -57,7 +54,15 @@
 
 <script setup lang="tsx">
   import { Descriptions, Card, Tag } from 'ant-design-vue';
+
+  defineOptions({
+    name: 'About',
+  });
+
   const { pkg, lastBuildTime } = __APP_INFO__;
+  const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
+
+  type DepType = keyof typeof allDeps;
 
   const BlankLink = ({ url = '', text }) => {
     const target = /^http(s)?:/.test(url) ? url : `https://www.npmjs.com/package/${url}`;
@@ -67,4 +72,17 @@
       </a>
     );
   };
+
+  const getMajorVersion = (depName: DepType) => {
+    return allDeps[depName].match(/\d+/)?.[0] || '';
+  };
+
+  const description = `
+    的前端项目是基于 Vue${getMajorVersion('vue')}.x、
+    Vite${getMajorVersion('vite')}.x、
+    Ant-Design-Vue${getMajorVersion('ant-design-vue')}.x 、
+    TypeScript${getMajorVersion('typescript')}.x 开发，
+    内置了动态路由、权限验证、并提供了常用的功能组件，帮助你快速搭建企业级中后台产品原型。
+    原则上不会限制任何代码用于商用。
+  `;
 </script>

@@ -3,7 +3,7 @@
   import { Menu, Divider } from 'ant-design-vue';
   import type { ContextMenuItem, ItemContentProps, Axis } from './typing';
   import type { FunctionalComponent, CSSProperties, PropType } from 'vue';
-  import { IconFont } from '@/components/basic/iconfont';
+  import { IconFont } from '@/components/basic/icon';
 
   const prefixCls = 'context-menu';
 

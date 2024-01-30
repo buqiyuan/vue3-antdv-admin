@@ -1,102 +1,142 @@
+import { ref, watch } from 'vue';
 import { defineStore } from 'pinia';
-import { useWsStore } from './ws';
 import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
-import { login } from '@/api/login';
+import Api from '@/api/';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
-import { logout, getInfo, permmenu } from '@/api/account';
-import { generatorDynamicRouter } from '@/router/generator-router';
 import { resetRouter } from '@/router';
+import { generateDynamicRoutes } from '@/router/helper/routeHelper';
+import { uniqueSlash } from '@/utils/urlUtils';
 
-interface UserState {
-  token: string;
-  name: string;
-  avatar: string;
-  // like [ 'sys:user:add', 'sys:user:update' ]
-  perms: string[];
-  menus: RouteRecordRaw[];
-  userInfo: Partial<API.AdminUserInfo>;
-}
+export type MessageEvent = {
+  data?: any;
+  type?: 'ping' | 'close' | 'updatePermsAndMenus';
+};
 
-export const useUserStore = defineStore({
-  id: 'user',
-  state: (): UserState => ({
-    token: Storage.get(ACCESS_TOKEN_KEY, null),
-    name: 'amdin',
-    avatar: '',
-    perms: [],
-    menus: [],
-    userInfo: {},
-  }),
-  getters: {
-    getToken(): string {
-      return this.token;
-    },
-    getAvatar(): string {
-      return this.avatar;
-    },
-    getName(): string {
-      return this.name;
-    },
-    getPerms(): string[] {
-      return this.perms;
-    },
-  },
-  actions: {
-    /** 清空token及用户信息 */
-    resetToken() {
-      this.avatar = this.token = this.name = '';
-      this.perms = [];
-      this.menus = [];
-      this.userInfo = {};
-      Storage.clear();
-    },
-    /** 登录成功保存token */
-    setToken(token: string) {
-      this.token = token ?? '';
-      const ex = 7 * 24 * 60 * 60 * 1000;
-      Storage.set(ACCESS_TOKEN_KEY, this.token, ex);
-    },
-    /** 登录 */
-    async login(params: API.LoginParams) {
-      try {
-        const { data } = await login(params);
-        this.setToken(data.token);
-        return this.afterLogin();
-      } catch (error) {
-        return Promise.reject(error);
+export const useUserStore = defineStore('user', () => {
+  let eventSource: EventSource | null = null;
+  const token = ref(Storage.get(ACCESS_TOKEN_KEY, null));
+  const name = ref('amdin');
+  const perms = ref<string[]>([]);
+  const menus = ref<RouteRecordRaw[]>([]);
+  const userInfo = ref<Partial<API.UserEntity>>({});
+  const serverConnected = ref(true);
+
+  watch(serverConnected, (val) => {
+    if (val) {
+      initServerMsgListener();
+    }
+  });
+
+  const closeEventSource = () => {
+    serverConnected.value = false;
+    eventSource?.close();
+    eventSource = null;
+  };
+
+  /** 监听来自服务端推送的消息 */
+  const initServerMsgListener = async () => {
+    if (eventSource) {
+      eventSource.close();
+    }
+    const uid = userInfo.value.id;
+    const sseUrl = uniqueSlash(
+      `${import.meta.env.VITE_BASE_API_URL}/api/sse/${uid}?token=${token.value}`,
+    );
+
+    eventSource = new EventSource(sseUrl);
+    // 处理 SSE 传递的数据
+    eventSource.onmessage = (event) => {
+      const { type } = JSON.parse(event.data) as MessageEvent;
+      // 服务器关闭 SSE 连接
+      if (type === 'close') {
+        closeEventSource();
       }
-    },
-    /** 登录成功之后, 获取用户信息以及生成权限路由 */
-    async afterLogin() {
-      try {
-        const wsStore = useWsStore();
-        const [userInfo, { perms, menus }] = await Promise.all([getInfo(), permmenu()]);
-        this.perms = perms;
-        this.name = userInfo.name;
-        this.avatar = userInfo.headImg;
-        this.userInfo = userInfo;
-        // 生成路由
-        const generatorResult = await generatorDynamicRouter(menus);
-        this.menus = generatorResult.menus.filter((item) => !item.meta?.hideInMenu);
-        !wsStore.client && wsStore.initSocket();
-
-        return { menus, perms, userInfo };
-      } catch (error) {
-        return Promise.reject(error);
-        // return this.logout();
+      // 当用户的权限及菜单有变更时，重新获取权限及菜单
+      else if (type === 'updatePermsAndMenus') {
+        fetchPermsAndMenus();
       }
-    },
-    /** 登出 */
-    async logout() {
-      await logout();
-      const wsStore = useWsStore();
-      wsStore.closeSocket();
-      this.resetToken();
-      resetRouter();
-    },
-  },
+      // console.log('eventSource', event.data);
+    };
+    eventSource.onerror = (err) => {
+      console.log('eventSource err', err);
+      closeEventSource();
+    };
+  };
+
+  const setServerConnectStatus = (isConnect: boolean) => {
+    serverConnected.value = isConnect;
+  };
+
+  /** 清空token及用户信息 */
+  const resetToken = () => {
+    token.value = name.value = '';
+    perms.value = [];
+    menus.value = [];
+    userInfo.value = {};
+    Storage.clear();
+  };
+  /** 登录成功保存token */
+  const setToken = (_token: string) => {
+    token.value = _token;
+    // const ex = 7 * 24 * 60 * 60 * 1000;
+    Storage.set(ACCESS_TOKEN_KEY, token.value);
+  };
+  /** 登录 */
+  const login = async (params: API.LoginDto) => {
+    try {
+      const data = await Api.auth.authLogin(params);
+      setToken(data.token);
+      return afterLogin();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+  /** 登录成功之后, 获取用户信息以及生成权限路由 */
+  const afterLogin = async () => {
+    try {
+      const { accountProfile } = Api.account;
+      // const wsStore = useWsStore();
+      const userInfoData = await accountProfile();
+
+      userInfo.value = userInfoData;
+
+      await fetchPermsAndMenus();
+      initServerMsgListener();
+    } catch (error) {
+      return Promise.reject(error);
+      // return logout();
+    }
+  };
+  /** 获取权限及菜单 */
+  const fetchPermsAndMenus = async () => {
+    const { accountPermissions, accountMenu } = Api.account;
+    // const wsStore = useWsStore();
+    const [menusData, permsData] = await Promise.all([accountMenu(), accountPermissions()]);
+    perms.value = permsData;
+    menus.value = generateDynamicRoutes(menusData as unknown as RouteRecordRaw[]);
+  };
+  /** 登出 */
+  const logout = async () => {
+    await Api.account.accountLogout();
+    closeEventSource();
+    resetToken();
+    resetRouter();
+  };
+
+  return {
+    token,
+    name,
+    perms,
+    menus,
+    userInfo,
+    login,
+    afterLogin,
+    logout,
+    resetToken,
+    setServerConnectStatus,
+  };
 });
 
 // 在组件setup函数外使用

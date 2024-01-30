@@ -1,7 +1,7 @@
 import type { RowProps } from 'ant-design-vue';
-import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
+import type { RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
-import type { Component, VNode } from 'vue';
+import type { Component, UnwrapRef, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ColEx, ComponentMapType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
@@ -20,10 +20,12 @@ export type Rule = RuleObject & {
 /** 获取所有字段名 */
 export type GetFieldKeys<T> = Exclude<keyof T, symbol | number>;
 
-export interface RenderCallbackParams<T = string> {
-  schema: FormSchema<T>;
-  formModel: T extends string ? Recordable : Record<GetFieldKeys<T>, any>;
-  field: T extends string ? string : GetFieldKeys<T>;
+export interface RenderCallbackParams<T extends object = Recordable> {
+  schema: Omit<FormSchema<T>, 'componentProps'> & {
+    componentProps: ComponentProps;
+  };
+  formModel: Objectable<T>;
+  field: GetFieldKeys<T>;
   values: any;
   /** 动态表单实例 */
   formInstance: SchemaFormType;
@@ -35,7 +37,7 @@ export interface RenderCallbackParams<T = string> {
   slotData?: Recordable;
 }
 /** 自定义VNode渲染器 */
-export type CustomRenderFn<T = any> = (
+export type CustomRenderFn<T extends object = Recordable> = (
   renderCallbackParams: RenderCallbackParams<T>,
 ) => VNode | VNode[] | string;
 
@@ -43,33 +45,14 @@ export interface ButtonProps extends AntdButtonProps {
   text?: string;
 }
 
-export interface FormActionType {
-  formModel?: Recordable;
-  submit: () => Promise<void>;
-  setFieldsValue: <T>(values: T) => Promise<void>;
-  resetFields: () => Promise<void>;
-  getFieldsValue: () => any;
-  clearValidate: (name?: string | string[]) => Promise<void>;
-  updateSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
-  resetSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
-  setSchemaFormProps: (formProps: Partial<FormSchema>) => Promise<void>;
-  removeSchemaByField: (field: string | string[]) => Promise<void>;
-  appendSchemaByField: (
-    schema: FormSchema,
-    prefixField: string | undefined,
-    first?: boolean | undefined,
-  ) => Promise<void>;
-  validateFields: (nameList?: NamePath[]) => Promise<any>;
-  validate: (nameList?: NamePath[]) => Promise<any>;
-  scrollToField: (name: NamePath, options?: ScrollOptions) => Promise<void>;
-}
-
 export type RegisterFn = (formInstance: SchemaFormInstance) => void;
 
+export type UnwrapFormSchema<T extends object = Recordable> = UnwrapRef<FormSchema<T>>;
+
 /** 表单项 */
-export interface FormSchema<T = string> {
+export type FormSchema<T extends object = Recordable> = {
   /** 字段名 */
-  field: T extends string ? string : GetFieldKeys<T>;
+  field: GetFieldKeys<T>;
   // Event name triggered by internal value change, default change
   changeEvent?: string;
   // Variable name bound to v-model Default value
@@ -130,9 +113,9 @@ export interface FormSchema<T = string> {
   // Matching details components
   span?: number;
   /** 作用同v-show */
-  vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
+  vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => any);
   /** 作用同v-if */
-  vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
+  vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => any);
 
   // 渲染col内容需要外层包装form-item
   renderColContent?: CustomRenderFn<T>;
@@ -146,7 +129,7 @@ export interface FormSchema<T = string> {
   dynamicDisabled?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
   dynamicRules?: (renderCallbackParams: RenderCallbackParams<T>) => Rule[];
-}
+};
 export interface HelpComponentProps {
   maxWidth: string;
   // Whether to display the serial number

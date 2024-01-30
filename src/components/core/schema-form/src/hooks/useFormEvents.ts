@@ -1,8 +1,8 @@
 import { unref, toRaw } from 'vue';
-import { cloneDeep, uniqBy } from 'lodash-es';
+import { cloneDeep, isNil, uniqBy } from 'lodash-es';
 import dayjs from 'dayjs';
 import { dateItemType, handleInputNumberValue } from '../helper';
-import type { FormSchema } from '../types/form';
+import type { UnwrapFormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import type { FormState, FormMethods } from './index';
 import type { SchemaFormEmitFn } from '../schema-form';
@@ -13,6 +13,8 @@ type UseFormActionContext = FormState & {
   emit: SchemaFormEmitFn;
   handleFormValues: FormMethods['handleFormValues'];
 };
+
+type FormSchema = UnwrapFormSchema;
 
 export type FormEvents = ReturnType<typeof useFormEvents>;
 
@@ -52,14 +54,14 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
    */
   async function setFieldsValue(values: Recordable): Promise<void> {
     const schemas = unref(formSchemasRef);
+    // @ts-ignore
     const fields = schemas.map((item) => item.field).filter(Boolean);
 
     Object.assign(cacheFormModel, values);
 
     const validKeys: string[] = [];
-    Object.keys(values).forEach((key) => {
+    Object.entries(values).forEach(([key, value]) => {
       const schema = schemas.find((item) => item.field === key);
-      let value = values[key];
 
       const hasKey = Reflect.has(values, key);
       if (isString(schema?.component)) {
@@ -100,7 +102,6 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     if (isArray(data)) {
       updateData = [...data];
     }
-    // @ts-ignore
     unref(formPropsRef).schemas = updateData as FormSchema[];
   }
 
@@ -123,14 +124,14 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     }
     formModel[schemaItem.field] = schemaItem.defaultValue;
     formPropsRef.value.schemas = schemaList;
+    _setDefaultValue(formPropsRef.value.schemas);
   }
 
   /**
    * @description: 根据 field 删除 Schema
    */
   async function removeSchemaByField(fields: string | string[]): Promise<void> {
-    // @ts-ignore
-    const schemaList = cloneDeep<FormSchema[]>(unref(formSchemasRef));
+    const schemaList = cloneDeep(unref(formSchemasRef));
 
     if (!fields) {
       return;
@@ -149,6 +150,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
         }
       }
     }
+
     formPropsRef.value.schemas = schemaList;
   }
 
@@ -205,9 +207,34 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
         }
       });
     });
-
-    unref(formPropsRef).schemas = uniqBy(schemas, 'field');
+    formPropsRef.value.schemas = uniqBy<UnwrapFormSchema>(schemas, 'field');
+    _setDefaultValue(formPropsRef.value.schemas!);
   };
+
+  function _setDefaultValue(data: FormSchema | FormSchema[]) {
+    let schemas: FormSchema[] = [];
+    if (isObject(data)) {
+      schemas.push(data as FormSchema);
+    }
+    if (isArray(data)) {
+      schemas = [...data];
+    }
+
+    const obj: Recordable = {};
+    const currentFieldsValue = getFieldsValue();
+    schemas.forEach((item) => {
+      if (
+        item.component != 'Divider' &&
+        Reflect.has(item, 'field') &&
+        item.field &&
+        !isNil(item.defaultValue) &&
+        (!(item.field in currentFieldsValue) || isNil(currentFieldsValue[item.field]))
+      ) {
+        obj[item.field] = item.defaultValue;
+      }
+    });
+    setFieldsValue(obj);
+  }
 
   async function resetFields(): Promise<void> {
     const { resetFunc, submitOnReset } = unref(getFormProps);

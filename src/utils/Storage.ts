@@ -1,5 +1,5 @@
 // 默认缓存期限为7天
-const DEFAULT_CACHE_TIME = 60 * 60 * 24 * 7;
+// const DEFAULT_CACHE_TIME = 60 * 60 * 24 * 7;
 
 /**
  * 创建本地缓存对象
@@ -25,7 +25,7 @@ export const createStorage = ({ prefixKey = '', storage = localStorage } = {}) =
      * @param {*} value 缓存值
      * @param expire
      */
-    set(key: string, value: any, expire: number | null = DEFAULT_CACHE_TIME) {
+    set(key: string, value: any, expire: number | null = null) {
       const stringData = JSON.stringify({
         value,
         expire: expire !== null ? new Date().getTime() + expire * 1000 : null,
@@ -61,7 +61,7 @@ export const createStorage = ({ prefixKey = '', storage = localStorage } = {}) =
      * @param {string} key
      */
     remove(key: string) {
-      console.log(key, '搜索');
+      console.log('remove:', key);
       this.storage.removeItem(this.getKey(key));
     }
 
@@ -81,7 +81,7 @@ export const createStorage = ({ prefixKey = '', storage = localStorage } = {}) =
      * 如果过期时间为设置，默认关闭浏览器自动删除
      * @example
      */
-    setCookie(name: string, value: any, expire: number | null = DEFAULT_CACHE_TIME) {
+    setCookie(name: string, value: any, expire: number | null = null) {
       document.cookie = `${this.getKey(name)}=${value}; Max-Age=${expire}`;
     }
 

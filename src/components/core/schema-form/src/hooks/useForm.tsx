@@ -1,7 +1,7 @@
 import { nextTick, ref, unref, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 import SchemaForm from '../../index';
-import type { Ref, SetupContext } from 'vue';
+import type { FunctionalComponent, Ref } from 'vue';
 import type { SchemaFormInstance, SchemaFormProps } from '../schema-form';
 
 export function useForm(props?: Partial<SchemaFormProps>) {
@@ -47,10 +47,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
     },
   });
 
-  const SchemaFormRender = (
-    compProps: Partial<SchemaFormProps>,
-    { attrs, slots }: SetupContext,
-  ) => {
+  const SchemaFormRender: FunctionalComponent<SchemaFormProps> = (compProps, { attrs, slots }) => {
     return (
       <SchemaForm
         ref={formRef}

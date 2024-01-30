@@ -3,13 +3,17 @@
     <DynamicTable
       row-key="id"
       header-title="定时任务"
-      :data-request="getSysTaskList"
+      :data-request="Api.systemTask.taskList"
       :columns="columns"
       :scroll="{ x: 2000 }"
       bordered
     >
       <template #toolbar>
-        <a-button type="primary" :disabled="!$auth('sys.task.add')" @click="openTaskModal({})">
+        <a-button
+          type="primary"
+          :disabled="!$auth('system:task:create')"
+          @click="openTaskModal({})"
+        >
           新增
         </a-button>
       </template>
@@ -34,35 +38,35 @@
           <Descriptions.Item label="执行操作">
             <Popconfirm
               title="确认手动执行一次该任务吗?"
-              :disabled="!$auth('sys.task.once')"
+              :disabled="!$auth('system:task:once')"
               @confirm="handleOnce(record)"
             >
-              <a-button type="link" size="small" :disabled="!$auth('sys.task.once')">
+              <a-button type="link" size="small" :disabled="!$auth('system:task:once')">
                 <template #icon><ToolOutlined /></template>仅一次
               </a-button>
             </Popconfirm>
             <Popconfirm
               title="确认运行该任务吗?"
-              :disabled="!$auth('sys.task.start') || !(record.status === 0)"
+              :disabled="!$auth('system:task:start') || !(record.status === 0)"
               @confirm="handleStart(record)"
             >
               <a-button
                 type="link"
                 size="small"
-                :disabled="!$auth('sys.task.start') || !(record.status === 0)"
+                :disabled="!$auth('system:task:start') || !(record.status === 0)"
               >
                 <template #icon><CaretRightOutlined /></template>运行
               </a-button>
             </Popconfirm>
             <Popconfirm
               title="确认停止该任务吗?"
-              :disabled="!$auth('sys.task.stop') || !(record.status === 1)"
+              :disabled="!$auth('system:task:stop') || !(record.status === 1)"
               @confirm="handleStop(record)"
             >
               <a-button
                 type="link"
                 size="small"
-                :disabled="!$auth('sys.task.stop') || !(record.status === 1)"
+                :disabled="!$auth('system:task:stop') || !(record.status === 1)"
               >
                 <template #icon><PoweroffOutlined /></template>停止
               </a-button>
@@ -81,17 +85,8 @@
   import { taskSchemas } from './formSchemas';
   import type { TableListItem, TableColumnItem } from './columns';
   import { useTable } from '@/components/core/dynamic-table';
-  import { useFormModal } from '@/hooks/useModal/useFormModal';
-  import {
-    getSysTaskList,
-    sysTaskUpdate,
-    sysTaskAdd,
-    sysTaskDelete,
-    getSysTaskInfo,
-    sysTaskOnce,
-    sysTaskStart,
-    sysTaskStop,
-  } from '@/api/system/task';
+  import { useFormModal } from '@/hooks/useModal/';
+  import Api from '@/api/';
 
   defineOptions({
     name: 'SystemScheduleTask',
@@ -120,7 +115,11 @@
             id: record.id,
           };
           console.log('新增/编辑任务', params);
-          await (record.id ? sysTaskUpdate : sysTaskAdd)(params);
+          if (record.id) {
+            await Api.systemTask.taskUpdate({ id: record.id }, params);
+          } else {
+            await Api.systemTask.taskCreate(params);
+          }
           reload();
         },
       },
@@ -132,7 +131,7 @@
 
     // 如果是编辑的话，需要获取任务详情
     if (record.id) {
-      const data = await getSysTaskInfo({ id: record.id });
+      const data = await Api.systemTask.taskInfo({ id: record.id });
 
       formRef?.setFieldsValue({
         ...record,
@@ -142,22 +141,22 @@
   };
 
   const delRowConfirm = async (id: number) => {
-    await sysTaskDelete({ id });
+    await Api.systemTask.taskDelete({ id });
     reload();
   };
 
   const handleOnce = async (record: TableListItem) => {
-    await sysTaskOnce({ id: record.id });
+    await Api.systemTask.taskOnce({ id: record.id });
     reload();
   };
 
   const handleStart = async (record: TableListItem) => {
-    await sysTaskStart({ id: record.id });
+    await Api.systemTask.taskStart({ id: record.id });
     reload();
   };
 
   const handleStop = async (record: TableListItem) => {
-    await sysTaskStop({ id: record.id });
+    await Api.systemTask.taskStop({ id: record.id });
     reload();
   };
 
@@ -180,20 +179,20 @@
       title: '操作',
       width: 220,
       dataIndex: 'ACTION',
-      align: 'center',
+
       fixed: 'right',
       actions: ({ record }) => [
         {
           label: '编辑',
           auth: {
-            perm: 'sys.task.update',
+            perm: 'system:task:update',
             effect: 'disable',
           },
           onClick: () => openTaskModal(record),
         },
         {
           label: '删除',
-          auth: 'sys.task.delete',
+          auth: 'system:task:delete',
           popConfirm: {
             title: '你确定要删除吗？',
             onConfirm: () => delRowConfirm(record.id),

@@ -1,46 +1,49 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  // https://github.com/lokalise/i18n-ally/issues/994
-  "ts-node": {
-    "compilerOptions": {
-      "module": "es2015",
-      "moduleResolution": "node"
-    }
-  },
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "baseUrl": ".",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
-    "noLib": false,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "useUnknownInCatchVariables": false,
+    "composite": false,
+    "declarationMap": false,
     "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "noLib": false,
     "allowSyntheticDefaultImports": true,
     "strictFunctionTypes": false,
     "jsx": "preserve",
-    "baseUrl": ".",
+    "jsxImportSource": "vue",
     "allowJs": true,
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
     "lib": ["dom", "esnext"],
     "noImplicitAny": false,
-    "skipLibCheck": true,
-    "removeComments": true,
     "types": ["node", "vite/client"],
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@/*": ["src/*"],
+    },
   },
   "include": [
     "**/*.d.ts",
     "mock/**/*",
+    "mocks/**/*",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "types/**/*.d.ts",
     "types/**/*.ts",
-    "vite.config.ts"
+    "vite.config.ts",
   ],
-  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"]
+  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"],
 }

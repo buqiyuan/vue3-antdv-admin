@@ -92,6 +92,7 @@
 
   const checkAll = computed<boolean>({
     get() {
+      // @ts-ignore
       return tableColumns.value.length > 0 && tableColumns.value.every((n) => !n.hideInTable);
     },
     set(value) {
@@ -124,6 +125,7 @@
   watch(
     tableColumns,
     (columns) => {
+      // @ts-ignore
       table.setProps({ columns });
     },
     {
@@ -139,7 +141,7 @@
     table.setProps({ bordered: e.target.checked });
   };
 
-  const handleColumnFixed = (columItem: TableColumn, direction: 'left' | 'right') => {
+  const handleColumnFixed = (columItem, direction: 'left' | 'right') => {
     columItem.fixed = columItem.fixed === direction ? false : direction;
   };
 

@@ -1,9 +1,10 @@
 <template>
   <DynamicTable
     header-title="任务日志"
-    :data-request="getTaskLogList"
+    :data-request="Api.systemLog.logTaskList"
     :search="false"
     :columns="columns"
+    size="middle"
   />
 </template>
 
@@ -11,22 +12,23 @@
   import { Tag } from 'ant-design-vue';
   import type { TableColumn } from '@/components/core/dynamic-table';
   import { useTable } from '@/components/core/dynamic-table';
-  import { getTaskLogList } from '@/api/system/log';
+  import Api from '@/api/';
+  import { formatToDateTime } from '@/utils/dateUtil';
 
   defineOptions({
     name: 'SystemScheduleTaskLog',
   });
 
-  type TableListItem = API.TaskLogListItemResult;
+  type TableListItem = API.TaskLogEntity;
 
   const [DynamicTable] = useTable();
 
   const getStatusType = (status) => {
     switch (status) {
       case 0:
-        return 'danger';
+        return 'red';
       case 1:
-        return 'success';
+        return 'green';
     }
   };
   const getStatusTip = (status) => {
@@ -40,46 +42,55 @@
 
   const columns: TableColumn<TableListItem>[] = [
     {
-      title: '#',
+      title: 'ID',
       dataIndex: 'id',
       width: 80,
-      align: 'center',
+
       hideInSearch: true,
     },
     {
       title: '任务编号',
-      dataIndex: 'taskId',
-      align: 'center',
+      dataIndex: ['task', 'id'],
+
+      width: 80,
     },
     {
       title: '任务名称',
-      dataIndex: 'name',
-      align: 'center',
+      dataIndex: ['task', 'name'],
+
+      width: 140,
     },
     {
       title: '异常信息',
       dataIndex: 'detail',
-      align: 'center',
+
       customRender: ({ record }) => record.detail ?? '无',
     },
     {
       title: '耗时',
       dataIndex: 'consumeTime',
-      align: 'center',
+
+      width: 80,
       customRender: ({ record }) => <Tag>{record.consumeTime}ms</Tag>,
     },
     {
       title: '状态',
       dataIndex: 'status',
-      align: 'center',
-      customRender: ({ record }) => (
-        <Tag color={getStatusType(record.status)}>{getStatusTip(record.status)}</Tag>
-      ),
+
+      width: 100,
+      customRender: ({ record }) => {
+        const status = ~~record.status;
+        return <Tag color={getStatusType(status)}>{getStatusTip(status)}</Tag>;
+      },
     },
     {
       title: '执行时间',
       dataIndex: 'createdAt',
-      align: 'center',
+
+      width: 165,
+      customRender: ({ record }) => {
+        return formatToDateTime(record.createdAt);
+      },
     },
   ];
 </script>

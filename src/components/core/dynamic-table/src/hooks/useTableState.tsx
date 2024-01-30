@@ -1,5 +1,6 @@
-import { computed, ref, unref, watch } from 'vue';
+import { computed, reactive, ref, unref, watch } from 'vue';
 import { omit } from 'lodash-es';
+import tableConfig from '../dynamic-table.config';
 import { useScroll } from './useScroll';
 import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
@@ -14,6 +15,11 @@ export type UseTableStateParams = {
   props: DynamicTableProps;
   slots: Slots;
 };
+
+interface SearchState {
+  sortInfo: Recordable;
+  filterInfo: Record<string, string[]>;
+}
 
 export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const { t } = useI18n();
@@ -40,13 +46,18 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const editableRowKeys = ref(new Set<Key>());
   /** 当前所有正在被编辑的单元格key的格式为：`${recordKey}.${dataIndex}`，仅`editableType`为`cell`时有效  */
   const editableCellKeys = ref(new Set<Key>());
+  /** 表格排序或过滤时的搜索参数 */
+  const searchState = reactive<SearchState>({
+    sortInfo: {},
+    filterInfo: {},
+  });
 
   if (!Object.is(props.pagination, false)) {
     paginationRef.value = {
       current: 1,
-      pageSize: 10,
+      pageSize: tableConfig.defaultPageSize,
       total: 0,
-      pageSizeOptions: ['10', '20', '50', '100'],
+      pageSizeOptions: [...tableConfig.pageSizeOptions],
       showQuickJumper: true,
       showSizeChanger: true, // 显示可改变每页数量
       showTotal: (total) => t('component.table.total', { total }), // 显示总数
@@ -123,5 +134,6 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     editFormErrorMsgs,
     editableCellKeys,
     editableRowKeys,
+    searchState,
   };
 };

@@ -5,14 +5,18 @@ import type {
   VNodeChild,
   SetupContext,
   EmitsOptions,
+  ObjectEmitsOptions,
   PropType as VuePropType,
 } from 'vue';
+import type { TinyMCE } from 'tinymce';
 
 declare global {
   const __APP_INFO__: {
     pkg: typeof packageJSON;
     lastBuildTime: string;
   };
+  const tinymce: TinyMCE;
+
   // declare interface Window {
   //   // Global vue app instance
   //   __APP__: App<Element>;
@@ -31,6 +35,9 @@ declare global {
   declare type Nullable<T> = T | null;
   declare type NonNullable<T> = T extends null | undefined ? never : T;
   declare type Recordable<T = any> = Record<string, T>;
+  declare type Objectable<T extends object> = {
+    [P in keyof T]: T[P];
+  } & Recordable;
   declare type Key = string | number;
   declare type ReadonlyRecordable<T = any> = {
     readonly [key: string]: T;
@@ -57,6 +64,24 @@ declare global {
   declare function parseFloat(string: string | number): number;
 
   declare type EmitFn<E = EmitsOptions> = SetupContext<E>['emit'];
+  /** copy from `@vue/runtime-core` */
+  declare type EmitsToProps<T extends EmitsOptions> = T extends string[]
+    ? {
+        [K in `on${Capitalize<T[number]>}`]?: (...args: any[]) => any;
+      }
+    : T extends ObjectEmitsOptions
+      ? {
+          [K in `on${Capitalize<string & keyof T>}`]?: K extends `on${infer C}`
+            ? (
+                ...args: T[Uncapitalize<C>] extends (...args: infer P) => any
+                  ? P
+                  : T[Uncapitalize<C>] extends null
+                    ? any[]
+                    : never
+              ) => any
+            : never;
+        }
+      : {};
 
   namespace JSX {
     // tslint:disable no-empty-interface
