@@ -1,5 +1,6 @@
 import { Avatar, Space, Tag } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
+import { formatToDateTime } from '@/utils/dateUtil';
 
 export type TableListItem = API.UserEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
@@ -92,11 +93,8 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'createdAt',
     width: 120,
     hideInSearch: true,
-    formItemProps: {
-      component: 'DatePicker',
-      componentProps: {
-        class: 'w-full',
-      },
+    customRender: ({ record }) => {
+      return formatToDateTime(record.createdAt);
     },
   },
   {
@@ -104,11 +102,8 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'updatedAt',
     width: 120,
     hideInSearch: true,
-    formItemProps: {
-      component: 'DatePicker',
-      componentProps: {
-        class: 'w-full',
-      },
+    customRender: ({ record }) => {
+      return formatToDateTime(record.createdAt);
     },
   },
 ];

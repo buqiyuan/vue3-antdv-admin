@@ -16,7 +16,7 @@ const replaceCodeParts = [
   {
     from: 'const INTEGRITY_CHECKSUM = ',
     to: `
-// Inject by @admin-pkg/mock-server
+// Inject by @admin-pkg/vite-plugin-msw
 import { isMatchHandler } from './utils/isMatchHandler';
 const INTEGRITY_CHECKSUM = `,
   },
@@ -24,7 +24,7 @@ const INTEGRITY_CHECKSUM = `,
     from: `self.addEventListener('message', async function (event) {`,
     to: `
 self.addEventListener('message', async function (event) {
-  // Inject by @admin-pkg/mock-server
+  // Inject by @admin-pkg/vite-plugin-msw
   if (event.data?.type === 'updateMockHeaders') {
     globalThis.mockHeaders = event.data.mockHeaders || [];
     // console.log('globalThis.mockHeaders', globalThis.mockHeaders);
@@ -39,7 +39,7 @@ self.addEventListener('fetch', function (event) {
 self.addEventListener('fetch', function (event) {
   const { request } = event
 
-  // Inject by @admin-pkg/mock-server
+  // Inject by @admin-pkg/vite-plugin-msw
   const isMockRequest = isMatchHandler(request);
   // console.log('isMockRequest', request.url, isMockRequest);
   if (isMockRequest === false) {

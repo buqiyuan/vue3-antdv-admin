@@ -9,7 +9,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
-import mockServerPlugin from '@admin-pkg/mock-server/vite';
+import mockServerPlugin from '@admin-pkg/vite-plugin-msw/vite';
 import pkg from './package.json';
 import type { UserConfig, ConfigEnv } from 'vite';
 
@@ -32,6 +32,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
 
   const isBuild = command === 'build';
   const mainFilePath = resolve(CWD, 'src/main.ts');
+  const polyfills = ['es.promise.with-resolvers'];
 
   return {
     base: VITE_BASE_URL,
@@ -58,15 +59,16 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
         // ctrl + p node_modules/core-js/modules
         // 根据你自己需要导入相应的polyfill:  https://github.com/vitejs/vite/tree/main/packages/plugin-legacy#polyfill-specifiers
-        modernPolyfills: ['es.promise.with-resolvers'],
+        modernPolyfills: [...polyfills],
       }),
-      // 由于 @vitejs/plugin-legacy 只能在构建中运行，所以在开发环境时手动添加 polyfill
+      // 由于 @vitejs/plugin-legacy 只在构建中运行，所以这里手动兼容一下以便于开发环境下也能引入 polyfill
       {
-        name: 'dev-auto-import-polyfill',
+        name: 'dev-auto-import-polyfills',
         apply: 'serve',
         transform(code, id) {
           if (id === mainFilePath) {
-            return `import './polyfill';${code}`;
+            const imports = polyfills.map((n) => `import "core-js/modules/${n}.js"`).join(';');
+            return `${imports};${code}`;
           }
         },
       },

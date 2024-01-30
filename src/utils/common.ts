@@ -33,15 +33,12 @@ export const randomColor = (type: 'rgb' | 'hex' | 'hsl'): string => {
  * @param text
  */
 export const copyText = (text: string) => {
-  return new Promise((resolve) => {
-    const copyInput = document.createElement('input'); //创建一个input框获取需要复制的文本内容
-    copyInput.value = text;
-    document.body.appendChild(copyInput);
-    copyInput.select();
-    document.execCommand('copy');
-    copyInput.remove();
-    resolve(true);
-  });
+  const copyInput = document.createElement('input'); //创建一个input框获取需要复制的文本内容
+  copyInput.value = text;
+  document.body.appendChild(copyInput);
+  copyInput.select();
+  document.execCommand('copy');
+  copyInput.remove();
 };
 
 /**
@@ -153,11 +150,11 @@ export const toHump = (name) => {
 
 /** 模拟异步请求，实用性不高，主要用于demo模拟请求 */
 export const waitTime = <T>(time = 100, data: any = true): Promise<T> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(data);
-    }, time);
-  });
+  const { promise, resolve } = Promise.withResolvers<T>();
+  setTimeout(() => {
+    resolve(data);
+  }, time);
+  return promise;
 };
 
 export function findPath<T extends Key>(

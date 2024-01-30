@@ -33,7 +33,7 @@
     "test:br": "npx http-server dist --cors --brotli -c-1"
   },
   "dependencies": {
-    "@admin-pkg/mock-server": "workspace:*",
+    "@admin-pkg/vite-plugin-msw": "workspace:*",
     "@ant-design/icons-vue": "~7.0.1",
     "@iconify/vue": "^4.1.1",
     "@tinymce/tinymce-vue": "^5.1.1",
@@ -136,7 +136,7 @@
   },
   "target": "web",
   "dependenciesMeta": {
-    "@admin-pkg/mock-server": {
+    "@admin-pkg/vite-plugin-msw": {
       "injected": true
     }
   },

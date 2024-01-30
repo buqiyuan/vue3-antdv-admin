@@ -90,6 +90,7 @@
    * @description 打开操作用户弹窗
    */
   const openUserModal = async (record: Partial<TableListItem> = {}) => {
+    console.log('执行两次');
     const { userCreate, userUpdate } = Api.systemUser;
     const isUpdate = Boolean(record.id);
 
@@ -200,6 +201,7 @@
           color: 'red',
           tooltip: '删除此账号',
           auth: 'system:user:delete',
+          onClick: () => openUserModal(record),
           popConfirm: {
             title: '你确定要删除吗？',
             placement: 'left',

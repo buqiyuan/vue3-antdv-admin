@@ -1,5 +1,5 @@
 {
-  "name": "@admin-pkg/mock-server",
+  "name": "@admin-pkg/vite-plugin-msw",
   "version": "0.0.1",
   "description": "",
   "module": "./dist/browser/index.mjs",
@@ -19,11 +19,28 @@
     "dev": "rimraf dist && tsup --watch",
     "build": "rimraf dist && tsup"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "msw",
+    "mock",
+    "vite"
+  ],
+  "author": {
+    "name": "buqiyuan",
+    "email": "1743369777@qq.com",
+    "url": "https://github.com/buqiyuan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buqiyuan/vue3-antdv-admin/tree/main/packages/vite-plugin-msw",
+    "directory": "packages/vite-plugin-msw"
+  },
+  "homepage": "https://buqiyuan.github.io/vue3-antdv-admin/tree/main/packages/vite-plugin-msw#readme",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "@mswjs/interceptors": "^0.25.14",
+    "@mswjs/interceptors": "^0.25.15",
     "headers-polyfill": "^4.0.2",
     "strict-event-emitter": "^0.5.1"
   },

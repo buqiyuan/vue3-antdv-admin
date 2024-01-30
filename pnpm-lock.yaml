@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@admin-pkg/mock-server':
+      '@admin-pkg/vite-plugin-msw':
         specifier: workspace:*
-        version: file:packages/mock-server(msw@2.1.5)
+        version: file:packages/vite-plugin-msw(msw@2.1.5)
       '@ant-design/icons-vue':
         specifier: ~7.0.1
         version: 7.0.1(vue@3.4.15)
@@ -247,20 +247,20 @@ importers:
         specifier: ~1.8.27
         version: 1.8.27(typescript@5.3.3)
     dependenciesMeta:
-      '@admin-pkg/mock-server':
+      '@admin-pkg/vite-plugin-msw':
         injected: true
 
-  packages/mock-server:
+  packages/vite-plugin-msw:
     dependencies:
       '@mswjs/interceptors':
-        specifier: ^0.25.14
-        version: 0.25.14
+        specifier: ^0.25.15
+        version: 0.25.15
       headers-polyfill:
         specifier: ^4.0.2
         version: 4.0.2
       msw:
         specifier: ^2.0.0
-        version: 2.1.3(typescript@5.3.3)
+        version: 2.1.5(typescript@5.3.3)
       strict-event-emitter:
         specifier: ^0.5.1
         version: 0.5.1
@@ -1649,12 +1649,6 @@ packages:
     dependencies:
       cookie: 0.5.0
 
-  /@bundled-es-modules/js-levenshtein@2.0.1:
-    resolution: {integrity: sha512-DERMS3yfbAljKsQc0U2wcqGKUWpdFjwqWuoMugEJlqBnKO180/n+4SR/J8MRDt1AN48X1ovgoD9KrdVXcaa3Rg==}
-    dependencies:
-      js-levenshtein: 1.1.6
-    dev: false
-
   /@bundled-es-modules/statuses@1.0.1:
     resolution: {integrity: sha512-yn7BklA5acgcBr+7w064fGV+SGIFySjCKpqjcWgBAIfrAkY+4GQTJJHQMeT3V/sgz23VTEVV8TtOmkvJAhFVfg==}
     dependencies:
@@ -2322,18 +2316,6 @@ packages:
     resolution: {integrity: sha512-0ZcCVQxifZmhwNBoQIrystCb+2sWBY2Zw8lpfJBPCHGCA/HWqehITeCRVIv4VMy8MPlaHo2w2pTHFV2pFfqKPw==}
     engines: {node: '>=18'}
 
-  /@mswjs/interceptors@0.25.14:
-    resolution: {integrity: sha512-2dnIxl+obqIqjoPXTFldhe6pcdOrqiz+GcLaQQ6hmL02OldAF7nIC+rUgTWm+iF6lvmyCVhFFqbgbapNhR8eag==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@open-draft/deferred-promise': 2.2.0
-      '@open-draft/logger': 0.3.0
-      '@open-draft/until': 2.1.0
-      is-node-process: 1.2.0
-      outvariant: 1.4.2
-      strict-event-emitter: 0.5.1
-    dev: false
-
   /@mswjs/interceptors@0.25.15:
     resolution: {integrity: sha512-s4jdyxmq1eeftfDXJ7MUiK/jlvYaU8Sr75+42hHCVBrYez0k51RHbMitKIKdmsF92Q6gwhp8Sm1MmvdA9llpcg==}
     engines: {node: '>=18'}
@@ -2609,10 +2591,6 @@ packages:
       '@types/minimatch': 5.1.2
       '@types/node': 20.10.8
     dev: true
-
-  /@types/js-levenshtein@1.1.3:
-    resolution: {integrity: sha512-jd+Q+sD20Qfu9e2aEXogiO3vpOC1PYJOUdyN9gvs4Qrvkg4wF43L5OhqrPeokdv8TL0/mXoYfpkcoGZMNN2pkQ==}
-    dev: false
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -7096,11 +7074,6 @@ packages:
     resolution: {integrity: sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==}
     dev: true
 
-  /js-levenshtein@1.1.6:
-    resolution: {integrity: sha512-X2BB11YZtrRqY4EnQcLX5Rh373zbK4alC1FW7D7MBhL2gtcC17cTnr6DmfHZeS0s2rTHjUTMMHfG7gO8SSdw+g==}
-    engines: {node: '>=0.10.0'}
-    dev: false
-
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -7944,41 +7917,6 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: true
-
-  /msw@2.1.3(typescript@5.3.3):
-    resolution: {integrity: sha512-ZYOpBIxwnGkYKeGqkk9tI87OgOqYXeRpk5ZBTxJILOTyglVwzSde7E2TOoUlma4Kwu2cwgBEGlZnz0RbZPJuoA==}
-    engines: {node: '>=18'}
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      typescript: '>= 4.7.x <= 5.3.x'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@bundled-es-modules/cookie': 2.0.0
-      '@bundled-es-modules/js-levenshtein': 2.0.1
-      '@bundled-es-modules/statuses': 1.0.1
-      '@mswjs/cookies': 1.1.0
-      '@mswjs/interceptors': 0.25.14
-      '@open-draft/until': 2.1.0
-      '@types/cookie': 0.6.0
-      '@types/js-levenshtein': 1.1.3
-      '@types/statuses': 2.0.4
-      chalk: 4.1.2
-      chokidar: 3.5.3
-      graphql: 16.8.1
-      headers-polyfill: 4.0.2
-      inquirer: 8.2.6
-      is-node-process: 1.2.0
-      js-levenshtein: 1.1.6
-      outvariant: 1.4.2
-      path-to-regexp: 6.2.1
-      strict-event-emitter: 0.5.1
-      type-fest: 4.9.0
-      typescript: 5.3.3
-      yargs: 17.7.2
-    dev: false
 
   /msw@2.1.5(typescript@5.3.3):
     resolution: {integrity: sha512-r39AZk4taMmUEYwtzDAgFy38feqJy1yaKykvo0QE8q7H7c28yH/WIlOmE7oatjkC3dMgpTYfND8MaxeywgU+Yg==}
@@ -11475,14 +11413,14 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
 
-  file:packages/mock-server(msw@2.1.5):
-    resolution: {directory: packages/mock-server, type: directory}
-    id: file:packages/mock-server
-    name: '@admin-pkg/mock-server'
+  file:packages/vite-plugin-msw(msw@2.1.5):
+    resolution: {directory: packages/vite-plugin-msw, type: directory}
+    id: file:packages/vite-plugin-msw
+    name: '@admin-pkg/vite-plugin-msw'
     peerDependencies:
       msw: ^2.0.0
     dependencies:
-      '@mswjs/interceptors': 0.25.14
+      '@mswjs/interceptors': 0.25.15
       headers-polyfill: 4.0.2
       msw: 2.1.5(typescript@5.3.3)
       strict-event-emitter: 0.5.1

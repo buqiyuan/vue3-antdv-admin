@@ -1,4 +1,4 @@
-import { enableMocking } from '@admin-pkg/mock-server';
+import { enableMocking } from '@admin-pkg/vite-plugin-msw';
 import { HttpHandler } from 'msw';
 
 const modules = import.meta.glob<any>('./**/*.ts', {
