@@ -1,0 +1,45 @@
+name: Publish Package
+
+permissions:
+  id-token: write
+  contents: write
+
+on:
+  push:
+    branches: [perf/code]
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Use Node.js v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+          cache: pnpm
+
+      - run: pnpm install
+
+      - name: Publish
+        if: success()
+        uses: author/action-publish@stable
+        with:
+          # Optionally specify the directories to scan
+          # for modules. If this is not specified, the
+          # root directory is scanned.
+          scan: './packages'
+          # Optionally force publishing as a public
+          # module. We don't recommend setting this,
+          # unless you have a very specific use case.
+          force: true
+        env:
+          REGISTRY_TOKEN: '${{ secrets.NPM_TOKEN }}'
