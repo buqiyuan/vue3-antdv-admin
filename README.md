@@ -8,7 +8,7 @@
 - 在线预览（ [gitee](http://buqiyuan.gitee.io/vue3-antdv-admin/) / [vercel](https://vue3-antdv-admin.vercel.app/) ）
 - [swagger 文档](https://nest-api.buqiyuan.site/swagger-api/)
 - [后台地址](https://github.com/buqiyuan/nest-admin)
-- [vue-cli版](https://github.com/buqiyuan/vue3-antd-admin/tree/vue-cli)
+- [vue-cli版](https://github.com/buqiyuan/vue3-antdv-admin/tree/vue-cli)
 - [gitee 地址](https://gitee.com/buqiyuan/vue3-antdv-admin)
 - 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
 

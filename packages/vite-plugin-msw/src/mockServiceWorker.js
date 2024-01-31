@@ -2,13 +2,13 @@
 /* tslint:disable */
 
 /**
- * Mock Service Worker (2.1.3).
+ * Mock Service Worker (2.1.5).
  * @see https://github.com/mswjs/msw
  * - Please do NOT modify this file.
  * - Please do NOT serve this file on production.
  */
 
-// Inject by @admin-pkg/mock-server
+// Inject by @admin-pkg/vite-plugin-msw
 import { isMatchHandler } from './utils/isMatchHandler';
 const INTEGRITY_CHECKSUM = '223d191a56023cd36aa88c802961b911';
 const IS_MOCKED_RESPONSE = Symbol('isMockedResponse');
@@ -23,7 +23,7 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('message', async function (event) {
-  // Inject by @admin-pkg/mock-server
+  // Inject by @admin-pkg/vite-plugin-msw
   if (event.data?.type === 'updateMockHeaders') {
     globalThis.mockHeaders = event.data.mockHeaders || [];
     // console.log('globalThis.mockHeaders', globalThis.mockHeaders);
@@ -96,7 +96,7 @@ self.addEventListener('message', async function (event) {
 self.addEventListener('fetch', function (event) {
   const { request } = event;
 
-  // Inject by @admin-pkg/mock-server
+  // Inject by @admin-pkg/vite-plugin-msw
   const isMockRequest = isMatchHandler(request);
   // console.log('isMockRequest', request.url, isMockRequest);
   if (isMockRequest === false) {

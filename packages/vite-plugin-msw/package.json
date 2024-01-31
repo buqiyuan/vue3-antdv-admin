@@ -1,0 +1,56 @@
+{
+  "name": "@admin-pkg/vite-plugin-msw",
+  "version": "0.0.3",
+  "description": "",
+  "module": "./dist/browser/index.mjs",
+  "main": "./dist/browser/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/browser/index.mjs",
+      "require": "./dist/browser/index.mjs"
+    },
+    "./vite": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "dev": "rimraf dist && tsup --watch",
+    "build": "rimraf dist && tsup"
+  },
+  "keywords": [
+    "msw",
+    "mock",
+    "vite"
+  ],
+  "author": {
+    "name": "buqiyuan",
+    "email": "1743369777@qq.com",
+    "url": "https://github.com/buqiyuan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buqiyuan/vue3-antdv-admin/tree/main/packages/vite-plugin-msw",
+    "directory": "packages/vite-plugin-msw"
+  },
+  "homepage": "https://buqiyuan.github.io/vue3-antdv-admin/tree/main/packages/vite-plugin-msw#readme",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@mswjs/interceptors": "^0.25.15",
+    "headers-polyfill": "^4.0.2",
+    "strict-event-emitter": "^0.5.1"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1"
+  },
+  "peerDependencies": {
+    "msw": "^2.0.0"
+  }
+}

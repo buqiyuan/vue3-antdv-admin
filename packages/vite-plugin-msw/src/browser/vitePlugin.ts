@@ -2,7 +2,7 @@ import { readFile, copyFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { Connect } from 'vite';
 
-const swFileName = 'mockServiceWorker.mjs';
+const swFileName = 'mockServiceWorker.js';
 const localMswDistPath = resolve(__dirname, swFileName);
 
 export const createBrowserMiddleware = (): Connect.NextHandleFunction => {

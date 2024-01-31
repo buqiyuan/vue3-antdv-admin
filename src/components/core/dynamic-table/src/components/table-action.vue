@@ -16,7 +16,7 @@
 
 <script lang="tsx" setup>
   import { computed, ref, h, type FunctionalComponent } from 'vue';
-  import { isObject, isString } from 'lodash-es';
+  import { debounce, isFunction, isObject, isString } from 'lodash-es';
   import { Popconfirm, Tooltip, type TooltipProps } from 'ant-design-vue';
   import type { ActionItem } from '../types/tableAction';
   import type { CustomRenderParams } from '../types/column';
@@ -88,15 +88,18 @@
       .map((item, index) => {
         const onClick = item.onClick;
 
-        if (isAsyncFunction(onClick) && !Reflect.get(onClick, clickFnFlag)) {
-          item.onClick = async () => {
+        if (isAsyncFunction(onClick) && !hasClickFnFlag(onClick)) {
+          item.onClick = debounce(async () => {
             const key = getKey(item, index);
             loadingMap.value.set(key, true);
             await onClick(props.columnParams).finally(() => {
               loadingMap.value.delete(key);
             });
-          };
-          Reflect.set(item.onClick, clickFnFlag, true);
+          });
+          setClickFnFlag(item.onClick);
+        } else if (isFunction(onClick) && !hasClickFnFlag(onClick)) {
+          item.onClick = debounce(onClick);
+          setClickFnFlag(item.onClick);
         }
         if (item.icon) {
           item.icon = <Icon icon={item.icon} class={{ 'mr-1': !!item.label }} />;
@@ -104,6 +107,14 @@
         return item;
       });
   });
+
+  const hasClickFnFlag = (clickFn: Function) => {
+    return Reflect.get(clickFn, clickFnFlag);
+  };
+
+  const setClickFnFlag = (clickFn: Function) => {
+    Reflect.set(clickFn, clickFnFlag, true);
+  };
 
   const getKey = (actionItem: ActionItem, index: number) => {
     return `${props.rowKey}${index}${actionItem.label}`;

@@ -23,7 +23,7 @@ const postMsg = (registration: ServiceWorkerRegistration, handlers: HttpHandler[
 };
 
 export const enableMocking = async (handlers: HttpHandler[]) => {
-  const scriptURL = `${import.meta.env.BASE_URL || ''}/mockServiceWorker.mjs`.replace(
+  const scriptURL = `${import.meta.env.BASE_URL || ''}/mockServiceWorker.js`.replace(
     /\/{2,}/g,
     '/',
   );

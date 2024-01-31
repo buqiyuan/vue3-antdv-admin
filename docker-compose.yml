@@ -1,12 +1,15 @@
 version: '3'
 
 services:
-  eoapi:
+  vue3-antdv-admin:
     # 从当前路径构建镜像
     build:
       context: .
       dockerfile: Dockerfile
       target: production
     image: buqiyuan/vue3-antdv-admin:latest
+    ports:
+      - '80:80'
     env_file:
       - .env
+      - .env.production

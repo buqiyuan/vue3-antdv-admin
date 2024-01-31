@@ -37,6 +37,11 @@ export default defineConfig(async () => {
       platform: 'browser',
       minify: false,
       noExternal: ['msw', '@mswjs/interceptors', 'strict-event-emitter'],
+      outExtension() {
+        return {
+          js: `.js`,
+        };
+      },
     },
   ];
 });

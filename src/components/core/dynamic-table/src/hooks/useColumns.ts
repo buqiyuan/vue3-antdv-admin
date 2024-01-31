@@ -1,6 +1,6 @@
-import { ref, watchEffect, unref, useSlots } from 'vue';
+import { ref, watchEffect, unref, useSlots, h } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
-import { EditableCell } from '../components/';
+import { EditableCell } from '../components';
 import { ColumnKeyFlag, type CustomRenderParams } from '../types/column';
 import tableConfig from '../dynamic-table.config';
 import type { Slots } from 'vue';
@@ -80,32 +80,29 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
           isCellEditable &&
           !ColumnKeyFlags.includes(columnKey);
 
-        return isShowEditable ? (
-          <EditableCell
-            schema={getColumnFormSchema(item, record) as any}
-            rowKey={record[rowKey] ?? index}
-            editableType={innerProps.editableType}
-            column={options}
-            v-slots={slots}
-          >
-            {customRender?.(options) ?? text}
-          </EditableCell>
-        ) : (
-          customRender?.(options)
-        );
+        return isShowEditable
+          ? h(
+              EditableCell,
+              {
+                schema: getColumnFormSchema(item, record) as any,
+                rowKey: record[rowKey] ?? index,
+                editableType: innerProps.editableType,
+                column: options,
+              },
+              { default: () => customRender?.(options) ?? text, ...slots },
+            )
+          : customRender?.(options);
       };
 
       // 操作列
       if (item.actions && columnKey === ColumnKeyFlag.ACTION) {
         item.customRender = (options) => {
           const { record, index } = options;
-          return (
-            <TableAction
-              actions={item.actions!(options, tableAction)}
-              rowKey={record[rowKey] ?? index}
-              columnParams={options}
-            />
-          );
+          return h(TableAction, {
+            actions: item.actions!(options, tableAction),
+            rowKey: record[rowKey] ?? index,
+            columnParams: options,
+          });
         };
       }
       return {

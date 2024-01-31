@@ -103,26 +103,27 @@
        */
       function readerData(rawFile: File) {
         loadingRef.value = true;
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            try {
-              const data = e.target && e.target.result;
-              const workbook = read(data, { type: 'array', cellDates: true });
-              // console.log(workbook);
-              /* DO SOMETHING WITH workbook HERE */
-              const excelData = getExcelData(workbook);
-              emit('success', excelData);
-              resolve('');
-            } catch (error) {
-              reject(error);
-              emit('error');
-            } finally {
-              loadingRef.value = false;
-            }
-          };
-          reader.readAsArrayBuffer(rawFile);
-        });
+        const { promise, resolve, reject } = Promise.withResolvers();
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+          try {
+            const data = e.target && e.target.result;
+            const workbook = read(data, { type: 'array', cellDates: true });
+            // console.log(workbook);
+            /* DO SOMETHING WITH workbook HERE */
+            const excelData = getExcelData(workbook);
+            emit('success', excelData);
+            resolve('');
+          } catch (error) {
+            reject(error);
+            emit('error');
+          } finally {
+            loadingRef.value = false;
+          }
+        };
+        reader.readAsArrayBuffer(rawFile);
+        return promise;
       }
 
       async function upload(rawFile: File) {

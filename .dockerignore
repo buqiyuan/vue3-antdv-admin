@@ -1,6 +1,7 @@
 .DS_Store
 node_modules/
 dist/
+.vscode/
 
 npm-debug.log*
 yarn-debug.log*
@@ -15,6 +16,4 @@ tests/**/coverage/
 *.ntvs*
 *.njsproj
 *.sln
-
-# env
-.env.*
+ 

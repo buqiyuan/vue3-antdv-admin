@@ -43,19 +43,19 @@
   });
 
   const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+    const { promise, resolve, reject } = Promise.withResolvers<string>();
 
-      reader.onload = () => {
-        resolve(reader.result as string);
-      };
+    const reader = new FileReader();
 
-      reader.onerror = (error) => {
-        reject(error);
-      };
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
 
-      reader.readAsDataURL(file);
-    });
+    reader.readAsDataURL(file);
+    return promise;
   };
 
   const onCancel = () => {
