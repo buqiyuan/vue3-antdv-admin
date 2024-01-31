@@ -90,6 +90,7 @@
     :file-list="fileList"
     name="avatar"
     list-type="picture-card"
+    class="min-h-[110px]"
     :custom-request="customRequest"
     @before-upload="beforeUpload"
     @change="handleChange"

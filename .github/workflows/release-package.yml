@@ -6,7 +6,7 @@ permissions:
 
 on:
   push:
-    branches: [perf/code]
+    branches: [main]
 
 jobs:
   publish-npm:
@@ -28,6 +28,7 @@ jobs:
           cache: pnpm
 
       - run: pnpm install
+      - run: pnpm run --filter \"./packages/**\" build
 
       - name: Publish
         if: success()
