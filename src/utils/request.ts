@@ -57,7 +57,7 @@ service.interceptors.response.use(
       $message.error(res.message || UNKNOWN_ERROR);
 
       // Illegal token
-      if ([11001, 11002].includes(res.code)) {
+      if ([1101, 1102].includes(res.code)) {
         // 取消后续所有请求
         controller.abort();
         // window.localStorage.clear();

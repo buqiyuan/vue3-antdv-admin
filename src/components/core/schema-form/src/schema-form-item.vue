@@ -12,6 +12,16 @@
       :wrapper-col="itemLabelWidthProp.wrapperCol"
       :rules="getRules"
     >
+      <!-- 前置插槽 -->
+      <template v-if="schema.beforeSlot">
+        <slot v-if="isString(schema.beforeSlot)" :name="schema.beforeSlot" v-bind="getValues">
+        </slot>
+        <component
+          :is="schema.beforeSlot(getValues)"
+          v-if="isFunction(schema.beforeSlot)"
+        ></component>
+      </template>
+      <!-- 自定义插槽 -->
       <slot v-if="schema.slot" :name="schema.slot" v-bind="getValues"> </slot>
       <component
         :is="getComponent"
@@ -38,6 +48,14 @@
           ></component>
         </template>
       </component>
+      <!-- 后置插槽 -->
+      <template v-if="schema.afterSlot">
+        <slot v-if="isString(schema.afterSlot)" :name="schema.afterSlot" v-bind="getValues"> </slot>
+        <component
+          :is="schema.afterSlot(getValues)"
+          v-if="isFunction(schema.afterSlot)"
+        ></component>
+      </template>
     </Form.Item>
   </Col>
 </template>
@@ -442,3 +460,10 @@
     initRequestConfig();
   });
 </script>
+
+<style lang="less" scoped>
+  :deep(.ant-form-item-control-input-content) {
+    display: flex;
+    align-items: center;
+  }
+</style>

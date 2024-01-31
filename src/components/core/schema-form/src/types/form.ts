@@ -120,8 +120,12 @@ export type FormSchema<T extends object = Recordable> = {
   // 渲染col内容需要外层包装form-item
   renderColContent?: CustomRenderFn<T>;
 
-  // Custom slot, in from-item
+  /** Custom slot, in from-item */
   slot?: string;
+  /** 表单组件前置插槽 */
+  beforeSlot?: string | ((renderCallbackParams: RenderCallbackParams<T>) => any);
+  /** 表单组件后置插槽 */
+  afterSlot?: string | ((renderCallbackParams: RenderCallbackParams<T>) => any);
 
   // 自定义槽，类似renderColContent
   colSlot?: string;

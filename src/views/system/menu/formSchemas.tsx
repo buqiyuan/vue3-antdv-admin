@@ -1,5 +1,6 @@
+import { h } from 'vue';
 import type { FormSchema } from '@/components/core/schema-form/';
-import { IconPicker } from '@/components/basic/icon';
+import { IconPicker, Icon } from '@/components/basic/icon';
 import { asyncRoutes } from '@/router/asyncModules';
 import Api from '@/api/';
 import { findPath, str2tree } from '@/utils/common';
@@ -75,6 +76,44 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     helpMessage: `对应控制器中定义的权限字符，如：@Perm('system:menu:list'))`,
     vIf: ({ formModel }) => !isDir(formModel['type']),
     required: ({ formModel }) => isButton(formModel.type),
+    afterSlot: ({ schema, formInstance, formModel }) => {
+      if (schema.component === 'Input') {
+        return h(Icon, {
+          icon: 'ant-design:folder-open-outlined',
+          title: '选择权限',
+          class: 'ml-[12px] cursor-pointer',
+          onclick: async () => {
+            const data = await Api.systemMenu.menuGetPermissions();
+            if (typeof formModel['permission'] === 'string') {
+              // @ts-ignore
+              formModel['permission'] = formModel['permission'].split(':');
+            }
+            formInstance.updateSchema({
+              field: 'permission',
+              component: 'Cascader',
+              componentProps: {
+                options: data.reduce((prev, curr) => (str2tree(curr, prev, ':'), prev), []),
+              },
+            });
+          },
+        });
+      } else {
+        return h(Icon, {
+          icon: 'ant-design:edit-outlined',
+          title: '手动输入',
+          class: 'ml-[12px] cursor-pointer',
+          onclick: () => {
+            if (Array.isArray(formModel['permission'])) {
+              formModel['permission'] = formModel['permission'].join(':');
+            }
+            formInstance.updateSchema({
+              field: 'permission',
+              component: 'Input',
+            });
+          },
+        });
+      }
+    },
   },
   {
     field: 'component',

@@ -85,3 +85,11 @@ export async function menuDelete(
     ...(options || { successMsg: '删除成功' }),
   });
 }
+
+/** 获取后端定义的所有权限集 GET /api/system/menus/permissions */
+export async function menuGetPermissions(options?: RequestOptions) {
+  return request<string[]>('/api/system/menus/permissions', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}

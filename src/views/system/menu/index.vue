@@ -41,12 +41,11 @@
         onFinish: async (values) => {
           console.log('新增/编辑菜单', values);
           record.id && (values.menuId = record.id);
-          if (values.type === 1 && values.component?.length) {
-            // @ts-ignore
+          if (Array.isArray(values.component)) {
             values.component = values.component.join('/');
           }
-          if (values.type === 2 && values.perms?.length) {
-            values.perms = values.perms.map((n) => n.join(':')).toString();
+          if (Array.isArray(values.permission)) {
+            values.permission = values.permission.join(':');
           }
           if (values.parentId === -1) {
             Reflect.deleteProperty(values, 'parentId');

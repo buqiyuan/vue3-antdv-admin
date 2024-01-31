@@ -115,7 +115,7 @@ export type SchemaFormEmits = typeof schemaFormEmits;
 
 export type SchemaFormEmitFn = EmitFn<SchemaFormEmits>;
 
-export type SchemaFormProps<T extends object = Recordable> = Partial<
+export type SchemaFormProps<T extends object = any> = Partial<
   ExtractPublicPropTypes<Omit<typeof schemaFormProps, 'schemas'>> & {
     schemas: FormSchema<T>[];
   } & EmitsToProps<SchemaFormEmits>
