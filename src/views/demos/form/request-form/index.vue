@@ -6,7 +6,7 @@
         <a
           class="text-blue-500"
           target="_blank"
-          href="https://github.com/buqiyuan/vue3-antd-admin/blob/main/src/views/demos/form/request-form/index.vue"
+          href="https://github.com/buqiyuan/vue3-antdv-admin/blob/main/src/views/demos/form/request-form/index.vue"
         >
           查看源码
         </a>

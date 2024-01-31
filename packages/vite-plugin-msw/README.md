@@ -22,7 +22,7 @@ https://mswjs.io/docs/getting-started/mocks
 
 ```ts
 interface VitePluginMswOptions {
-  handlers: RequestHandler[];
+  handlers?: RequestHandler[];
   mode?: 'browser' | 'node';
   build?: boolean;
 }
@@ -30,7 +30,7 @@ interface VitePluginMswOptions {
 
 ### Handlers
 
-- Required
+- Optional
 
 MSW handlers. More information on how to define these: https://mswjs.io/docs/getting-started/mocks
 
