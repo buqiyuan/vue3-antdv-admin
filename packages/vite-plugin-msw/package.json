@@ -1,6 +1,6 @@
 {
   "name": "@admin-pkg/vite-plugin-msw",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "module": "./dist/browser/index.mjs",
   "main": "./dist/browser/index.mjs",

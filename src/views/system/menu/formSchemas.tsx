@@ -92,6 +92,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
               field: 'permission',
               component: 'Cascader',
               componentProps: {
+                displayRender: ({ labels }) => labels.join(':'),
                 options: data.reduce((prev, curr) => (str2tree(curr, prev, ':'), prev), []),
               },
             });
