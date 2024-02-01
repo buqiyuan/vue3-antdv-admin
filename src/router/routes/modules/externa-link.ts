@@ -3,13 +3,14 @@ import RouterView from '@/layout/routerView/index.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: 'https://buqiyuan.gitee.io/vite-vue3-lowcode/',
-    name: 'https://buqiyuan.gitee.io/vite-vue3-lowcode/',
+    path: 'https://github.com/buqiyuan/nest-admin',
+    name: 'https://github.com/buqiyuan/nest-admin',
     component: RouterView,
     meta: {
-      title: 'H5低代码平台',
+      title: '后台代码仓库',
       icon: 'ant-design:link-outlined',
       isExt: true,
+      extOpenMode: 1,
     },
   },
 ];
