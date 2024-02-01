@@ -25,10 +25,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
       # run: pnpm run --filter \"./packages/**\" build
 
       - name: Publish 🚀
         shell: bash
-        run: pnpm publish packages/* --access public --no-git-checks
+        run: pnpm publish --filter ./packages/* --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
