@@ -1,9 +1,14 @@
 import { Avatar, Space, Tag } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import { formatToDateTime } from '@/utils/dateUtil';
+import { baseApiUrl } from '@/utils/request';
 
 export type TableListItem = API.UserEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
+
+const getAvatarUrl = (path: string) => {
+  return /^https?:\/\//.test(path) ? path : baseApiUrl + path;
+};
 
 export const baseColumns: TableColumnItem[] = [
   {
@@ -11,7 +16,7 @@ export const baseColumns: TableColumnItem[] = [
     width: 80,
     dataIndex: 'avatar',
     hideInSearch: true,
-    customRender: ({ record }) => <Avatar src={record.avatar} />,
+    customRender: ({ record }) => <Avatar src={getAvatarUrl(record.avatar)} />,
   },
   {
     title: '用户名',

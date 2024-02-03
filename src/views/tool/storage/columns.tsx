@@ -2,6 +2,7 @@ import { Tag, Tooltip, Image, Progress } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import type { FormSchema } from '@/components/core/schema-form';
 import { formatToDateTime } from '@/utils/dateUtil';
+import { baseApiUrl } from '@/utils/request';
 
 export type TableListItem = API.StorageInfo;
 export type TableColumnItem = TableColumn<TableListItem>;
@@ -48,7 +49,7 @@ export const baseColumns: TableColumnItem[] = [
     dataIndex: 'path',
     width: 150,
     customRender({ record }) {
-      return <Image src={record.path}></Image>;
+      return <Image src={baseApiUrl + record.path}></Image>;
     },
   },
   {
