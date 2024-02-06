@@ -1,25 +1,21 @@
 # vue3-antdv-admin
 
-> 基于 vite4.x 重构整个前后端项目，完善后端权限控制细粒度，封装更多场景化组件...正在完善中
+基于 vite5.x + vue3.x + antd-design-vue4.x + typescript5.x 的后台管理系统
 
-基于 vite4.x + vue3.x + antd-design-vue4.x + typescript5.x 的后台管理系统模板
-
-- 账号：rootadmin，密码：123456
-- 在线预览（ [gitee](http://buqiyuan.gitee.io/vue3-antdv-admin/) / [vercel](https://vue3-antdv-admin.vercel.app/) ）
-- [swagger 文档](https://nest-api.buqiyuan.site/swagger-api/)
-- [后台地址](https://github.com/buqiyuan/nest-admin)
-- [vue-cli版](https://github.com/buqiyuan/vue3-antdv-admin/tree/vue-cli)
+- 账号：admin，密码：a123456
+- [在线预览](http://buqiyuan.gitee.io/vue3-antdv-admin/)
+- [项目文档](https://buqiyuan.github.io/vue3-antdv-admin-docs/)
+- [swagger 文档](https://nest-api.buqiyuan.site/api-docs/)
+- [后端仓库地址](https://github.com/buqiyuan/nest-admin)
 - [gitee 地址](https://gitee.com/buqiyuan/vue3-antdv-admin)
 - 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
-
-部分设计参考了 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
 
 ## 安装使用
 
 - 获取项目代码
 
 ```bash
-git clone --depth 1 https://github.com/buqiyuan/vue3-antdv-admin
+git clone https://github.com/buqiyuan/vue3-antdv-admin
 ```
 
 - 安装依赖
@@ -47,11 +43,7 @@ pnpm build
 
 安装项目根目录 `.vscode` 推荐的插件，再安装 `Volar`，并禁用 `Vetur`，重启 vscode 即可。
 
-> 使用了 Vue3.x 全家桶、ant-design-vue3.x 和 typescript4.x，实践 vue3.x 的新特性以及玩法，不得不说 vue3.x 的 Composition API 相比于 vue2.x 的 Options API 灵活很多，让我们可以灵活地组合组件逻辑，我们可以很轻松的使用 hooks 的形式去代替以前 mixins 等的写法。更多 hooks 可以参考[vueuse](https://vueuse.org/functions.html)
-
-## 项目简要说明
-
-`rootadmin` 默认开放多点登录，其他新建的账号默认都是单点登录。建议自己拉后端代码到本地跑，避免多人同时操作时产生冲突和误解。
+> 使用了 Vue3.x 全家桶、ant-design-vue4.x 和 typescript5.x，实践 vue3.x 的新特性以及玩法，不得不说 vue3.x 的 Composition API 相比于 vue2.x 的 Options API 灵活很多，让我们可以灵活地组合组件逻辑，我们可以很轻松的使用 hooks 的形式去代替以前 mixins 等的写法。更多 hooks 可以参考[vueuse](https://vueuse.org/functions.html)
 
 ### todolist
 

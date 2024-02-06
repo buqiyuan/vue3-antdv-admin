@@ -18,5 +18,8 @@ export const setupMock = async () => {
     return prev;
   }, []);
   // console.log('handlers', handlers);
-  await enableMocking(handlers);
+  await enableMocking(handlers, {
+    // 设置为 true 则不会在浏览器控制台输出 log 信息
+    quiet: false,
+  });
 };

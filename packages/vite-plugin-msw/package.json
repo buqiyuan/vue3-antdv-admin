@@ -37,10 +37,11 @@
     "url": "https://github.com/buqiyuan/vue3-antdv-admin/tree/main/packages/vite-plugin-msw",
     "directory": "packages/vite-plugin-msw"
   },
-  "homepage": "https://buqiyuan.github.io/vue3-antdv-admin/tree/main/packages/vite-plugin-msw#readme",
+  "homepage": "https://github.com/buqiyuan/vue3-antdv-admin/tree/main/packages/vite-plugin-msw#readme",
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
     "@mswjs/interceptors": "^0.25.15",

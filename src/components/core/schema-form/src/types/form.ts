@@ -24,8 +24,10 @@ export interface RenderCallbackParams<T extends object = Recordable> {
   schema: Omit<FormSchema<T>, 'componentProps'> & {
     componentProps: ComponentProps;
   };
+  /** 响应式的表单数据对象 */
   formModel: Objectable<T>;
   field: GetFieldKeys<T>;
+  /** 非响应式的表单数据对象(最终表单要提交的数据) */
   values: any;
   /** 动态表单实例 */
   formInstance: SchemaFormType;

@@ -17,7 +17,7 @@
       <template #toolbar>
         <a-button
           type="primary"
-          :disabled="!$auth('system:dict:create')"
+          :disabled="!$auth('system:dept:create')"
           @click="openMenuModal({})"
         >
           新增

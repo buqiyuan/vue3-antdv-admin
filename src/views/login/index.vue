@@ -16,7 +16,7 @@
           v-model:value="state.formInline.password"
           size="large"
           type="password"
-          placeholder="123456"
+          placeholder="a123456"
           autocomplete="new-password"
         >
           <template #prefix><lock-outlined type="user" /></template>
