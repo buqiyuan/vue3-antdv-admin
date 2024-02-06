@@ -1,4 +1,4 @@
-import { setupWorker } from 'msw/browser';
+import { type StartOptions, setupWorker } from 'msw/browser';
 import { log } from '../utils/log';
 import type { HttpHandler } from 'msw';
 
@@ -22,7 +22,7 @@ const postMsg = (registration: ServiceWorkerRegistration, handlers: HttpHandler[
   }
 };
 
-export const enableMocking = async (handlers: HttpHandler[]) => {
+export const enableMocking = async (handlers: HttpHandler[], options?: StartOptions) => {
   const scriptURL = `${import.meta.env.BASE_URL || ''}/mockServiceWorker.js`.replace(
     /\/{2,}/g,
     '/',
@@ -33,12 +33,14 @@ export const enableMocking = async (handlers: HttpHandler[]) => {
 
   const serviceWorkerRegistration = await worker.start({
     onUnhandledRequest: 'bypass',
+    // quiet: true,
     serviceWorker: {
       url: scriptURL,
       options: {
         updateViaCache: 'none',
       },
     },
+    ...options,
   });
 
   if (serviceWorkerRegistration) {

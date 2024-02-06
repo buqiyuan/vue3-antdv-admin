@@ -1,5 +1,4 @@
 import { createApp } from 'vue';
-import { setupMock } from '../mocks/';
 import App from './App.vue';
 import { setupRouter } from './router';
 import { setupIcons } from './components/basic/icon';
@@ -21,9 +20,12 @@ function setupPlugins() {
 }
 
 async function setupApp() {
-  // 启用 mock
-  await setupMock();
-  fetch(`${import.meta.env.VITE_BASE_API_URL}/user/1`).then((r) => r.json());
+  // 通过动态import可生成单独的chunk，结合全局替换变量，可实现按需加载，且不会对代码打包体积造成影响
+  if (import.meta.env.VITE_MOCK_IN_PROD === 'true') {
+    const { setupMock } = await import('../mocks/');
+    // 启用 mock
+    await setupMock();
+  }
 
   // 挂载vuex状态管理
   setupStore(app);

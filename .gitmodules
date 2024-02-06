@@ -1,0 +1,4 @@
+[submodule "docs"]
+	path = docs
+	url = https://github.com/buqiyuan/vue3-antdv-admin-docs.git
+	branch = main

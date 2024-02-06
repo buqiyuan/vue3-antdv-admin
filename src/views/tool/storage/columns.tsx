@@ -35,7 +35,7 @@ export const baseColumns: TableColumnItem[] = [
           {{
             title: () => record.path,
             default: () => (
-              <a href={record.path} target="_blank">
+              <a href={baseApiUrl + record.path} target="_blank">
                 {record.name}
               </a>
             ),

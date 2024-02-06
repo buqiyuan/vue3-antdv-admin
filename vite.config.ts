@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { loadEnv } from 'vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import mkcert from 'vite-plugin-mkcert';
 import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import checker from 'vite-plugin-checker';
@@ -28,7 +29,7 @@ const __APP_INFO__ = {
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   // 环境变量
-  const { VITE_BASE_URL, VITE_DROP_CONSOLE } = loadEnv(mode, CWD);
+  const { VITE_BASE_URL, VITE_DROP_CONSOLE, VITE_MOCK_IN_PROD } = loadEnv(mode, CWD);
 
   const isBuild = command === 'build';
   const mainFilePath = resolve(CWD, 'src/main.ts');
@@ -53,7 +54,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
-      mockServerPlugin({ build: isBuild }),
+      mockServerPlugin({ build: isBuild && VITE_MOCK_IN_PROD === 'true' }),
       legacy({
         targets: ['defaults', 'not IE 11', 'chrome 79', 'maintained node versions'],
         additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
@@ -105,6 +106,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
         },
       }),
+      mkcert(),
     ],
     css: {
       preprocessorOptions: {
@@ -129,16 +131,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 8088,
       proxy: {
         '/api': {
-          target: 'https://nest-api.buqiyuan.site',
-          // target: 'http://127.0.0.1:7001',
+          // target: 'https://nest-api.buqiyuan.site',
+          target: 'http://127.0.0.1:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-        '/ws-api': {
-          target: 'wss://nest-api.buqiyuan.site',
-          // target: 'http://127.0.0.1:7002',
-          changeOrigin: true, //是否允许跨域
-          ws: true,
         },
         '/upload': {
           target: 'http://127.0.0.1:7001/upload',
