@@ -3,7 +3,7 @@ import type { RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
 import type { Component, UnwrapRef, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
-import type { ColEx, ComponentMapType, ComponentProps } from './component';
+import type { ColEx, ComponentType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
 import type { SchemaFormInstance } from '../schema-form';
 import type { SchemaFormType } from '../hooks';
@@ -75,7 +75,7 @@ export type FormSchema<T extends object = Recordable> = {
   // Disable the adjustment of labelWidth with global settings of formModel, and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
   /** 表单项对应的组件，eg: Input */
-  component?: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
+  component?: ComponentType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
   /** 表单组件属性 */
   componentProps?:
     | ComponentProps

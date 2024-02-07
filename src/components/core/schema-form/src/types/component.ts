@@ -1,25 +1,8 @@
 import type { CSSProperties, WatchOptions } from 'vue';
-import type {
-  InputNumberProps,
-  InputProps,
-  SliderProps,
-  SelectProps,
-  CascaderProps,
-  SwitchProps,
-  RateProps,
-  DividerProps,
-  TimePickerProps,
-  TreeProps,
-  TreeSelectProps,
-  RadioGroupProps,
-  RadioProps,
-  UploadProps,
-  DatePickerProps,
-  CheckboxProps,
-} from 'ant-design-vue';
 import type { RenderCallbackParams } from './form';
+import type { ComponentMapProps, ComponentType } from '../componentMap';
 
-export type { ComponentMapType } from '../componentMap';
+export type { ComponentType };
 
 type ColSpanType = number | string;
 
@@ -36,24 +19,7 @@ type RequestConfig =
     };
 
 /** 组件属性 */
-export type ComponentProps = (
-  | InputProps
-  | InputNumberProps
-  | SelectProps
-  | CascaderProps
-  | SwitchProps
-  | RateProps
-  | DividerProps
-  | TimePickerProps
-  | TreeProps
-  | TreeSelectProps
-  | RadioGroupProps
-  | RadioProps
-  | UploadProps
-  | DatePickerProps
-  | CheckboxProps
-  | SliderProps
-) & {
+export type ComponentProps<T extends ComponentType = ComponentType> = ComponentMapProps[T] & {
   /** 组件异步请求数据 */
   request?: RequestConfig;
   /** 组件异步请求数据结果 */
@@ -63,9 +29,6 @@ export type ComponentProps = (
   vModelKey?: string;
   [key: string]: any;
 };
-
-/** 所有组件属性集合 */
-export type AllComponentProps = UnionToIntersection<ComponentProps>;
 
 export interface ColEx {
   style?: any;

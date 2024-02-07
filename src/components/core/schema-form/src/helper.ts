@@ -1,19 +1,19 @@
 import dayjs from 'dayjs';
 import type { RuleObject } from 'ant-design-vue/es/form/';
-import type { ComponentMapType } from './types/component';
+import type { ComponentType } from './types/component';
 import { isNumber } from '@/utils/is';
 import { useI18n } from '@/hooks/useI18n';
 
 /**
  * @description: 生成placeholder
  */
-export function createPlaceholderMessage(component: ComponentMapType, label = '') {
+export function createPlaceholderMessage(component: ComponentType, label = '') {
   const { t } = useI18n();
 
   if (component.includes('Input') || component.includes('Complete')) {
     return `${t('common.inputText')}${label}`;
   }
-  const chooseTypes: ComponentMapType[] = [
+  const chooseTypes: ComponentType[] = [
     'Select',
     'Cascader',
     'Checkbox',
@@ -35,7 +35,7 @@ function genType() {
 
 export function setComponentRuleType(
   rule: RuleObject,
-  component: ComponentMapType,
+  component: ComponentType,
   valueFormat: string,
 ) {
   if (['DatePicker', 'MonthPicker', 'WeekPicker', 'TimePicker'].includes(component)) {
@@ -56,7 +56,7 @@ export function processDateValue(attr: Recordable, component: string) {
   }
 }
 
-export function handleInputNumberValue(component?: ComponentMapType, val?: any) {
+export function handleInputNumberValue(component?: ComponentType, val?: any) {
   if (!component) return val;
   if (['Input', 'InputPassword', 'InputSearch', 'InputTextArea'].includes(component)) {
     return val && isNumber(val) ? `${val}` : val;

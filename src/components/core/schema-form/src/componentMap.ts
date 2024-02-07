@@ -19,6 +19,7 @@ import {
   Divider,
   Upload,
 } from 'ant-design-vue';
+import type { Component, VNodeProps } from 'vue';
 
 const componentMap = {
   Input,
@@ -48,6 +49,18 @@ const componentMap = {
   Divider,
 };
 
-export type ComponentMapType = keyof typeof componentMap;
+type ExtractPropTypes<T extends Component> = T extends new (...args: any) => any
+  ? Writable<Omit<InstanceType<T>['$props'], keyof VNodeProps>>
+  : never;
+
+export type D = ExtractPropTypes<typeof Input>;
+
+export type ComponentType = keyof typeof componentMap;
+
+export type ComponentMapProps = {
+  [K in ComponentType]: ExtractPropTypes<(typeof componentMap)[K]>;
+};
+
+export type AllComponentProps = ComponentMapProps[ComponentType];
 
 export { componentMap };

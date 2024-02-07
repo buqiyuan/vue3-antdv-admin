@@ -69,7 +69,7 @@
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
   import { schemaFormItemProps } from './schema-form-item';
-  import type { ComponentMapType } from './componentMap';
+  import type { ComponentType } from './componentMap';
   import type { CustomRenderFn, FormSchema, RenderCallbackParams, ComponentProps } from './types/';
   import type { RuleObject } from 'ant-design-vue/es/form/';
   import { isBoolean, isNull, isObject, isString, isFunction, isArray } from '@/utils/is';
@@ -298,11 +298,7 @@
     );
   });
 
-  function setComponentRuleType(
-    rule: RuleObject,
-    component: ComponentMapType,
-    valueFormat: string,
-  ) {
+  function setComponentRuleType(rule: RuleObject, component: ComponentType, valueFormat: string) {
     if (['DatePicker', 'MonthPicker', 'WeekPicker', 'TimePicker'].includes(component)) {
       rule.type = valueFormat ? 'string' : 'object';
     } else if (['RangePicker', 'Upload', 'CheckboxGroup', 'TimePicker'].includes(component)) {
@@ -465,5 +461,9 @@
   :deep(.ant-form-item-control-input-content) {
     display: flex;
     align-items: center;
+
+    > div {
+      flex: auto;
+    }
   }
 </style>
