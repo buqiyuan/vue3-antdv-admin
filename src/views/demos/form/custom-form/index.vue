@@ -12,6 +12,7 @@
 </template>
 <script lang="tsx" setup>
   import { Alert, Input, message } from 'ant-design-vue';
+  import inputNumberRange from './input-number-range.vue';
   import { type FormSchema, useForm } from '@/components/core/schema-form';
 
   defineOptions({
@@ -19,6 +20,25 @@
   });
 
   const schemas: FormSchema[] = [
+    {
+      field: 'field0',
+      label: '自定义组件',
+      colProps: {
+        span: 8,
+      },
+      rules: [
+        {
+          required: true,
+          type: 'array',
+          trigger: 'change',
+          validator(_, value: string[]) {
+            const isOk = Array.isArray(value) && value.length === 2 && value.every(Boolean);
+            return isOk ? Promise.resolve() : Promise.reject('请输入数字范围');
+          },
+        },
+      ],
+      component: () => inputNumberRange,
+    },
     {
       field: 'field1',
       label: 'comp vnode方式',
