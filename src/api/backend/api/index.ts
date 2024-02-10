@@ -17,11 +17,13 @@ import * as systemDictItem from './systemDictItem';
 import * as systemTask from './systemTask';
 import * as systemOnline from './systemOnline';
 import * as systemServe from './systemServe';
-import * as systemEmail from './systemEmail';
 import * as toolsStorage from './toolsStorage';
+import * as systemEmail from './systemEmail';
 import * as toolsUpload from './toolsUpload';
 import * as health from './health';
 import * as systemSse from './systemSse';
+import * as netDiskManage from './netDiskManage';
+import * as netDiskOverview from './netDiskOverview';
 import * as businessTodo from './businessTodo';
 export default {
   auth,
@@ -39,10 +41,12 @@ export default {
   systemTask,
   systemOnline,
   systemServe,
-  systemEmail,
   toolsStorage,
+  systemEmail,
   toolsUpload,
   health,
   systemSse,
+  netDiskManage,
+  netDiskOverview,
   businessTodo,
 };

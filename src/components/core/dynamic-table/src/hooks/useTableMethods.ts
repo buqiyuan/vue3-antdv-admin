@@ -1,5 +1,5 @@
 import { unref, nextTick, getCurrentInstance, watch } from 'vue';
-import { isObject, isFunction, isBoolean, get } from 'lodash-es';
+import { isObject, isFunction, isBoolean, get, debounce } from 'lodash-es';
 import { useInfiniteScroll } from '@vueuse/core';
 import tableConfig from '../dynamic-table.config';
 import { useEditable } from './useEditable';
@@ -60,7 +60,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
    * @param {boolean} flush 是否将页数重置到第一页
    * @description 获取表格数据
    */
-  const fetchData = async (params = {}) => {
+  const fetchData = debounce(async (params = {}) => {
     const { dataRequest, dataSource, fetchConfig, searchParams } = props;
 
     if (!dataRequest || !isFunction(dataRequest) || Array.isArray(dataSource)) {
@@ -132,7 +132,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     } finally {
       loadingRef.value = false;
     }
-  };
+  });
 
   /**
    * @description 刷新表格

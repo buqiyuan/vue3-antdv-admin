@@ -131,13 +131,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 8088,
       proxy: {
         '/api': {
-          // target: 'https://nest-api.buqiyuan.site',
-          target: 'http://127.0.0.1:7001',
+          target: 'https://nest-api.buqiyuan.site',
+          // target: 'http://127.0.0.1:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '/upload': {
-          target: 'http://127.0.0.1:7001/upload',
+          target: 'hhttps://nest-api.buqiyuan.site/upload',
+          // target: 'http://127.0.0.1:7001/upload',
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),

@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@admin-pkg/vite-plugin-msw':
         specifier: workspace:*
-        version: file:packages/vite-plugin-msw(msw@2.1.6)
+        version: file:packages/vite-plugin-msw(msw@2.1.7)
       '@ant-design/icons-vue':
         specifier: ~7.0.1
         version: 7.0.1(vue@3.4.15)
@@ -60,8 +60,8 @@ importers:
         specifier: ~1.15.2
         version: 1.15.2
       tinymce:
-        specifier: ^6.8.2
-        version: 6.8.2
+        specifier: ^6.8.3
+        version: 6.8.3
       vue:
         specifier: ~3.4.15
         version: 3.4.15(typescript@5.2.2)
@@ -91,8 +91,8 @@ importers:
         specifier: ~18.6.0
         version: 18.6.0
       '@faker-js/faker':
-        specifier: ^8.4.0
-        version: 8.4.0
+        specifier: ^8.4.1
+        version: 8.4.1
       '@iconify-json/ant-design':
         specifier: ^1.1.15
         version: 1.1.15
@@ -121,8 +121,8 @@ importers:
         specifier: ~5.3.0
         version: 5.3.0(esbuild@0.19.11)(terser@5.27.0)(vite@5.0.12)
       '@vitejs/plugin-vue':
-        specifier: ~5.0.3
-        version: 5.0.3(vite@5.0.12)(vue@3.4.15)
+        specifier: ~5.0.4
+        version: 5.0.4(vite@5.0.12)(vue@3.4.15)
       '@vitejs/plugin-vue-jsx':
         specifier: ~3.1.0
         version: 3.1.0(vite@5.0.12)(vue@3.4.15)
@@ -172,8 +172,8 @@ importers:
         specifier: ~1.1.0
         version: 1.1.0
       msw:
-        specifier: ^2.1.6
-        version: 2.1.6(typescript@5.2.2)
+        specifier: ^2.1.7
+        version: 2.1.7(typescript@5.2.2)
       postcss:
         specifier: ~8.4.34
         version: 8.4.34
@@ -2331,8 +2331,8 @@ packages:
     resolution: {integrity: sha512-5Aap/GaRupgNx/feGBwLLTVv8OQFfv3pq2lPRzPg9R+IOBnDgghTGW7l7EuVXOvg5cc/xSAlRW8rBrjIC3Nvqw==}
     dev: true
 
-  /@faker-js/faker@8.4.0:
-    resolution: {integrity: sha512-htW87352wzUCdX1jyUQocUcmAaFqcR/w082EC8iP/gtkF0K+aKcBp0hR5Arb7dzR8tQ1TrhE9DNa5EbJELm84w==}
+  /@faker-js/faker@8.4.1:
+    resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
     dev: true
 
@@ -2503,6 +2503,18 @@ packages:
 
   /@mswjs/interceptors@0.25.15:
     resolution: {integrity: sha512-s4jdyxmq1eeftfDXJ7MUiK/jlvYaU8Sr75+42hHCVBrYez0k51RHbMitKIKdmsF92Q6gwhp8Sm1MmvdA9llpcg==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@open-draft/deferred-promise': 2.2.0
+      '@open-draft/logger': 0.3.0
+      '@open-draft/until': 2.1.0
+      is-node-process: 1.2.0
+      outvariant: 1.4.2
+      strict-event-emitter: 0.5.1
+    dev: false
+
+  /@mswjs/interceptors@0.25.16:
+    resolution: {integrity: sha512-8QC8JyKztvoGAdPgyZy49c9vSHHAZjHagwl4RY9E8carULk8ym3iTaiawrT1YoLF/qb449h48f71XDPgkUSOUg==}
     engines: {node: '>=18'}
     dependencies:
       '@open-draft/deferred-promise': 2.2.0
@@ -2834,7 +2846,7 @@ packages:
     peerDependencies:
       vue: ^3.0.0
     dependencies:
-      tinymce: 6.8.2
+      tinymce: 6.8.3
       vue: 3.4.15(typescript@5.2.2)
     dev: false
 
@@ -3592,8 +3604,8 @@ packages:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-vue@5.0.3(vite@5.0.12)(vue@3.4.15):
-    resolution: {integrity: sha512-b8S5dVS40rgHdDrw+DQi/xOM9ed+kSRZzfm1T74bMmBDCd8XO87NKlFYInzCtwvtWwXZvo1QxE2OSspTATWrbA==}
+  /@vitejs/plugin-vue@5.0.4(vite@5.0.12)(vue@3.4.15):
+    resolution: {integrity: sha512-WS3hevEszI6CEVEx28F8RjTX97k3KsrcY6kvTg7+Whm5y3oYvcqzVeGCU3hxSAn4uY2CLCkeokkGKpoctccilQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       vite: ^5.0.0
@@ -8232,8 +8244,8 @@ packages:
       yargs: 17.7.2
     dev: false
 
-  /msw@2.1.6(typescript@5.2.2):
-    resolution: {integrity: sha512-62NX1pdMa1C17U/6+SQjQFxwHx0bcWHzZoDN2mK97FvEttTkX9CyJqx3OcYYBpNykDx+segweaO4yxapjifj4g==}
+  /msw@2.1.7(typescript@5.2.2):
+    resolution: {integrity: sha512-yTIYqEMqDSrdbVMrfmqP6rTKQsnIbglTvVmAHDWwNegyXPXRcV+RjsaFEqubRS266gwWCDLm9YdOkWSKLdDvJQ==}
     engines: {node: '>=18'}
     hasBin: true
     requiresBuild: true
@@ -8246,7 +8258,7 @@ packages:
       '@bundled-es-modules/cookie': 2.0.0
       '@bundled-es-modules/statuses': 1.0.1
       '@mswjs/cookies': 1.1.0
-      '@mswjs/interceptors': 0.25.15
+      '@mswjs/interceptors': 0.25.16
       '@open-draft/until': 2.1.0
       '@types/cookie': 0.6.0
       '@types/statuses': 2.0.4
@@ -10578,8 +10590,8 @@ packages:
     resolution: {integrity: sha512-uHNGu4evFt/8eNLldazeAM1M8JrMc1jshhJJfVRARTN3yT8HEEibofeQ7QETWQ5ISBjd6fKtTVBCC/+mGS6FpA==}
     dev: true
 
-  /tinymce@6.8.2:
-    resolution: {integrity: sha512-Lho79o2Y1Yn+XdlTEkHTEkEmzwYWTXz7IUsvPwxJF3VTtgHUIAAuBab29kik+f2KED3rZvQavr9D7sHVMJ9x4A==}
+  /tinymce@6.8.3:
+    resolution: {integrity: sha512-3fCHKAeqT+xNwBVESf6iDbDV0VNwZNmfrkx9c/6Gz5iB8piMfaO6s7FvoiTrj1hf1gVbfyLTnz1DooI6DhgINQ==}
     dev: false
 
   /tmp@0.0.33:
@@ -11738,7 +11750,7 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
 
-  file:packages/vite-plugin-msw(msw@2.1.6):
+  file:packages/vite-plugin-msw(msw@2.1.7):
     resolution: {directory: packages/vite-plugin-msw, type: directory}
     id: file:packages/vite-plugin-msw
     name: '@admin-pkg/vite-plugin-msw'
@@ -11747,6 +11759,6 @@ packages:
     dependencies:
       '@mswjs/interceptors': 0.25.15
       headers-polyfill: 4.0.2
-      msw: 2.1.6(typescript@5.2.2)
+      msw: 2.1.7(typescript@5.2.2)
       strict-event-emitter: 0.5.1
     dev: false

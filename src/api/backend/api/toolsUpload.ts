@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request, type RequestOptions } from '@/utils/request';
 
-/** 上传 POST /api/upload */
+/** 上传 POST /api/tools/upload */
 export async function uploadUpload(body: API.FileUploadDto, file?: File, options?: RequestOptions) {
   const formData = new FormData();
 
@@ -26,7 +26,7 @@ export async function uploadUpload(body: API.FileUploadDto, file?: File, options
     }
   });
 
-  return request<any>('/api/upload', {
+  return request<any>('/api/tools/upload', {
     method: 'POST',
     data: formData,
     requestType: 'form',

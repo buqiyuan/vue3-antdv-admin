@@ -174,16 +174,6 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
       {
-        path: 'icons',
-        name: `${moduleName}-icons`,
-        meta: {
-          title: t('routes.demo.icon'),
-          icon: 'ant-design:desktop-outlined',
-          keepAlive: true,
-        },
-        component: () => import('@/views/demos/icons/Iconfont.vue'),
-      },
-      {
         path: 'nested-routes',
         name: `${moduleName}-nested-routes`,
         redirect: { name: `${moduleName}-nested-routes-one` },

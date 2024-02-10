@@ -31,8 +31,8 @@ export const sendSchemas: FormSchema<API.EmailSendDto>[] = [
   },
   {
     field: 'content',
-    component: ({ formModel }) => {
-      return <TinymceEditor v-model={formModel.content} init={initOptions} />;
+    component: () => {
+      return <TinymceEditor init={initOptions} />;
     },
     label: '正文',
     colProps: { md: 18 },

@@ -44,7 +44,6 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '类型',
     width: 80,
-
     dataIndex: 'type',
     customRender: ({ record }) => (
       <Tag color={'processing'}>{record.type === 1 ? 'Interval' : 'Cron'}</Tag>
@@ -54,19 +53,16 @@ export const baseColumns: TableColumnItem[] = [
     title: '调用服务',
     dataIndex: 'service',
     hideInSearch: true,
-
     width: 220,
   },
   {
     title: '执行参数',
     dataIndex: 'data',
-
     hideInSearch: true,
     width: 220,
   },
   {
     title: '备注',
-
     dataIndex: 'remark',
   },
 ];

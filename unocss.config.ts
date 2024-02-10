@@ -9,7 +9,12 @@ import {
 
 // https://github.com/unocss/unocss#readme
 export default defineConfig({
-  presets: [presetMini({ dark: 'class' }), presetAttributify(), presetUno()],
+  presets: [
+    presetMini({ dark: 'class' }),
+    // https://unocss.dev/presets/attributify#properties-conflicts
+    presetAttributify({ prefix: 'un-', prefixedOnly: true }),
+    presetUno(),
+  ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   shortcuts: {
     'wh-full': 'w-full h-full',

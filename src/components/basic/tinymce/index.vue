@@ -1,18 +1,18 @@
 <script setup lang="ts">
   import { computed } from 'vue';
-  import Editor from '@tinymce/tinymce-vue';
-
+  import EditorComp from '@tinymce/tinymce-vue';
   import tinymceUrl from 'tinymce/tinymce.min.js?url';
   import './plugins';
   import langs from './langs/';
-  import { tinymceProps } from './props';
+  import { tinymceProps, type TinymceEvents } from './props';
   import type { RawEditorOptions } from 'tinymce';
 
   import { useLocale } from '@/locales/useLocale';
 
+  defineEmits<TinymceEvents>();
   const props = defineProps(tinymceProps);
 
-  const modelValue = defineModel();
+  const modelValue = defineModel<string>('value');
 
   const langName = computed(() => {
     const lang = useLocale().getLocale.value;
@@ -42,7 +42,7 @@
 </script>
 
 <template>
-  <Editor
+  <EditorComp
     v-bind="{ ...$attrs, ...props }"
     v-model="modelValue"
     :tinymce-script-src="tinymceUrl"

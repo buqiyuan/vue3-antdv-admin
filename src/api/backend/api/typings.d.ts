@@ -101,6 +101,13 @@ declare namespace API {
     coresLoad: CoreLoad[];
   };
 
+  type DeleteDto = {
+    /** 需要操作的文件或文件夹 */
+    files: FileOpItem[];
+    /** 所在目录 */
+    path: string;
+  };
+
   type DeptDeleteParams = {
     id: number;
   };
@@ -285,9 +292,32 @@ declare namespace API {
     content: string;
   };
 
+  type FileOpDto = {
+    /** 需要操作的文件或文件夹 */
+    files: FileOpItem[];
+    /** 操作前的目录 */
+    originPath: string;
+    /** 操作后的目录 */
+    toPath: string;
+  };
+
+  type FileOpItem = {
+    /** 文件类型 */
+    type: 'file' | 'dir';
+    /** 文件名称 */
+    name: string;
+  };
+
   type FileUploadDto = {
     /** 文件 */
     file: Buffer;
+  };
+
+  type FlowInfo = {
+    /** 当月的X号 */
+    times: number[];
+    /** 对应天数的耗费流量 */
+    datas: number[];
   };
 
   type ImageCaptcha = {
@@ -377,6 +407,15 @@ declare namespace API {
     /** 登录时间 */
     time?: string[];
     _t?: number;
+  };
+
+  type MarkFileDto = {
+    /** 文件名 */
+    name: string;
+    /** 文件所在路径 */
+    path: string;
+    /** 备注信息 */
+    mark: string;
   };
 
   type Memory = {
@@ -549,6 +588,36 @@ declare namespace API {
     id: number;
   };
 
+  type MKDirDto = {
+    /** 文件夹名称 */
+    dirName: string;
+    /** 所属路径 */
+    path: string;
+  };
+
+  type NetDiskManageDownloadParams = {
+    /** 文件名 */
+    name: string;
+    /** 文件所在路径 */
+    path: string;
+  };
+
+  type NetDiskManageInfoParams = {
+    /** 文件名 */
+    name: string;
+    /** 文件所在路径 */
+    path: string;
+  };
+
+  type NetDiskManageListParams = {
+    /** 分页标识 */
+    marker: string;
+    /** 当前路径 */
+    path: string;
+    /** 搜索关键字 */
+    key?: string;
+  };
+
   type OnlineUserInfo = {
     /** 最近的一条登录日志ID */
     id: number;
@@ -566,6 +635,21 @@ declare namespace API {
     browser: string;
     /** 是否禁用 */
     disable: boolean;
+  };
+
+  type OverviewSpaceInfo = {
+    /** 当前使用容量 */
+    spaceSize: number;
+    /** 当前文件数量 */
+    fileSize: number;
+    /** 当天使用流量 */
+    flowSize: number;
+    /** 当天请求次数 */
+    hitSize: number;
+    /** 流量趋势，从当月1号开始计算 */
+    flowTrend: FlowInfo;
+    /** 容量趋势，从当月1号开始计算 */
+    sizeTrend: SpaceInfo;
   };
 
   type Pagination = {};
@@ -639,6 +723,17 @@ declare namespace API {
     password: string;
     /** 语言 */
     lang: string;
+  };
+
+  type RenameDto = {
+    /** 文件类型 */
+    type: string;
+    /** 更改的名称 */
+    toName: string;
+    /** 原来的名称 */
+    name: string;
+    /** 路径 */
+    path: string;
   };
 
   type ResOp = {
@@ -751,6 +846,56 @@ declare namespace API {
     disk: Disk;
     /** 内存信息 */
     memory: Memory;
+  };
+
+  type SFileInfo = {
+    /** 文件id */
+    id: string;
+    /** 文件类型 */
+    type: 'file' | 'dir';
+    /** 文件名称 */
+    name: string;
+    /** 存入时间 */
+    putTime: string;
+    /** 文件大小, byte单位 */
+    fsize: string;
+    /** 文件的mime-type */
+    mimeType: string;
+    /** 所属目录 */
+    belongTo: string;
+  };
+
+  type SFileInfoDetail = {
+    /** 文件大小，int64类型，单位为字节（Byte） */
+    fsize: number;
+    /** 文件HASH值 */
+    hash: string;
+    /** 文件MIME类型，string类型 */
+    mimeType: string;
+    /** 文件存储类型，2 表示归档存储，1 表示低频存储，0表示普通存储。 */
+    type: number;
+    /** 文件上传时间 */
+    putTime: string;
+    /** 文件md5值 */
+    md5: string;
+    /** 上传人 */
+    uploader: string;
+    /** 文件备注 */
+    mark: string;
+  };
+
+  type SFileList = {
+    /** 文件列表 */
+    list: SFileInfo[];
+    /** 分页标志，空则代表加载完毕 */
+    marker: string;
+  };
+
+  type SpaceInfo = {
+    /** 当月的X号 */
+    times: number[];
+    /** 对应天数的容量, byte单位 */
+    datas: number[];
   };
 
   type SseSseParams = {
@@ -997,6 +1142,11 @@ declare namespace API {
     id: number;
     parentId: number;
     children: string[];
+  };
+
+  type UploadToken = {
+    /** 上传token */
+    token: string;
   };
 
   type UserDeleteParams = {
