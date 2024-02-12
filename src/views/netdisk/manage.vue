@@ -192,7 +192,7 @@
     }
   };
 
-  const handleClickFileItem = (row) => {
+  const handleClickFileItem = (row: API.SFileInfo) => {
     console.log('handleClickFileItem ', row);
     if (row.type === 'dir') {
       if (isSearching.value) {
@@ -213,7 +213,7 @@
     }
   };
 
-  const handleDownload = async (row) => {
+  const handleDownload = async (row: API.SFileInfo) => {
     try {
       isLoading.value = true;
       const data = await Api.netDiskManage.netDiskManageDownload({
@@ -227,9 +227,6 @@
     }
   };
 
-  /**
-   * @description 打开部门弹窗
-   */
   const handleRename = async (record: API.SFileInfo) => {
     console.log('record', record);
 
@@ -254,7 +251,7 @@
     });
   };
 
-  const customRow = (record) => {
+  const customRow = (record: API.SFileInfo) => {
     return {
       onContextmenu: (e: MouseEvent) => {
         createContextMenu({

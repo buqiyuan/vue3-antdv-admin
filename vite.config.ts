@@ -114,8 +114,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           javascriptEnabled: true,
           modifyVars: {},
           additionalData: `
-            @primary-color: #00b96b; 
-            @header-height: 60px; 
+            @import '@/styles/variables.less'; 
           `,
         },
         // scss: {

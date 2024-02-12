@@ -1,4 +1,5 @@
 import axios, { CanceledError } from 'axios';
+import { isString } from 'lodash-es';
 import { message as $message, Modal } from 'ant-design-vue';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
@@ -6,9 +7,9 @@ import { Storage } from '@/utils/Storage';
 import { ResultEnum } from '@/enums/httpEnum';
 import { useUserStore } from '@/store/modules/user';
 
-export interface RequestOptions<Passive extends boolean = true> extends AxiosRequestConfig {
+export interface RequestOptions extends AxiosRequestConfig {
   /** 是否直接将数据从响应中提取出，例如直接返回 res.data，而忽略 res.code 等信息 */
-  isReturnResult?: Passive;
+  isReturnResult?: boolean;
   /** 请求成功是提示信息 */
   successMsg?: string;
   /** 请求失败是提示信息 */
@@ -102,27 +103,29 @@ type BaseResponse<T = any> = Omit<API.ResOp, 'data'> & {
 
 export function request<T = any>(
   url: string,
-  config: RequestOptions<true>,
-): Promise<BaseResponse<T>['data']>;
-
+  config: { isReturnResult: false } & RequestOptions,
+): Promise<BaseResponse<T>>;
 export function request<T = any>(
   url: string,
-  config: RequestOptions<false>,
+  config: RequestOptions,
+): Promise<BaseResponse<T>['data']>;
+export function request<T = any>(
+  config: { isReturnResult: false } & RequestOptions,
 ): Promise<BaseResponse<T>>;
+export function request<T = any>(config: RequestOptions): Promise<BaseResponse<T>['data']>;
 /**
  *
  * @param url - request url
  * @param config - AxiosRequestConfig
  */
-export async function request<T = BaseResponse, Passive extends boolean = true>(
-  url: string,
-  config: RequestOptions<Passive> = {},
-) {
+export async function request(_url: string | RequestOptions, _config: RequestOptions = {}) {
+  const url = isString(_url) ? _url : _url.url;
+  const config = isString(_url) ? _config : _url;
   try {
     // 兼容 from data 文件上传的情况
     const { requestType, isReturnResult = true, ...rest } = config;
 
-    const response = (await service.request<T>({
+    const response = (await service.request({
       url,
       ...rest,
       headers: {
