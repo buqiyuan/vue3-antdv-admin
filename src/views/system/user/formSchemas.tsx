@@ -15,7 +15,6 @@ export const userSchemas: FormSchema<API.UserDto>[] = [
     componentProps: {
       fieldNames: {
         label: 'name',
-        key: 'id',
         value: 'id',
       },
       getPopupContainer: () => document.body,

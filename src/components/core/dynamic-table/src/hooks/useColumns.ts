@@ -1,5 +1,6 @@
 import { ref, watchEffect, unref, useSlots, h } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
+import { Input } from 'ant-design-vue';
 import { EditableCell } from '../components';
 import { ColumnKeyFlag, type CustomRenderParams } from '../types/column';
 import tableConfig from '../dynamic-table.config';
@@ -136,7 +137,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
 
     return {
       field: `${record[props.rowKey as string]}.${item.searchField ?? key}`,
-      component: 'Input',
+      component: () => Input,
       defaultValue: record[key],
       colProps: {
         span: unref(getProps).editableType === 'cell' ? 20 : 24,

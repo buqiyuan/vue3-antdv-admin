@@ -53,12 +53,12 @@ type ExtractPropTypes<T extends Component> = T extends new (...args: any) => any
   ? Writable<Omit<InstanceType<T>['$props'], keyof VNodeProps>>
   : never;
 
-export type D = ExtractPropTypes<typeof Input>;
+type ComponentMapType = typeof componentMap;
 
-export type ComponentType = keyof typeof componentMap;
+export type ComponentType = keyof ComponentMapType;
 
 export type ComponentMapProps = {
-  [K in ComponentType]: ExtractPropTypes<(typeof componentMap)[K]>;
+  [K in ComponentType]: ExtractPropTypes<ComponentMapType[K]>;
 };
 
 export type AllComponentProps = ComponentMapProps[ComponentType];

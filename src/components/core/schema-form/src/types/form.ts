@@ -20,9 +20,12 @@ export type Rule = RuleObject & {
 /** 获取所有字段名 */
 export type GetFieldKeys<T> = Exclude<keyof T, symbol | number>;
 
-export interface RenderCallbackParams<T extends object = Recordable> {
-  schema: Omit<FormSchema<T>, 'componentProps'> & {
-    componentProps: ComponentProps;
+export interface RenderCallbackParams<
+  T extends object = Recordable,
+  P extends ComponentProps = ComponentProps,
+> {
+  schema: FormSchema<T> & {
+    componentProps: P;
   };
   /** 响应式的表单数据对象 */
   formModel: Objectable<T>;
@@ -51,8 +54,32 @@ export type RegisterFn = (formInstance: SchemaFormInstance) => void;
 
 export type UnwrapFormSchema<T extends object = Recordable> = UnwrapRef<FormSchema<T>>;
 
+type ComponentSchema<T extends object = Recordable> =
+  | {
+      [K in ComponentType]: {
+        /** 表单项对应的组件，eg: Input */
+        component: K;
+        /** 表单组件属性 */
+        componentProps?:
+          | ComponentProps<K>
+          | {
+              (opt: RenderCallbackParams<T, ComponentProps<K>>): ComponentProps<K>;
+              requestResult: ComponentProps['requestResult'];
+            };
+      };
+    }[ComponentType]
+  | {
+      component: CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
+      componentProps?:
+        | ComponentProps
+        | {
+            (opt: RenderCallbackParams<T>): ComponentProps;
+            requestResult: ComponentProps['requestResult'];
+          };
+    };
+
 /** 表单项 */
-export type FormSchema<T extends object = Recordable> = {
+export type FormSchema<T extends object = Recordable> = ComponentSchema<T> & {
   /** 字段名 */
   field: GetFieldKeys<T>;
   // Event name triggered by internal value change, default change
@@ -74,15 +101,7 @@ export type FormSchema<T extends object = Recordable> = {
   labelWidth?: string | number;
   // Disable the adjustment of labelWidth with global settings of formModel, and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
-  /** 表单项对应的组件，eg: Input */
-  component?: ComponentType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
-  /** 表单组件属性 */
-  componentProps?:
-    | ComponentProps
-    | {
-        (opt: RenderCallbackParams<T>): ComponentProps;
-        requestResult: ComponentProps['requestResult'];
-      };
+
   /** 表单组件slots，例如 a-input 的 suffix slot 可以写成：{ suffix: () => VNode } */
   componentSlots?:
     | ((renderCallbackParams: RenderCallbackParams<T>) => Recordable<CustomRenderFn<T>>)

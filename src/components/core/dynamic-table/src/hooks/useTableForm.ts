@@ -47,7 +47,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
             span: 8,
           },
           ...n.formItemProps,
-        };
+        } as FormSchema;
       })
       .sort((a, b) => Number(a?.order) - Number(b?.order)) as FormSchema[];
   });

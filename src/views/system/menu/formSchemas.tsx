@@ -47,7 +47,6 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     componentProps: {
       fieldNames: {
         label: 'name',
-        key: 'id',
         value: 'id',
       },
       request: async ({ schema, formModel }) => {
