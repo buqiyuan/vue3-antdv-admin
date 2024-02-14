@@ -4,6 +4,7 @@ import type { TableColumn } from '@/components/core/dynamic-table';
 // import { Avatar, Space, Tag } from 'ant-design-vue';
 import { formatSizeUnits } from '@/utils';
 import { hasPermission } from '@/permission';
+import { formatToDateTime } from '@/utils/dateUtil';
 
 export type TableListItem = API.SFileInfo;
 export type TableColumnItem = TableColumn<TableListItem>;
@@ -38,6 +39,9 @@ export const useColumns = () => {
       dataIndex: 'putTime',
       align: 'center',
       width: 220,
+      customRender({ text }) {
+        return formatToDateTime(text);
+      },
     },
     {
       title: '所属目录',

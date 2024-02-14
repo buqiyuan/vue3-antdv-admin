@@ -2,9 +2,9 @@
 /* eslint-disable */
 import { request, type RequestOptions } from '@/utils/request';
 
-/** 复制文件或文件夹，支持批量 POST /api/manage/copy */
+/** 复制文件或文件夹，支持批量 POST /api/netdisk/manage/copy */
 export async function netDiskManageCopy(body: API.FileOpDto, options?: RequestOptions) {
-  return request<any>('/api/manage/copy', {
+  return request<any>('/api/netdisk/manage/copy', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -14,9 +14,9 @@ export async function netDiskManageCopy(body: API.FileOpDto, options?: RequestOp
   });
 }
 
-/** 剪切文件或文件夹，支持批量 POST /api/manage/cut */
+/** 剪切文件或文件夹，支持批量 POST /api/netdisk/manage/cut */
 export async function netDiskManageCut(body: API.FileOpDto, options?: RequestOptions) {
-  return request<any>('/api/manage/cut', {
+  return request<any>('/api/netdisk/manage/cut', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -26,9 +26,9 @@ export async function netDiskManageCut(body: API.FileOpDto, options?: RequestOpt
   });
 }
 
-/** 删除文件或文件夹 POST /api/manage/delete */
+/** 删除文件或文件夹 POST /api/netdisk/manage/delete */
 export async function netDiskManageDelete(body: API.DeleteDto, options?: RequestOptions) {
-  return request<any>('/api/manage/delete', {
+  return request<any>('/api/netdisk/manage/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -38,13 +38,13 @@ export async function netDiskManageDelete(body: API.DeleteDto, options?: Request
   });
 }
 
-/** 获取下载链接，不支持下载文件夹 GET /api/manage/download */
+/** 获取下载链接，不支持下载文件夹 GET /api/netdisk/manage/download */
 export async function netDiskManageDownload(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.NetDiskManageDownloadParams,
   options?: RequestOptions,
 ) {
-  return request<string>('/api/manage/download', {
+  return request<string>('/api/netdisk/manage/download', {
     method: 'GET',
     params: {
       ...params,
@@ -53,13 +53,13 @@ export async function netDiskManageDownload(
   });
 }
 
-/** 获取文件详细信息 GET /api/manage/info */
+/** 获取文件详细信息 GET /api/netdisk/manage/info */
 export async function netDiskManageInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.NetDiskManageInfoParams,
   options?: RequestOptions,
 ) {
-  return request<API.SFileInfoDetail>('/api/manage/info', {
+  return request<API.SFileInfoDetail>('/api/netdisk/manage/info', {
     method: 'GET',
     params: {
       ...params,
@@ -68,13 +68,13 @@ export async function netDiskManageInfo(
   });
 }
 
-/** 获取文件列表 GET /api/manage/list */
+/** 获取文件列表 GET /api/netdisk/manage/list */
 export async function netDiskManageList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.NetDiskManageListParams,
   options?: RequestOptions,
 ) {
-  return request<API.SFileList>('/api/manage/list', {
+  return request<API.SFileList>('/api/netdisk/manage/list', {
     method: 'GET',
     params: {
       ...params,
@@ -83,9 +83,9 @@ export async function netDiskManageList(
   });
 }
 
-/** 添加文件备注 POST /api/manage/mark */
+/** 添加文件备注 POST /api/netdisk/manage/mark */
 export async function netDiskManageMark(body: API.MarkFileDto, options?: RequestOptions) {
-  return request<any>('/api/manage/mark', {
+  return request<any>('/api/netdisk/manage/mark', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -95,9 +95,9 @@ export async function netDiskManageMark(body: API.MarkFileDto, options?: Request
   });
 }
 
-/** 创建文件夹，支持多级 POST /api/manage/mkdir */
+/** 创建文件夹，支持多级 POST /api/netdisk/manage/mkdir */
 export async function netDiskManageMkdir(body: API.MKDirDto, options?: RequestOptions) {
-  return request<any>('/api/manage/mkdir', {
+  return request<any>('/api/netdisk/manage/mkdir', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -107,9 +107,9 @@ export async function netDiskManageMkdir(body: API.MKDirDto, options?: RequestOp
   });
 }
 
-/** 重命名文件或文件夹 POST /api/manage/rename */
+/** 重命名文件或文件夹 POST /api/netdisk/manage/rename */
 export async function netDiskManageRename(body: API.RenameDto, options?: RequestOptions) {
-  return request<any>('/api/manage/rename', {
+  return request<any>('/api/netdisk/manage/rename', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -119,9 +119,9 @@ export async function netDiskManageRename(body: API.RenameDto, options?: Request
   });
 }
 
-/** 获取上传Token，无Token前端无法上传 GET /api/manage/token */
+/** 获取上传Token，无Token前端无法上传 GET /api/netdisk/manage/token */
 export async function netDiskManageToken(options?: RequestOptions) {
-  return request<API.UploadToken>('/api/manage/token', {
+  return request<API.UploadToken>('/api/netdisk/manage/token', {
     method: 'GET',
     ...(options || {}),
   });

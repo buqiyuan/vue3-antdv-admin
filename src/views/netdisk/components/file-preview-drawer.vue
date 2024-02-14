@@ -42,8 +42,8 @@
                 type="primary"
                 size="mini"
                 @click="updateMark"
-                >更新</a-button
-              >
+                >更新
+              </a-button>
             </Space>
           </Descriptions.Item>
         </Descriptions>
@@ -60,6 +60,7 @@
   import noPreviewImage from '@/assets/images/no-preview.png';
   import { Api } from '@/api/';
   import { hasPermission } from '@/permission';
+  import { formatToDateTime } from '@/utils/dateUtil';
 
   defineOptions({
     name: 'FilePreviewDrawer',
@@ -113,6 +114,7 @@
           detailInfo.value[key] = data[key];
         }
       });
+      detailInfo.value.putTime = formatToDateTime(data.putTime);
       detailInfo.value.name = name;
       console.log('detailInfo', detailInfo.value);
       if (hasPermission('netdisk:manage:download') && data.mimeType.includes('image/')) {
