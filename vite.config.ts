@@ -143,6 +143,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),
         },
       },
+      fs: {
+        // https://github.com/vitejs/vite/issues/15858
+        cachedChecks: false,
+      },
     },
     optimizeDeps: {
       include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],

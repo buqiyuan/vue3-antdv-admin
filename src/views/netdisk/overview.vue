@@ -32,11 +32,11 @@
   import OverviewHeaderItem from './components/overview-header-item.vue';
   import type { TitleComponentOption, TooltipComponentOption } from 'echarts/components';
   import type {
-    LineSeriesOption,
     ComposeOption,
+    LineSeriesOption,
     XAXisOption,
     YAXisOption,
-  } from 'echarts/types/dist/shared';
+  } from 'echarts/types/dist/shared.js';
   import { Api } from '@/api/';
   import { formatSizeUnits } from '@/utils';
 
