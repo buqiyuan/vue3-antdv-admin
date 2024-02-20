@@ -1,0 +1,52 @@
+{
+  "name": "@admin-pkg/components",
+  "version": "0.0.1",
+  "description": "",
+  "module": "./dist/index.es.js",
+  "main": "./dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "jsdelivr": "dist/index.umd.js",
+  "unpkg": "dist/index.umd.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    },
+    "./*": "./*"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "rimraf dist && vite build"
+  },
+  "keywords": [
+    "ant-design-vue",
+    "procomponents",
+    "vue"
+  ],
+  "author": {
+    "name": "buqiyuan",
+    "email": "1743369777@qq.com",
+    "url": "https://github.com/buqiyuan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buqiyuan/vue3-antdv-admin/tree/main/packages/components",
+    "directory": "packages/components"
+  },
+  "homepage": "https://github.com/buqiyuan/vue3-antdv-admin/tree/main/packages/components#readme",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vite": "^5.0.2"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  }
+}

@@ -28,6 +28,7 @@ const __APP_INFO__ = {
 
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfig => {
+  console.log('mode', mode);
   // 环境变量
   const { VITE_BASE_URL, VITE_DROP_CONSOLE, VITE_MOCK_IN_PROD } = loadEnv(mode, CWD);
 
@@ -145,7 +146,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
       fs: {
         // https://github.com/vitejs/vite/issues/15858
-        cachedChecks: false,
+        // cachedChecks: false,
       },
     },
     optimizeDeps: {
