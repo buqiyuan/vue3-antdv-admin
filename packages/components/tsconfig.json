@@ -6,5 +6,5 @@
     }
   },
   "include": ["index.ts", "../../src/**/*.ts"],
-  "exclude": ["node_modules", "test", "dist"]
+  "exclude": ["node_modules", "test", "dist", "**/src/views/**"]
 }

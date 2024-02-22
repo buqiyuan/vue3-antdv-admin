@@ -7,6 +7,11 @@ on:
   push:
     branches: [main]
 
+# Ensures that only one mirror task will run at a time.
+concurrency:
+  group: repo-sync
+  cancel-in-progress: true
+
 jobs:
   repo-sync:
     runs-on: ubuntu-latest

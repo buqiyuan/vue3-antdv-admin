@@ -1,17 +1,19 @@
 {
   "name": "@admin-pkg/components",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
+  "type": "module",
   "module": "./dist/index.es.js",
-  "main": "./dist/index.umd.js",
-  "types": "dist/index.d.ts",
-  "jsdelivr": "dist/index.umd.js",
-  "unpkg": "dist/index.umd.js",
+  "main": "../dist/index.es.js",
+  "types": "dist/types/index.es.d.ts",
+  "jsdelivr": "./dist/index.es.js",
+  "unpkg": "./dist/index.es.js",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
+      "types": "./dist/types/index.es.d.ts",
       "import": "./dist/index.es.js",
       "require": "./dist/index.umd.js"
     },
@@ -19,7 +21,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "rimraf dist && vite build"
+    "build": "rimraf dist && vite build",
+    "build:dts": "npx tsc -p tsconfig.dts.json"
   },
   "keywords": [
     "ant-design-vue",
@@ -42,7 +45,6 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "dependencies": {},
   "devDependencies": {
     "vite": "^5.0.2"
   },

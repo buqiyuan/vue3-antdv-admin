@@ -1,10 +1,13 @@
 import { resolve } from 'node:path';
-import { defineConfig } from 'vite';
+import { exec } from 'node:child_process';
+import { defineConfig, type Plugin } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Unocss from 'unocss/vite';
+
+const sourceDir = resolve(__dirname, '../../src');
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,15 +16,20 @@ export default defineConfig({
     alias: [
       {
         find: '@',
-        replacement: resolve(__dirname, '../../src'),
+        replacement: sourceDir,
       },
     ],
   },
+  esbuild: {
+    drop: ['debugger'],
+    pure: ['console.log'],
+  },
   // 打包配置
   build: {
+    target: 'esnext',
     lib: {
       entry: resolve(__dirname, './index.ts'), // 设置入口文件
-      formats: ['es', 'umd'],
+      formats: ['es'],
       name: 'components', // 起个名字，安装、引入用
       fileName: (format) => `index.${format}.js`, // 打包后的文件名
     },
@@ -31,49 +39,77 @@ export default defineConfig({
       // into your library
       external: ['vue', 'ant-design-vue'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        globals: {
-          vue: 'Vue',
-          'ant-design-vue': 'AntDesignVue',
+        // minifyInternalExports: false,
+        //   // Provide global variables to use in the UMD build
+        //   // for externalized deps
+        //   globals: {
+        //     vue: 'Vue',
+        //     'ant-design-vue': 'AntDesignVue',
+        //   },
+        // manualChunks: {
+        //   library: ['lodash-es', 'vue-i18n'],
+        // },
+        manualChunks(id) {
+          if (id.includes('/src/locales/helper.ts')) {
+            console.log('id: ', id);
+            return 'vendor';
+          } else if (id.includes('ant-design-vue')) {
+            return 'vendor';
+          }
         },
       },
     },
   },
-
   plugins: [
     vue(),
     vueJsx(),
     Unocss(),
+    myPlugin(),
     Components({
       dts: false,
-      types: [
-        {
-          from: '@/components/basic/button/',
-          names: ['AButton'],
-        },
-        {
-          from: 'vue-router',
-          names: ['RouterLink', 'RouterView'],
-        },
-      ],
+      dirs: ['../../src/components'],
       resolvers: [
         AntDesignVueResolver({
           importStyle: false, // css in js
           exclude: ['Button'],
         }),
+        (componentName) => {
+          // where `componentName` is always CapitalCase
+          if (componentName === 'AButton') {
+            return { name: componentName, from: resolve(sourceDir, 'components/basic/button/') };
+          }
+        },
       ],
     }),
   ],
-  css: {
-    preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
-        modifyVars: {},
-        additionalData: `
-          @import '@/styles/variables.less'; 
-        `,
-      },
-    },
-  },
 });
+
+function myPlugin(): Plugin {
+  const file = resolve(sourceDir, './permission');
+
+  return {
+    name: '@admin-pkg/components:transform-file',
+
+    // transform(src, id) {
+    //   if (id.includes(file)) {
+    //     console.log('transform id: ', id);
+    //     return {
+    //       code: `export const hasPermission = () => true`,
+    //       map: null,
+    //     };
+    //   }
+    // },
+    closeBundle() {
+      // 根据 js 生成 .d.ts
+      exec('npm run build:dts', (err) => {
+        console.error(err);
+      });
+    },
+    load(id) {
+      if (id.includes(file)) {
+        console.log('load id: ', id);
+        return `export const hasPermission = () => true`;
+      }
+    },
+  };
+}

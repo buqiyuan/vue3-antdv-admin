@@ -1,7 +1,7 @@
 <template>
   <Tooltip placement="top">
     <template #title>
-      <span>{{ $t('component.table.settingColumn') }}</span>
+      <span>{{ t('component.table.settingColumn') }}</span>
     </template>
     <Popover
       placement="bottomLeft"
@@ -12,16 +12,16 @@
       <template #title>
         <div class="popover-title">
           <Checkbox v-model:checked="checkAll" :indeterminate="indeterminate">
-            {{ $t('component.table.settingColumnShow') }}
+            {{ t('component.table.settingColumnShow') }}
           </Checkbox>
           <Checkbox v-model:checked="checkIndex" @change="handleIndexCheckChange">
-            {{ $t('component.table.settingIndexColumnShow') }}
+            {{ t('component.table.settingIndexColumnShow') }}
           </Checkbox>
           <Checkbox v-model:checked="checkBordered" @change="handleBorderedCheckChange">
-            {{ $t('component.table.settingBordered') }}
+            {{ t('component.table.settingBordered') }}
           </Checkbox>
           <a-button size="small" type="link" @click="reset">
-            {{ $t('common.resetText') }}
+            {{ t('common.resetText') }}
           </a-button>
         </div>
       </template>
@@ -41,7 +41,7 @@
               </div>
               <div class="column-fixed">
                 <Tooltip placement="bottomLeft" :mouse-leave-delay="0.4">
-                  <template #title> {{ $t('component.table.settingFixedLeft') }} </template>
+                  <template #title> {{ t('component.table.settingFixedLeft') }} </template>
                   <VerticalRightOutlined
                     class="fixed-left"
                     :class="{ active: item.fixed === 'left' }"
@@ -50,7 +50,7 @@
                 </Tooltip>
                 <Divider type="vertical" />
                 <Tooltip placement="bottomLeft" :mouse-leave-delay="0.4">
-                  <template #title> {{ $t('component.table.settingFixedRight') }} </template>
+                  <template #title> {{ t('component.table.settingFixedRight') }} </template>
                   <VerticalLeftOutlined
                     class="fixed-right"
                     :class="{ active: item.fixed === 'right' }"
@@ -82,7 +82,9 @@
   import Checkbox from '@/components/basic/check-box/index.vue';
   import { useSortable } from '@/hooks/useSortable';
   import { isNullAndUnDef } from '@/utils/is';
+  import { useI18n } from '@/hooks/useI18n';
 
+  const { t } = useI18n();
   const table = useTableContext();
   let inited = false;
   const defaultColumns = cloneDeep<TableColumn[]>(table.columns);
