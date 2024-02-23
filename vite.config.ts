@@ -52,7 +52,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
       }),
-      mkcert(),
+      // 指定 mkcert 的下载源为 coding，从 coding.net 镜像下载证书
+      mkcert({ source: 'coding' }),
       mockServerPlugin({ build: isBuild && VITE_MOCK_IN_PROD === 'true' }),
       createSvgIconsPlugin({
         // Specify the icon folder to be cached
