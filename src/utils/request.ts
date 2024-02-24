@@ -56,9 +56,8 @@ service.interceptors.response.use(
     // if the custom code is not 200, it is judged as an error.
     if (res.code !== ResultEnum.SUCCESS) {
       $message.error(res.message || UNKNOWN_ERROR);
-
       // Illegal token
-      if ([1101, 1102].includes(res.code)) {
+      if ([1101, 1105].includes(res.code)) {
         // 取消后续所有请求
         controller.abort();
         // window.localStorage.clear();

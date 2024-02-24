@@ -2,10 +2,23 @@ import { RouterLink } from 'vue-router';
 import { Tag } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import type { FormSchema } from '@/components/core/schema-form';
+import type { FunctionalComponent } from 'vue';
 import { formatToDateTime } from '@/utils/dateUtil';
+import router from '@/router';
 
 export type TableListItem = API.DictTypeEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
+
+export const dictItemRouteName = '字典项管理';
+
+const DictCodeRender: FunctionalComponent<TableListItem> = (props) => {
+  if (!router.hasRoute(dictItemRouteName)) {
+    return props.code;
+  }
+  return (
+    <RouterLink to={{ name: dictItemRouteName, params: { id: props.id } }}>{props.code}</RouterLink>
+  );
+};
 
 export const baseColumns: TableColumnItem[] = [
   {
@@ -21,9 +34,7 @@ export const baseColumns: TableColumnItem[] = [
   {
     title: '字典编码',
     dataIndex: 'code',
-    customRender: ({ record }) => (
-      <RouterLink to={{ name: '字典项管理', params: { id: record.id } }}>{record.code}</RouterLink>
-    ),
+    customRender: ({ record }) => <DictCodeRender {...record} />,
   },
   {
     title: '状态',

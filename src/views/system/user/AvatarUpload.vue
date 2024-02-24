@@ -2,6 +2,7 @@
   import { ref, computed, watch } from 'vue';
   import { PlusOutlined } from '@ant-design/icons-vue';
   import { message, Upload } from 'ant-design-vue';
+  import { getAvatarUrl } from './columns';
   import type { UploadFile, UploadProps } from 'ant-design-vue';
   import Api from '@/api';
 
@@ -20,7 +21,7 @@
   const previewTitle = ref('');
 
   const avatarUrl = computed(() => {
-    return import.meta.env.VITE_BASE_API_URL + modelValue.value;
+    return getAvatarUrl(modelValue.value!);
   });
 
   const stop = watch(modelValue, (avatar) => {
@@ -30,7 +31,7 @@
           uid: `vc-upload-${Date.now()}-1`,
           name: avatar.split('/').at(-1)!,
           status: 'done',
-          url: avatar,
+          url: avatarUrl.value,
         },
       ];
       stop();

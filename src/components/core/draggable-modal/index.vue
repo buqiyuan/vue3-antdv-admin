@@ -346,7 +346,12 @@
         min-width: 200px;
         height: 100%;
         min-height: 200px;
+        padding-top: 0;
         overflow: hidden;
+
+        .ant-modal-header {
+          padding-top: 20px;
+        }
 
         .ant-modal-body {
           flex: auto;

@@ -18,7 +18,7 @@
           新增
         </a-button>
       </template>
-      <template #expandedRowRender="{ record }">
+      <template v-if="$router.hasRoute(dictItemRouteName)" #expandedRowRender="{ record }">
         <a-table
           size="small"
           :columns="dictItemColumns"
@@ -37,6 +37,7 @@
   import {
     baseColumns,
     searchFormSchema,
+    dictItemRouteName,
     type TableListItem,
     type TableColumnItem,
   } from './columns';

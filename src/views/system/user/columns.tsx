@@ -6,7 +6,7 @@ import { baseApiUrl } from '@/utils/request';
 export type TableListItem = API.UserEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
 
-const getAvatarUrl = (path: string) => {
+export const getAvatarUrl = (path: string) => {
   return /^https?:\/\//.test(path) ? path : baseApiUrl + path;
 };
 
