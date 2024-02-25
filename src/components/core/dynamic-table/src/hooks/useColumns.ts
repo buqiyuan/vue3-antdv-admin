@@ -2,7 +2,7 @@ import { ref, watchEffect, unref, useSlots, h } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { Input } from 'ant-design-vue';
 import { EditableCell } from '../components';
-import { ColumnKeyFlag, type CustomRenderParams } from '../types/column';
+import { ColumnKeyFlag, columnKeyFlags, type CustomRenderParams } from '../types/column';
 import tableConfig from '../dynamic-table.config';
 import type { Slots } from 'vue';
 import type {
@@ -33,13 +33,13 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
 
   watchEffect(() => {
     const innerProps = { ...unref(getProps) };
-    const ColumnKeyFlags = Object.keys(ColumnKeyFlag);
+
     const columns = cloneDeep(innerProps!.columns!.filter((n) => !n.hideInTable));
 
     // 是否添加序号列
     if (innerProps?.showIndex) {
       columns.unshift({
-        dataIndex: 'ACTION',
+        dataIndex: ColumnKeyFlag.INDEX,
         title: '序号',
         width: 60,
         align: 'center',
@@ -79,7 +79,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
         const isShowEditable =
           (isEditableRow || isEditableCell) &&
           isCellEditable &&
-          !ColumnKeyFlags.includes(columnKey);
+          !columnKeyFlags.includes(columnKey);
 
         return isShowEditable
           ? h(

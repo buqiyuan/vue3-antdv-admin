@@ -4,7 +4,6 @@ import type { TableColumn } from '@/components/core/dynamic-table';
 export const columns: TableColumn[] = [
   {
     title: '头像',
-
     width: 100,
     hideInSearch: true,
     dataIndex: 'faceimg',
@@ -14,17 +13,14 @@ export const columns: TableColumn[] = [
   },
   {
     title: '英雄名称',
-
     dataIndex: 'cname',
   },
   {
     title: '英雄称号',
-
     dataIndex: 'title',
   },
   {
     title: '定位',
-
     dataIndex: 'occupation',
   },
   {
@@ -57,7 +53,6 @@ export const columns: TableColumn[] = [
   },
   {
     title: '操作',
-
     width: 120,
     dataIndex: 'ACTION',
     actions: ({ record }) => [

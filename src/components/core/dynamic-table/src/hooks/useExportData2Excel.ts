@@ -1,4 +1,5 @@
 import { get, isEmpty } from 'lodash-es';
+import { columnKeyFlags } from '../types';
 import type { DynamicTableProps } from '../dynamic-table';
 import type { TableMethods, TableState } from './index';
 import { exportJson2Excel } from '@/utils/Export2Excel';
@@ -20,7 +21,10 @@ export const useExportData2Excel = ({ props, state, methods }: UseExportData2Exc
     const { getColumnKey } = methods;
     const { tableData } = state;
 
-    const theaders = columns.filter((n) => getColumnKey(n) && getColumnKey(n) !== 'INDEX');
+    const theaders = columns.filter((n) => {
+      const key = getColumnKey(n);
+      return key && !columnKeyFlags.includes(key);
+    });
 
     if (exportFormatter) {
       const { header, data } = exportFormatter(theaders, tableData.value);

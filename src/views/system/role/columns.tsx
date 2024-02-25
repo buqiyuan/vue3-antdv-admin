@@ -26,6 +26,21 @@ export const baseColumns: TableColumnItem[] = [
     title: '状态',
     dataIndex: 'status',
     width: 80,
+    formItemProps: {
+      component: 'Select',
+      componentProps: {
+        options: [
+          {
+            label: '启用',
+            value: 1,
+          },
+          {
+            label: '禁用',
+            value: 0,
+          },
+        ],
+      },
+    },
     customRender: ({ record }) => {
       const enable = ~~record.status === 1;
       return <Tag color={enable ? 'green' : 'red'}>{enable ? '启用' : '停用'}</Tag>;

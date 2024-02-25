@@ -64,4 +64,6 @@ export enum ColumnKeyFlag {
   ACTION = 'ACTION',
   INDEX = 'INDEX',
 }
+
+export const columnKeyFlags = Object.values(ColumnKeyFlag) as string[];
 export type ColumnKeyFlagType = `${ColumnKeyFlag}`;

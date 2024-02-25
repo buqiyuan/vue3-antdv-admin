@@ -23,7 +23,9 @@ export const createContextMenu = function (options: CreateContextOptions) {
     const body = document.body;
 
     const container = document.createElement('div');
-    const propsData: Partial<ContextMenuProps> = {};
+    const propsData: Partial<ContextMenuProps> = {
+      getPopupContainer: () => container,
+    };
     if (options.styles) {
       propsData.styles = options.styles;
     }
@@ -57,6 +59,7 @@ export const createContextMenu = function (options: CreateContextOptions) {
     };
 
     menuManager.resolve = function (arg) {
+      vm.component?.exposed?.close();
       remove();
       resolve(arg);
     };

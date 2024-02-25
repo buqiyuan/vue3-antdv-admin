@@ -1,11 +1,9 @@
 <script lang="tsx">
-  import { defineComponent, nextTick, onMounted, computed, ref, unref, onUnmounted } from 'vue';
-  import { Menu, Divider } from 'ant-design-vue';
+  import { defineComponent, computed, ref, unref } from 'vue';
+  import { Menu, Dropdown } from 'ant-design-vue';
   import type { ContextMenuItem, ItemContentProps, Axis } from './typing';
   import type { FunctionalComponent, CSSProperties, PropType } from 'vue';
   import { IconFont } from '@/components/basic/icon';
-
-  const prefixCls = 'context-menu';
 
   const props = {
     width: { type: Number, default: 156 },
@@ -45,9 +43,8 @@
   export default defineComponent({
     name: 'ContextMenu',
     props,
-    setup(props) {
-      const wrapRef = ref(null);
-      const showRef = ref(false);
+    setup(props, { expose }) {
+      const open = ref(true);
 
       const getStyle = computed((): CSSProperties => {
         const { axis, items, styles, width } = props;
@@ -59,33 +56,27 @@
         const left = body.clientWidth < x + menuWidth ? x - menuWidth : x;
         const top = body.clientHeight < y + menuHeight ? y - menuHeight : y;
         return {
-          ...styles,
           position: 'absolute',
           width: `${width}px`,
           left: `${left + 1}px`,
           top: `${top + 1}px`,
-          zIndex: 9999,
+          ...styles,
         };
       });
 
-      onMounted(() => {
-        nextTick(() => (showRef.value = true));
-      });
-
-      onUnmounted(() => {
-        const el = unref(wrapRef);
-        el && document.body.removeChild(el);
-      });
+      const close = () => {
+        open.value = false;
+      };
 
       function handleAction(item: ContextMenuItem, e: MouseEvent) {
         const { handler, disabled } = item;
         if (disabled) {
           return;
         }
-        showRef.value = false;
         e?.stopPropagation();
         e?.preventDefault();
         handler?.();
+        close();
       }
 
       function renderMenuItem(items: ContextMenuItem[]) {
@@ -102,17 +93,16 @@
           if (!children || children.length === 0) {
             return (
               <>
-                <Menu.Item disabled={disabled} class={`${prefixCls}__item`} key={label}>
+                <Menu.Item disabled={disabled} key={label}>
                   <ItemContent {...contentProps} />
                 </Menu.Item>
-                {divider ? <Divider key={`d-${label}`} /> : null}
+                {divider ? <Menu.Divider key={`d-${label}`} /> : null}
               </>
             );
           }
-          if (!unref(showRef)) return null;
 
           return (
-            <Menu.SubMenu key={label} disabled={disabled} popupClassName={`${prefixCls}__popup`}>
+            <Menu.SubMenu key={label} disabled={disabled}>
               {{
                 title: () => <ItemContent {...contentProps} />,
                 default: () => renderMenuItem(children),
@@ -121,90 +111,26 @@
           );
         });
       }
+
+      expose({
+        close,
+      });
+
       return () => {
-        if (!unref(showRef)) {
-          return null;
-        }
         const { items } = props;
         return (
-          <div class={prefixCls}>
-            <Menu inlineIndent={12} mode="vertical" ref={wrapRef} style={unref(getStyle)}>
-              {renderMenuItem(items)}
-            </Menu>
-          </div>
+          <Dropdown open={open.value}>
+            {{
+              default: () => <div style={unref(getStyle)}></div>,
+              overlay: () => (
+                <Menu inlineIndent={12} mode="vertical">
+                  {renderMenuItem(items)}
+                </Menu>
+              ),
+            }}
+          </Dropdown>
         );
       };
     },
   });
 </script>
-<style lang="less">
-  @default-height: 42px !important;
-
-  @small-height: 36px !important;
-
-  @large-height: 36px !important;
-
-  .item-style() {
-    li {
-      display: inline-block;
-      width: 100%;
-      height: @default-height;
-      margin: 0 !important;
-      line-height: @default-height;
-
-      span {
-        line-height: @default-height;
-      }
-
-      > div {
-        margin: 0 !important;
-      }
-
-      &:not(.ant-menu-item-disabled):hover {
-        background-color: rgb(0 0 0 / 4%);
-      }
-    }
-  }
-
-  .context-menu {
-    display: block;
-    position: fixed;
-    z-index: 200;
-    top: 0;
-    left: 0;
-    width: 156px;
-    margin: 0;
-    border: 1px solid rgb(0 0 0 / 8%);
-    border-radius: 0.25rem;
-    background-clip: padding-box;
-    background-color: var(--component-background);
-    box-shadow:
-      0 2px 2px 0 rgb(0 0 0 / 14%),
-      0 3px 1px -2px rgb(0 0 0 / 10%),
-      0 1px 5px 0 rgb(0 0 0 / 6%);
-    list-style: none;
-    user-select: none;
-
-    &__item {
-      margin: 0 !important;
-    }
-    .item-style();
-
-    .ant-divider {
-      margin: 0;
-    }
-
-    &__popup {
-      .ant-divider {
-        margin: 0;
-      }
-
-      .item-style();
-    }
-
-    .ant-menu-submenu-title,
-    .ant-menu-item {
-      padding: 0 !important;
-    }
-  }
-</style>

@@ -1,3 +1,5 @@
+import type { DropdownProps } from 'ant-design-vue/es/dropdown';
+
 export interface Axis {
   x: number;
   y: number;
@@ -19,7 +21,7 @@ export interface CreateContextOptions {
   items?: ContextMenuItem[];
 }
 
-export interface ContextMenuProps {
+export interface ContextMenuProps extends DropdownProps {
   event?: MouseEvent;
   styles?: any;
   items: ContextMenuItem[];

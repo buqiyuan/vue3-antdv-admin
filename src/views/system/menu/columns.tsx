@@ -59,6 +59,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '权限标识',
     width: 180,
     dataIndex: 'permission',
+    hideInSearch: true,
     customRender: ({ record }) =>
       record.permission && <Tag color="processing">{record.permission}</Tag>,
   },
@@ -79,6 +80,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '是否显示',
     dataIndex: 'show',
     width: 80,
+    hideInSearch: true,
     customRender: ({ record }) => {
       const show = record.show;
       const enable = ~~show === 1;
@@ -91,6 +93,7 @@ export const baseColumns: TableColumnItem[] = [
     title: '状态',
     dataIndex: 'status',
     width: 80,
+    hideInSearch: true,
     customRender: ({ record }) => {
       const status = record.status;
       const enable = ~~status === 1;
