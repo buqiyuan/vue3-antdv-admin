@@ -14,8 +14,10 @@
     </Layout.Sider>
     <Layout>
       <PageHeader v-model:collapsed="collapsed" :theme="getTheme">
-        <template v-if="layoutSetting.layout === 'topmenu'" #default>
+        <template v-if="layoutSetting.layout === 'topmenu'" #left>
           <Logo :collapsed="collapsed" />
+        </template>
+        <template v-if="layoutSetting.layout === 'topmenu'" #menu>
           <AsideMenu :collapsed="collapsed" :theme="getTheme" />
         </template>
       </PageHeader>

@@ -1,25 +1,19 @@
 <template>
-  <div>
-    <DynamicTable
-      row-key="id"
-      header-title="角色管理"
-      title-tooltip="超级管理员默认拥有所有资源访问权限且不支持修改"
-      :data-request="Api.systemRole.roleList"
-      :columns="columns"
-      bordered
-      size="small"
-    >
-      <template #toolbar>
-        <a-button
-          type="primary"
-          :disabled="!$auth('system:role:create')"
-          @click="openMenuModal({})"
-        >
-          新增
-        </a-button>
-      </template>
-    </DynamicTable>
-  </div>
+  <DynamicTable
+    row-key="id"
+    header-title="角色管理"
+    title-tooltip="超级管理员默认拥有所有资源访问权限且不支持修改"
+    :data-request="Api.systemRole.roleList"
+    :columns="columns"
+    bordered
+    size="small"
+  >
+    <template #toolbar>
+      <a-button type="primary" :disabled="!$auth('system:role:create')" @click="openMenuModal({})">
+        新增
+      </a-button>
+    </template>
+  </DynamicTable>
 </template>
 
 <script lang="ts" setup>

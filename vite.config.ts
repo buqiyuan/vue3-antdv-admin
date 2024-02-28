@@ -95,16 +95,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         less: {
           javascriptEnabled: true,
           modifyVars: {},
-          additionalData: `
-            @import '@/styles/variables.less'; 
-          `,
+          // additionalData: `
+          //   @import '@/styles/variables.less';
+          // `,
         },
-        // scss: {
-        //   additionalData: `
-        //   @use 'sass:math';
-        //   @import "src/styles/global.scss";
-        //   `,
-        // },
       },
     },
     server: {

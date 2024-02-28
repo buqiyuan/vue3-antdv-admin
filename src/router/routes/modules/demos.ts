@@ -1,5 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
-import RouterView from '@/layout/routerView/index.vue';
+import { type RouteRecordRaw } from 'vue-router';
 import { t } from '@/hooks/useI18n';
 
 const moduleName = 'demos';
@@ -9,7 +8,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/demos',
     name: moduleName,
     redirect: { name: `${moduleName}-custom-modal` },
-    component: RouterView,
     meta: {
       title: t('routes.demo.demo'),
       icon: 'ant-design:desktop-outlined',
@@ -44,7 +42,6 @@ const routes: Array<RouteRecordRaw> = [
           keepAlive: true,
         },
         redirect: { name: `${moduleName}-form-basic` },
-        component: RouterView,
         children: [
           {
             path: 'basic',
@@ -117,7 +114,6 @@ const routes: Array<RouteRecordRaw> = [
           keepAlive: true,
         },
         redirect: { name: `${moduleName}-table-wzry` },
-        component: RouterView,
         children: [
           {
             path: 'search-table',

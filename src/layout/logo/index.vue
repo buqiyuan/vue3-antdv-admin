@@ -29,7 +29,7 @@
     .title {
       @apply mb-0 text-xl;
 
-      color: @primary-color;
+      color: var(--app-primary-color);
     }
   }
 </style>

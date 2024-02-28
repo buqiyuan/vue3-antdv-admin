@@ -109,7 +109,7 @@
       position: absolute;
       right: 12px;
       bottom: 10px;
-      color: @primary-color;
+      color: var(--app-primary-color);
     }
   }
 

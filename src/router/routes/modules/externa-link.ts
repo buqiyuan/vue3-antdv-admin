@@ -1,5 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
-import RouterView from '@/layout/routerView/index.vue';
+import { RouterView, type RouteRecordRaw } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
   {
