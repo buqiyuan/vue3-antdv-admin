@@ -5,7 +5,7 @@
       <MenuItemContent :item="item" />
     </template>
     <template v-for="child in item.children || []" :key="child.name">
-      <MyMenuItem :item="child" />
+      <MySubMenuItem :item="child" />
     </template>
   </Menu.SubMenu>
   <!-- 菜单 -->
