@@ -11,6 +11,28 @@ generateService({
   // 自定义网络请求函数路径
   requestImportStatement: 'import { request, type RequestOptions } from "@/utils/request";',
   hook: {
+    afterOpenApiDataInited(openAPIData) {
+      const schemas = openAPIData.components?.schemas;
+      if (schemas) {
+        Object.values(schemas).forEach((schema) => {
+          if ('$ref' in schema) {
+            return;
+          }
+          if (schema.properties) {
+            Object.values(schema.properties).forEach((prop) => {
+              if ('$ref' in prop) {
+                return;
+              }
+              // 匡正文件上传的参数类型
+              if (prop.format === 'binary') {
+                prop.type = 'object';
+              }
+            });
+          }
+        });
+      }
+      return openAPIData;
+    },
     // @ts-ignore
     customFunctionName(operationObject, apiPath) {
       const { operationId } = operationObject;

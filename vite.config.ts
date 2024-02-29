@@ -10,6 +10,7 @@ import Unocss from 'unocss/vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
 import mockServerPlugin from '@admin-pkg/vite-plugin-msw/vite';
+import TinymceResourcePlugin from '@admin-pkg/vite-plugin-tinymce-resource';
 import pkg from './package.json';
 import type { UserConfig, ConfigEnv } from 'vite';
 
@@ -55,6 +56,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       // 指定 mkcert 的下载源为 coding，从 coding.net 镜像下载证书
       mkcert({ source: 'coding' }),
       mockServerPlugin({ build: isBuild && VITE_MOCK_IN_PROD === 'true' }),
+      TinymceResourcePlugin({ baseUrl: '/tinymce-resource/' }),
       createSvgIconsPlugin({
         // Specify the icon folder to be cached
         iconDirs: [resolve(CWD, 'src/assets/icons')],
@@ -87,6 +89,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           vueTsc: true,
           eslint: {
             lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
+          },
+          overlay: {
+            initialIsOpen: false,
           },
         }),
     ],

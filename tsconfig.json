@@ -31,8 +31,8 @@
     "noImplicitAny": false,
     "types": ["node", "vite/client"],
     "paths": {
-      "@/*": ["src/*"],
-    },
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "**/*.d.ts",
@@ -43,7 +43,7 @@
     "src/**/*.vue",
     "types/**/*.d.ts",
     "types/**/*.ts",
-    "vite.config.ts",
+    "vite.config.ts"
   ],
-  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"],
+  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"]
 }

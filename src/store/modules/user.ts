@@ -69,6 +69,18 @@ export const useUserStore = defineStore('user', () => {
     serverConnected.value = isConnect;
   };
 
+  const sortMenus = (menus: RouteRecordRaw[] = []) => {
+    return menus
+      .filter((n) => {
+        const flag = !n.meta?.hideInMenu;
+        if (flag && n.children?.length) {
+          n.children = sortMenus(n.children);
+        }
+        return flag;
+      })
+      .sort((a, b) => ~~a.meta?.orderNo! - ~~b.meta?.orderNo!);
+  };
+
   /** 清空token及用户信息 */
   const resetToken = () => {
     token.value = name.value = '';
@@ -115,7 +127,8 @@ export const useUserStore = defineStore('user', () => {
     // const wsStore = useWsStore();
     const [menusData, permsData] = await Promise.all([accountMenu(), accountPermissions()]);
     perms.value = permsData;
-    menus.value = generateDynamicRoutes(menusData as unknown as RouteRecordRaw[]);
+    const result = generateDynamicRoutes(menusData as unknown as RouteRecordRaw[]);
+    menus.value = sortMenus(result);
   };
   /** 登出 */
   const logout = async () => {

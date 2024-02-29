@@ -136,12 +136,9 @@
     height: var(--app-header-height);
     padding: 0 20px;
 
-    * {
-      cursor: pointer;
-    }
-
     .header-right {
       min-width: 180px;
+      cursor: pointer;
     }
 
     .header-menu {

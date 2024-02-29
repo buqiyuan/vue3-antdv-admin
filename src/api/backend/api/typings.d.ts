@@ -46,8 +46,6 @@ declare namespace API {
     remark: string;
   };
 
-  type Buffer = {};
-
   type CaptchaCaptchaByImgParams = {
     /** 验证码宽度 */
     width?: number;
@@ -310,7 +308,7 @@ declare namespace API {
 
   type FileUploadDto = {
     /** 文件 */
-    file: Buffer;
+    file: Record<string, any>;
   };
 
   type FlowInfo = {

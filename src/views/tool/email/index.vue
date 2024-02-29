@@ -46,7 +46,7 @@
 
 <template>
   <a-spin :spinning="loading" tip="邮件发送中...">
-    <div class="bg-white">
+    <a-card size="small">
       <a-tabs
         tab-position="top"
         :tab-bar-style="{
@@ -60,7 +60,7 @@
           </a-tab-pane>
         </template>
       </a-tabs>
-    </div>
+    </a-card>
   </a-spin>
 </template>
 

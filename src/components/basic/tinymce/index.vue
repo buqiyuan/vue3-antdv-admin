@@ -8,21 +8,31 @@
   import type { RawEditorOptions } from 'tinymce';
 
   import { useLocale } from '@/locales/useLocale';
+  import { useLayoutSettingStore } from '@/store/modules/layoutSetting';
 
   defineEmits<TinymceEvents>();
   const props = defineProps(tinymceProps);
 
   const modelValue = defineModel<string>('value');
 
+  const layoutSettingStore = useLayoutSettingStore();
+
   const langName = computed(() => {
     const lang = useLocale().getLocale.value;
     return ['zh_CN', 'en'].includes(lang) ? lang : 'zh_CN';
   });
 
+  const skinName = computed(() => {
+    return layoutSettingStore.getNavTheme === 'realDark' ? 'oxide-dark' : 'oxide';
+  });
+
   const initOptions = computed((): RawEditorOptions => {
     const { height, init, toolbar, plugins } = props;
+    const publicPath = import.meta.env.VITE_BASE_URL || '/';
+    const baseUrl = `${publicPath}tinymce-resource`;
 
     return {
+      base_url: baseUrl,
       height,
       toolbar,
       menubar: 'file edit insert view format table',
@@ -36,6 +46,8 @@
       object_resizing: false,
       auto_focus: true,
       resize: true,
+      skin: skinName.value,
+      skin_url: `${baseUrl}/skins/ui/${skinName.value}`,
       ...init,
     };
   });

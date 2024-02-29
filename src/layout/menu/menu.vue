@@ -9,7 +9,9 @@
       collapsible
       @click="clickMenuItem"
     >
-      <MenuItem :menus="menus" />
+      <template v-for="item in menus" :key="item.name">
+        <SubMenuItem :item="item" />
+      </template>
     </Menu>
   </div>
 </template>
@@ -18,7 +20,7 @@
   import { reactive, computed, watch, type PropType } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { Menu, type MenuTheme } from 'ant-design-vue';
-  import MenuItem from './menu-item.vue';
+  import SubMenuItem from './components/sub-menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
   import { useLayoutSettingStore } from '@/store/modules/layoutSetting';
   import { LOGIN_NAME } from '@/router/constant';
@@ -113,6 +115,7 @@
 
 <style lang="less" scoped>
   .menu-container {
+    width: 100%;
     overflow: auto;
 
     &::-webkit-scrollbar {
@@ -121,7 +124,12 @@
     }
 
     &.is-side-menu {
-      height: calc(100vh - 64px);
+      height: calc(100vh - var(--app-header-height));
+    }
+
+    & > :deep(.ant-menu) {
+      justify-content: center;
+      width: 100%;
     }
   }
 </style>
