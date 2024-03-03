@@ -11,12 +11,17 @@ let base: string;
 type Options = {
   /** Public Dir  */
   baseUrl: string;
-  /** 要复制的目标文件夹 */
-  destDir?: string;
+  /**
+   * 要复制的目标文件夹
+   * @default: ['skins/content/default', 'skins/ui/oxide', 'skins/ui/oxide-dark']
+   **/
+  destDir?: string | string[];
 };
 
+const defaultDestDir = ['skins/content/default', 'skins/ui/oxide', 'skins/ui/oxide-dark'] as const;
+
 export default (options: Options): Plugin => {
-  const { baseUrl, destDir = 'skins' } = options;
+  const { baseUrl, destDir = defaultDestDir } = options;
 
   return {
     name: 'vite-plugin-tinymce-resource',
@@ -44,16 +49,20 @@ export default (options: Options): Plugin => {
       });
     },
     async closeBundle() {
-      const sourceDir = resolve(tinymceDir, destDir);
-      const destinationDir = resolve(outDir, `./${baseUrl}`, destDir);
-      // console.log(sourceDir);
-      // console.log(destinationDir);
+      Array<string>()
+        .concat(destDir)
+        .forEach(async (dir) => {
+          const sourceDir = resolve(tinymceDir, dir);
+          const destinationDir = resolve(outDir, `./${baseUrl}`, dir);
+          // console.log(sourceDir);
+          // console.log(destinationDir);
 
-      try {
-        await cp(sourceDir, destinationDir, { recursive: true, force: true });
-      } catch (error) {
-        console.error('[@admin-pkg/vite-plugin-tinymce-resource]: ', error);
-      }
+          try {
+            await cp(sourceDir, destinationDir, { recursive: true, force: true });
+          } catch (error) {
+            console.error('[@admin-pkg/vite-plugin-tinymce-resource]: ', error);
+          }
+        });
     },
   };
 };

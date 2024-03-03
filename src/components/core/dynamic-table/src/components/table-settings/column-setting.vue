@@ -81,7 +81,7 @@
   import type { TableColumn } from '../../types/column';
   import Checkbox from '@/components/basic/check-box/index.vue';
   import { useSortable } from '@/hooks/useSortable';
-  import { isNullAndUnDef } from '@/utils/is';
+  import { isNil } from '@/utils/is';
   import { useI18n } from '@/hooks/useI18n';
 
   const { t } = useI18n();
@@ -159,7 +159,7 @@
       onEnd: (evt) => {
         const { oldIndex, newIndex } = evt;
 
-        if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) {
+        if (isNil(oldIndex) || isNil(newIndex) || oldIndex === newIndex) {
           return;
         }
         // Sort column

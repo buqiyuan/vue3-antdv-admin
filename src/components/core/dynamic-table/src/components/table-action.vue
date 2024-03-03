@@ -22,7 +22,6 @@
   import type { CustomRenderParams } from '../types/column';
   import { hasPermission } from '@/permission';
   import { Icon } from '@/components/basic/icon';
-  import { isAsyncFunction } from '@/utils/is';
 
   const ActionItemRender: FunctionalComponent<ActionItem> = (action, { slots }) => {
     const { popConfirm, tooltip } = action;
@@ -88,7 +87,7 @@
       .map((item, index) => {
         const onClick = item.onClick;
 
-        if (isAsyncFunction(onClick) && !hasClickFnFlag(onClick)) {
+        if (isFunction(onClick) && !hasClickFnFlag(onClick)) {
           item.onClick = debounce(async () => {
             const key = getKey(item, index);
             loadingMap.value.set(key, true);
@@ -96,9 +95,6 @@
               loadingMap.value.delete(key);
             });
           });
-          setClickFnFlag(item.onClick);
-        } else if (isFunction(onClick) && !hasClickFnFlag(onClick)) {
-          item.onClick = debounce(onClick);
           setClickFnFlag(item.onClick);
         }
         if (item.icon) {

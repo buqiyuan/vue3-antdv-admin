@@ -31,7 +31,10 @@
             @after-leave="overflow = 'auto'"
           >
             <keep-alive :include="keepAliveComponents">
-              <component :is="Component" :key="route.fullPath" />
+              <Suspense>
+                <component :is="Component" :key="route.fullPath" />
+                <template #fallback> 正在加载... </template>
+              </Suspense>
             </keep-alive>
           </Transition>
         </template>

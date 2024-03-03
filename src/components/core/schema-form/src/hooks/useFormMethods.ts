@@ -3,7 +3,7 @@ import { set } from 'lodash-es';
 import type { FormState } from './useFormState';
 import type { SchemaFormProps } from '../schema-form';
 import { deepMerge } from '@/utils/';
-import { isFunction, isNullOrUnDef, isObject, isArray, isString } from '@/utils/is';
+import { isFunction, isDef, isObject, isArray, isString } from '@/utils/is';
 import { dateUtil } from '@/utils/dateUtil';
 
 type UseFormMethodsContext = FormState;
@@ -107,7 +107,7 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
   const initFormValues = () => {
     unref(formPropsRef).schemas?.forEach((item) => {
       const { defaultValue } = item;
-      if (!isNullOrUnDef(defaultValue)) {
+      if (isDef(defaultValue)) {
         formModel[item.field] = defaultValue;
         defaultFormValues[item.field] = defaultValue;
         cacheFormModel[item.field] = defaultValue;
