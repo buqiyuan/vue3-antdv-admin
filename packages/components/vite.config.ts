@@ -1,6 +1,5 @@
 import { resolve } from 'node:path';
-import { exec } from 'node:child_process';
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig, type PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import Components from 'unplugin-vue-components/vite';
@@ -84,7 +83,7 @@ export default defineConfig({
   ],
 });
 
-function myPlugin(): Plugin {
+function myPlugin(): PluginOption {
   const file = resolve(sourceDir, './permission');
 
   return {
@@ -99,12 +98,6 @@ function myPlugin(): Plugin {
     //     };
     //   }
     // },
-    closeBundle() {
-      // 根据 js 生成 .d.ts
-      exec('npm run build:dts', (err) => {
-        console.error(err);
-      });
-    },
     load(id) {
       if (id.includes(file)) {
         console.log('load id: ', id);

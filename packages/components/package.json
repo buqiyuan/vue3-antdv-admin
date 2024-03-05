@@ -21,8 +21,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "rimraf dist && vite build",
-    "build:dts": "npx tsc -p tsconfig.dts.json"
+    "build": "rimraf dist && vite build && npm run build:dts",
+    "build:dts": "npx tsc -p tsconfig.dts.json || true"
   },
   "keywords": [
     "ant-design-vue",
@@ -46,9 +46,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "vite": "^5.0.2"
+    "vite": "^5.1.5"
   },
   "peerDependencies": {
-    "vue": "^3.4.0"
+    "vue": "^3.4.0",
+    "vite": "^5.0.0"
   }
 }

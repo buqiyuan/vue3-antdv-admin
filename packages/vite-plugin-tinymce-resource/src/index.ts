@@ -1,6 +1,6 @@
 import { cp, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import type { Plugin } from 'vite';
+import type { PluginOption } from 'vite';
 
 // const require = createRequire(import.meta.url);
 
@@ -20,7 +20,7 @@ type Options = {
 
 const defaultDestDir = ['skins/content/default', 'skins/ui/oxide', 'skins/ui/oxide-dark'] as const;
 
-export default (options: Options): Plugin => {
+export default (options: Options): PluginOption => {
   const { baseUrl, destDir = defaultDestDir } = options;
 
   return {
