@@ -1,5 +1,6 @@
 import { RouterView } from 'vue-router';
 import { asyncRoutes } from '../asyncModules';
+import outsideLayout from '../routes/outsideLayout';
 import type { RouteMeta, RouteRecordRaw } from 'vue-router';
 import IFramePage from '@/components/basic/iframe-page';
 import { warn } from '@/utils/log';
@@ -50,15 +51,17 @@ export const generateDynamicRoutes = (menus: RouteRecordRaw[]) => {
   // 1. 让 vue-router 先帮我们拍平路由
   const removeRoute = router.addRoute(rootRoute);
   // 2. 获取所有没有包含 children 的路由，也就是页面级路由
-  const filterRoutes = router
-    .getRoutes()
-    .filter((item) => !item.children.length || Object.is(item.meta?.hideChildrenInMenu, true));
+  const filterRoutes = router.getRoutes().filter((item) => {
+    const isLeaf = !item.children.length || Object.is(item.meta?.hideChildrenInMenu, true);
+    const isOutsideRoute = outsideLayout.some((n) => n.name === item.name);
+    return isLeaf && !isOutsideRoute;
+  });
   // 3. 清空所有路由
   removeRoute();
   rootRoute.children = [...filterRoutes];
   // 4.重新添加拍平后的路由
   router.addRoute(rootRoute);
-  // console.log('routes', routes, router.getRoutes());
+  console.log('routes', router.getRoutes());
 
   return routes;
 };

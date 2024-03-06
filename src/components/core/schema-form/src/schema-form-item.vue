@@ -15,6 +15,7 @@
       <!-- 前置插槽 -->
       <template v-if="schema.beforeSlot">
         <slot v-if="isString(schema.beforeSlot)" :name="schema.beforeSlot" v-bind="getValues">
+          <span class="mr-[6px]">{{ schema.beforeSlot }}</span>
         </slot>
         <component
           :is="schema.beforeSlot(getValues)"
@@ -50,7 +51,9 @@
       </component>
       <!-- 后置插槽 -->
       <template v-if="schema.afterSlot">
-        <slot v-if="isString(schema.afterSlot)" :name="schema.afterSlot" v-bind="getValues"> </slot>
+        <slot v-if="isString(schema.afterSlot)" :name="schema.afterSlot" v-bind="getValues">
+          <span class="ml-[6px]">{{ schema.afterSlot }}</span>
+        </slot>
         <component
           :is="schema.afterSlot(getValues)"
           v-if="isFunction(schema.afterSlot)"
@@ -61,8 +64,8 @@
 </template>
 
 <script setup lang="tsx">
-  import { computed, unref, toRefs, isVNode, onMounted, watch, nextTick } from 'vue';
-  import { cloneDeep, debounce } from 'lodash-es';
+  import { computed, unref, toRefs, isVNode, watch, nextTick } from 'vue';
+  import { cloneDeep, debounce, isEqual } from 'lodash-es';
   import { Form, Col, Spin, Divider } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
   import { componentMap } from './componentMap';
@@ -141,7 +144,7 @@
         ...mergeDynamicData,
         ...formModel,
       } as Recordable,
-      schema,
+      schema: computed(() => props.schema),
     };
   });
 
@@ -194,7 +197,7 @@
       return component;
     } else if (isFunction(component)) {
       return vnodeFactory((component as CustomRenderFn)(values));
-    } else if (isObject(component)) {
+    } else if (component && isObject(component)) {
       const compKeys = Object.keys(component);
       // 如果是组件对象直接return
       if (compKeys.some((n) => n.startsWith('_') || ['setup', 'render'].includes(n))) {
@@ -398,8 +401,6 @@
   });
 
   const fetchRemoteData = async (request: PromiseFn<RenderCallbackParams, any>) => {
-    const { component } = unref(schema);
-
     try {
       const newSchema = Object.assign(schema.value, {
         loading: true,
@@ -408,10 +409,13 @@
           options: [],
         },
       });
-      const componentProps = newSchema.componentProps as ComponentProps;
+
       updateSchema(newSchema);
-      // @ts-ignore
-      const result = await request({ ...unref(getValues), schema: newSchema });
+
+      const result = await request(unref(getValues));
+      const { component } = unref(schema);
+      const componentProps = newSchema.componentProps as ComponentProps;
+
       if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
         componentProps.options = result;
       } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
@@ -449,12 +453,20 @@
     }
   };
 
-  onMounted(() => {
-    if (!getSchemaByFiled(props.schema.field)) {
-      appendSchemaByField(props.schema);
-    }
-    initRequestConfig();
-  });
+  watch(
+    getShow,
+    (val, oldVal) => {
+      if (!isEqual(val, oldVal) && val.isIfShow && val.isShow) {
+        if (!getSchemaByFiled(props.schema.field)) {
+          appendSchemaByField(props.schema);
+        }
+        initRequestConfig();
+      }
+    },
+    {
+      immediate: true,
+    },
+  );
 </script>
 
 <style lang="less" scoped>

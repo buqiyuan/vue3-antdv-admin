@@ -1,7 +1,7 @@
 import type { RowProps } from 'ant-design-vue';
 import type { RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
-import type { Component, UnwrapRef, VNode } from 'vue';
+import type { Component, ComputedRef, UnwrapRef, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ColEx, ComponentType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
@@ -24,9 +24,11 @@ export interface RenderCallbackParams<
   T extends object = Recordable,
   P extends ComponentProps = ComponentProps,
 > {
-  schema: FormSchema<T> & {
-    componentProps: P;
-  };
+  schema: ComputedRef<
+    FormSchema<T> & {
+      componentProps: P;
+    }
+  >;
   /** 响应式的表单数据对象 */
   formModel: Objectable<T>;
   field: GetFieldKeys<T>;

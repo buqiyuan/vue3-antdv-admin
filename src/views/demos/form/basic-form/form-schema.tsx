@@ -108,7 +108,7 @@ export const schemas: FormSchema[] = [
         console.log(e);
       },
     },
-    suffix: '天',
+    afterSlot: '天',
   },
   {
     field: 'field3',
@@ -336,7 +336,7 @@ export const schemas: FormSchema[] = [
   {
     field: 'field34',
     component: ({ schema }) => {
-      const options = schema.componentProps?.requestResult || [];
+      const options = schema.value.componentProps?.requestResult || [];
       return <Radio.Group options={options.slice(0, 2)}></Radio.Group>;
     },
     label: '远程Radio',
@@ -388,18 +388,17 @@ export const schemas: FormSchema[] = [
       return {
         options: provincesOptions,
         placeholder: '省份与城市联动',
-        onChange: (e: any) => {
-          // console.log(e)
-          let citiesOptions =
-            e == 1
-              ? citiesOptionsData[provincesOptions[0].id]
-              : citiesOptionsData[provincesOptions[1].id];
-          // console.log(citiesOptions)
-          if (e === undefined) {
-            citiesOptions = [];
-          }
+        onChange: (id: string) => {
+          // console.log(id);
+          const citiesOptions =
+            {
+              1: citiesOptionsData.guangdong,
+              2: citiesOptionsData.jiangsu,
+            }[id] || [];
+
           formModel.city = undefined; //  reset city value
           const { updateSchema } = formInstance;
+          // console.log('citiesOptions', citiesOptions);
           updateSchema({
             field: 'city',
             componentProps: {

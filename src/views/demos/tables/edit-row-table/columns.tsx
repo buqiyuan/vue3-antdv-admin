@@ -157,15 +157,17 @@ export const columns: TableColumn<ListItemType>[] = [
           return fetchStatusMapData();
         },
         onSearch: debounce(async (keyword) => {
-          schema.loading = true;
+          schema.value.loading = true;
           const newSchema = {
-            field: schema.field,
+            field: schema.value.field,
             componentProps: {
               options: [] as LabelValueOptions,
             },
           };
           formInstance?.updateSchema([newSchema]);
-          const result = await fetchStatusMapData(keyword).finally(() => (schema.loading = false));
+          const result = await fetchStatusMapData(keyword).finally(
+            () => (schema.value.loading = false),
+          );
           console.log('onSearch keyword', keyword, formInstance, newSchema);
           newSchema.componentProps.options = result;
           formInstance?.updateSchema([newSchema]);

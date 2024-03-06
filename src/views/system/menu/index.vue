@@ -29,7 +29,7 @@
     size: 'small',
     rowKey: 'id',
     bordered: true,
-    scroll: { x: 2000 },
+    scroll: { x: window.innerWidth > 2000 ? undefined : 2000 },
   });
   const [showModal] = useFormModal();
 

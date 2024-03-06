@@ -84,7 +84,7 @@ export const columns: TableColumn<ListItemType>[] = [
     resizable: true,
     formItemProps: {
       component: 'Select',
-      componentProps: ({ formInstance, formModel, tableInstance }) => ({
+      componentProps: ({ formInstance, formModel }) => ({
         options: [
           {
             label: '男',
@@ -96,7 +96,6 @@ export const columns: TableColumn<ListItemType>[] = [
           },
         ],
         onChange() {
-          console.log('tableInstance', tableInstance?.reload());
           // 根据当前选择的性别，更新衣服可选项
           formInstance?.updateSchema({
             field: 'clothes',
@@ -105,6 +104,7 @@ export const columns: TableColumn<ListItemType>[] = [
             },
           });
           formModel['clothes'] = '';
+          // console.log('formInstance', formInstance);
         },
       }),
     },
@@ -115,6 +115,11 @@ export const columns: TableColumn<ListItemType>[] = [
     dataIndex: 'clothes',
     formItemProps: {
       component: 'Select',
+      componentProps: ({ tableInstance }) => ({
+        onChange() {
+          tableInstance?.reload();
+        },
+      }),
     },
   },
   {
@@ -137,7 +142,7 @@ export const columns: TableColumn<ListItemType>[] = [
           return fetchStatusMapData();
         },
         onSearch: debounce(async (keyword) => {
-          schema.loading = true;
+          schema.value.loading = true;
           const newSchema = {
             field: 'status',
             componentProps: {
@@ -146,7 +151,9 @@ export const columns: TableColumn<ListItemType>[] = [
           };
           formInstance?.updateSchema([newSchema]);
           console.log('onSearch keyword', keyword);
-          const result = await fetchStatusMapData(keyword).finally(() => (schema.loading = false));
+          const result = await fetchStatusMapData(keyword).finally(
+            () => (schema.value.loading = false),
+          );
           newSchema.componentProps.options = result;
           formInstance?.updateSchema([newSchema]);
         }, 500),

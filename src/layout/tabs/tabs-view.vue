@@ -82,7 +82,7 @@
 
   try {
     const routesStr = Storage.get(TABS_ROUTES) as string | null | undefined;
-    routes = routesStr ? JSON.parse(routesStr) : [getSimpleRoute(route)];
+    routes = routesStr ? JSON.parse(routesStr).filter(Boolean) : [getSimpleRoute(route)];
   } catch (e) {
     routes = [getSimpleRoute(route)];
   }
@@ -102,7 +102,9 @@
 
   // 在页面关闭或刷新之前，保存数据
   window.addEventListener('beforeunload', () => {
-    Storage.set(TABS_ROUTES, JSON.stringify([tabsViewStore.getCurrentTab]));
+    if (tabsViewStore.getCurrentTab) {
+      Storage.set(TABS_ROUTES, JSON.stringify([tabsViewStore.getCurrentTab]));
+    }
   });
 
   // tabs 编辑（remove || add）

@@ -110,10 +110,11 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
       }
 
       if (isFunction(vShow)) {
-        // @ts-ignore
         isShow = vShow({
-          // @ts-ignore
-          schema,
+          schema: computed(() => {
+            // @ts-ignore
+            return unref(formSchemasRef).find((n) => n.field === schema.field) as any;
+          }),
           formModel,
           field: schema.field,
           formInstance: instance,

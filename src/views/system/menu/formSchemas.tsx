@@ -54,8 +54,8 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
         const treeDefaultExpandedKeys = [-1].concat(
           findPath(menuTree, formModel['parentId']) || [],
         );
-        schema.componentProps.treeDefaultExpandedKeys = treeDefaultExpandedKeys;
-        return [{ id: -1, name: '一级菜单', children: menuTree }];
+        schema.value.componentProps.treeDefaultExpandedKeys = treeDefaultExpandedKeys;
+        return [{ id: -1, name: '根目录', children: menuTree }];
       },
       getPopupContainer: () => document.body,
     },
@@ -76,7 +76,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     vIf: ({ formModel }) => !isDir(formModel['type']),
     required: ({ formModel }) => isButton(formModel.type),
     afterSlot: ({ schema, formInstance, formModel }) => {
-      if (schema.component === 'Input') {
+      if (schema.value.component === 'Input') {
         return h(Icon, {
           icon: 'ant-design:folder-open-outlined',
           title: '选择权限',

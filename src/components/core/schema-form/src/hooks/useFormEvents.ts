@@ -186,29 +186,33 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
       return;
     }
     const schemas: FormSchema[] = [];
-    updateData.forEach((item) => {
-      unref(formSchemasRef).forEach((val) => {
-        if (val.field === item.field) {
-          const newSchema = deepMerge(val, item);
-          if (originComponentPropsFnMap.has(val.field)) {
-            const originCompPropsFn = originComponentPropsFnMap.get(val.field)!;
-            const compProps = { ...newSchema.componentProps };
-            newSchema.componentProps = (opt) => {
-              const res = {
-                ...originCompPropsFn(opt),
-                ...compProps,
-              };
-              return res;
+    const updatedSchemas: FormSchema[] = [];
+
+    unref(formSchemasRef).forEach((val) => {
+      const updateItem = updateData.find((n) => val.field === n.field);
+      if (updateItem) {
+        const compProps = updateItem.componentProps;
+        const newSchema = deepMerge(val, updateItem);
+
+        if (originComponentPropsFnMap.has(val.field)) {
+          const originCompPropsFn = originComponentPropsFnMap.get(val.field)!;
+
+          newSchema.componentProps = (opt) => {
+            return {
+              ...originCompPropsFn(opt),
+              ...(isFunction(compProps) ? compProps(opt) : compProps),
             };
-          }
-          schemas.push(newSchema);
-        } else {
-          schemas.push(val);
+          };
         }
-      });
+
+        updatedSchemas.push(newSchema);
+        schemas.push(newSchema);
+      } else {
+        schemas.push(val);
+      }
     });
+    _setDefaultValue(updatedSchemas);
     formPropsRef.value.schemas = uniqBy<UnwrapFormSchema>(schemas, 'field');
-    _setDefaultValue(formPropsRef.value.schemas!);
   };
 
   function _setDefaultValue(data: FormSchema | FormSchema[]) {

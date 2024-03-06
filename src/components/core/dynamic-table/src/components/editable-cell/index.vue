@@ -40,7 +40,7 @@
   import type { PropType } from 'vue';
   import type { CustomRenderParams, EditableType } from '@/components/core/dynamic-table/src/types';
   import { schemaFormItemProps, SchemaFormItem } from '@/components/core/schema-form';
-  import { isFunction } from '@/utils/is';
+  import { isPromise } from '@/utils/is';
 
   const props = defineProps({
     ...schemaFormItemProps,
@@ -105,14 +105,13 @@
   const handleSaveCell = async () => {
     const { rowKey, column } = props;
     await validateCell(rowKey!, dataIndex.value);
-    if (isFunction(tableContext?.onSave)) {
+    const saveRes = tableContext.onSave?.(rowKey!, editFormModel.value[rowKey!], column?.record);
+    if (isPromise(saveRes)) {
       saving.value = true;
-      await tableContext
-        .onSave(rowKey!, editFormModel.value[rowKey!], column?.record)
-        .finally(() => (saving.value = false));
-      cancelCellEditable(rowKey!, dataIndex.value);
-      isCellEdit.value = false;
+      await saveRes.finally(() => (saving.value = false));
     }
+    cancelCellEditable(rowKey!, dataIndex.value);
+    isCellEdit.value = false;
   };
 
   const handleCancelSaveCell = () => {

@@ -21,7 +21,10 @@ export const roleSchemas: FormSchema<API.DeptDto>[] = [
       getPopupContainer: () => document.body,
       request: async ({ schema, formModel }) => {
         const deptTree = await Api.systemDept.deptList({});
-        schema.componentProps.treeDefaultExpandedKeys = findPath(deptTree, formModel['parentId']);
+        schema.value.componentProps.treeDefaultExpandedKeys = findPath(
+          deptTree,
+          formModel['parentId'],
+        );
         return deptTree;
       },
     },
