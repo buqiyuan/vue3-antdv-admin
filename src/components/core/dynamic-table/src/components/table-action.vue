@@ -16,7 +16,7 @@
 
 <script lang="tsx" setup>
   import { computed, ref, h, type FunctionalComponent } from 'vue';
-  import { debounce, isFunction, isObject, isString } from 'lodash-es';
+  import { isFunction, isObject, isString } from 'lodash-es';
   import { Popconfirm, Tooltip, type TooltipProps } from 'ant-design-vue';
   import type { ActionItem } from '../types/tableAction';
   import type { CustomRenderParams } from '../types/column';
@@ -89,7 +89,7 @@
         const onClick = item.onClick;
 
         if (isFunction(onClick) && !hasClickFnFlag(onClick)) {
-          item.onClick = debounce(async () => {
+          item.onClick = async () => {
             const callbackRes = onClick(props.columnParams);
 
             if (isPromise(callbackRes)) {
@@ -99,7 +99,7 @@
                 loadingMap.value.delete(key);
               });
             }
-          });
+          };
           setClickFnFlag(item.onClick);
         }
         if (item.icon) {

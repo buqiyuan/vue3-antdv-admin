@@ -32,7 +32,6 @@
   const handleIconUpdated = (vnode: VNode) => {
     const title = attrs.title;
     if (vnode.el && title) {
-      globalThis.sss = vnode.el;
       vnode.el.insertAdjacentHTML?.('afterbegin', `<title>${title}</title>`);
     }
   };

@@ -29,7 +29,9 @@ export const enableMocking = async (handlers: HttpHandler[], options?: StartOpti
   );
   const worker = setupWorker(...handlers);
 
-  globalThis.__msw_worker = worker;
+  if (import.meta.env.DEV) {
+    globalThis.__msw_worker = worker;
+  }
 
   const serviceWorkerRegistration = await worker.start({
     onUnhandledRequest: 'bypass',

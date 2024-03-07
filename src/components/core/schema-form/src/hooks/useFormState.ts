@@ -15,19 +15,19 @@ export type useFormStateParams = {
 };
 
 export const useFormState = ({ props, attrs }: useFormStateParams) => {
-  // TODO 将formSchema克隆一份，避免修改原有的formSchema
+  /** // TODO 将formSchema克隆一份，避免修改原有的formSchema */
   const formPropsRef = ref<SchemaFormProps>(cloneDeep(props));
   /** 表单项数据 */
   const formModel = reactive({ ...props.initialValues });
-  // 表单默认数据
+  /** 表单默认数据 */
   const defaultFormValues = reactive({ ...props.initialValues });
-  // 表单实例
+  /** 表单实例 */
   const schemaFormRef = ref<FormInstance>();
-  // 缓存的表单值，用于恢复form-item v-if为true后的值
+  /** 缓存的表单值，用于恢复form-item v-if为true后的值 */
   const cacheFormModel = { ...props.initialValues };
-  // 将所有的表单组件实例保存起来
+  /** 将所有的表单组件实例保存起来 */
   const compRefMap = new Map<string, DefineComponent<any>>();
-  // 初始时的componentProps，用于updateSchema更新时不覆盖componentProps为函数时的值
+  /** 初始时的componentProps，用于updateSchema更新时不覆盖componentProps为函数时的值 */
   const originComponentPropsFnMap = new Map<
     string,
     (opt: RenderCallbackParams) => ComponentProps

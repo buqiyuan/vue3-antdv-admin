@@ -33,8 +33,6 @@
     name: 'DemosFormRuleForm',
   });
 
-  console.log('sss', import.meta.url);
-
   /**
    * @description 验证表单
    */

@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: t('routes.demo.modal'),
           icon: 'ant-design:desktop-outlined',
-          keepAlive: true,
+          keepAlive: false,
         },
         component: () => import('@/views/demos/custom-modal.vue'),
       },
@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: t('routes.demo.button'),
           icon: 'ant-design:desktop-outlined',
-          keepAlive: true,
+          keepAlive: false,
         },
         component: () => import('@/views/demos/button.vue'),
       },
@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: t('routes.demo.form.demo'),
           icon: 'ant-design:desktop-outlined',
-          keepAlive: true,
+          keepAlive: false,
         },
         redirect: { name: `${moduleName}-form-basic` },
         children: [
@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: t('routes.demo.form.basic'),
               icon: 'ant-design:desktop-outlined',
-              keepAlive: true,
+              keepAlive: false,
             },
             component: () => import('@/views/demos/form/basic-form/index.vue'),
           },
@@ -59,7 +59,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: t('routes.demo.form.rule'),
               icon: 'ant-design:desktop-outlined',
-              keepAlive: true,
+              keepAlive: false,
             },
             component: () => import('@/views/demos/form/rule-form/index.vue'),
           },
@@ -69,7 +69,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: t('routes.demo.form.dynamic'),
               icon: 'ant-design:desktop-outlined',
-              keepAlive: true,
+              keepAlive: false,
             },
             component: () => import('@/views/demos/form/dynamic-form/index.vue'),
           },
@@ -79,7 +79,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: 'useForm',
               icon: 'ant-design:desktop-outlined',
-              keepAlive: true,
+              keepAlive: false,
             },
             component: () => import('@/views/demos/form/use-form/index.vue'),
           },
@@ -89,7 +89,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: t('routes.demo.form.customForm'),
               icon: 'ant-design:desktop-outlined',
-              keepAlive: true,
+              keepAlive: false,
             },
             component: () => import('@/views/demos/form/custom-form/index.vue'),
           },
@@ -99,7 +99,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: '自定义请求表单',
               icon: 'ant-design:desktop-outlined',
-              keepAlive: true,
+              keepAlive: false,
             },
             component: () => import('@/views/demos/form/request-form/index.vue'),
           },
@@ -111,7 +111,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: t('routes.demo.table.demo'),
           icon: 'ant-design:desktop-outlined',
-          keepAlive: true,
+          keepAlive: false,
         },
         redirect: { name: `${moduleName}-table-wzry` },
         children: [
@@ -151,7 +151,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: t('routes.demo.table.lol'),
               icon: 'ant-design:desktop-outlined',
-              keepAlive: true,
+              keepAlive: false,
             },
             component: () => import('@/views/demos/tables/lol-table/index.vue'),
           },
@@ -161,8 +161,8 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: '英雄详情',
               icon: 'ant-design:desktop-outlined',
-              hideInMenu: true,
-              keepAlive: true,
+              hideInMenu: false,
+              keepAlive: false,
               activeMenu: `${moduleName}-table-lol`,
             },
             component: () => import('@/views/demos/tables/lol-table/heroInfo.vue'),
@@ -176,8 +176,8 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '嵌套路由',
           icon: 'ant-design:desktop-outlined',
-          keepAlive: true,
-          hideChildrenInMenu: true,
+          keepAlive: false,
+          hideChildrenInMenu: false,
           transitionName: false,
         },
         component: () => import('@/views/demos/nested-routes/index.vue'),
@@ -188,7 +188,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: '路由一',
               icon: 'ant-design:desktop-outlined',
-              hideInMenu: true,
+              hideInMenu: false,
               activeMenu: `${moduleName}-nested-routes`,
             },
             component: () => import('@/views/demos/nested-routes/route-one.vue'),
@@ -199,7 +199,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: '路由二',
               icon: 'ant-design:desktop-outlined',
-              hideInMenu: true,
+              hideInMenu: false,
               activeMenu: `${moduleName}-nested-routes`,
             },
             component: () => import('@/views/demos/nested-routes/route-two.vue'),
@@ -210,7 +210,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: '路由三',
               icon: 'ant-design:desktop-outlined',
-              hideInMenu: true,
+              hideInMenu: false,
               activeMenu: `${moduleName}-nested-routes`,
             },
             component: () => import('@/views/demos/nested-routes/route-three.vue'),

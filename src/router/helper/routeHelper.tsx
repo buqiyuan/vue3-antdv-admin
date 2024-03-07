@@ -61,7 +61,7 @@ export const generateDynamicRoutes = (menus: RouteRecordRaw[]) => {
   rootRoute.children = [...filterRoutes];
   // 4.重新添加拍平后的路由
   router.addRoute(rootRoute);
-  console.log('routes', router.getRoutes());
+  // console.log('routes', router.getRoutes());
 
   return routes;
 };
