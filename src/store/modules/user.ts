@@ -24,7 +24,7 @@ export const useUserStore = defineStore('user', () => {
   const serverConnected = ref(true);
 
   watch(serverConnected, (val) => {
-    if (val) {
+    if (val && token.value) {
       initServerMsgListener();
     }
   });

@@ -27,8 +27,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        shell: bash
-        run: pnpm --filter "./packages/*" build
+        run: pnpm build:pkg
 
       - name: Publish 🚀
         shell: bash
