@@ -120,8 +120,8 @@
         iL >= maxL && (iL = maxL);
         iT >= maxT && (iT = maxT);
 
-        dragEl.style.left = `${iL}px`;
-        dragEl.style.top = `${iT}px`;
+        dragEl.style.left = `${Math.max(iL, 0)}px`;
+        dragEl.style.top = `${Math.max(iT, 0)}px`;
       };
       const mouseup = () => {
         document.removeEventListener('mousemove', mousemove);
@@ -190,6 +190,7 @@
           left: iParentLeft,
           right: iParentRight,
         } = modalEl.getBoundingClientRect();
+
         const disX = e.clientX - iParentLeft;
         const disY = e.clientY - iParentTop;
         const iParentWidth = modalEl.offsetWidth;
@@ -299,9 +300,10 @@
     }
 
     .ant-modal {
-      position: fixed;
+      position: relative;
       min-width: 200px;
       min-height: 200px;
+      margin: 0;
       padding: 0;
 
       .ant-modal-header {
