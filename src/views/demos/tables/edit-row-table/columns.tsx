@@ -17,7 +17,6 @@ export type ListItemType = (typeof tableData)[number];
 export const columns: TableColumn<ListItemType>[] = [
   {
     title: '姓名',
-
     dataIndex: 'name',
     sorter: true,
     /** 默认开启编辑, 仅`editableType`为`cell`时有效 */
@@ -38,7 +37,6 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '性别',
-
     dataIndex: 'gender',
     /** 搜索表单配置 */
     formItemProps: {
@@ -75,8 +73,6 @@ export const columns: TableColumn<ListItemType>[] = [
       rules: [{ required: true, type: 'number', message: '请选择性别' }],
       componentProps: ({ formInstance, formModel, tableRowKey }) => ({
         onChange() {
-          console.log('formModel', formModel);
-
           // 根据当前选择的性别，更新衣服可选项
           formInstance?.updateSchema({
             field: `${tableRowKey}.clothes`,
@@ -92,7 +88,6 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '衣服',
-
     dataIndex: 'clothes',
     formItemProps: {
       component: 'Select',
@@ -136,7 +131,6 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '价格',
-
     dataIndex: 'price',
     editFormItemProps: {
       component: 'InputNumber',
@@ -146,7 +140,6 @@ export const columns: TableColumn<ListItemType>[] = [
   },
   {
     title: '状态',
-
     dataIndex: 'status',
     formItemProps: {
       component: 'Select',

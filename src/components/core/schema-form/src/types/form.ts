@@ -64,20 +64,12 @@ type ComponentSchema<T extends object = Recordable> =
         /** 表单组件属性 */
         componentProps?:
           | ComponentProps<K>
-          | {
-              (opt: RenderCallbackParams<T, ComponentProps<K>>): ComponentProps<K>;
-              requestResult: ComponentProps['requestResult'];
-            };
+          | ((opt: RenderCallbackParams<T, ComponentProps<K>>) => ComponentProps<K>);
       };
     }[ComponentType]
   | {
       component: CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
-      componentProps?:
-        | ComponentProps
-        | {
-            (opt: RenderCallbackParams<T>): ComponentProps;
-            requestResult: ComponentProps['requestResult'];
-          };
+      componentProps?: ComponentProps | ((opt: RenderCallbackParams<T>) => ComponentProps);
     };
 
 /** 表单项 */

@@ -1,5 +1,5 @@
 import { unref, toRaw } from 'vue';
-import { cloneDeep, isNil, uniqBy } from 'lodash-es';
+import { cloneDeep, isNil, set, uniqBy, unset } from 'lodash-es';
 import dayjs from 'dayjs';
 import { dateItemType, handleInputNumberValue } from '../helper';
 import type { UnwrapFormSchema } from '../types/form';
@@ -52,7 +52,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
   /**
    * @description: 设置表单字段值
    */
-  async function setFieldsValue(values: Recordable): Promise<void> {
+  async function setFieldsValue(values: Recordable) {
     const schemas = unref(formSchemasRef);
     // @ts-ignore
     const fields = schemas.map((item) => item.field).filter(Boolean);
@@ -76,22 +76,23 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
             for (const ele of value) {
               arr.push(ele ? dayjs(ele) : null);
             }
-            formModel[key] = arr;
+            set(formModel, key, arr);
           } else {
             const { componentProps } = schema || {};
             let _props = componentProps as any;
             if (isFunction(componentProps)) {
               _props = _props({ formPropsRef, formModel });
             }
-            formModel[key] = value ? (_props?.valueFormat ? value : dayjs(value)) : null;
+            set(formModel, key, value ? (_props?.valueFormat ? value : dayjs(value)) : null);
           }
         } else {
-          formModel[key] = value;
+          set(formModel, key, value);
         }
         validKeys.push(key);
       }
     });
-    validateFields(validKeys);
+    // console.log('formModel', formModel);
+    await validateFields(validKeys).catch((_) => {});
   }
 
   async function resetSchema(data: Partial<FormSchema> | Partial<FormSchema>[]) {
@@ -115,16 +116,14 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
 
     if (!prefixField || index === -1 || first) {
       first ? schemaList.unshift(schemaItem) : schemaList.push(schemaItem);
-      formModel[schemaItem.field] = schemaItem.defaultValue;
       formPropsRef.value.schemas = schemaList;
       return;
     }
     if (index !== -1) {
       schemaList.splice(index + 1, 0, schemaItem);
     }
-    formModel[schemaItem.field] = schemaItem.defaultValue;
     formPropsRef.value.schemas = schemaList;
-    _setDefaultValue(formPropsRef.value.schemas);
+    setDefaultValue(formPropsRef.value.schemas);
   }
 
   /**
@@ -145,7 +144,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
       if (isString(field)) {
         const index = schemaList.findIndex((schema) => schema.field === field);
         if (index !== -1) {
-          Reflect.deleteProperty(formModel, field);
+          unset(formModel, field);
           schemaList.splice(index, 1);
         }
       }
@@ -211,11 +210,12 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
         schemas.push(val);
       }
     });
-    _setDefaultValue(updatedSchemas);
+
+    setDefaultValue(updatedSchemas);
     formPropsRef.value.schemas = uniqBy<UnwrapFormSchema>(schemas, 'field');
   };
 
-  function _setDefaultValue(data: FormSchema | FormSchema[]) {
+  function setDefaultValue(data: FormSchema | FormSchema[]) {
     let schemas: FormSchema[] = [];
     if (isObject(data)) {
       schemas.push(data as FormSchema);
@@ -245,7 +245,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     resetFunc && isFunction(resetFunc) && (await resetFunc());
 
     Object.keys(formModel).forEach((key) => {
-      formModel[key] = defaultFormValues[key];
+      set(formModel, key, defaultFormValues[key]);
     });
 
     emit('reset', formModel);
@@ -314,5 +314,6 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     resetFields,
     setFieldsValue,
     scrollToField,
+    setDefaultValue,
   };
 }

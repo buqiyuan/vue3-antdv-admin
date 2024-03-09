@@ -113,7 +113,9 @@
             perm: 'system:role:update',
             effect: 'disable',
           },
-          onClick: () => openMenuModal(record),
+          onClick: () => {
+            openMenuModal(record);
+          },
         },
         {
           label: '删除',

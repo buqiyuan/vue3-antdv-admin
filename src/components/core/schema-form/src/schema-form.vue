@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useAttrs } from 'vue';
+  import { useAttrs, onMounted } from 'vue';
   import { pick } from 'lodash-es';
   import { Form, Row } from 'ant-design-vue';
   import SchemaFormItem from './schema-form-item.vue';
@@ -74,14 +74,11 @@
 
   // 表单内部方法
   const formMethods = useFormMethods({ ...formState });
-  const { initFormValues, handleFormValues } = formMethods;
-
-  // 初始化表单默认值
-  initFormValues();
+  const { handleFormValues } = formMethods;
 
   // a-form表单事件二次封装和扩展
   const formEvents = useFormEvents({ ...formState, emit, handleFormValues });
-  const { handleEnterPress } = formEvents;
+  const { handleEnterPress, setDefaultValue } = formEvents;
 
   // 当前组件所有的状态和方法
   const instance = {
@@ -101,4 +98,9 @@
   createFormContext(instance);
 
   defineExpose(instance);
+
+  onMounted(() => {
+    // 初始化表单默认值
+    setDefaultValue(formSchemasRef.value);
+  });
 </script>

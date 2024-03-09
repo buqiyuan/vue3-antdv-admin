@@ -4,7 +4,7 @@
       <div ref="modalWrapRef" class="draggable-modal" :class="{ fullscreen: fullscreenModel }">
         <Modal
           v-bind="omit(props, ['open', 'onCancel', 'onOk', 'onUpdate:open'])"
-          v-model:open="visibleModel"
+          v-model:open="openModel"
           :mask-closable="false"
           :get-container="() => modalWrapRef"
           :width="innerWidth || width"
@@ -39,11 +39,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch, nextTick } from 'vue';
+  import { ref, watch, nextTick, defineModel } from 'vue';
   import { useRoute } from 'vue-router';
   import { modalProps } from 'ant-design-vue/es/modal/Modal';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';
-  import { useVModel } from '@vueuse/core';
   import { throttle, omit } from 'lodash-es';
   import { Modal, Space } from 'ant-design-vue';
 
@@ -62,7 +61,7 @@
   const emit = defineEmits(['update:open', 'update:fullscreen', 'ok', 'cancel']);
 
   const route = useRoute();
-  const visibleModel = useVModel(props, 'open');
+  const openModel = defineModel<boolean>('open');
   const fullscreenModel = ref(props.fullscreen);
   const innerWidth = ref('');
 
@@ -83,7 +82,7 @@
   const modalWrapRef = ref<HTMLDivElement>();
 
   const closeModal = () => {
-    visibleModel.value = false;
+    openModel.value = false;
     emit('cancel');
   };
 
@@ -274,7 +273,7 @@
     inited = true;
   };
 
-  watch(visibleModel, async (val) => {
+  watch(openModel, async (val) => {
     if ((val && Object.is(inited, false)) || props.destroyOnClose) {
       initDrag();
     }

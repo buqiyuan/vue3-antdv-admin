@@ -161,7 +161,7 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
               title: '英雄详情',
               icon: 'ant-design:desktop-outlined',
-              hideInMenu: false,
+              hideInMenu: true,
               keepAlive: false,
               activeMenu: `${moduleName}-table-lol`,
             },
