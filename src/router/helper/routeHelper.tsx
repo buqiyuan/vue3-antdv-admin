@@ -4,7 +4,6 @@ import outsideLayout from '../routes/outsideLayout';
 import type { RouteMeta, RouteRecordRaw } from 'vue-router';
 import IFramePage from '@/components/basic/iframe-page';
 import { warn } from '@/utils/log';
-import ComponentNotFound from '@/views/error/comp-not-found.vue';
 import { rootRoute } from '@/router/routes';
 import router from '@/router';
 import basic from '@/router/routes/basic';
@@ -30,7 +29,7 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
         route.component = asyncRoutes[compPath];
         // 前端 src/views 目录下无对应路由组件
         if (!route.component) {
-          route.component = ComponentNotFound;
+          route.component = () => import('@/views/error/comp-not-found.vue');
           warn(`在src/views/下找不到 ${compPath}.vue 或 ${compPath}.tsx, 请自行创建!`);
         }
       }

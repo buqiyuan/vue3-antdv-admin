@@ -149,6 +149,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
               return 'vendor';
             } else if (id.includes('ant-design-vue')) {
               return 'vendor';
+            } else if (id.includes('/src/api/index.ts')) {
+              return 'api';
             }
           },
         },
