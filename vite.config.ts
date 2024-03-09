@@ -136,19 +136,20 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     build: {
-      target: 'es2020',
       minify: 'esbuild',
       cssTarget: 'chrome89',
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {
           // minifyInternalExports: false,
-          //TODO fix circular imports
           manualChunks(id) {
+            //TODO fix circular imports
             if (id.includes('/src/locales/helper.ts')) {
-              return 'vendor';
-            } else if (id.includes('ant-design-vue')) {
-              return 'vendor';
+              return 'antdv';
+            } else if (id.includes('node_modules/ant-design-vue/')) {
+              return 'antdv';
+            } else if (/node_modules\/(vue|vue-router|pinia)\//.test(id)) {
+              return 'vue';
             }
           },
         },
