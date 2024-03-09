@@ -136,7 +136,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     build: {
-      target: 'es2022',
+      target: 'es2020',
       minify: 'esbuild',
       cssTarget: 'chrome89',
       chunkSizeWarningLimit: 2000,
@@ -149,10 +149,18 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
               return 'vendor';
             } else if (id.includes('ant-design-vue')) {
               return 'vendor';
-            } else if (id.includes('/src/api/index.ts')) {
-              return 'api';
             }
           },
+        },
+        onwarn(warning, rollupWarn) {
+          // ignore circular dependency warning
+          if (
+            warning.code === 'CYCLIC_CROSS_CHUNK_REEXPORT' &&
+            warning.exporter?.includes('src/api/')
+          ) {
+            return;
+          }
+          rollupWarn(warning);
         },
       },
     },
