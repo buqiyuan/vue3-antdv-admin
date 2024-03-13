@@ -41,6 +41,15 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     },
   );
 
+  watch(
+    () => props.dataSource,
+    (val) => {
+      updatePagination({
+        total: val?.length,
+      });
+    },
+  );
+
   const setProps = (props: Partial<DynamicTableProps>) => {
     innerPropsRef.value = { ...unref(innerPropsRef), ...props };
   };
@@ -53,6 +62,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       current: page,
     });
     fetchData(params);
+    emit('search', params);
   };
 
   /**
@@ -142,6 +152,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     if (Object.is(resetPageIndex, true) && isObject(pagination)) {
       pagination.current = 1;
     }
+    emit('reload');
     return fetchData();
   };
 

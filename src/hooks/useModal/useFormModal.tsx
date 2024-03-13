@@ -3,7 +3,7 @@ import { omit } from 'lodash-es';
 import { useModal } from './useModal';
 import type { SchemaFormInstance, SchemaFormProps } from '@/components/core/schema-form';
 import type { FormModalProps } from './types';
-import SchemaForm from '@/components/core/schema-form';
+import { SchemaForm } from '@/components/core/schema-form';
 
 interface ShowModalProps<T extends object = Recordable> {
   modalProps: FormModalProps<T>;

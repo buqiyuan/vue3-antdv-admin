@@ -326,8 +326,8 @@ declare namespace API {
   };
 
   type KickDto = {
-    /** 需要下线的角色ID */
-    id: number;
+    /** tokenId */
+    tokenId: string;
   };
 
   type LogCaptchaListParams = {
@@ -617,21 +617,27 @@ declare namespace API {
   };
 
   type OnlineUserInfo = {
-    /** 最近的一条登录日志ID */
-    id: number;
-    /** 登录IP */
+    /** 登录ip */
     ip: string;
-    /** 登录地点 */
+    /** 登录地址 */
     address: string;
-    /** 用户名 */
-    username: string;
-    /** 是否当前 */
-    isCurrent: boolean;
     /** 系统 */
     os: string;
     /** 浏览器 */
     browser: string;
-    /** 是否禁用 */
+    /** 登录用户名 */
+    username: string;
+    /** 登录时间 */
+    time: string;
+    /** tokenId */
+    tokenId: string;
+    /** 部门名称 */
+    deptName: string;
+    /** 用户ID */
+    uid: number;
+    /** 是否为当前登录用户 */
+    isCurrent: boolean;
+    /** 不允许踢当前用户或超级管理员下线 */
     disable: boolean;
   };
 
