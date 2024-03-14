@@ -1,5 +1,5 @@
 <template>
-  <teleport :to="getContainer()">
+  <teleport :to="getContainer || 'body'">
     <ProConfigProvider>
       <div ref="modalWrapRef" class="draggable-modal" :class="{ fullscreen: fullscreenModel }">
         <Modal
@@ -51,10 +51,6 @@
     fullscreen: {
       type: Boolean,
       default: false,
-    },
-    getContainer: {
-      type: Function,
-      default: () => document.body,
     },
   });
 
@@ -297,6 +293,10 @@
         width: 100% !important;
         height: 100% !important;
       }
+    }
+
+    .ant-modal-wrap {
+      overflow-x: hidden;
     }
 
     .ant-modal {

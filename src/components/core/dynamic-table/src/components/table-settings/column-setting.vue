@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, ref, unref, watch } from 'vue';
+  import { computed, nextTick, ref, unref, watch, type UnwrapRef } from 'vue';
   import {
     SettingOutlined,
     VerticalRightOutlined,
@@ -108,8 +108,7 @@
 
   // 初始化选中状态
   const initCheckStatus = () => {
-    // @ts-ignore
-    tableColumns.value = cloneDeep(defaultColumns);
+    tableColumns.value = cloneDeep(defaultColumns) as UnwrapRef<TableColumn[]>;
     checkIndex.value = defaultShowIndex;
     checkBordered.value = defaultBordered;
     tableColumns.value.forEach((item) => (item.hideInTable ??= false));

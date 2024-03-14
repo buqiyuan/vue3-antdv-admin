@@ -1,6 +1,5 @@
 import { tableProps } from 'ant-design-vue/es/table';
 import tableConfig from './dynamic-table.config';
-import type DynamicTable from './dynamic-table.vue';
 import type { PropType, ExtractPublicPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
 import type { TableColumn, OnChangeCallbackParams, EditableType, OnSave, OnCancel } from './types/';
@@ -26,7 +25,7 @@ export const dynamicTableProps = {
   },
   /** 表格列配置 */
   columns: {
-    type: Array as PropType<TableColumn<any>[]>,
+    type: Array as PropType<TableColumn[]>,
     required: true,
     default: () => [],
   },
@@ -138,5 +137,3 @@ export const dynamicTableEmits = {
 export type DynamicTableEmits = typeof dynamicTableEmits;
 
 export type DynamicTableEmitFn = EmitFn<DynamicTableEmits>;
-
-export type DynamicTableInstance = InstanceType<typeof DynamicTable>;

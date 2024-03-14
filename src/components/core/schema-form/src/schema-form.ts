@@ -1,5 +1,4 @@
 import { formProps, type FormProps } from 'ant-design-vue/es/form';
-import type SchemaForm from './schema-form.vue';
 import type { ColEx } from './types/component';
 import type { ExtractPublicPropTypes, ComponentInternalInstance, CSSProperties } from 'vue';
 import type { FieldMapToTime, FormSchema, RowProps } from './types/form';
@@ -120,7 +119,3 @@ export type SchemaFormProps<T extends object = any> = Partial<
     schemas: FormSchema<T>[];
   } & EmitsToProps<SchemaFormEmits>
 >;
-
-// export type SchemaFormProps = ExtractPublicPropTypes<typeof schemaFormProps>;
-
-export type SchemaFormInstance = InstanceType<typeof SchemaForm>;

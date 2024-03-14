@@ -4,12 +4,13 @@ import tableConfig from '../dynamic-table.config';
 import { useScroll } from './useScroll';
 import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
-import type { SchemaFormInstance } from '@/components/core/schema-form';
 import type { TableProps, Table } from 'ant-design-vue';
+import type { SchemaForm } from '@/components/core/schema-form';
 import { useI18n } from '@/hooks/useI18n';
 
 export type Pagination = TableProps['pagination'];
-export type TableState = ReturnType<typeof useTableState>;
+
+export interface TableState extends ReturnType<typeof useTableState> {}
 
 export type UseTableStateParams = {
   props: DynamicTableProps;
@@ -27,9 +28,9 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   /** 表格实例 */
   const tableRef = ref<InstanceType<typeof Table>>();
   /** 查询表单实例 */
-  const queryFormRef = ref<SchemaFormInstance>();
+  const queryFormRef = ref<InstanceType<typeof SchemaForm>>();
   /** 编辑表格的表单实例 */
-  const editTableFormRef = ref<SchemaFormInstance>();
+  const editTableFormRef = ref<InstanceType<typeof SchemaForm>>();
   /** 表格数据 */
   const tableData = ref<any[]>([]);
   /** 内部属性 */

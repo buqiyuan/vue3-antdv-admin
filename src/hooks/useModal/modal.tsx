@@ -11,13 +11,13 @@ export const MyModal = defineComponent({
     content: {
       type: [String, Function] as PropType<string | JSX.Element | (() => JSX.Element)>,
     },
-    closeModal: Function,
+    closeModal: Function as PropType<HookModalProps['closeModal']>,
     open: Boolean,
   },
   setup(props, { attrs, expose }) {
     const confirmLoading = ref<boolean>(false);
 
-    const propsRef = ref({ ...attrs, ...props });
+    const propsRef = ref<HookModalProps>({ ...attrs, ...props });
 
     const getProps = computed(() => {
       return { ...attrs, ...props, ...unref(propsRef) };
@@ -56,7 +56,6 @@ export const MyModal = defineComponent({
     const handleConfirm = async (e: MouseEvent) => {
       confirmLoading.value = true;
       try {
-        // @ts-ignore
         await unref(getProps)?.onOk?.(e);
         setVisible(false);
       } catch (error) {
@@ -66,7 +65,6 @@ export const MyModal = defineComponent({
       }
     };
     const handleCancel = async (e: MouseEvent) => {
-      // @ts-ignore
       await unref(getProps)?.onCancel?.(e);
       setVisible(false);
     };

@@ -2,7 +2,9 @@ import { nextTick, ref, unref, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 import SchemaForm from '../schema-form.vue';
 import type { FunctionalComponent, Ref } from 'vue';
-import type { SchemaFormInstance, SchemaFormProps } from '../schema-form';
+import type { SchemaFormProps } from '../schema-form';
+
+type SchemaFormInstance = InstanceType<typeof SchemaForm>;
 
 export function useForm(props?: Partial<SchemaFormProps>) {
   const formRef = ref<SchemaFormInstance>({} as SchemaFormInstance);

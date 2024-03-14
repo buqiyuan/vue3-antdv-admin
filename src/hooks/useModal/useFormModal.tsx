@@ -1,7 +1,7 @@
 import { nextTick, ref, unref } from 'vue';
 import { omit } from 'lodash-es';
 import { useModal } from './useModal';
-import type { SchemaFormInstance, SchemaFormProps } from '@/components/core/schema-form';
+import type { SchemaFormProps } from '@/components/core/schema-form';
 import type { FormModalProps } from './types';
 import { SchemaForm } from '@/components/core/schema-form';
 
@@ -14,7 +14,7 @@ export function useFormModal<T extends object = Recordable>() {
   const [ModalRender] = useModal();
 
   const showModal = async <P extends object = T>({ modalProps, formProps }: ShowModalProps<P>) => {
-    const formRef = ref<SchemaFormInstance>();
+    const formRef = ref<InstanceType<typeof SchemaForm>>();
 
     const onCancel = (e: MouseEvent) => {
       // formRef.value?.resetFields();
@@ -46,7 +46,6 @@ export function useFormModal<T extends object = Recordable>() {
       content: () => {
         const _formProps = Object.assign({}, { showActionButtonGroup: false }, formProps);
 
-        // @ts-ignore
         return <SchemaForm ref={formRef} {..._formProps}></SchemaForm>;
       },
     });

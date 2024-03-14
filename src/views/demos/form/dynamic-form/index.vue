@@ -17,7 +17,7 @@
   import { ref } from 'vue';
   import { Alert, message } from 'ant-design-vue';
   import { schemas } from './form-schema';
-  import type { SchemaFormProps, SchemaFormInstance } from '@/components/core/schema-form';
+  import type { SchemaFormProps } from '@/components/core/schema-form';
   import { SchemaForm } from '@/components/core/schema-form';
 
   defineOptions({
@@ -27,7 +27,7 @@
   /**
    * @description 基础表单
    */
-  const dynamicForm = ref<SchemaFormInstance>();
+  const dynamicForm = ref<InstanceType<typeof SchemaForm>>();
 
   const formProps: SchemaFormProps = { schemas, labelWidth: 120, actionColOptions: { span: 24 } };
 

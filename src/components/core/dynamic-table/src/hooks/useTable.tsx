@@ -1,8 +1,10 @@
 import { nextTick, ref, unref, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
-import DynamicTable from '../../index';
+import DynamicTable from '../dynamic-table.vue';
 import type { FunctionalComponent, Ref } from 'vue';
-import type { DynamicTableInstance, DynamicTableProps } from '../dynamic-table';
+import type { DynamicTableProps } from '../dynamic-table';
+
+type DynamicTableInstance = InstanceType<typeof DynamicTable>;
 
 export function useTable(props?: Partial<DynamicTableProps>) {
   const dynamicTableRef = ref<DynamicTableInstance>({} as DynamicTableInstance);
@@ -33,7 +35,7 @@ export function useTable(props?: Partial<DynamicTableProps>) {
   );
 
   const methods = new Proxy<Ref<DynamicTableInstance>>(dynamicTableRef, {
-    get(target, key) {
+    get(target, key: string) {
       if (Reflect.has(target, key)) {
         return unref(target);
       }

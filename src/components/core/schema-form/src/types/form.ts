@@ -4,8 +4,6 @@ import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
 import type { Component, ComputedRef, UnwrapRef, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ColEx, ComponentType, ComponentProps } from './component';
-// import type { TableActionType } from '/@/components/Table/src/types/table'
-import type { SchemaFormInstance } from '../schema-form';
 import type { SchemaFormType } from '../hooks';
 import type { TableActionType } from '@/components/core/dynamic-table';
 
@@ -51,8 +49,6 @@ export type CustomRenderFn<T extends object = Recordable> = (
 export interface ButtonProps extends AntdButtonProps {
   text?: string;
 }
-
-export type RegisterFn = (formInstance: SchemaFormInstance) => void;
 
 export type UnwrapFormSchema<T extends object = Recordable> = UnwrapRef<FormSchema<T>>;
 
