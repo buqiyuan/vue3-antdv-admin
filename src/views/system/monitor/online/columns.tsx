@@ -33,7 +33,6 @@ export const baseColumns: TableColumn<TableListItem>[] = [
   {
     title: '登录地点',
     dataIndex: 'address',
-    width: 140,
   },
   {
     title: '浏览器',

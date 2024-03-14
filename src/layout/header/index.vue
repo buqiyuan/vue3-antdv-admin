@@ -47,7 +47,7 @@
 </template>
 
 <script lang="tsx" setup>
-  import { computed, nextTick, type CSSProperties } from 'vue';
+  import { computed, type CSSProperties } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
   import {
     QuestionCircleOutlined,
@@ -113,8 +113,6 @@
         // 移除标签页
         localStorage.clear();
         message.success('成功退出登录');
-        await nextTick();
-        console.log('router', router.getRoutes());
         router.replace({
           name: LOGIN_NAME,
           query: {

@@ -1,5 +1,6 @@
 import { NavigationFailureType, isNavigationFailure } from 'vue-router';
 import NProgress from 'nprogress'; // progress bar
+import { Modal } from 'ant-design-vue';
 import { LOGIN_NAME, PAGE_NOT_FOUND_NAME, REDIRECT_NAME } from './constant';
 import type { WhiteNameList } from './constant';
 import type { Router, RouteLocationNormalized } from 'vue-router';
@@ -29,6 +30,7 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
           const [err] = await _to(userStore.afterLogin());
           if (err) {
             userStore.resetToken();
+            Modal.destroyAll();
             return next({ name: LOGIN_NAME });
           }
           // 解决警告：No match found for location with path "XXXXXXX"
