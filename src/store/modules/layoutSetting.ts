@@ -2,8 +2,6 @@ import { reactive, computed, watchPostEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { theme as antdTheme } from 'ant-design-vue';
 import type { ThemeConfig } from 'ant-design-vue/es/config-provider/context';
-import { THEME_KEY } from '@/enums/cacheEnum';
-import { Storage } from '@/utils/Storage';
 import { themeColor, type ThemeColor } from '@/layout/header/components/setting/constant';
 
 /**
@@ -51,58 +49,60 @@ export const defaultSetting: LayoutSetting = {
   // production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true',
 };
 
-export const useLayoutSettingStore = defineStore('layout-setting', () => {
-  const localLayoutSetting = Storage.get<LayoutSetting>(THEME_KEY, {});
+export const useLayoutSettingStore = defineStore(
+  'layout-setting',
+  () => {
+    const layoutSetting = reactive({ ...defaultSetting });
 
-  const layoutSetting = reactive({ ...defaultSetting, ...localLayoutSetting });
+    const themeConfig = reactive<ThemeConfig>({
+      algorithm: themeColor[layoutSetting.navTheme!] || antdTheme.defaultAlgorithm,
+      token: {
+        colorPrimary: layoutSetting.colorPrimary,
+      },
+    });
 
-  const themeConfig = reactive<ThemeConfig>({
-    algorithm: themeColor[layoutSetting.navTheme!] || antdTheme.defaultAlgorithm,
-    token: {
-      colorPrimary: layoutSetting.colorPrimary,
-    },
-  });
+    const getNavTheme = computed(() => {
+      return layoutSetting.navTheme;
+    });
 
-  const getNavTheme = computed(() => {
-    return layoutSetting.navTheme;
-  });
+    watchPostEffect(() => {
+      if (layoutSetting.navTheme) {
+        toggleTheme(layoutSetting.navTheme);
+      }
+      if (layoutSetting.colorPrimary) {
+        setColorPrimary(layoutSetting.colorPrimary);
+      }
+    });
 
-  watchPostEffect(() => {
-    if (layoutSetting.navTheme) {
-      toggleTheme(layoutSetting.navTheme);
-    }
-    if (layoutSetting.colorPrimary) {
-      setColorPrimary(layoutSetting.colorPrimary);
-    }
-    // 修改项目配置时自动同步到 localStorage
-    Storage.set(THEME_KEY, layoutSetting);
-  });
+    // 切换主题
+    const toggleTheme = (navTheme: ThemeColor) => {
+      if (navTheme === 'realDark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      themeConfig.algorithm = themeColor[navTheme];
+    };
 
-  // 切换主题
-  const toggleTheme = (navTheme: ThemeColor) => {
-    if (navTheme === 'realDark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    themeConfig.algorithm = themeColor[navTheme];
-  };
+    /** 设置主题色 */
+    const setColorPrimary = (color: string) => {
+      themeConfig.token!.colorPrimary = color;
+    };
 
-  /** 设置主题色 */
-  const setColorPrimary = (color: string) => {
-    themeConfig.token!.colorPrimary = color;
-  };
+    const updateLayoutSetting = (settings: Partial<LayoutSetting>) => {
+      Object.assign(layoutSetting, settings);
+    };
 
-  const updateLayoutSetting = (settings: Partial<LayoutSetting>) => {
-    Object.assign(layoutSetting, settings);
-  };
-
-  return {
-    layoutSetting,
-    themeConfig,
-    getNavTheme,
-    toggleTheme,
-    setColorPrimary,
-    updateLayoutSetting,
-  };
-});
+    return {
+      layoutSetting,
+      themeConfig,
+      getNavTheme,
+      toggleTheme,
+      setColorPrimary,
+      updateLayoutSetting,
+    };
+  },
+  {
+    persist: true,
+  },
+);

@@ -9,9 +9,11 @@
   import { useRoute } from 'vue-router';
   import LockScreenPage from './lockscreen-page.vue';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
+  import { useUserStore } from '@/store/modules/user';
   import { LOGIN_NAME } from '@/router/constant';
 
   const lockscreenStore = useLockscreenStore();
+  const userStore = useUserStore();
   const route = useRoute();
   const isLock = computed(() => lockscreenStore.isLock);
   const lockTime = computed(() => lockscreenStore.lockTime);
@@ -27,11 +29,15 @@
     // 重置锁屏时间
     lockscreenStore.setLockTime();
     timer = setInterval(() => {
+      if (!userStore.token || isLock.value) {
+        return clearInterval(timer);
+      }
       // 锁屏倒计时递减
       lockscreenStore.setLockTime(lockTime.value - 1);
       if (lockTime.value <= 0) {
         // 设置锁屏
         lockscreenStore.setLock(true);
+        lockscreenStore.setLockPwd();
         return clearInterval(timer);
       }
       // console.log(lockTime.value, '锁屏倒计时')

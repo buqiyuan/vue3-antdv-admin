@@ -6,8 +6,6 @@ import type { WhiteNameList } from './constant';
 import type { Router, RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
 import { useKeepAliveStore } from '@/store/modules/keepAlive';
-import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
-import { Storage } from '@/utils/Storage';
 import { to as _to } from '@/utils/awaitTo';
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
@@ -18,9 +16,8 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
   router.beforeEach(async (to, _, next) => {
     NProgress.start(); // start progress bar
     const userStore = useUserStore();
-    const token = Storage.get(ACCESS_TOKEN_KEY, null);
 
-    if (token) {
+    if (userStore.token) {
       if (to.name === LOGIN_NAME) {
         next({ path: defaultRoutePath });
       } else {
@@ -29,7 +26,7 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
           // 从后台获取菜单
           const [err] = await _to(userStore.afterLogin());
           if (err) {
-            userStore.resetToken();
+            userStore.clearLoginStatus();
             Modal.destroyAll();
             return next({ name: LOGIN_NAME });
           }
@@ -73,7 +70,6 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
     }
 
     const keepAliveStore = useKeepAliveStore();
-    const token = Storage.get(ACCESS_TOKEN_KEY, null);
 
     // 在这里设置需要缓存的组件名称
     const toCompName = getComponentName(to);
@@ -98,8 +94,9 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
       const fromCompName = getComponentName(from);
       fromCompName && keepAliveStore.remove(fromCompName);
     }
+    const userStore = useUserStore();
     // 如果用户已登出，则清空所有缓存的组件
-    if (!token) {
+    if (!userStore.token) {
       keepAliveStore.clear();
     }
     NProgress.done(); // finish progress bar

@@ -2,8 +2,6 @@ import axios, { CanceledError } from 'axios';
 import { isString } from 'lodash-es';
 import { message as $message, Modal } from 'ant-design-vue';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
-import { Storage } from '@/utils/Storage';
 import { ResultEnum } from '@/enums/httpEnum';
 import { useUserStore } from '@/store/modules/user';
 
@@ -37,7 +35,8 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    const token = Storage.get(ACCESS_TOKEN_KEY);
+    const userStore = useUserStore();
+    const token = userStore.token;
     if (token && config.headers) {
       // 请求头token信息，请根据实际情况进行修改
       config.headers['Authorization'] = `Bearer ${token}`;
@@ -58,10 +57,6 @@ service.interceptors.response.use(
       $message.error(res.message || UNKNOWN_ERROR);
       // Illegal token
       if ([1101, 1105].includes(res.code)) {
-        // 取消后续所有请求
-        controller.abort();
-        // window.localStorage.clear();
-        // window.location.reload();
         // to re-login
         Modal.confirm({
           title: '警告',

@@ -1,45 +1,23 @@
 <template>
   <div
-    :class="{ unLockLogin: state.isShowLogin || !state.hasLockPassword }"
+    :class="{ unLockLogin: isShowForm }"
     class="lockscreen"
-    @keyup="unLockLogin(true)"
+    @keyup="isShowForm = true"
     @mousedown.stop
     @contextmenu.prevent
   >
-    <template v-if="!state.hasLockPassword">
-      <div class="setting-box">
-        <div>设置临时锁屏密码</div>
-        <Avatar :size="128">
-          <template #icon>
-            <user-outlined />
-          </template>
-        </Avatar>
-        <div class="username">{{ state.loginForm.username }}</div>
-        <a-input-password
-          v-model:value="state.temLockPassword"
-          placeholder="请输入锁屏密码"
-          size="large"
-          autofocus
-        />
-        <div class="btn-list">
-          <a-button type="dashed" @click="unlockScreen">取消</a-button>
-          <a-button type="primary" :disabled="state.temLockPassword?false:true" @click="lockScreen">确定锁屏</a-button>
-        </div>
-      </div>
-    </template>
-    <template v-else-if="!state.isShowLogin">
+    <template v-if="!isShowForm">
       <div class="lock-box">
         <div class="lock">
-          <span class="lock-icon" title="解锁屏幕" @click="unLockLogin(true)">
-            <lock-outlined />
-            <unlock-outlined />
+          <span class="lock-icon" title="解锁屏幕" @click="isShowForm = true">
+            <Icon icon="ant-design:lock-outlined" size="30" />
           </span>
         </div>
         <h6 class="tips">点击解锁</h6>
       </div>
       <!-- 小米 / 华为 充电-->
       <component
-        :is="randomCompName"
+        :is="BatteryComp"
         :battery="battery"
         :battery-status="batteryStatus"
         :calc-discharging-time="calcDischargingTime"
@@ -50,61 +28,48 @@
       </div>
       <div class="computer-status">
         <span :class="{ offline: !online }" class="network">
-          <WifiOutlined class="network" />
+          <Icon icon="ant-design:wifi-outlined" size="30" class="network" />
         </span>
-        <ApiOutlined />
+        <Icon icon="ant-design:api-outlined" size="30" />
       </div>
     </template>
     <template v-else>
       <div class="login-box">
-        <Avatar :size="128">
+        <Avatar :size="80" :src="userStore.userInfo.avatar">
           <template #icon>
-            <user-outlined />
+            <Icon icon="ant-design:user-outlined" />
           </template>
         </Avatar>
-        <div class="username">{{ state.loginForm.username }}</div>
-        <a-input-search
-          v-model:value="state.loginForm.password"
-          type="password"
-          autofocus
-          placeholder="请输入登录密码"
-          size="large"
-          @search="onLogin"
-        >
-          <template #enterButton>
-            <LoadingOutlined v-if="state.loginLoading" />
-            <arrow-right-outlined v-else />
+        <div class="username">{{ userStore.userInfo.username }}</div>
+        <a-input-password v-model:value="password" autofocus :placeholder="pwdPlaceholder">
+        </a-input-password>
+        <div class="flex justify-between w-full">
+          <template v-if="lockscreenStore.lockPwd">
+            <a-button type="link" size="small" @click="hideLockForm">返回</a-button>
+            <a-button type="link" size="small" @click="nav2login">返回登录</a-button>
+            <a-button type="link" size="small" @click="onLogin">进入系统</a-button>
           </template>
-        </a-input-search>
-        <a style="margin-top: 10px" @click="nav2login">重新登录</a>
+          <template v-else>
+            <a-button type="link" size="small" @click="cancelLock">取消锁屏</a-button>
+            <a-button type="link" size="small" @click="lockScreen">确定锁屏</a-button>
+          </template>
+        </div>
       </div>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue';
-  import {
-    LockOutlined,
-    LoadingOutlined,
-    UnlockOutlined,
-    UserOutlined,
-    ApiOutlined,
-    ArrowRightOutlined,
-    WifiOutlined,
-  } from '@ant-design/icons-vue';
-
+  import { defineAsyncComponent, ref, computed } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
   import { Avatar, message } from 'ant-design-vue';
-  import HuaweiCharge from './huawei-charge.vue';
-  import XiaomiCharge from './xiaomi-charge.vue';
   import { useOnline } from '@/hooks/useOnline';
   import { useTime } from '@/hooks/useTime';
-  import md5 from 'md5'
   import { useBattery } from '@/hooks/useBattery';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { useUserStore } from '@/store/modules/user';
   import { LOGIN_NAME } from '@/router/constant';
+  import { Icon } from '@/components/basic/icon';
 
   const lockscreenStore = useLockscreenStore();
   const userStore = useUserStore();
@@ -118,50 +83,60 @@
 
   const { battery, batteryStatus, calcDischargingTime } = useBattery();
 
-  const randomCompName = Math.random() > 0.49 ? XiaomiCharge : HuaweiCharge;
-
-  const state = reactive({
-    isShowLogin: false,
-    loginLoading: false, // 正在登录
-    loginForm: {
-      username: userStore.name,
-      password: '',
-    },
-    temLockPassword: '',
-    hasLockPassword: userStore.getLockPwd() ? true : false, // 是否有锁屏密码 默认没有
+  const BatteryComp = defineAsyncComponent(() => {
+    return Math.random() > 0.49 ? import('./huawei-charge.vue') : import('./xiaomi-charge.vue');
   });
 
-  // 解锁登录
-  const unLockLogin = (val: boolean) => (state.isShowLogin = val);
+  const isShowForm = ref(!lockscreenStore.lockPwd);
+  const password = ref('');
+
+  const pwdPlaceholder = computed(() => {
+    return lockscreenStore.lockPwd ? '请输入锁屏密码或用户密码' : '请输入锁屏密码(可选)';
+  });
 
   // 登录
   const onLogin = async () => {
-    if (state.loginForm.password.trim() == '') return message.warn('请填写密码');
-    const newPwd = md5(state.loginForm.password);
-    const lockPwd = userStore.getLockPwd();
-    if (newPwd === lockPwd) {
-      unlockScreen()
+    const pwd = password.value.trim();
+
+    if (pwd === '') return message.warn('密码不能为空');
+
+    if (lockscreenStore.verifyLockPwd(pwd)) {
+      unlockScreen();
     } else {
-      return message.warn('请填写正确的锁屏密码');
+      return message.warn('密码错误，请重新输入');
     }
   };
+
+  /** 隐藏锁屏输入表单 */
+  const hideLockForm = () => {
+    isShowForm.value = false;
+    password.value = '';
+  };
+
+  /** 取消锁屏 */
+  const cancelLock = () => {
+    isShowForm.value = false;
+    lockscreenStore.setLock(false);
+  };
+
+  // 确定锁屏
+  const lockScreen = () => {
+    const pwd = password.value.trim();
+    lockscreenStore.setLockPwd(pwd);
+    hideLockForm();
+  };
+
   // 取消锁屏/解锁锁屏
   const unlockScreen = () => {
-    unLockLogin(false);
+    isShowForm.value = false;
     lockscreenStore.setLock(false);
-    userStore.setLockPwd('');
   };
   // 输入密码 锁屏
-  const lockScreen = () => {
-    if (!state.temLockPassword) return;
-    userStore.setLockPwd(md5(state.temLockPassword));
-    console.log(state.temLockPassword, 'temLockPassword');
-    state.hasLockPassword = true;
-    state.isShowLogin = false;
-  };
+
   const nav2login = () => {
-    unLockLogin(false);
+    isShowForm.value = false;
     lockscreenStore.setLock(false);
+    userStore.clearLoginStatus();
     router.replace({
       name: LOGIN_NAME,
       query: {
@@ -186,7 +161,8 @@
       backdrop-filter: blur(7px);
     }
 
-    .setting-box,.login-box {
+    .setting-box,
+    .login-box {
       display: flex;
       position: absolute;
       top: 45%;
@@ -194,6 +170,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      width: 260px;
       transform: translate(-50%, -50%);
 
       > * {
@@ -201,16 +178,8 @@
       }
 
       .username {
-        font-size: 30px;
-      }
-      .btn-list{
-        width: 100%;
-        margin-top: 20px;
-        display: flex;
-        justify-content: space-around;
-      }
-      /deep/.ant-btn-primary:disabled{
-        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
       }
     }
 

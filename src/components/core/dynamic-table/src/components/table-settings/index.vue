@@ -1,5 +1,5 @@
 <template>
-  <Space :size="8">
+  <Space :size="8" class="dark:text-white">
     <SearchSetting />
     <RefreshSetting />
     <ColumnSetting />
