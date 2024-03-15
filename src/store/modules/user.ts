@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
 import Api from '@/api/';
-import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum';
+import { ACCESS_TOKEN_KEY, LOCKSCREEN_PWD } from '@/enums/cacheEnum';
 import { Storage } from '@/utils/Storage';
 import { resetRouter } from '@/router';
 import { generateDynamicRoutes } from '@/router/helper/routeHelper';
@@ -17,7 +17,7 @@ export type MessageEvent = {
 export const useUserStore = defineStore('user', () => {
   let eventSource: EventSource | null = null;
   const token = ref(Storage.get(ACCESS_TOKEN_KEY, null));
-  const name = ref('amdin');
+  const name = ref('');
   const perms = ref<string[]>([]);
   const menus = ref<RouteRecordRaw[]>([]);
   const userInfo = ref<Partial<API.UserEntity>>({});
@@ -113,7 +113,7 @@ export const useUserStore = defineStore('user', () => {
       const userInfoData = await accountProfile();
 
       userInfo.value = userInfoData;
-
+      name.value = userInfoData.username;
       await fetchPermsAndMenus();
       initServerMsgListener();
     } catch (error) {
@@ -137,6 +137,15 @@ export const useUserStore = defineStore('user', () => {
     resetToken();
     resetRouter();
   };
+  /** 设置锁屏密码 */
+  const setLockPwd = async (password: string) => {
+    Storage.set(LOCKSCREEN_PWD, password);
+  };
+  /** 获取锁屏密码 */
+  const getLockPwd = () => {
+    const password = Storage.get(LOCKSCREEN_PWD);
+    return password || '';
+  };
 
   return {
     token,
@@ -149,6 +158,8 @@ export const useUserStore = defineStore('user', () => {
     logout,
     resetToken,
     setServerConnectStatus,
+    setLockPwd,
+    getLockPwd,
   };
 });
 

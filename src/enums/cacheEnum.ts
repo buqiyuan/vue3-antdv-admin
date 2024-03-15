@@ -16,3 +16,5 @@ export const ROLES_KEY = 'ROLES__KEY__';
 export const IS_LOCKSCREEN = 'IS_LOCKSCREEN';
 /** 标签页 */
 export const TABS_ROUTES = 'TABS_ROUTES';
+/** 锁屏密码 */
+export const LOCKSCREEN_PWD = 'LOCKSCREEN_PWD';

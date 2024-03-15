@@ -1,12 +1,33 @@
 <template>
   <div
-    :class="{ unLockLogin: state.isShowLogin }"
+    :class="{ unLockLogin: state.isShowLogin || !state.hasLockPassword }"
     class="lockscreen"
     @keyup="unLockLogin(true)"
     @mousedown.stop
     @contextmenu.prevent
   >
-    <template v-if="!state.isShowLogin">
+    <template v-if="!state.hasLockPassword">
+      <div class="setting-box">
+        <div>设置临时锁屏密码</div>
+        <Avatar :size="128">
+          <template #icon>
+            <user-outlined />
+          </template>
+        </Avatar>
+        <div class="username">{{ state.loginForm.username }}</div>
+        <a-input-password
+          v-model:value="state.temLockPassword"
+          placeholder="请输入锁屏密码"
+          size="large"
+          autofocus
+        />
+        <div class="btn-list">
+          <a-button type="dashed" @click="unlockScreen">取消</a-button>
+          <a-button type="primary" :disabled="state.temLockPassword?false:true" @click="lockScreen">确定锁屏</a-button>
+        </div>
+      </div>
+    </template>
+    <template v-else-if="!state.isShowLogin">
       <div class="lock-box">
         <div class="lock">
           <span class="lock-icon" title="解锁屏幕" @click="unLockLogin(true)">
@@ -23,8 +44,18 @@
         :battery-status="batteryStatus"
         :calc-discharging-time="calcDischargingTime"
       />
+      <div class="local-time">
+        <div class="time">{{ hour }}:{{ minute }}</div>
+        <div class="date">{{ month }}月{{ day }}号，星期{{ week }}</div>
+      </div>
+      <div class="computer-status">
+        <span :class="{ offline: !online }" class="network">
+          <WifiOutlined class="network" />
+        </span>
+        <ApiOutlined />
+      </div>
     </template>
-    <template v-if="state.isShowLogin">
+    <template v-else>
       <div class="login-box">
         <Avatar :size="128">
           <template #icon>
@@ -48,18 +79,6 @@
         <a style="margin-top: 10px" @click="nav2login">重新登录</a>
       </div>
     </template>
-    <template v-if="!state.isShowLogin">
-      <div class="local-time">
-        <div class="time">{{ hour }}:{{ minute }}</div>
-        <div class="date">{{ month }}月{{ day }}号，星期{{ week }}</div>
-      </div>
-      <div class="computer-status">
-        <span :class="{ offline: !online }" class="network">
-          <WifiOutlined class="network" />
-        </span>
-        <ApiOutlined />
-      </div>
-    </template>
   </div>
 </template>
 
@@ -81,7 +100,7 @@
   import XiaomiCharge from './xiaomi-charge.vue';
   import { useOnline } from '@/hooks/useOnline';
   import { useTime } from '@/hooks/useTime';
-  // import md5 from 'blueimp-md5'
+  import md5 from 'md5'
   import { useBattery } from '@/hooks/useBattery';
   import { useLockscreenStore } from '@/store/modules/lockscreen';
   import { useUserStore } from '@/store/modules/user';
@@ -99,7 +118,7 @@
 
   const { battery, batteryStatus, calcDischargingTime } = useBattery();
 
-  const randomCompName = Math.random() > 0.48 ? XiaomiCharge : HuaweiCharge;
+  const randomCompName = Math.random() > 0.49 ? XiaomiCharge : HuaweiCharge;
 
   const state = reactive({
     isShowLogin: false,
@@ -108,6 +127,8 @@
       username: userStore.name,
       password: '',
     },
+    temLockPassword: '',
+    hasLockPassword: userStore.getLockPwd() ? true : false, // 是否有锁屏密码 默认没有
   });
 
   // 解锁登录
@@ -116,24 +137,28 @@
   // 登录
   const onLogin = async () => {
     if (state.loginForm.password.trim() == '') return message.warn('请填写密码');
-    // const params = { ...state.loginForm };
-    state.loginLoading = true;
-    // params.password = md5(params.password)
-    // const { code, message: msg } = await userStore.login(params).finally(() => {
-    //   state.loginLoading = false;
-    //   message.destroy();
-    // });
-    // if (code == 0) {
-    //   Modal.destroyAll();
-    //   message.success('登录成功！');
-    //   unLockLogin(false);
-    //   lockscreenStore.setLock(false);
-    // } else {
-    //   message.info(msg || '登录失败');
-    // }
-    state.loginLoading = false;
+    const newPwd = md5(state.loginForm.password);
+    const lockPwd = userStore.getLockPwd();
+    if (newPwd === lockPwd) {
+      unlockScreen()
+    } else {
+      return message.warn('请填写正确的锁屏密码');
+    }
   };
-
+  // 取消锁屏/解锁锁屏
+  const unlockScreen = () => {
+    unLockLogin(false);
+    lockscreenStore.setLock(false);
+    userStore.setLockPwd('');
+  };
+  // 输入密码 锁屏
+  const lockScreen = () => {
+    if (!state.temLockPassword) return;
+    userStore.setLockPwd(md5(state.temLockPassword));
+    console.log(state.temLockPassword, 'temLockPassword');
+    state.hasLockPassword = true;
+    state.isShowLogin = false;
+  };
   const nav2login = () => {
     unLockLogin(false);
     lockscreenStore.setLock(false);
@@ -161,7 +186,7 @@
       backdrop-filter: blur(7px);
     }
 
-    .login-box {
+    .setting-box,.login-box {
       display: flex;
       position: absolute;
       top: 45%;
@@ -177,6 +202,15 @@
 
       .username {
         font-size: 30px;
+      }
+      .btn-list{
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-around;
+      }
+      /deep/.ant-btn-primary:disabled{
+        color: #fff;
       }
     }
 
