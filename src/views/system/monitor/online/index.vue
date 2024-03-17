@@ -9,24 +9,34 @@
     @change="handleChange"
     @search="handleSearch"
     @reload="handleReload"
-  />
+  >
+    <template #toolbar>
+      <a-switch
+        v-model:checked="realTimeUpdate"
+        checked-children="开启实时更新"
+        un-checked-children="关闭实时更新"
+      />
+    </template>
+  </DynamicTable>
 </template>
 
 <script setup lang="tsx">
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, watch } from 'vue';
   import { baseColumns, type TableListItem } from './columns';
   import type { TableColumn } from '@/components/core/dynamic-table';
   import { useTable } from '@/components/core/dynamic-table';
   import { Api } from '@/api/';
+  import { useUserStore } from '@/store/modules/user';
 
   defineOptions({
     name: 'SystemMonitorOnline',
   });
 
   let originList: TableListItem[] = [];
+  const realTimeUpdate = ref(true);
   const list = ref<TableListItem[]>([]);
   const loading = ref(false);
-
+  const userStore = useUserStore();
   const [DynamicTable, dynamicTableInstance] = useTable({ size: 'small' });
 
   const columns: TableColumn<TableListItem>[] = [
@@ -74,6 +84,15 @@
     originList = await Api.systemOnline.onlineList().finally(() => (loading.value = false));
     list.value = originList;
   };
+
+  watch(
+    () => userStore.onlineUserCount,
+    () => {
+      if (realTimeUpdate.value) {
+        handleReload();
+      }
+    },
+  );
 
   onMounted(() => {
     handleReload();

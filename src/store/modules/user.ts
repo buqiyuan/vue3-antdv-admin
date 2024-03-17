@@ -10,7 +10,7 @@ import { uniqueSlash } from '@/utils/urlUtils';
 
 export type MessageEvent = {
   data?: any;
-  type?: 'ping' | 'close' | 'updatePermsAndMenus';
+  type?: 'ping' | 'close' | 'updatePermsAndMenus' | 'updateOnlineUserCount';
 };
 
 export const useUserStore = defineStore(
@@ -23,6 +23,7 @@ export const useUserStore = defineStore(
     const menus = ref<RouteRecordRaw[]>([]);
     const userInfo = ref<Partial<API.UserEntity>>({});
     const serverConnected = ref(true);
+    const onlineUserCount = ref(0);
 
     watch(serverConnected, (val) => {
       if (val && token.value) {
@@ -51,7 +52,7 @@ export const useUserStore = defineStore(
       eventSource = new EventSource(sseUrl);
       // 处理 SSE 传递的数据
       eventSource.onmessage = (event) => {
-        const { type } = JSON.parse(event.data) as MessageEvent;
+        const { type, data } = JSON.parse(event.data) as MessageEvent;
         // 服务器关闭 SSE 连接
         if (type === 'close') {
           closeEventSource();
@@ -59,6 +60,11 @@ export const useUserStore = defineStore(
         // 当用户的权限及菜单有变更时，重新获取权限及菜单
         else if (type === 'updatePermsAndMenus') {
           fetchPermsAndMenus();
+        }
+        // 在线用户数量变更时
+        else if (type === 'updateOnlineUserCount') {
+          onlineUserCount.value = ~~data;
+          console.log('data', data);
         }
         // console.log('eventSource', event.data);
       };
@@ -146,6 +152,7 @@ export const useUserStore = defineStore(
       perms,
       menus,
       userInfo,
+      onlineUserCount,
       login,
       afterLogin,
       logout,

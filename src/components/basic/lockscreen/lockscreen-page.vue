@@ -37,7 +37,7 @@
       <div class="login-box">
         <Avatar :size="80" :src="userStore.userInfo.avatar">
           <template #icon>
-            <Icon icon="ant-design:user-outlined" />
+            <Icon icon="ant-design:user-outlined" size="50" />
           </template>
         </Avatar>
         <div class="username">{{ userStore.userInfo.username }}</div>

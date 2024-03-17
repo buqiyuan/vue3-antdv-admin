@@ -16,12 +16,12 @@ import * as systemDictType from './systemDictType';
 import * as systemDictItem from './systemDictItem';
 import * as systemTask from './systemTask';
 import * as systemOnline from './systemOnline';
+import * as systemSse from './systemSse';
 import * as systemServe from './systemServe';
 import * as toolsStorage from './toolsStorage';
 import * as systemEmail from './systemEmail';
 import * as toolsUpload from './toolsUpload';
 import * as health from './health';
-import * as systemSse from './systemSse';
 import * as netDiskManage from './netDiskManage';
 import * as netDiskOverview from './netDiskOverview';
 import * as businessTodo from './businessTodo';
@@ -40,12 +40,12 @@ export default {
   systemDictItem,
   systemTask,
   systemOnline,
+  systemSse,
   systemServe,
   toolsStorage,
   systemEmail,
   toolsUpload,
   health,
-  systemSse,
   netDiskManage,
   netDiskOverview,
   businessTodo,
