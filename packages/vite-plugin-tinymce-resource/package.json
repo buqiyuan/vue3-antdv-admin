@@ -1,11 +1,10 @@
 {
   "name": "@admin-pkg/vite-plugin-tinymce-resource",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepare": "npm run build",
     "build": "tsc"
   },
   "peerDependencies": {

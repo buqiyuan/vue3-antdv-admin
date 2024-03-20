@@ -7,6 +7,7 @@ import pluginImport from 'eslint-plugin-import';
 import { defineFlatConfig } from 'eslint-define-config';
 import * as parserTypeScript from '@typescript-eslint/parser';
 import pluginTypeScript from '@typescript-eslint/eslint-plugin';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 export default defineFlatConfig([
   {
@@ -133,6 +134,7 @@ export default defineFlatConfig([
     files: ['**/*.vue', '**/*.?([cm])ts', '**/*.?([cm])tsx'],
     plugins: {
       import: pluginImport,
+      'unused-imports': unusedImports,
     },
     rules: {
       'import/first': 'error',
@@ -168,6 +170,18 @@ export default defineFlatConfig([
             },
           ],
           pathGroupsExcludedImportTypes: ['type'],
+        },
+      ],
+
+      'unused-imports/no-unused-imports': 'error',
+      // 如需保存时自动删除未引用代码，可注释掉该规则
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
         },
       ],
     },

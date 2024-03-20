@@ -2,6 +2,8 @@ node_modules
 .DS_Store
 dist
 .cache
+.turbo
+.nx
 
 tests/server/static
 tests/server/static/upload
@@ -30,3 +32,6 @@ yarn-error.log*
 # auto generate file
 types/auto-imports.d.ts
 types/components.d.ts
+
+
+.nx/cache

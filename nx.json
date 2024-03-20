@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "parallel": 5,
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["default"],
+      "outputs": ["{projectRoot}/dist"],
+      "cache": true
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "inputs": ["default"],
+      "cache": true
+    },
+    "e2e": {
+      "dependsOn": ["build"],
+      "inputs": ["default"],
+      "cache": true
+    }
+  }
+}
