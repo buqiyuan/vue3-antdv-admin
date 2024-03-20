@@ -12,8 +12,7 @@
           size="small"
           :tab-bar-style="{ marginBottom: '8px' }"
         >
-          <a-tab-pane v-for="(_, cateName) in iconsMap" :key="cateName" :tab="cateName">
-          </a-tab-pane>
+          <a-tab-pane v-for="(_, cateName) in iconsMap" :key="cateName" :tab="cateName" />
         </a-tabs>
         <a-input
           autofocus

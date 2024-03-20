@@ -9,7 +9,7 @@
       size="small"
     >
       <template #toolbar>
-        <UploadModal @upload-success="handleUploadSuccess"></UploadModal>
+        <UploadModal @upload-success="handleUploadSuccess" />
         <a-popconfirm
           title="你确定要删除这些数据吗?"
           ok-text="确定"

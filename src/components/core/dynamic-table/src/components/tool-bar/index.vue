@@ -8,12 +8,12 @@
         </div>
       </slot>
 
-      <slot name="afterHeaderTitle"></slot>
+      <slot name="afterHeaderTitle" />
     </div>
 
     <div>
       <Space>
-        <slot name="toolbar"></slot>
+        <slot name="toolbar" />
 
         <span v-if="exportFileName" @click="exportData2Excel">
           <slot name="export-button">

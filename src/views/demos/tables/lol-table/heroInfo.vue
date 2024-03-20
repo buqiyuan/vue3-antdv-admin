@@ -45,7 +45,7 @@
       <figure v-if="heroInfo.banAudio || heroInfo.selectAudio" class="grid gap-[10px]">
         <figcaption>{{ heroInfo.title }}有话说:</figcaption>
         <template v-for="url in [heroInfo.banAudio, heroInfo.selectAudio]" :key="url">
-          <audio v-if="url" controls :src="url"></audio>
+          <audio v-if="url" controls :src="url" />
         </template>
       </figure>
     </a-card-grid>

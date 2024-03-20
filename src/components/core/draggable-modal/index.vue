@@ -30,7 +30,7 @@
             ④ 限制窗口最小宽度/高度。
           </slot>
           <template v-if="$slots.footer" #footer>
-            <slot name="footer"></slot>
+            <slot name="footer" />
           </template>
         </Modal>
       </div>

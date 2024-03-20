@@ -258,7 +258,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
   }
 
   async function validate(nameList?: NamePath[] | undefined) {
-    return await schemaFormRef.value?.validate(nameList)!;
+    return await schemaFormRef.value!.validate(nameList);
   }
 
   async function clearValidate(name?: string | string[]) {

@@ -91,8 +91,7 @@
     :field-names="{ key: 'id', title: 'name' }"
     @select="onTreeSelect"
     @expand="onExpand"
-  >
-  </a-tree>
+  />
 </template>
 
 <style lang="less" scoped>

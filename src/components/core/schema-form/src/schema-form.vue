@@ -6,7 +6,7 @@
     @keypress.enter="handleEnterPress"
   >
     <Row v-bind="getRowConfig">
-      <slot name="formHeader"></slot>
+      <slot name="formHeader" />
       <slot>
         <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
           <SchemaFormItem
@@ -15,7 +15,7 @@
             :table-instance="tableInstance"
           >
             <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
-              <slot :name="item" v-bind="data || {}"></slot>
+              <slot :name="item" v-bind="data || {}" />
             </template>
           </SchemaFormItem>
         </template>
@@ -28,11 +28,11 @@
             v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']"
             #[item]="data"
           >
-            <slot :name="item" v-bind="data || {}"></slot>
+            <slot :name="item" v-bind="data || {}" />
           </template>
         </FormAction>
       </slot>
-      <slot name="formFooter"></slot>
+      <slot name="formFooter" />
     </Row>
   </Form>
 </template>

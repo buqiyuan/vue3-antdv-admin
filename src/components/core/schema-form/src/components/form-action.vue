@@ -2,7 +2,7 @@
   <Col v-if="showActionButtonGroup" v-bind="actionColOpt">
     <div style="width: 100%" :style="{ textAlign: actionColOpt.style.textAlign }">
       <Form.Item>
-        <slot name="resetBefore"></slot>
+        <slot name="resetBefore" />
         <a-button
           v-if="showResetButton"
           type="default"
@@ -12,7 +12,7 @@
         >
           {{ getResetBtnOptions.text }}
         </a-button>
-        <slot name="submitBefore"></slot>
+        <slot name="submitBefore" />
 
         <a-button
           v-if="showSubmitButton"
@@ -24,7 +24,7 @@
           {{ getSubmitBtnOptions.text }}
         </a-button>
 
-        <slot name="advanceBefore"></slot>
+        <slot name="advanceBefore" />
         <a-button
           v-if="showAdvancedButton && !hideAdvanceBtn"
           type="link"
@@ -34,7 +34,7 @@
           {{ isAdvanced ? t('component.form.putAway') : t('component.form.unfold') }}
           <BasicArrow class="ml-1" :expand="!isAdvanced" />
         </a-button>
-        <slot name="advanceAfter"></slot>
+        <slot name="advanceAfter" />
       </Form.Item>
     </div>
   </Col>

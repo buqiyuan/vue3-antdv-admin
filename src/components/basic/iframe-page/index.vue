@@ -1,7 +1,7 @@
 <template>
   <div class="iframe-box wh-full">
     <Spin :spinning="loading" size="large">
-      <iframe class="wh-full" v-bind="$attrs" :src="src" @load="onFrameLoad"></iframe>
+      <iframe class="wh-full" v-bind="$attrs" :src="src" @load="onFrameLoad" />
     </Spin>
   </div>
 </template>

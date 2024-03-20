@@ -12,7 +12,7 @@ export default defineConfig(async () => {
       // clean: ['!mockServiceWorker.*'],
       dts: true,
       outDir: 'dist',
-      format: ['cjs', 'esm'],
+      format: ['esm'],
     },
     {
       entry: ['src/browser/index.ts'],

@@ -1,19 +1,19 @@
 <template>
   <div class="xiaomi-charge">
     <div v-for="i in 3" :key="i" class="outer">
-      <div class="circle" :style="{ transform: `scale(${1.01 - 0.04 * (i - 1)})` }"></div>
+      <div class="circle" :style="{ transform: `scale(${1.01 - 0.04 * (i - 1)})` }" />
     </div>
     <div class="line-box">
-      <div class="line-left"></div>
-      <div class="line-left line-right"></div>
-      <div class="line-center line-center-left-2"></div>
-      <div class="line-center line-center-left-1"></div>
-      <div class="line-center"></div>
-      <div class="line-center line-center-right-1"></div>
-      <div class="line-center line-center-right-2"></div>
+      <div class="line-left" />
+      <div class="line-left line-right" />
+      <div class="line-center line-center-left-2" />
+      <div class="line-center line-center-left-1" />
+      <div class="line-center" />
+      <div class="line-center line-center-right-1" />
+      <div class="line-center line-center-right-2" />
     </div>
     <div class="outer" style="transform: scale(0.68)">
-      <div class="circle circle-blur" style="padding: 30px"></div>
+      <div class="circle circle-blur" style="padding: 30px" />
     </div>
     <div v-for="i in 4" :key="i" class="outer">
       <div
@@ -22,12 +22,12 @@
           transform: `scale(${1 - 0.02 * (i - 1)})`,
           animationDuration: `${500 - 20 * (i - 1)}ms`,
         }"
-      ></div>
+      />
     </div>
     <div class="outer">
       <div class="text">{{ battery.level.toFixed(0) }}<span class="sub">%</span></div>
     </div>
-    <div class="light"></div>
+    <div class="light" />
   </div>
 </template>
 
@@ -71,46 +71,46 @@
 
     @keyframes light {
       0% {
-        opacity: 0.3;
         transform: scale(0.3);
+        opacity: 0.3;
       }
 
       40% {
-        opacity: 0.6;
         transform: scale(1);
+        opacity: 0.6;
       }
 
       100% {
-        opacity: 0;
         transform: scale(0.3);
+        opacity: 0;
       }
     }
 
+    display: flex;
     position: absolute;
     bottom: 0;
     left: 50vw;
-    display: flex;
+    justify-content: center;
     width: 300px;
     height: 400px;
     transform: translateX(-50%);
-    justify-content: center;
 
     .circle {
       position: absolute;
       width: 286px;
       height: 286px;
       padding: 2px;
-      background: linear-gradient(#c71ff1, #2554ea);
       border-radius: 50%;
+      background: linear-gradient(#c71ff1, #2554ea);
     }
 
     .circle::after {
+      content: ' ';
       display: block;
       width: 100%;
       height: 100%;
-      background: #000;
       border-radius: 50%;
-      content: ' ';
+      background: #000;
     }
 
     .circle-blur {
@@ -122,16 +122,16 @@
       position: absolute;
       width: 220px;
       height: 220px;
-      border-top: solid 1px rgba(255, 255, 255, 0.06);
-      border-bottom: solid 1px rgba(255, 255, 255, 0.08);
-      border-radius: 50%;
       animation: rotate 500ms linear infinite;
+      border-top: solid 1px rgb(255 255 255 / 6%);
+      border-bottom: solid 1px rgb(255 255 255 / 8%);
+      border-radius: 50%;
     }
 
     .outer {
+      display: flex;
       position: absolute;
       bottom: 400px;
-      display: flex;
       align-items: center;
       justify-content: center;
     }
@@ -149,42 +149,42 @@
       position: absolute;
       bottom: 0;
       left: -15px;
+      box-sizing: border-box;
       width: 30px;
       height: 267px;
       border-top: solid 2px #2554ea;
       border-right: solid 2px #2554ea;
       border-top-right-radius: 40px;
-      box-sizing: border-box;
     }
 
     .line-left::before {
+      content: '';
       position: absolute;
       top: -8px;
       left: 0;
+      box-sizing: border-box;
       width: 30px;
       height: 100%;
+      transform: scaleY(0.96);
+      transform-origin: center top;
       border-top: solid 2px #2554ea;
       border-right: solid 2px #2554ea;
       border-top-right-radius: 50px;
-      content: '';
-      transform: scaleY(0.96);
-      box-sizing: border-box;
-      transform-origin: center top;
     }
 
     .line-left::after {
+      content: '';
       position: absolute;
       top: -14px;
       left: 0;
+      box-sizing: border-box;
       width: 30px;
       height: 100%;
+      transform: scaleY(0.92);
+      transform-origin: center top;
       border-top: solid 2px #2554ea;
       border-right: solid 2px #2554ea;
       border-top-right-radius: 60px;
-      content: '';
-      transform: scaleY(0.92);
-      box-sizing: border-box;
-      transform-origin: center top;
     }
 
     .line-right {
@@ -202,15 +202,15 @@
     }
 
     .line-center::before {
+      content: '';
       position: absolute;
       bottom: 10px;
       width: 2px;
       height: 80px;
-      background: linear-gradient(#79ccea, transparent);
-      border-top-right-radius: 2px;
-      border-top-left-radius: 2px;
-      content: '';
       animation: up 700ms linear infinite;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      background: linear-gradient(#79ccea, transparent);
     }
 
     .line-center-left-1 {
@@ -249,9 +249,9 @@
       position: absolute;
       width: 200px;
       height: 80px;
+      color: turquoise;
       font-size: 70px;
       line-height: 80px;
-      color: turquoise;
       text-align: center;
     }
 
@@ -264,9 +264,9 @@
       bottom: -150px;
       width: 300px;
       height: 350px;
-      background: radial-gradient(#2554ea, transparent 60%);
-      border-radius: 50%;
       animation: light 1.2s linear 1 forwards;
+      border-radius: 50%;
+      background: radial-gradient(#2554ea, transparent 60%);
     }
   }
 </style>

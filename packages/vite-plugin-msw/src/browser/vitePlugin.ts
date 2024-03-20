@@ -1,7 +1,9 @@
 import { readFile, copyFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { Connect } from 'vite';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const swFileName = 'mockServiceWorker.js';
 const localMswDistPath = resolve(__dirname, swFileName);
 

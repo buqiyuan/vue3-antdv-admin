@@ -23,7 +23,7 @@
       </Space>
     </a-card>
     <DraggableModal v-model:open="state.visible" @ok="onOk" />
-    <UseModalComp></UseModalComp>
+    <UseModalComp />
   </div>
 </template>
 

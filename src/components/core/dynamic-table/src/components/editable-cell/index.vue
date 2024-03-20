@@ -16,7 +16,7 @@
             :table-row-key="rowKey"
           >
             <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
-              <slot :name="item" v-bind="data || {}"></slot>
+              <slot :name="item" v-bind="data || {}" />
             </template>
           </SchemaFormItem>
           <a-col v-if="getIsCellEdit" :span="4" class="!flex items-center">

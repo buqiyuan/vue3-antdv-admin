@@ -26,7 +26,7 @@
   import type { TableColumn } from '@/components/core/dynamic-table';
   import { useTable } from '@/components/core/dynamic-table';
   import { Api } from '@/api/';
-  import { useUserStore } from '@/store/modules/user';
+  import { useSSEStore } from '@/store/modules/sse';
 
   defineOptions({
     name: 'SystemMonitorOnline',
@@ -36,7 +36,7 @@
   const realTimeUpdate = ref(true);
   const list = ref<TableListItem[]>([]);
   const loading = ref(false);
-  const userStore = useUserStore();
+  const sseStore = useSSEStore();
   const [DynamicTable, dynamicTableInstance] = useTable({ size: 'small' });
 
   const columns: TableColumn<TableListItem>[] = [
@@ -86,7 +86,7 @@
   };
 
   watch(
-    () => userStore.onlineUserCount,
+    () => sseStore.onlineUserCount,
     () => {
       if (realTimeUpdate.value) {
         handleReload();

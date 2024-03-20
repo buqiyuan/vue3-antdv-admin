@@ -13,7 +13,7 @@
       </template>
     </Alert>
     <a-card>
-      <SchemaForm @submit="confirm"> </SchemaForm>
+      <SchemaForm @submit="confirm" />
     </a-card>
   </div>
 </template>

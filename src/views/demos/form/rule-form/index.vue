@@ -18,7 +18,7 @@
       </template>
     </Alert>
     <a-card>
-      <schema-form ref="dynamicForm" v-bind="formProps" @submit="confirm"> </schema-form>
+      <schema-form ref="dynamicForm" v-bind="formProps" @submit="confirm" />
     </a-card>
   </div>
 </template>

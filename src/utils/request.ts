@@ -4,6 +4,7 @@ import { message as $message, Modal } from 'ant-design-vue';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ResultEnum } from '@/enums/httpEnum';
 import { useUserStore } from '@/store/modules/user';
+import { useSSEStore } from '@/store/modules/sse';
 
 export interface RequestOptions extends AxiosRequestConfig {
   /** 是否直接将数据从响应中提取出，例如直接返回 res.data，而忽略 res.code 等信息 */
@@ -75,8 +76,8 @@ service.interceptors.response.use(
       error.code = res.code;
       return Promise.reject(error);
     } else {
-      const userStore = useUserStore();
-      userStore.setServerConnectStatus(true);
+      const sseStore = useSSEStore();
+      sseStore.setServerConnectStatus(true);
       return response;
     }
   },

@@ -18,7 +18,7 @@
       <a-button class="mr-2" @click="deleteField"> 删除字段11 </a-button>
     </div>
     <a-card>
-      <SchemaForm @submit="confirm"> </SchemaForm>
+      <SchemaForm @submit="confirm" />
     </a-card>
   </div>
 </template>

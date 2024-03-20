@@ -1,8 +1,9 @@
 import { cp, readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import { resolve, dirname } from 'node:path';
 import type { PluginOption } from 'vite';
 
-// const require = createRequire(import.meta.url);
+const require = createRequire(import.meta.url);
 
 const tinymceDir = dirname(require.resolve('tinymce'));
 let outDir: string;

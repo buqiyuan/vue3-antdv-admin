@@ -9,7 +9,7 @@
             :class="{ active: layoutSetting.navTheme === theme.value }"
             @click="setNavTheme(theme.value)"
           >
-            <svg-icon :name="theme.value" size="50"></svg-icon>
+            <svg-icon :name="theme.value" size="50" />
           </div>
         </Tooltip>
       </Descriptions.Item>
@@ -48,7 +48,7 @@
           :class="{ active: layoutSetting.layout === item.value }"
           @click="setLayout(item.value)"
         >
-          <svg-icon :name="item.value" size="50"></svg-icon>
+          <svg-icon :name="item.value" size="50" />
         </div>
       </Descriptions.Item>
     </Descriptions>

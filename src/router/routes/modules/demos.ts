@@ -1,4 +1,4 @@
-import { type RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 import { t } from '@/hooks/useI18n';
 
 const moduleName = 'demos';

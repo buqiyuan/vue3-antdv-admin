@@ -8,7 +8,7 @@
       <a-button class="mr-2" @click="deleteField"> 删除字段11 </a-button>
     </div>
     <a-card>
-      <schema-form ref="dynamicForm" v-bind="formProps" @submit="confirm"> </schema-form>
+      <schema-form ref="dynamicForm" v-bind="formProps" @submit="confirm" />
     </a-card>
   </div>
 </template>

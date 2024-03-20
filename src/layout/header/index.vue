@@ -11,7 +11,7 @@
       </slot>
     </div>
     <div class="header-menu">
-      <slot name="menu"> </slot>
+      <slot name="menu" />
     </div>
     <div class="header-right">
       <Space :size="20">

@@ -1,82 +1,22 @@
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { useLockscreenStore } from './lockscreen';
+import { useSSEStore } from './sse';
 import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
 import Api from '@/api/';
 import { resetRouter } from '@/router';
 import { generateDynamicRoutes } from '@/router/helper/routeHelper';
-import { uniqueSlash } from '@/utils/urlUtils';
-
-export type MessageEvent = {
-  data?: any;
-  type?: 'ping' | 'close' | 'updatePermsAndMenus' | 'updateOnlineUserCount';
-};
 
 export const useUserStore = defineStore(
   'user',
   () => {
+    const sseStore = useSSEStore();
     const lockscreenStore = useLockscreenStore();
-    let eventSource: EventSource | null = null;
     const token = ref<string>();
     const perms = ref<string[]>([]);
     const menus = ref<RouteRecordRaw[]>([]);
     const userInfo = ref<Partial<API.UserEntity>>({});
-    const serverConnected = ref(true);
-    const onlineUserCount = ref(0);
-
-    watch(serverConnected, (val) => {
-      if (val && token.value) {
-        initServerMsgListener();
-      } else {
-        eventSource?.close();
-      }
-    });
-
-    const closeEventSource = () => {
-      serverConnected.value = false;
-      eventSource?.close();
-      eventSource = null;
-    };
-
-    /** 监听来自服务端推送的消息 */
-    const initServerMsgListener = async () => {
-      if (eventSource) {
-        eventSource.close();
-      }
-      const uid = userInfo.value.id;
-      const sseUrl = uniqueSlash(
-        `${import.meta.env.VITE_BASE_API_URL}/api/sse/${uid}?token=${token.value}`,
-      );
-
-      eventSource = new EventSource(sseUrl);
-      // 处理 SSE 传递的数据
-      eventSource.onmessage = (event) => {
-        const { type, data } = JSON.parse(event.data) as MessageEvent;
-        // 服务器关闭 SSE 连接
-        if (type === 'close') {
-          closeEventSource();
-        }
-        // 当用户的权限及菜单有变更时，重新获取权限及菜单
-        else if (type === 'updatePermsAndMenus') {
-          fetchPermsAndMenus();
-        }
-        // 在线用户数量变更时
-        else if (type === 'updateOnlineUserCount') {
-          onlineUserCount.value = ~~data;
-          console.log('data', data);
-        }
-        // console.log('eventSource', event.data);
-      };
-      eventSource.onerror = (err) => {
-        console.log('eventSource err', err);
-        closeEventSource();
-      };
-    };
-
-    const setServerConnectStatus = (isConnect: boolean) => {
-      serverConnected.value = isConnect;
-    };
 
     const sortMenus = (menus: RouteRecordRaw[] = []) => {
       return menus
@@ -87,7 +27,7 @@ export const useUserStore = defineStore(
           }
           return flag;
         })
-        .sort((a, b) => ~~a.meta?.orderNo! - ~~b.meta?.orderNo!);
+        .sort((a, b) => ~~Number(a.meta?.orderNo) - ~~Number(b.meta?.orderNo));
     };
 
     /** 清空登录态(token、userInfo...) */
@@ -111,6 +51,7 @@ export const useUserStore = defineStore(
         const data = await Api.auth.authLogin(params);
         setToken(data.token);
         await afterLogin();
+        lockscreenStore.setLock(false);
         lockscreenStore.saveLoginPwd(params.password);
       } catch (error) {
         return Promise.reject(error);
@@ -125,7 +66,7 @@ export const useUserStore = defineStore(
 
         userInfo.value = userInfoData;
         await fetchPermsAndMenus();
-        initServerMsgListener();
+        sseStore.initServerMsgListener();
       } catch (error) {
         return Promise.reject(error);
         // return logout();
@@ -143,7 +84,7 @@ export const useUserStore = defineStore(
     /** 登出 */
     const logout = async () => {
       await Api.account.accountLogout();
-      closeEventSource();
+      sseStore.closeEventSource();
       clearLoginStatus();
     };
 
@@ -152,12 +93,11 @@ export const useUserStore = defineStore(
       perms,
       menus,
       userInfo,
-      onlineUserCount,
       login,
       afterLogin,
       logout,
       clearLoginStatus,
-      setServerConnectStatus,
+      fetchPermsAndMenus,
     };
   },
   {

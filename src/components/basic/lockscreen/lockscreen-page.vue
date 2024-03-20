@@ -41,8 +41,7 @@
           </template>
         </Avatar>
         <div class="username">{{ userStore.userInfo.username }}</div>
-        <a-input-password v-model:value="password" autofocus :placeholder="pwdPlaceholder">
-        </a-input-password>
+        <a-input-password v-model:value="password" autofocus :placeholder="pwdPlaceholder" />
         <div class="flex justify-between w-full">
           <template v-if="lockscreenStore.lockPwd">
             <a-button type="link" size="small" @click="hideLockForm">返回</a-button>

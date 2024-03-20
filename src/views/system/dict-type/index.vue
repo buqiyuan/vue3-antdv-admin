@@ -25,7 +25,7 @@
           :loading="expandedRowLoding[record.id]"
           :data-source="expandedRowData[record.id]"
           :pagination="false"
-        ></a-table>
+        />
       </template>
     </DynamicTable>
   </div>

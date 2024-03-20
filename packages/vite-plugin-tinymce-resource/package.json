@@ -1,7 +1,7 @@
 {
   "name": "@admin-pkg/vite-plugin-tinymce-resource",
-  "version": "0.0.2",
-  "type": "commonjs",
+  "version": "0.0.3",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

@@ -2,9 +2,9 @@
   <div class="huawei-charge">
     <div class="number">{{ battery.level.toFixed(0) }}%</div>
     <div class="contrast">
-      <div class="circle"></div>
+      <div class="circle" />
       <ul class="bubbles">
-        <li v-for="i in 15" :key="i"></li>
+        <li v-for="i in 15" :key="i" />
       </ul>
     </div>
     <div class="charging">

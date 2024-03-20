@@ -31,6 +31,6 @@ jobs:
 
       - name: Publish 🚀
         shell: bash
-        run: pnpm publish --filter ./packages/* --access public --no-git-checks --registry https://registry.npmjs.org --verbose
+        run: pnpm publish --filter './packages/*' --access public --no-git-checks --registry https://registry.npmjs.org --verbose
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -88,6 +88,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           typescript: true,
           vueTsc: true,
           eslint: {
+            useFlatConfig: true,
             lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
           },
           overlay: {

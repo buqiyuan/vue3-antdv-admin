@@ -11,7 +11,7 @@
       @submit="handleSubmit"
     >
       <template v-for="item of getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
-        <slot :name="item" v-bind="data || {}"></slot>
+        <slot :name="item" v-bind="data || {}" />
       </template>
     </SchemaForm>
     <div class="bg-white dark:bg-black">
@@ -23,7 +23,7 @@
         :show-table-setting="showTableSetting"
       >
         <template v-for="name of Object.keys($slots)" #[name]="data">
-          <slot :name="name" v-bind="data || {}"></slot>
+          <slot :name="name" v-bind="data || {}" />
         </template>
       </ToolBar>
       <SchemaForm
@@ -42,10 +42,10 @@
           @change="handleTableChange"
         >
           <template v-for="(_, slotName) of $slots" #[slotName]="slotData" :key="slotName">
-            <slot :name="slotName" v-bind="slotData"></slot>
+            <slot :name="slotName" v-bind="slotData" />
           </template>
           <template #bodyCell="slotData">
-            <slot name="bodyCell" v-bind="slotData"></slot>
+            <slot name="bodyCell" v-bind="slotData" />
           </template>
         </Table>
       </SchemaForm>

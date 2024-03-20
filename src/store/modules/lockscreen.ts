@@ -1,10 +1,13 @@
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import MD5 from 'crypto-js/md5';
+import { useIdle } from '@vueuse/core';
+import { useRoute } from 'vue-router';
 import { store } from '@/store';
+import { LOGIN_NAME } from '@/router/constant';
 
 // 长时间不操作默认锁屏时间
-const initTime = 60 * 60;
+const initTime = 60 * 60 * 1000; // 60 分钟
 
 export type LockscreenState = {
   isLock: boolean; // 是否锁屏
@@ -14,10 +17,11 @@ export type LockscreenState = {
 export const useLockscreenStore = defineStore(
   'lockscreen',
   () => {
+    const route = useRoute();
+    const { idle } = useIdle(initTime); // 5 min
     const loginPwd = ref('');
     const lockPwd = ref('');
     const isLock = ref(false);
-    const lockTime = ref(isLock.value ? initTime : 0);
 
     /** 将登录密码通过 MD5 加密保存到本地，用于解锁屏幕 */
     const saveLoginPwd = (pwd: string) => {
@@ -29,9 +33,6 @@ export const useLockscreenStore = defineStore(
       if (!lock) {
         resetLockPwd();
       }
-    };
-    const setLockTime = (time = initTime) => {
-      lockTime.value = time;
     };
 
     /** 不传则默认使用登录密码作为锁屏密码 */
@@ -56,13 +57,23 @@ export const useLockscreenStore = defineStore(
       }
     });
 
+    watch(idle, (idleValue) => {
+      if (route.name === LOGIN_NAME) {
+        setLock(false);
+        return;
+      }
+
+      if (idleValue) {
+        setLock(true);
+        setLockPwd();
+      }
+    });
+
     return {
       isLock,
-      lockTime,
       lockPwd,
       loginPwd,
       setLock,
-      setLockTime,
       setLockPwd,
       verifyLockPwd,
       saveLoginPwd,

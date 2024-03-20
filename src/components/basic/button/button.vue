@@ -2,7 +2,7 @@
   <ProConfigProvider :theme="btnTheme">
     <Button v-bind="{ ...$attrs, ...props }" :type="buttonType">
       <template v-for="(_, key) in $slots" #[key]>
-        <slot :name="key"></slot>
+        <slot :name="key" />
       </template>
     </Button>
   </ProConfigProvider>

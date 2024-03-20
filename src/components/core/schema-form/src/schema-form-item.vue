@@ -1,7 +1,7 @@
 <template>
   <Col v-if="getShow.isIfShow" v-show="getShow.isShow" v-bind="schema.colProps">
     <Divider v-if="schema.component === 'Divider'" v-bind="Object.assign(getComponentProps)">
-      <component :is="renderLabelHelpMessage"></component>
+      <component :is="renderLabelHelpMessage" />
     </Divider>
     <Form.Item
       v-else
@@ -17,13 +17,10 @@
         <slot v-if="isString(schema.beforeSlot)" :name="schema.beforeSlot" v-bind="getValues">
           <span class="mr-[6px]">{{ schema.beforeSlot }}</span>
         </slot>
-        <component
-          :is="schema.beforeSlot(getValues)"
-          v-if="isFunction(schema.beforeSlot)"
-        ></component>
+        <component :is="schema.beforeSlot(getValues)" v-if="isFunction(schema.beforeSlot)" />
       </template>
       <!-- 自定义插槽 -->
-      <slot v-if="schema.slot" :name="schema.slot" v-bind="getValues"> </slot>
+      <slot v-if="schema.slot" :name="schema.slot" v-bind="getValues" />
       <component
         :is="getComponent"
         v-else-if="getComponent"
@@ -43,10 +40,7 @@
           #[slotName]="slotData"
           :key="slotName"
         >
-          <component
-            :is="slotFn?.({ ...getValues, slotData }) ?? slotFn"
-            :key="slotName"
-          ></component>
+          <component :is="slotFn?.({ ...getValues, slotData }) ?? slotFn" :key="slotName" />
         </template>
       </component>
       <!-- 后置插槽 -->
@@ -54,10 +48,7 @@
         <slot v-if="isString(schema.afterSlot)" :name="schema.afterSlot" v-bind="getValues">
           <span class="ml-[6px]">{{ schema.afterSlot }}</span>
         </slot>
-        <component
-          :is="schema.afterSlot(getValues)"
-          v-if="isFunction(schema.afterSlot)"
-        ></component>
+        <component :is="schema.afterSlot(getValues)" v-if="isFunction(schema.afterSlot)" />
       </template>
     </Form.Item>
   </Col>

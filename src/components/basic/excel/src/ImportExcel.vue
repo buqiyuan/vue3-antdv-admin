@@ -8,7 +8,7 @@
       @change="handleInputClick"
     />
     <div @click="handleUpload">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>

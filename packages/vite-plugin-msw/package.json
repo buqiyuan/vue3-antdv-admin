@@ -1,20 +1,19 @@
 {
   "name": "@admin-pkg/vite-plugin-msw",
-  "version": "0.0.6",
+  "version": "0.0.7",
+  "type": "module",
   "description": "",
-  "module": "./dist/browser/index.mjs",
-  "main": "./dist/browser/index.mjs",
+  "module": "./dist/browser/index.js",
+  "main": "./dist/browser/index.js",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/browser/index.mjs",
-      "require": "./dist/browser/index.mjs"
+      "import": "./dist/browser/index.js"
     },
     "./vite": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js"
     }
   },
   "scripts": {

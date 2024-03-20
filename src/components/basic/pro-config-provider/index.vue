@@ -22,6 +22,6 @@
 
 <template>
   <ConfigProvider v-bind="$props" :locale="getAntdLocale" :theme="theme">
-    <slot></slot>
+    <slot />
   </ConfigProvider>
 </template>
