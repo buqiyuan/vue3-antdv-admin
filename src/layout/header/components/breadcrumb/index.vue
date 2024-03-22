@@ -13,13 +13,15 @@
 
   // 点击菜单
   const clickMenuItem = (menuItem: RouteRecordRaw) => {
-    if (!menuItem.redirect) return;
+    const { isExt, extOpenMode, type } = menuItem?.meta || {};
 
-    const { isExt, extOpenMode } = menuItem?.meta || {};
+    if (type === 0 && !menuItem.redirect) return;
+
     if (isExt && extOpenMode === 1) {
       window.open(menuItem.path);
     } else {
-      router.push({ name: menuItem.name });
+      const to = typeof menuItem.redirect === 'string' ? menuItem.redirect : menuItem;
+      router.push(to);
     }
   };
 
