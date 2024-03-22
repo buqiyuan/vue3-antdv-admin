@@ -4,11 +4,6 @@ declare module '*.vue' {
   export default Component;
 }
 
-declare module 'mitt' {
-  import mitt from 'mitt';
-  export default mitt;
-}
-
 declare module 'ant-design-vue/es/locale/*' {
   import type { Locale } from 'ant-design-vue/types/locale-provider';
   const locale: Locale & ReadonlyRecordable;

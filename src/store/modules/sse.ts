@@ -1,6 +1,7 @@
 import { ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useIdle } from '@vueuse/core';
+import mitt from 'mitt';
 import { useUserStore } from './user';
 import { uniqueSlash } from '@/utils/urlUtils';
 
@@ -9,7 +10,12 @@ export type MessageEvent = {
   type?: 'ping' | 'close' | 'updatePermsAndMenus' | 'updateOnlineUserCount';
 };
 
+type Events = {
+  onlineUser: number;
+};
+
 export const useSSEStore = defineStore('sse', () => {
+  const emitter = mitt<Events>();
   const userStore = useUserStore();
   const { idle } = useIdle(5 * 60 * 1000); // 5 min
   let eventSource: EventSource | null = null;
@@ -44,11 +50,13 @@ export const useSSEStore = defineStore('sse', () => {
       eventSource.close();
     }
     const uid = userStore.userInfo.id;
+    if (!uid) return;
     const sseUrl = uniqueSlash(
       `${import.meta.env.VITE_BASE_API_URL}/api/sse/${uid}?token=${userStore.token}`,
     );
 
     eventSource = new EventSource(sseUrl);
+
     // 处理 SSE 传递的数据
     eventSource.onmessage = (event) => {
       const { type, data } = JSON.parse(event.data) as MessageEvent;
@@ -63,6 +71,7 @@ export const useSSEStore = defineStore('sse', () => {
       // 在线用户数量变更时
       else if (type === 'updateOnlineUserCount') {
         onlineUserCount.value = ~~data;
+        emitter.emit('onlineUser', onlineUserCount.value);
       }
       // console.log('eventSource', event.data);
     };
@@ -77,6 +86,7 @@ export const useSSEStore = defineStore('sse', () => {
   };
 
   return {
+    emitter,
     onlineUserCount,
     closeEventSource,
     initServerMsgListener,

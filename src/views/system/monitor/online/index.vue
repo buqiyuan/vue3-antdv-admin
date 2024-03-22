@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="tsx">
-  import { ref, onMounted, watch } from 'vue';
+  import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
   import { baseColumns, type TableListItem } from './columns';
   import type { TableColumn } from '@/components/core/dynamic-table';
   import { useTable } from '@/components/core/dynamic-table';
@@ -85,16 +85,22 @@
     list.value = originList;
   };
 
-  watch(
-    () => sseStore.onlineUserCount,
-    () => {
-      if (realTimeUpdate.value) {
-        handleReload();
-      }
-    },
-  );
+  const onOnlineUserChange = () => {
+    if (realTimeUpdate.value) {
+      handleReload();
+    }
+  };
+
+  watch(realTimeUpdate, (val) => {
+    val && handleReload();
+  });
 
   onMounted(() => {
     handleReload();
+    sseStore.emitter.on('onlineUser', onOnlineUserChange);
+  });
+
+  onBeforeUnmount(() => {
+    sseStore.emitter.off('onlineUser', onOnlineUserChange);
   });
 </script>

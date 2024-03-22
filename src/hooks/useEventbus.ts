@@ -1,7 +1,7 @@
 import { onUnmounted } from 'vue';
 import mitt from 'mitt';
 
-const emitter: mitt.Emitter = mitt();
+const emitter = mitt();
 
 // 自定义触发器
 const customEmit = (eventName) => {

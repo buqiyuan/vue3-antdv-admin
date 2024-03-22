@@ -4,31 +4,34 @@
     "baseUrl": ".",
     "target": "ESNext",
     "module": "ESNext",
+    /*  Bundler mode | 编译相关 */
     "moduleResolution": "bundler",
-    "strict": true,
-    "noImplicitOverride": true,
-    "noUnusedLocals": true,
-    "esModuleInterop": true,
-    "useUnknownInCatchVariables": false,
-    "composite": false,
-    "declarationMap": false,
-    "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
-    "isolatedModules": true,
-    "skipLibCheck": true,
-    "noUnusedParameters": false,
-    "preserveWatchOutput": true,
-    "experimentalDecorators": true,
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "removeComments": true,
-    "noLib": false,
-    "allowSyntheticDefaultImports": true,
-    "strictFunctionTypes": false,
+    "isolatedModules": true,
+    "noEmit": true,
     "jsx": "preserve",
+    "removeComments": true,
+    "useUnknownInCatchVariables": false, //是否允许在 catch 语句中使用 unknown 类型的变量。
+    "declarationMap": false, //是否为每个生成的 .d.ts 文件生成源映射。
+    "inlineSources": false, //是否将源文件的内容嵌入到源映射中。
+    "skipLibCheck": true, //跳过所有的 *.d.ts 文件的类型检查。
+    "preserveWatchOutput": true, //在 TypeScript 的观察模式下保留控制台输出。
+    "experimentalDecorators": true, //启用对装饰器的实验性支持。
+    "noLib": false, //不排除默认库文件（比如 lib.d.ts）的类型检查。
+    "allowSyntheticDefaultImports": true,
     "jsxImportSource": "vue",
     "allowJs": true,
-    "lib": ["dom", "esnext"],
+    /* Linting | 代码质量相关 */
+    "strict": true,
+    "useDefineForClassFields": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedParameters": false,
+    "strictFunctionTypes": false,
     "noImplicitAny": false,
+    "lib": ["dom", "esnext", "DOM.Iterable"],
     "types": ["node", "vite/client"],
     "paths": {
       "@/*": ["src/*"]
@@ -45,5 +48,10 @@
     "types/**/*.ts",
     "vite.config.ts"
   ],
-  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"]
+  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

@@ -3,44 +3,44 @@
     <div class="login-logo">
       <!-- <svg-icon name="logo" :size="45" /> -->
       <img src="~@/assets/images/logo.png" width="45" />
-      <h1 class="mb-0 ml-2 text-3xl font-bold">Antd Admin</h1>
+      <h1 class="mb-0 ml-2 text-3xl font-bold">Antdv Admin</h1>
     </div>
-    <a-form layout="horizontal" :model="state.formInline" @submit.prevent="handleSubmit">
+    <a-form layout="horizontal" :model="loginFormModel" @submit.prevent="handleSubmit">
       <a-form-item>
-        <a-input v-model:value="state.formInline.username" size="large" placeholder="admin">
-          <template #prefix><user-outlined type="user" /></template>
+        <a-input v-model:value="loginFormModel.username" size="large" placeholder="admin">
+          <template #prefix> <Icon icon="ant-design:user-outlined" /> </template>
         </a-input>
       </a-form-item>
       <a-form-item>
         <a-input
-          v-model:value="state.formInline.password"
+          v-model:value="loginFormModel.password"
           size="large"
           type="password"
           placeholder="a123456"
           autocomplete="new-password"
         >
-          <template #prefix><lock-outlined type="user" /></template>
+          <template #prefix> <Icon icon="ant-design:lock-outlined" /></template>
         </a-input>
       </a-form-item>
       <a-form-item>
         <a-input
-          v-model:value="state.formInline.verifyCode"
+          v-model:value="loginFormModel.verifyCode"
           placeholder="验证码"
           :maxlength="4"
           size="large"
         >
-          <template #prefix><SafetyOutlined /></template>
+          <template #prefix> <Icon icon="ant-design:safety-outlined" /> </template>
           <template #suffix>
             <img
-              :src="state.captcha"
+              :src="captcha"
               class="absolute right-0 h-full cursor-pointer"
-              @click="setCaptcha"
+              @click="updateCaptcha"
             />
           </template>
         </a-input>
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" size="large" :loading="state.loading" block>
+        <a-button type="primary" html-type="submit" size="large" :loading="loading" block>
           登录
         </a-button>
       </a-form-item>
@@ -49,39 +49,36 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue';
-  import { UserOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons-vue';
+  import { ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { message, Modal } from 'ant-design-vue';
+  import { Icon } from '@/components/basic/icon';
   import { useUserStore } from '@/store/modules/user';
   import Api from '@/api/';
   import { to } from '@/utils/awaitTo';
 
-  const state = reactive({
-    loading: false,
-    captcha: '',
-    formInline: {
-      username: 'admin',
-      password: 'a123456',
-      verifyCode: '',
-      captchaId: '',
-    },
-  });
-
   const route = useRoute();
   const router = useRouter();
-
   const userStore = useUserStore();
 
-  const setCaptcha = async () => {
+  const loading = ref(false);
+  const captcha = ref('');
+  const loginFormModel = ref({
+    username: 'admin',
+    password: 'a123456',
+    verifyCode: '',
+    captchaId: '',
+  });
+
+  const updateCaptcha = async () => {
     const data = await Api.captcha.captchaCaptchaByImg({ width: 100, height: 50 });
-    state.captcha = data.img;
-    state.formInline.captchaId = data.id;
+    captcha.value = data.img;
+    loginFormModel.value.captchaId = data.id;
   };
-  setCaptcha();
+  updateCaptcha();
 
   const handleSubmit = async () => {
-    const { username, password, verifyCode } = state.formInline;
+    const { username, password, verifyCode } = loginFormModel.value;
     if (username.trim() == '' || password.trim() == '') {
       return message.warning('用户名或密码不能为空！');
     }
@@ -89,22 +86,22 @@
       return message.warning('请输入验证码！');
     }
     message.loading('登录中...', 0);
-    state.loading = true;
-    console.log(state.formInline);
+    loading.value = true;
+    console.log(loginFormModel.value);
     // params.password = md5(password)
 
-    const [err] = await to(userStore.login(state.formInline));
+    const [err] = await to(userStore.login(loginFormModel.value));
     if (err) {
       Modal.error({
         title: () => '提示',
         content: () => err.message,
       });
-      setCaptcha();
+      updateCaptcha();
     } else {
       message.success('登录成功！');
-      setTimeout(() => router.replace((route.query.redirect as string) ?? '/'));
+      setTimeout(() => router.replace((route.query.redirect as string) || '/'));
     }
-    state.loading = false;
+    loading.value = false;
     message.destroy();
   };
 </script>
