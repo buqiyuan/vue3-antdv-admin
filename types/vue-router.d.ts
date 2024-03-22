@@ -1,6 +1,6 @@
-import { type RouteMeta as VRouteMeta } from 'vue-router';
-import { type PermissionType } from '@/permission/permCode/';
-import { type LocaleType } from '@/locales/config';
+import type { RouteMeta as VRouteMeta } from 'vue-router';
+import type { PermissionType } from '@/permission/permCode/';
+import type { LocaleType } from '@/locales/config';
 
 declare global {
   type Title18n = {
@@ -47,5 +47,7 @@ declare module 'vue-router' {
      * 2: 内嵌 iframe
      */
     extOpenMode?: 1 | 2;
+    /** 是否隐藏页面加载进度条 */
+    hideProgressBar?: boolean;
   }
 }

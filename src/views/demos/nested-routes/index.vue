@@ -1,14 +1,15 @@
 <template>
-  <div>
-    <Tabs v-model:activeKey="activeKey">
+  <a-card class="h-full">
+    <a-typography-title :level="3">{{ $route.fullPath }}</a-typography-title>
+    <Tabs :activeKey="activeKey" type="card" @tabClick="handleTabClick">
       <Tabs.TabPane v-for="item in tabs" :key="item.name" :tab="item.title" />
     </Tabs>
     <router-view #="{ Component }">
       <KeepAlive>
-        <component :is="Component" />
+        <component :is="Component" :key="$route.fullPath" />
       </KeepAlive>
     </router-view>
-  </div>
+  </a-card>
 </template>
 
 <script lang="ts" setup>
@@ -38,9 +39,20 @@
     },
   ];
 
-  const activeKey = ref((route.name as string) || tabs[0].name);
+  const activeKey = ref();
 
-  watch(activeKey, (name) => {
-    router.push({ name });
-  });
+  const handleTabClick = (key) => {
+    activeKey.value = key;
+    router.push({ name: key });
+  };
+
+  watch(
+    () => route.name,
+    (val: string) => {
+      activeKey.value = val;
+    },
+    {
+      immediate: true,
+    },
+  );
 </script>

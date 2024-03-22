@@ -1,4 +1,4 @@
-import packageJSON from '../package.json';
+import type packageJSON from '../package.json';
 import type {
   ComponentRenderProxy,
   VNode,

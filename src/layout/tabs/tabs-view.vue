@@ -25,7 +25,7 @@
         <template v-if="Component">
           <Suspense>
             <Transition
-              name="fade-slide"
+              :name="transitionName"
               mode="out-in"
               appear
               @before-leave="overflow = 'hidden'"
@@ -52,6 +52,7 @@
   import { TABS_ROUTES } from '@/enums/cacheEnum';
   import { useTabsViewStore, blackList } from '@/store/modules/tabsView';
   import { useKeepAliveStore } from '@/store/modules/keepAlive';
+  import { useLayoutSettingStore } from '@/store/modules/layoutSetting';
 
   type RouteItem = Omit<RouteLocation, 'matched' | 'redirectedFrom'>;
   type TabsOperatorInstance = InstanceType<typeof TabsOperator>;
@@ -60,6 +61,7 @@
   const router = useRouter();
   const tabsViewStore = useTabsViewStore();
   const keepAliveStore = useKeepAliveStore();
+  const layoutSettingStore = useLayoutSettingStore();
 
   const itemRefs: Recordable<TabsOperatorInstance | null> = {};
 
@@ -68,9 +70,16 @@
   const activeKey = computed(() => tabsViewStore.getCurrentTab?.fullPath);
   // 标签页列表
   const tabList = computed(() => tabsViewStore.getTabsList);
-
   // 缓存的路由组件列表
   const keepAliveComponents = computed(() => keepAliveStore.list);
+  /** 过渡动画 */
+  const transitionName = computed(() => {
+    const name = route.meta?.transitionName;
+    if (name === false) {
+      return '';
+    }
+    return name ?? 'fade-slide';
+  });
 
   // 获取简易的路由对象
   const getSimpleRoute = (route): RouteItem => {
@@ -84,6 +93,7 @@
     const routesStr = Storage.get(TABS_ROUTES) as string | null | undefined;
     routes = routesStr ? JSON.parse(routesStr).filter(Boolean) : [getSimpleRoute(route)];
   } catch (e) {
+    console.log(e);
     routes = [getSimpleRoute(route)];
   }
 
@@ -102,7 +112,9 @@
 
   // 在页面关闭或刷新之前，保存数据
   window.addEventListener('beforeunload', () => {
-    if (tabsViewStore.getCurrentTab) {
+    if (layoutSettingStore.layoutSetting.cacheTabs) {
+      Storage.set(TABS_ROUTES, JSON.stringify(tabsViewStore.tabsList));
+    } else if (tabsViewStore.getCurrentTab) {
       Storage.set(TABS_ROUTES, JSON.stringify([tabsViewStore.getCurrentTab]));
     }
   });

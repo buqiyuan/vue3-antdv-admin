@@ -80,3 +80,11 @@ export const layouts = [
     value: 'topmenu',
   },
 ] as const;
+
+/** 界面显示相关 */
+export const uiSettings = [
+  {
+    label: '页签持久化',
+    value: 'cacheTabs',
+  },
+] as const;

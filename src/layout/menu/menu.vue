@@ -1,8 +1,8 @@
 <template>
   <div class="menu-container" :class="{ 'is-side-menu': isSideMenu }">
     <Menu
-      v-model:selected-keys="state.selectedKeys"
-      :open-keys="isSideMenu ? state.openKeys : []"
+      v-model:selected-keys="selectedKeys"
+      :open-keys="isSideMenu ? openKeys : []"
       :mode="isSideMenu ? 'inline' : 'horizontal'"
       :theme="theme"
       :collapsed="props.collapsed"
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, computed, watch, type PropType } from 'vue';
+  import { ref, computed, watch, type PropType } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { Menu, type MenuTheme } from 'ant-design-vue';
   import SubMenuItem from './components/sub-menu-item.vue';
@@ -39,42 +39,30 @@
   // 当前路由
   const currentRoute = useRoute();
   const router = useRouter();
-  const state = reactive({
-    openKeys: [] as string[],
-    selectedKeys: [currentRoute.name] as string[],
-  });
+  const openKeys = ref<string[]>([]);
+  const selectedKeys = ref<string[]>([currentRoute.name as string]);
 
   const menus = computed(() => userStore.menus);
   // console.log('menus', menus.value);
   /** 侧边栏布局 */
   const isSideMenu = computed(() => layoutSettingStore.layoutSetting.layout === 'sidemenu');
   const getRouteByName = (name: string) => router.getRoutes().find((n) => n.name === name);
-  // 根据activeMenu获取指定的menu
-  const getTargetMenuByActiveMenuName = (activeMenu: string) => {
-    return router.getRoutes().find((n) => [n.name, n.path].includes(activeMenu));
-  };
 
   // 获取当前打开的子菜单
   const getOpenKeys = () => {
-    const meta = currentRoute.meta;
-    if (meta?.activeMenu) {
-      const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
-      return targetMenu?.meta?.namePath ?? [meta?.activeMenu];
-    }
-
     return (
-      meta?.hideInMenu
-        ? state?.openKeys || []
-        : currentRoute.meta?.namePath ?? currentRoute.matched.slice(1).map((n) => n.name)
-    ) as string[];
+      currentRoute.meta?.namePath ?? (currentRoute.matched.slice(1).map((n) => n.name) as string[])
+    );
   };
 
   // 监听菜单收缩状态
   watch(
     () => props.collapsed,
-    (newVal) => {
-      state.openKeys = newVal ? [] : getOpenKeys();
-      state.selectedKeys = [currentRoute.name] as string[];
+    () => {
+      selectedKeys.value = [currentRoute.name] as string[];
+      setTimeout(() => {
+        openKeys.value = getOpenKeys();
+      });
     },
   );
 
@@ -82,15 +70,9 @@
   watch(
     () => currentRoute.fullPath,
     () => {
+      selectedKeys.value = [currentRoute.meta?.activeMenu ?? currentRoute.name] as string[];
       if (currentRoute.name === LOGIN_NAME || props.collapsed) return;
-      state.openKeys = getOpenKeys();
-      const meta = currentRoute.meta;
-      if (meta?.activeMenu) {
-        const targetMenu = getTargetMenuByActiveMenuName(meta.activeMenu);
-        state.selectedKeys = [targetMenu?.name ?? meta?.activeMenu] as string[];
-      } else {
-        state.selectedKeys = [currentRoute.meta?.activeMenu ?? currentRoute.name] as string[];
-      }
+      openKeys.value = getOpenKeys();
     },
     {
       immediate: true,
@@ -100,12 +82,12 @@
   // 点击菜单
   const clickMenuItem = ({ key }) => {
     if (key === currentRoute.name) return;
-    const preSelectedKeys = state.selectedKeys;
+    const preSelectedKeys = selectedKeys.value;
     const targetRoute = getRouteByName(key);
     const { isExt, extOpenMode } = targetRoute?.meta || {};
     if (targetRoute && isExt && extOpenMode === 1) {
       queueMicrotask(() => {
-        state.selectedKeys = preSelectedKeys;
+        selectedKeys.value = preSelectedKeys;
       });
     } else {
       router.push({ name: key });

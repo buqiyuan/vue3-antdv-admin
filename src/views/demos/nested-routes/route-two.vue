@@ -1,4 +1,9 @@
-<template><div>路由二</div></template>
+<template>
+  <div>
+    <div>路由二</div>
+    <a-input />
+  </div>
+</template>
 
 <script lang="ts" setup>
   defineOptions({

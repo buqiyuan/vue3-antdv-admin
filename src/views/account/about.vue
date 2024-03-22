@@ -21,14 +21,6 @@
         <Descriptions.Item label="预览地址">
           <BlankLink :url="pkg.homepage" text="预览地址" />
         </Descriptions.Item>
-        <Descriptions.Item label="QQ交流群" label-align="left" align="left">
-          <a
-            href="https://qm.qq.com/cgi-bin/qm/qr?k=ID-KcAOdPUPWVgAnsPLF3gRdHLc8GURO&jump_from=webapi"
-            target="_blank"
-          >
-            点击链接加入群聊
-          </a>
-        </Descriptions.Item>
       </Descriptions>
     </Card>
     <Card class="mt-3">

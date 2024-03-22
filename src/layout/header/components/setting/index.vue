@@ -52,6 +52,18 @@
         </div>
       </Descriptions.Item>
     </Descriptions>
+    <Descriptions title="页面显示" :column="1">
+      <Descriptions.Item v-for="item in uiSettings" :key="item.value">
+        <a-flex justify="space-between" class="w-full">
+          {{ item.label }}
+          <a-switch
+            v-model:checked="layoutSetting[item.value]"
+            checked-children="开"
+            un-checked-children="关"
+          />
+        </a-flex>
+      </Descriptions.Item>
+    </Descriptions>
   </Drawer>
 </template>
 
@@ -60,7 +72,7 @@
   import { SettingOutlined } from '@ant-design/icons-vue';
   import { storeToRefs } from 'pinia';
   import { Drawer, Descriptions, Tag, Tooltip } from 'ant-design-vue';
-  import { layouts, themeColors, themeStyle } from './constant';
+  import { layouts, themeColors, themeStyle, uiSettings } from './constant';
   import type { ThemeColor } from './constant';
   import type { LayoutSetting } from '@/store/modules/layoutSetting';
   import { useLayoutSettingStore } from '@/store/modules/layoutSetting';

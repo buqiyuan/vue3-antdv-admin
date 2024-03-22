@@ -7,14 +7,17 @@ import type { Router, RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
 import { useKeepAliveStore } from '@/store/modules/keepAlive';
 import { to as _to } from '@/utils/awaitTo';
+import { transformI18n } from '@/hooks/useI18n';
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const defaultRoutePath = '/dashboard/welcome';
 
 export function createRouterGuards(router: Router, whiteNameList: WhiteNameList) {
-  router.beforeEach(async (to, _, next) => {
-    NProgress.start(); // start progress bar
+  router.beforeEach(async (to, from, next) => {
+    if (!from.meta?.hideProgressBar || !to.meta?.hideProgressBar) {
+      NProgress.start(); // start progress bar
+    }
     const userStore = useUserStore();
 
     if (userStore.token) {
@@ -56,9 +59,14 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
   });
 
   /** 获取路由对应的组件名称 */
-  const getComponentName = (route: RouteLocationNormalized) => {
-    const comp = route.matched.at(-1)?.components?.default;
-    return comp?.name ?? (comp as any)?.type?.name;
+  const getComponentName = (route: RouteLocationNormalized): string[] => {
+    return route.matched
+      .map((n) => {
+        if (!n.meta?.keepAlive) return;
+        const comp = n.components?.default;
+        return comp?.name ?? (comp as any)?.type?.name;
+      })
+      .filter(Boolean);
   };
 
   router.afterEach((to, from, failure) => {
@@ -67,6 +75,11 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
       NProgress.done();
       // console.error('failed navigation', failure);
       return;
+    }
+
+    if (to.meta?.title) {
+      // 设置网页标题
+      document.title = transformI18n(to.meta.title);
     }
 
     const keepAliveStore = useKeepAliveStore();
@@ -99,6 +112,7 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
     if (!userStore.token) {
       keepAliveStore.clear();
     }
+    // console.log('keepAliveStore', keepAliveStore.list);
     NProgress.done(); // finish progress bar
   });
 

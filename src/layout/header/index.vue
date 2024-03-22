@@ -3,7 +3,10 @@
     <div class="header-left">
       <slot name="left">
         <Space :size="20">
-          <span class="menu-fold" @click="() => emit('update:collapsed', !collapsed)">
+          <span
+            class="menu-fold cursor-pointer"
+            @click="() => emit('update:collapsed', !collapsed)"
+          >
             <component :is="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
           </span>
           <LayoutBreadcrumb />

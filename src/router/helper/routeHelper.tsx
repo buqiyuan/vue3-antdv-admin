@@ -1,6 +1,4 @@
-import { RouterView } from 'vue-router';
 import { asyncRoutes } from '../asyncModules';
-import outsideLayout from '../routes/outsideLayout';
 import type { RouteMeta, RouteRecordRaw } from 'vue-router';
 import IFramePage from '@/components/basic/iframe-page';
 import { warn } from '@/utils/log';
@@ -8,6 +6,7 @@ import { rootRoute } from '@/router/routes';
 import router from '@/router';
 import basic from '@/router/routes/basic';
 import routeModules from '@/router/routes/modules';
+import { uniqueSlash } from '@/utils/urlUtils';
 
 export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
   routeList.forEach((route) => {
@@ -19,7 +18,15 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
     route.meta.hideInMenu ??= !show;
 
     if (type === 0) {
-      route.component = RouterView;
+      route.component = null;
+      if (route.children?.length) {
+        const redirectChild = route.children.find((n) => !n.meta?.isExt);
+        if (!redirectChild) {
+          Reflect.deleteProperty(route, 'redirect');
+        } else {
+          route.redirect ??= uniqueSlash(`/${route.path}/${redirectChild.path}`);
+        }
+      }
     } else if (type === 1) {
       // 内嵌页面
       if (isExt && extOpenMode === 2) {
@@ -47,21 +54,7 @@ export const generateDynamicRoutes = (menus: RouteRecordRaw[]) => {
   const allRoute = [...routes, ...basic];
   genNamePathForRoutes(allRoute);
   rootRoute.children = allRoute;
-  // 1. 让 vue-router 先帮我们拍平路由
-  const removeRoute = router.addRoute(rootRoute);
-  // 2. 获取所有没有包含 children 的路由，也就是页面级路由
-  const filterRoutes = router.getRoutes().filter((item) => {
-    const isLeaf = !item.children.length || Object.is(item.meta?.hideChildrenInMenu, true);
-    const isOutsideRoute = outsideLayout.some((n) => n.name === item.name);
-    return isLeaf && !isOutsideRoute;
-  });
-  // 3. 清空所有路由
-  removeRoute();
-  rootRoute.children = [...filterRoutes];
-  // 4.重新添加拍平后的路由
   router.addRoute(rootRoute);
-  // console.log('routes', router.getRoutes());
-
   return routes;
 };
 

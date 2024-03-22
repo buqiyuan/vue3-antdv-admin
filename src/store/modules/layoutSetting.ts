@@ -29,6 +29,8 @@ export type LayoutSetting = {
   title: string;
   pwa: false;
   iconfontUrl: string;
+  /** 是否缓存标签页 */
+  cacheTabs: boolean;
   // production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
 };
 
@@ -46,6 +48,7 @@ export const defaultSetting: LayoutSetting = {
   title: 'vite-antdv-admin',
   pwa: false,
   iconfontUrl: '',
+  cacheTabs: false,
   // production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true',
 };
 
