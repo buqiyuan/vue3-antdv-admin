@@ -110,6 +110,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     server: {
       host: '0.0.0.0',
       port: 8088,
+      open: true,
       proxy: {
         '/api': {
           target: 'https://nest-api.buqiyuan.site',
@@ -124,6 +125,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           ws: true,
           rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),
         },
+      },
+      // 提前转换和缓存文件以进行预热。可以在服务器启动时提高初始页面加载速度，并防止转换瀑布。
+      warmup: {
+        // 请注意，只应该预热频繁使用的文件，以免在启动时过载 Vite 开发服务器
+        // 可以通过运行 npx vite --debug transform 并检查日志来找到频繁使用的文件
+        clientFiles: ['./index.html', './src/{components,api}/*'],
       },
     },
     optimizeDeps: {
