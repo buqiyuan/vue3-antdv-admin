@@ -58,7 +58,6 @@ export const PAGE_NOT_FOUND_ROUTE: RouteRecordRaw = {
     hideInMenu: true,
     hideInTabs: true,
   },
-  component: RouterView,
   children: [
     {
       path: '/:pathMatch(.*)*',

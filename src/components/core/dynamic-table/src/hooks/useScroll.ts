@@ -1,9 +1,11 @@
-import { computed, getCurrentInstance, ref, onBeforeUnmount } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 import { debounce } from 'lodash-es';
+import { useMutationObserver, useResizeObserver } from '@vueuse/core';
 import type { DynamicTableProps } from '../dynamic-table';
 
 type UseScrollParams = {
   props: DynamicTableProps;
+  containerElRef: Ref<HTMLDivElement | null>;
 };
 
 export type UseScrollType = ReturnType<typeof useScroll>;
@@ -19,8 +21,7 @@ export const getPositionTop = (node: HTMLElement) => {
   return top; // 所有的父元素top和
 };
 
-export const useScroll = ({ props }: UseScrollParams) => {
-  const currIns = getCurrentInstance();
+export const useScroll = ({ props, containerElRef }: UseScrollParams) => {
   const scrollY = ref<number>();
 
   const scroll = computed(() => {
@@ -31,24 +32,33 @@ export const useScroll = ({ props }: UseScrollParams) => {
   });
 
   const getScrollY = debounce(() => {
-    if (!props.autoHeight) return;
-    const compRootEl = currIns?.proxy?.$el as HTMLDivElement;
-    const el =
-      compRootEl?.querySelector('.ant-table-body') || compRootEl?.querySelector('.ant-table-tbody');
-    if (el) {
-      const y = document.documentElement.offsetHeight - getPositionTop(el as HTMLDivElement);
-      // 简单粗糙的实现
-      scrollY.value = y - 30;
+    if (!props.autoHeight || !containerElRef.value) return;
+    let paginationHeight = 0;
+    const paginationEl = containerElRef.value.querySelector<HTMLDivElement>('.ant-pagination');
+    if (paginationEl) {
+      const { offsetHeight } = paginationEl;
+      const { marginTop, marginBottom } = getComputedStyle(paginationEl);
+      paginationHeight = offsetHeight + parseInt(marginTop) + parseInt(marginBottom);
     }
-    // console.log('innerScroll.value', el, scrollY.value);
+    const bodyEl =
+      containerElRef.value.querySelector<HTMLDivElement>('.ant-table-body') ||
+      containerElRef.value.querySelector<HTMLDivElement>('.ant-table-tbody');
+    if (bodyEl) {
+      const rootElHeight = document.documentElement.offsetHeight;
+      const posTopHeight = getPositionTop(bodyEl as HTMLDivElement);
+      const scrollbarHeight = bodyEl.offsetHeight - bodyEl.clientHeight;
+      const y = rootElHeight - posTopHeight - scrollbarHeight - paginationHeight - 8;
+      scrollY.value = y;
+      // console.log('innerScroll.value', rootElHeight, posTopHeight, paginationHeight, y);
+    }
+  }, 20);
+
+  useMutationObserver(containerElRef, getScrollY, {
+    childList: true,
+    subtree: true,
   });
 
-  setTimeout(getScrollY);
-  window.addEventListener('resize', getScrollY);
-
-  onBeforeUnmount(() => {
-    window.removeEventListener('resize', getScrollY);
-  });
+  useResizeObserver(document.documentElement, getScrollY);
 
   return {
     scroll,

@@ -20,6 +20,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   const getFormProps = computed((): SchemaFormProps => {
     const { formProps } = unref(getProps);
     const { submitButtonOptions } = formProps || {};
+    // @ts-ignore
     return {
       showAdvancedButton: true,
       layout: 'horizontal',

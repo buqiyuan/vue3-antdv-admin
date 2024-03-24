@@ -38,6 +38,7 @@ export const useColumns = ({ state, methods, props, tableAction }: UseTableColum
 
     // 是否添加序号列
     if (innerProps?.showIndex) {
+      // @ts-ignore
       columns.unshift({
         dataIndex: ColumnKeyFlag.INDEX,
         title: '序号',

@@ -9,12 +9,3 @@ export const THEME_KEY = 'THEME__';
 
 /** 用户信息 */
 export const USER_INFO_KEY = 'USER__INFO__';
-
-// role info key
-export const ROLES_KEY = 'ROLES__KEY__';
-/** 是否锁屏 */
-export const IS_LOCKSCREEN = 'IS_LOCKSCREEN';
-/** 标签页 */
-export const TABS_ROUTES = 'TABS_ROUTES';
-/** 锁屏密码 */
-export const LOCKSCREEN_PWD = 'LOCKSCREEN_PWD';

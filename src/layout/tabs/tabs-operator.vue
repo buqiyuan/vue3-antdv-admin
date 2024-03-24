@@ -9,7 +9,7 @@
     ColumnWidthOutlined,
     MinusOutlined,
   } from '@ant-design/icons-vue';
-  import { useRoute, type RouteLocationNormalized, useRouter } from 'vue-router';
+  import { useRoute, useRouter, type RouteLocationNormalizedLoaded } from 'vue-router';
   import { isFunction } from 'lodash-es';
   import { message } from 'ant-design-vue';
   import { REDIRECT_NAME } from '@/router/constant';
@@ -23,7 +23,7 @@
 
   const props = defineProps({
     tabItem: {
-      type: Object as PropType<RouteLocationNormalized>,
+      type: Object as PropType<RouteLocationNormalizedLoaded>,
       required: true,
     },
     isExtra: Boolean,
@@ -85,8 +85,6 @@
 
   /** 关闭全部 */
   const closeAll = () => {
-    localStorage.removeItem('routes');
-    // tabsViewMutations.closeAllTabs()
     tabsViewStore.closeAllTabs();
     router.replace('/');
   };

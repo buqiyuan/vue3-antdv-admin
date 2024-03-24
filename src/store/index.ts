@@ -3,6 +3,7 @@ import { createPersistedState } from 'pinia-plugin-persistedstate';
 import type { App } from 'vue';
 
 const store = createPinia();
+// 本地持久化
 store.use(
   createPersistedState({
     key: (id) => `__persisted__${id}`,

@@ -2,6 +2,7 @@
   <Space :size="8" class="dark:text-white">
     <SearchSetting />
     <RefreshSetting />
+    <Fullscreen />
     <ColumnSetting />
     <SizeSetting />
   </Space>
@@ -13,4 +14,5 @@
   import RefreshSetting from './refresh-setting.vue';
   import ColumnSetting from './column-setting.vue';
   import SearchSetting from './search-setting.vue';
+  import Fullscreen from './fullscreen.vue';
 </script>

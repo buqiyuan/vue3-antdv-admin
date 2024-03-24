@@ -24,7 +24,6 @@ interface SearchState {
 
 export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const { t } = useI18n();
-  const { scroll } = useScroll({ props });
   /** 表格实例 */
   const tableRef = ref<InstanceType<typeof Table>>();
   /** 查询表单实例 */
@@ -34,11 +33,15 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   /** 表格数据 */
   const tableData = ref<any[]>([]);
   /** 内部属性 */
-  const innerPropsRef = ref<Partial<DynamicTableProps>>();
+  const innerPropsRef = ref<Partial<DynamicTableProps>>({});
   /** 分页配置参数 */
   const paginationRef = ref<NonNullable<Pagination>>(false);
   /** 表格加载 */
   const loadingRef = ref<boolean>(!!props.loading);
+  /** 表格是否全屏 */
+  const isFullscreen = ref(false);
+  /** 动态表格 div 容器 */
+  const containerElRef = ref<HTMLDivElement | null>(null);
   /** 编辑表单model */
   const editFormModel = ref<Recordable>({});
   /** 所有验证不通过的表单项 */
@@ -52,6 +55,8 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     sortInfo: {},
     filterInfo: {},
   });
+
+  const { scroll } = useScroll({ props, containerElRef });
 
   if (!Object.is(props.pagination, false)) {
     paginationRef.value = {
@@ -69,7 +74,7 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   }
 
   const getProps = computed(() => {
-    return { ...props, ...unref(innerPropsRef) };
+    return Object.assign({}, props, unref(innerPropsRef));
   });
 
   const getBindValues = computed(() => {
@@ -77,11 +82,11 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
 
     let propsData: Recordable = {
       ...props,
+      scroll: { ...unref(scroll), ...props.scroll },
+      pagination: props.pagination ?? unref(paginationRef),
       rowKey: props.rowKey ?? 'id',
       loading: props.loading ?? unref(loadingRef),
-      pagination: unref(paginationRef),
       tableLayout: props.tableLayout ?? 'fixed',
-      scroll: unref(scroll),
     };
     if (slots.expandedRowRender) {
       propsData = omit(propsData, 'scroll');
@@ -109,10 +114,7 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     () => props.columns,
     (val) => {
       if (val) {
-        innerPropsRef.value = {
-          ...innerPropsRef.value,
-          columns: val,
-        };
+        Object.assign(innerPropsRef.value, { columns: val });
       }
     },
     {
@@ -125,6 +127,8 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     tableRef,
     editTableFormRef,
     loadingRef,
+    isFullscreen,
+    containerElRef,
     tableData,
     queryFormRef,
     innerPropsRef,

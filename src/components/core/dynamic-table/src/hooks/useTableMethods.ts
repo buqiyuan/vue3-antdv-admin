@@ -52,7 +52,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   );
 
   const setProps = (props: Partial<DynamicTableProps>) => {
-    innerPropsRef.value = { ...unref(innerPropsRef), ...props };
+    Object.assign(innerPropsRef.value, props);
   };
 
   /**

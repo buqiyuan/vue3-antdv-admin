@@ -15,6 +15,8 @@
 </template>
 
 <script lang="tsx" setup>
+  import { getCurrentInstance } from 'vue';
+  import { useResizeObserver } from '@vueuse/core';
   import { baseColumns, type TableListItem, type TableColumnItem } from './columns';
   import { useMenuSchemas } from './formSchemas';
   import Api from '@/api/';
@@ -29,9 +31,19 @@
     size: 'small',
     rowKey: 'id',
     bordered: true,
-    scroll: { x: window.innerWidth > 2000 ? undefined : 2000 },
+    autoHeight: true,
   });
   const [showModal] = useFormModal();
+  const currentInstance = getCurrentInstance();
+
+  useResizeObserver(document.documentElement, () => {
+    const el = currentInstance?.proxy?.$el as HTMLDivElement;
+    if (el) {
+      dynamicTableInstance.setProps({
+        scroll: { x: window.innerWidth > 2000 ? el.offsetWidth - 20 : 2000 },
+      });
+    }
+  });
 
   const openMenuModal = async (record: Partial<TableListItem>) => {
     const [formRef] = await showModal({
@@ -81,7 +93,7 @@
     ...baseColumns,
     {
       title: '操作',
-      width: 140,
+      width: 160,
       dataIndex: 'ACTION',
       hideInSearch: true,
       fixed: 'right',

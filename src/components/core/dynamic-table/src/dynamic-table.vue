@@ -1,55 +1,59 @@
 <template>
   <div>
-    <SchemaForm
-      v-if="getProps.search"
-      ref="queryFormRef"
-      class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
-      submit-on-reset
-      v-bind="getFormProps"
-      :table-instance="tableAction"
-      @toggle-advanced="(e) => $emit('toggle-advanced', e)"
-      @submit="handleSubmit"
-    >
-      <template v-for="item of getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
-        <slot :name="item" v-bind="data || {}" />
-      </template>
-    </SchemaForm>
-    <div class="bg-white dark:bg-black">
-      <ToolBar
-        v-if="showToolBar"
-        :export-file-name="exportFileName"
-        :title="headerTitle"
-        :title-tooltip="titleTooltip"
-        :show-table-setting="showTableSetting"
-      >
-        <template v-for="name of Object.keys($slots)" #[name]="data">
-          <slot :name="name" v-bind="data || {}" />
-        </template>
-      </ToolBar>
-      <SchemaForm
-        ref="editTableFormRef"
-        no-style
-        :initial-values="editFormModel"
-        :show-action-button-group="false"
-        :show-advanced-button="false"
-        @validate="handleEditFormValidate"
-      >
-        <Table
-          ref="tableRef"
-          v-bind="tableProps"
-          :columns="innerColumns"
-          :data-source="tableData"
-          @change="handleTableChange"
+    <Teleport to="body" :disabled="!isFullscreen">
+      <div ref="containerElRef">
+        <SchemaForm
+          v-if="getProps.search"
+          ref="queryFormRef"
+          class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
+          submit-on-reset
+          v-bind="getFormProps"
+          :table-instance="tableAction"
+          @toggle-advanced="(e) => $emit('toggle-advanced', e)"
+          @submit="handleSubmit"
         >
-          <template v-for="(_, slotName) of $slots" #[slotName]="slotData" :key="slotName">
-            <slot :name="slotName" v-bind="slotData" />
+          <template v-for="item of getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
+            <slot :name="item" v-bind="data || {}" />
           </template>
-          <template #bodyCell="slotData">
-            <slot name="bodyCell" v-bind="slotData" />
-          </template>
-        </Table>
-      </SchemaForm>
-    </div>
+        </SchemaForm>
+        <div class="bg-white dark:bg-black">
+          <ToolBar
+            v-if="showToolBar"
+            :export-file-name="exportFileName"
+            :title="headerTitle"
+            :title-tooltip="titleTooltip"
+            :show-table-setting="showTableSetting"
+          >
+            <template v-for="name of Object.keys($slots)" #[name]="data">
+              <slot :name="name" v-bind="data || {}" />
+            </template>
+          </ToolBar>
+          <SchemaForm
+            ref="editTableFormRef"
+            no-style
+            :initial-values="editFormModel"
+            :show-action-button-group="false"
+            :show-advanced-button="false"
+            @validate="handleEditFormValidate"
+          >
+            <Table
+              ref="tableRef"
+              v-bind="tableProps"
+              :columns="innerColumns"
+              :data-source="tableData"
+              @change="handleTableChange"
+            >
+              <template v-for="(_, slotName) of $slots" #[slotName]="slotData" :key="slotName">
+                <slot :name="slotName" v-bind="slotData" />
+              </template>
+              <template #bodyCell="slotData">
+                <slot name="bodyCell" v-bind="slotData" />
+              </template>
+            </Table>
+          </SchemaForm>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -84,6 +88,8 @@
   const {
     tableRef,
     tableData,
+    isFullscreen,
+    containerElRef,
     queryFormRef,
     editTableFormRef,
     getProps,
@@ -96,7 +102,6 @@
     tableMethods;
   // 控制编辑行
   const editableHooks = useEditable({ props, state: tableState });
-  /** 表格scroll */
 
   const tableAction: TableActionType = {
     setProps,
@@ -146,7 +151,7 @@
 
   defineExpose(instance);
 
-  const tableProps = computed(() => {
+  const tableProps = computed<Recordable>(() => {
     const { getExpandOption } = tableMethods;
     return {
       ...getBindValues.value,

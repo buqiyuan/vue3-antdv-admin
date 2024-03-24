@@ -1,41 +1,45 @@
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
+import {
+  useRoute,
+  type RouteLocationMatched,
+  type RouteLocationNormalizedLoaded,
+} from 'vue-router';
 import { useKeepAliveStore } from './keepAlive';
-import type { RouteLocationNormalized } from 'vue-router';
+import { useLayoutSettingStore } from './layoutSetting';
 import { store } from '@/store';
-import { TABS_ROUTES } from '@/enums/cacheEnum';
 import router from '@/router';
 import { LOGIN_NAME, REDIRECT_NAME, PAGE_NOT_FOUND_NAME } from '@/router/constant';
 
-interface TabsViewState {
-  /** 标签页 */
-  tabsList: RouteLocationNormalized[];
-}
+/** 不需要出现在标签页中的路由 */
+export const routeExcludes = [REDIRECT_NAME, LOGIN_NAME, PAGE_NOT_FOUND_NAME] as const;
 
-// 不需要出现在标签页中的路由
-export const blackList = [REDIRECT_NAME, LOGIN_NAME, PAGE_NOT_FOUND_NAME] as const;
+export const useTabsViewStore = defineStore(
+  'tabs-view',
+  () => {
+    const currentRoute = useRoute();
+    const layoutSettingStore = useLayoutSettingStore();
+    const tabsList = ref<RouteLocationNormalizedLoaded[]>([]);
 
-export const useTabsViewStore = defineStore({
-  id: 'tabs-view',
-  state: (): TabsViewState => ({
-    tabsList: [],
-  }),
-  getters: {
-    getTabsList: (state) => {
-      return state.tabsList.filter((item) => {
-        return !item.meta?.hideInTabs && router.hasRoute(item.name!);
+    const getTabsList = computed(() => {
+      return tabsList.value.filter((item) => {
+        return item && !isInRouteExcludes(item) && router.hasRoute(item.name!);
       });
-    },
+    });
     /** 当前activity tab */
-    getCurrentTab: (state) => {
-      const currentRoute = router.currentRoute.value!;
-      return state.tabsList.find((item) => {
-        return !item.meta?.hideInTabs && item.fullPath === currentRoute.fullPath;
+    const getCurrentTab = computed(() => {
+      return tabsList.value.find((item) => {
+        return item && !isInRouteExcludes(item) && item.fullPath === currentRoute.fullPath;
       });
-    },
-  },
-  actions: {
+    });
+
+    /** 给定的路由是否在排除名单里面 */
+    const isInRouteExcludes = (route: RouteLocationNormalizedLoaded) => {
+      return route.meta?.hideInTabs || routeExcludes.some((n) => n === route.name);
+    };
+
     /** 将已关闭的标签页的组件从keep-alive中移除 */
-    delCompFromClosedTabs(closedTabs: RouteLocationNormalized[]) {
+    const delCompFromClosedTabs = (closedTabs: RouteLocationNormalizedLoaded[]) => {
       const keepAliveStore = useKeepAliveStore();
       const routes = router.getRoutes();
       const compNames = closedTabs.reduce<string[]>((prev, curr) => {
@@ -46,66 +50,112 @@ export const useTabsViewStore = defineStore({
         return prev;
       }, []);
       keepAliveStore.remove(compNames);
-    },
-    /** 初始化标签页 */
-    initTabs(routes) {
-      this.tabsList = routes;
-    },
+    };
+
+    const getRawRoute = (route: RouteLocationNormalizedLoaded): RouteLocationNormalizedLoaded => {
+      return {
+        ...route,
+        matched: route.matched.map((item) => {
+          const { meta, path, name } = item;
+          return { meta, path, name };
+        }) as RouteLocationMatched[],
+      };
+    };
+
     /** 添加标签页 */
-    addTabs(route): boolean {
-      if (blackList.includes(route.name)) return false;
-      const isExists = this.tabsList.some((item) => item.fullPath == route.fullPath);
+    const addTabs = (route: RouteLocationNormalizedLoaded) => {
+      if (isInRouteExcludes(route)) {
+        return false;
+      }
+      const isExists = tabsList.value.some((item) => item.fullPath == route.fullPath);
       if (!isExists) {
-        this.tabsList.push(route);
+        tabsList.value.push(getRawRoute(route));
+        console.log('tabsList.value', [...tabsList.value]);
       }
       return true;
-    },
+    };
     /** 关闭左侧 */
-    closeLeftTabs(route) {
-      const index = this.tabsList.findIndex((item) => item.fullPath == route.fullPath);
-      this.delCompFromClosedTabs(this.tabsList.splice(0, index));
-    },
+    const closeLeftTabs = (route: RouteLocationNormalizedLoaded) => {
+      const index = tabsList.value.findIndex((item) => item.fullPath == route.fullPath);
+      delCompFromClosedTabs(tabsList.value.splice(0, index));
+    };
     /** 关闭右侧 */
-    closeRightTabs(route) {
-      const index = this.tabsList.findIndex((item) => item.fullPath == route.fullPath);
-      this.delCompFromClosedTabs(this.tabsList.splice(index + 1));
-    },
+    const closeRightTabs = (route: RouteLocationNormalizedLoaded) => {
+      const index = tabsList.value.findIndex((item) => item.fullPath == route.fullPath);
+      delCompFromClosedTabs(tabsList.value.splice(index + 1));
+    };
     /** 关闭其他 */
-    closeOtherTabs(route) {
-      const targetIndex = this.tabsList.findIndex((item) => item.fullPath === route.fullPath);
+    const closeOtherTabs = (route: RouteLocationNormalizedLoaded) => {
+      const targetIndex = tabsList.value.findIndex((item) => item.fullPath === route.fullPath);
       if (targetIndex !== -1) {
-        const current = this.tabsList.splice(targetIndex, 1);
-        this.delCompFromClosedTabs(this.tabsList);
-        this.tabsList = current;
+        const current = tabsList.value.splice(targetIndex, 1);
+        delCompFromClosedTabs(tabsList.value);
+        tabsList.value = current;
       }
-    },
+    };
     /** 关闭当前页 */
-    closeCurrentTab(route) {
-      const index = this.tabsList.findIndex((item) => item.fullPath == route.fullPath);
-      const isDelCurrentTab = Object.is(this.getCurrentTab, this.tabsList[index]);
-      this.delCompFromClosedTabs(this.tabsList.splice(index, 1));
+    const closeCurrentTab = (route: RouteLocationNormalizedLoaded) => {
+      const index = tabsList.value.findIndex((item) => item.fullPath == route.fullPath);
+      const isDelCurrentTab = Object.is(getCurrentTab.value, tabsList.value[index]);
+      delCompFromClosedTabs(tabsList.value.splice(index, 1));
       // 如果关闭的tab就是当前激活的tab，则重定向页面
       if (isDelCurrentTab) {
-        const currentRoute = this.tabsList[Math.max(0, this.tabsList.length - 1)];
+        const currentRoute = tabsList.value[Math.max(0, tabsList.value.length - 1)];
         router.push(currentRoute);
       }
-    },
+    };
     /** 关闭全部 */
-    closeAllTabs() {
-      this.delCompFromClosedTabs(this.tabsList);
-      this.tabsList = [];
-      localStorage.removeItem(TABS_ROUTES);
-    },
+    const closeAllTabs = () => {
+      delCompFromClosedTabs(tabsList.value);
+      tabsList.value = [];
+    };
     // 更新tab标题
-    updateTabTitle(title: string) {
+    const updateTabTitle = (title: string) => {
       const currentRoute = router.currentRoute.value;
-      const upTarget = this.tabsList.find((item) => item.fullPath === currentRoute.fullPath);
+      const upTarget = tabsList.value.find((item) => item.fullPath === currentRoute.fullPath);
       if (upTarget) {
         upTarget.meta.title = title;
       }
+    };
+
+    watch(
+      () => currentRoute.fullPath,
+      () => {
+        addTabs(currentRoute);
+      },
+      { immediate: true },
+    );
+
+    window.addEventListener('beforeunload', () => {
+      if (!layoutSettingStore.layoutSetting.cacheTabs) {
+        if (isInRouteExcludes(currentRoute)) {
+          tabsList.value = [tabsList.value[0]];
+        } else {
+          tabsList.value = [getCurrentTab.value || tabsList.value[0]];
+        }
+        tabsList.value = tabsList.value.filter(Boolean);
+      }
+    });
+
+    return {
+      tabsList,
+      getTabsList,
+      getCurrentTab,
+      addTabs,
+      closeLeftTabs,
+      closeRightTabs,
+      closeOtherTabs,
+      closeCurrentTab,
+      closeAllTabs,
+      updateTabTitle,
+    };
+  },
+  {
+    persist: {
+      paths: ['tabsList'],
     },
   },
-});
+);
 
 // 在组件setup函数外使用
 export function useTabsViewStoreWithOut() {

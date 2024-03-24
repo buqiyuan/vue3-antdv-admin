@@ -28,9 +28,6 @@
           <Avatar :src="userInfo.avatar" :alt="userInfo.username">{{ userInfo.username }}</Avatar>
           <template #overlay>
             <Menu>
-              <Menu.Item @click="$router.push({ name: 'account-about' })">
-                {{ $t('routes.account.about') }}
-              </Menu.Item>
               <Menu.Item @click="$router.push({ name: 'account-settings' })">
                 {{ $t('routes.account.settings') }}
               </Menu.Item>

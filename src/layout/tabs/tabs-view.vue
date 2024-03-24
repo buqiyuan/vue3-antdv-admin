@@ -8,7 +8,7 @@
       @change="changePage"
       @edit="editTabItem"
     >
-      <a-tab-pane v-for="tabItem in tabList" :key="tabItem.fullPath">
+      <a-tab-pane v-for="tabItem in tabsViewStore.getTabsList" :key="tabItem.fullPath">
         <template #tab>
           <TabsOperator
             :ref="(ins: TabsOperatorInstance) => (itemRefs[tabItem.fullPath] = ins)"
@@ -44,32 +44,24 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, watch } from 'vue';
+  import { computed, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import TabsOperator from './tabs-operator.vue';
-  import type { RouteLocation } from 'vue-router';
-  import { Storage } from '@/utils/Storage';
-  import { TABS_ROUTES } from '@/enums/cacheEnum';
-  import { useTabsViewStore, blackList } from '@/store/modules/tabsView';
+  import { useTabsViewStore } from '@/store/modules/tabsView';
   import { useKeepAliveStore } from '@/store/modules/keepAlive';
-  import { useLayoutSettingStore } from '@/store/modules/layoutSetting';
 
-  type RouteItem = Omit<RouteLocation, 'matched' | 'redirectedFrom'>;
   type TabsOperatorInstance = InstanceType<typeof TabsOperator>;
 
   const route = useRoute();
   const router = useRouter();
   const tabsViewStore = useTabsViewStore();
   const keepAliveStore = useKeepAliveStore();
-  const layoutSettingStore = useLayoutSettingStore();
 
   const itemRefs: Recordable<TabsOperatorInstance | null> = {};
 
   // 解决路由切换动画出现滚动条闪烁问题
   const overflow = ref('auto');
   const activeKey = computed(() => tabsViewStore.getCurrentTab?.fullPath);
-  // 标签页列表
-  const tabList = computed(() => tabsViewStore.getTabsList);
   // 缓存的路由组件列表
   const keepAliveComponents = computed(() => keepAliveStore.list);
   /** 过渡动画 */
@@ -79,44 +71,6 @@
       return '';
     }
     return name ?? 'fade-slide';
-  });
-
-  // 获取简易的路由对象
-  const getSimpleRoute = (route): RouteItem => {
-    const { fullPath, hash, meta, name, params, path, query } = route;
-    return { fullPath, hash, meta, name, params, path, query };
-  };
-
-  let routes: RouteItem[] = [];
-
-  try {
-    const routesStr = Storage.get(TABS_ROUTES) as string | null | undefined;
-    routes = routesStr ? JSON.parse(routesStr).filter(Boolean) : [getSimpleRoute(route)];
-  } catch (e) {
-    console.log(e);
-    routes = [getSimpleRoute(route)];
-  }
-
-  // 初始化标签页
-  tabsViewStore.initTabs(routes);
-
-  watch(
-    () => route.fullPath,
-    () => {
-      if (blackList.some((n) => n === route.name)) return;
-      // tabsViewMutations.addTabs(getSimpleRoute(route))
-      tabsViewStore.addTabs(getSimpleRoute(route));
-    },
-    { immediate: true },
-  );
-
-  // 在页面关闭或刷新之前，保存数据
-  window.addEventListener('beforeunload', () => {
-    if (layoutSettingStore.layoutSetting.cacheTabs) {
-      Storage.set(TABS_ROUTES, JSON.stringify(tabsViewStore.tabsList));
-    } else if (tabsViewStore.getCurrentTab) {
-      Storage.set(TABS_ROUTES, JSON.stringify([tabsViewStore.getCurrentTab]));
-    }
   });
 
   // tabs 编辑（remove || add）
