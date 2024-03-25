@@ -70,7 +70,6 @@ export const useTabsViewStore = defineStore(
       const isExists = tabsList.value.some((item) => item.fullPath == route.fullPath);
       if (!isExists) {
         tabsList.value.push(getRawRoute(route));
-        console.log('tabsList.value', [...tabsList.value]);
       }
       return true;
     };

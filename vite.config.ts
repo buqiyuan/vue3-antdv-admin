@@ -86,7 +86,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       isDev &&
         checker({
           typescript: true,
-          vueTsc: true,
+          // vueTsc: true,
           eslint: {
             useFlatConfig: true,
             lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx

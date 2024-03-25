@@ -1,31 +1,26 @@
 <template>
-  <div>
-    <Alert message="游戏介绍" type="info" show-icon>
-      <template #description> 英雄联盟 -- 根据数组格式的数据进行导出 </template>
-    </Alert>
-    <Card title="英雄列表mock数据" style="margin-top: 20px">
-      <DynamicTable
-        size="small"
-        bordered
-        :data-request="getLolHeroList"
-        :columns="columns"
-        row-key="heroid"
-        export-file-name="英雄联盟"
-        :custom-row="customRow"
-      >
-        <template #export-button> <a-button type="primary">表格自带导出</a-button> </template>
-        <template #toolbar>
-          <a-button type="primary" @click="aoaToExcel"> 数组格式导出 </a-button>
-          <a-button type="primary" @click="openExportModal"> 自定义导出格式 </a-button>
-        </template>
-      </DynamicTable>
-    </Card>
-  </div>
+  <Card title="英雄列表mock数据" style="margin-top: 20px">
+    <DynamicTable
+      size="small"
+      bordered
+      :data-request="getLolHeroList"
+      :columns="columns"
+      row-key="heroid"
+      export-file-name="英雄联盟"
+      :custom-row="customRow"
+    >
+      <template #export-button> <a-button type="primary">表格自带导出</a-button> </template>
+      <template #toolbar>
+        <a-button type="primary" @click="aoaToExcel"> 数组格式导出 </a-button>
+        <a-button type="primary" @click="openExportModal"> 自定义导出格式 </a-button>
+      </template>
+    </DynamicTable>
+  </Card>
 </template>
 
 <script lang="ts" setup>
   import { useRouter } from 'vue-router';
-  import { Alert, Card } from 'ant-design-vue';
+  import { Card } from 'ant-design-vue';
   import { columns } from './columns';
   import { columnKeyFlags, useTable } from '@/components/core/dynamic-table';
   import { getLolHeroList } from '@/api/demo/hero';

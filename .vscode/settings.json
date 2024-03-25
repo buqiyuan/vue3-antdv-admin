@@ -3,6 +3,10 @@
   "npm.packageManager": "pnpm",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "vue.server.maxOldSpaceSize": 4096,
+  "vue.server.hybridMode": true,
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  // "typescript.tsserver.nodePath": "node",
   "files.eol": "\n",
   "search.exclude": {
     "**/node_modules": true,
