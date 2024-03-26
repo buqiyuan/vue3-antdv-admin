@@ -1,0 +1,1 @@
+import{L as o}from"./antdv-0hpD-MuF.js";import{d as t,W as a,a5 as n,k as s,a6 as r}from"./vue-Dbi1xauY.js";const c=r("div",null,"路由二",-1),i=t({name:"DemosNestedRoutesTwo",__name:"route-two",setup(_){return(m,p)=>{const e=o;return a(),n("div",null,[c,s(e)])}}});export{i as default};

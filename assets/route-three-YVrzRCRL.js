@@ -1,0 +1,1 @@
+import{L as t}from"./antdv-0hpD-MuF.js";import{d as o,W as a,a5 as n,k as s,a6 as r}from"./vue-Dbi1xauY.js";const c=r("div",null,"路由三",-1),i=o({name:"DemosNestedRoutesThree",__name:"route-three",setup(_){return(m,p)=>{const e=t;return a(),n("div",null,[c,s(e)])}}});export{i as default};
