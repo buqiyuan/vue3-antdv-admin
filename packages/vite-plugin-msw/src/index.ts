@@ -1,7 +1,7 @@
 import { createNodeMiddleware } from './node/';
 import { buildMswForBrowser, createBrowserMiddleware } from './browser/vitePlugin';
 import type { HttpHandler } from 'msw';
-import type { Plugin } from 'vite';
+import type { PluginOption } from 'vite';
 
 export interface VitePluginMswOptions {
   mode?: 'browser' | 'node';
@@ -13,7 +13,7 @@ interface BrowserIntegrationOptions {
   build?: boolean;
 }
 
-const browserIntegration = ({ build }: BrowserIntegrationOptions): Plugin => {
+const browserIntegration = ({ build }: BrowserIntegrationOptions): PluginOption => {
   let outDir;
   return {
     name: 'vite-plugin-msw:browser-integration',
@@ -35,7 +35,7 @@ const browserIntegration = ({ build }: BrowserIntegrationOptions): Plugin => {
   };
 };
 
-const getNodeIntegration = (handlers: HttpHandler[]): Plugin => {
+const getNodeIntegration = (handlers: HttpHandler[]): PluginOption => {
   return {
     name: 'vite-plugin-msw:node-integration',
     configureServer(devServer) {
@@ -46,9 +46,8 @@ const getNodeIntegration = (handlers: HttpHandler[]): Plugin => {
 
 function vitePluginMsw(
   options: Omit<VitePluginMswOptions, 'handlers'> & { mode?: 'browser' },
-): Plugin;
-function vitePluginMsw(options: VitePluginMswOptions & { mode?: 'node' }): Plugin;
-function vitePluginMsw(options: VitePluginMswOptions): Plugin {
+): PluginOption;
+function vitePluginMsw(options: VitePluginMswOptions): PluginOption {
   const { mode = 'browser', handlers = [], build = false } = options;
   if (mode === 'node') {
     return getNodeIntegration(handlers);

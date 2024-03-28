@@ -19,7 +19,7 @@
           type="primary"
           class="mr-2"
           v-bind="getSubmitBtnOptions"
-          @click="submit"
+          @click="handleSubmit($event)"
         >
           {{ getSubmitBtnOptions.text }}
         </a-button>
@@ -130,4 +130,8 @@
   function toggleAdvanced() {
     emit('toggle-advanced', props.isAdvanced);
   }
+
+  const handleSubmit = async (e: Event) => {
+    await submit(e).catch(() => {});
+  };
 </script>

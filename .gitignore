@@ -34,3 +34,4 @@ yarn-error.log*
 types/auto-imports.d.ts
 types/components.d.ts
 
+packages/vite-plugin-http2-proxy

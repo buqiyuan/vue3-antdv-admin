@@ -26,7 +26,6 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
       layout: 'horizontal',
       labelWidth: 100,
       ...formProps,
-      schemas: formProps?.schemas ?? unref(formSchemas),
       submitButtonOptions: { loading: unref(loadingRef), ...submitButtonOptions },
       compact: true,
     };
@@ -74,5 +73,6 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
     getFormProps,
     replaceFormSlotKey,
     getFormSlotKeys,
+    formSchemas,
   };
 }

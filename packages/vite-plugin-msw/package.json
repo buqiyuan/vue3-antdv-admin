@@ -1,6 +1,6 @@
 {
   "name": "@admin-pkg/vite-plugin-msw",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "description": "",
   "module": "./dist/browser/index.js",
@@ -42,14 +42,14 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@mswjs/interceptors": "^0.26.5",
-    "headers-polyfill": "^4.0.2",
+    "@mswjs/interceptors": "^0.26.14",
+    "headers-polyfill": "^4.0.3",
     "strict-event-emitter": "^0.5.1"
   },
   "devDependencies": {
     "tsup": "^8.0.2"
   },
   "peerDependencies": {
-    "msw": "^2.0.0"
+    "msw": "^2.2.13"
   }
 }

@@ -9,10 +9,10 @@ import type { SchemaFormEmitFn } from '../schema-form';
 import { isArray, isFunction, isObject, isString } from '@/utils/is';
 import { deepMerge } from '@/utils';
 
-type UseFormActionContext = FormState & {
-  emit: SchemaFormEmitFn;
-  handleFormValues: FormMethods['handleFormValues'];
-};
+type UseFormActionContext = FormState &
+  Pick<FormMethods, 'handleFormValues'> & {
+    emit: SchemaFormEmitFn;
+  };
 
 type FormSchema = UnwrapFormSchema;
 
@@ -281,7 +281,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     try {
       const values = await validate();
       const res = handleFormValues(values);
-      emit('submit', res);
+      emit('submit', values);
       return res;
     } catch (error: any) {
       return Promise.reject(error);

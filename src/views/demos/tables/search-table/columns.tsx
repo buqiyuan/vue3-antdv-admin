@@ -126,7 +126,7 @@ export const columns: TableColumn<ListItemType>[] = [
     title: '价格',
     dataIndex: 'price',
     formItemProps: {
-      component: 'Select',
+      component: 'InputNumber',
     },
     customRender: ({ record }) => `${record.price}元`,
   },

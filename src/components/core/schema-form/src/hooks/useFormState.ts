@@ -1,5 +1,5 @@
-import { computed, reactive, ref, unref, watchEffect } from 'vue';
-import { cloneDeep } from 'lodash-es';
+import { computed, reactive, ref, unref, watch } from 'vue';
+import { cloneDeep, set } from 'lodash-es';
 import type { SetupContext, DefineComponent } from 'vue';
 import type { AdvanceState } from '../types/hooks';
 import type { SchemaFormProps } from '../schema-form';
@@ -61,13 +61,17 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     (): Recordable => ({ ...getFormProps.value, ...advanceState }),
   );
 
-  watchEffect(() => {
-    formPropsRef.value.schemas?.forEach((item) => {
-      if (!originComponentPropsFnMap.has(item.field) && isFunction(item.componentProps)) {
-        originComponentPropsFnMap.set(item.field, item.componentProps);
-      }
-    });
-  });
+  watch(
+    () => formPropsRef.value.schemas,
+    () => {
+      formPropsRef.value.schemas?.forEach((item) => {
+        if (!originComponentPropsFnMap.has(item.field) && isFunction(item.componentProps)) {
+          originComponentPropsFnMap.set(item.field, item.componentProps);
+        }
+        set(defaultFormValues, item.field, item.defaultValue);
+      });
+    },
+  );
 
   return {
     formModel,

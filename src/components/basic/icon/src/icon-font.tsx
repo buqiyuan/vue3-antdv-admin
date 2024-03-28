@@ -2,8 +2,9 @@ import { defineComponent, unref, computed } from 'vue';
 import { createFromIconfontCN } from '@ant-design/icons-vue';
 import type { PropType } from 'vue';
 import { isString } from '@/utils/is';
+import { uniqueSlash } from '@/utils/urlUtils';
 
-let scriptUrls = [`${import.meta.env.BASE_URL}iconfont.js`];
+let scriptUrls = [uniqueSlash(`${import.meta.env.BASE_URL}/iconfont.js`)];
 
 // 文档：https://antdv.com/components/icon-cn#components-icon-demo-iconfont
 let MyIconFont = createFromIconfontCN({

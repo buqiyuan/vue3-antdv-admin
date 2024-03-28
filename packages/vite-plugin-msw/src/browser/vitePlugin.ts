@@ -10,7 +10,7 @@ const localMswDistPath = resolve(__dirname, swFileName);
 export const createBrowserMiddleware = (): Connect.NextHandleFunction => {
   return async (req, res, next) => {
     try {
-      if (req.method !== 'GET' || req.url !== `/${swFileName}`) {
+      if (req.method !== 'GET' || !req.url?.includes(`/${swFileName}`)) {
         next();
         return;
       }
