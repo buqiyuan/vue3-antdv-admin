@@ -32,11 +32,6 @@ export async function storageList(
   }>('/api/tools/storage/list', {
     method: 'GET',
     params: {
-      // page has a default value: 1
-      page: '1',
-      // pageSize has a default value: 10
-      pageSize: '10',
-
       ...params,
     },
     ...(options || {}),

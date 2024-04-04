@@ -11,10 +11,6 @@ export async function captchaCaptchaByImg(
   return request<API.ImageCaptcha>('/api/auth/captcha/img', {
     method: 'GET',
     params: {
-      // width has a default value: 100
-      width: '100',
-      // height has a default value: 50
-      height: '50',
       ...params,
     },
     ...(options || {}),

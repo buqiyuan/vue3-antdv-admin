@@ -59,6 +59,15 @@ generateService({
       const controllerName = operationId.split(re)[0];
       const moduleName = operationObject.tags?.[0].split(' - ')[0];
 
+      // 移除 query 参数的默认值
+      // operationObject.parameters?.forEach((param) => {
+      //   if ('in' in param && param.in === 'query' && param.schema) {
+      //     if (!('$ref' in param.schema) && param.schema.default) {
+      //       Reflect.deleteProperty(param.schema, 'default');
+      //     }
+      //   }
+      // });
+
       if (moduleName === controllerName) {
         return [controllerName];
       } else if (moduleName && moduleName !== controllerName) {

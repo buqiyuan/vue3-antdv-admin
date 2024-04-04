@@ -20,11 +20,6 @@ export async function paramConfigList(
   }>('/api/system/param-config', {
     method: 'GET',
     params: {
-      // page has a default value: 1
-      page: '1',
-      // pageSize has a default value: 10
-      pageSize: '10',
-
       ...params,
     },
     ...(options || {}),

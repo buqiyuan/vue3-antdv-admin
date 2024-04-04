@@ -20,14 +20,6 @@ export async function taskList(
   }>('/api/system/tasks', {
     method: 'GET',
     params: {
-      // page has a default value: 1
-      page: '1',
-      // pageSize has a default value: 10
-      pageSize: '10',
-
-      // limit has a default value: -1
-      limit: '-1',
-
       ...params,
     },
     ...(options || {}),

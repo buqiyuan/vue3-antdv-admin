@@ -112,7 +112,7 @@
             perm: 'system:menu:create',
             effect: 'disable',
           },
-          disabled: record.type === 2,
+          disabled: record.type === 2 || record.status === 0,
           onClick: () => openMenuModal({ parentId: record.id }),
         },
         {

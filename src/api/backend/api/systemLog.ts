@@ -20,11 +20,6 @@ export async function logCaptchaList(
   }>('/api/system/log/captcha/list', {
     method: 'GET',
     params: {
-      // page has a default value: 1
-      page: '1',
-      // pageSize has a default value: 10
-      pageSize: '10',
-
       ...params,
     },
     ...(options || {}),
@@ -49,11 +44,6 @@ export async function logLoginLogPage(
   }>('/api/system/log/login/list', {
     method: 'GET',
     params: {
-      // page has a default value: 1
-      page: '1',
-      // pageSize has a default value: 10
-      pageSize: '10',
-
       ...params,
     },
     ...(options || {}),
@@ -78,11 +68,6 @@ export async function logTaskList(
   }>('/api/system/log/task/list', {
     method: 'GET',
     params: {
-      // page has a default value: 1
-      page: '1',
-      // pageSize has a default value: 10
-      pageSize: '10',
-
       ...params,
     },
     ...(options || {}),
