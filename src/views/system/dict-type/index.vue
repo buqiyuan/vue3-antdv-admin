@@ -1,34 +1,32 @@
 <template>
-  <div>
-    <DynamicTable
-      row-key="id"
-      header-title="字典管理"
-      :data-request="Api.systemDictType.dictTypeList"
-      :columns="columns"
-      bordered
-      size="small"
-      @expand="handleExpand"
-    >
-      <template #toolbar>
-        <a-button
-          type="primary"
-          :disabled="!$auth('system:dict-type:create')"
-          @click="openMenuModal({})"
-        >
-          新增
-        </a-button>
-      </template>
-      <template v-if="$router.hasRoute(dictItemRouteName)" #expandedRowRender="{ record }">
-        <a-table
-          size="small"
-          :columns="dictItemColumns"
-          :loading="expandedRowLoding[record.id]"
-          :data-source="expandedRowData[record.id]"
-          :pagination="false"
-        />
-      </template>
-    </DynamicTable>
-  </div>
+  <DynamicTable
+    row-key="id"
+    header-title="字典管理"
+    :data-request="Api.systemDictType.dictTypeList"
+    :columns="columns"
+    bordered
+    size="small"
+    @expand="handleExpand"
+  >
+    <template #toolbar>
+      <a-button
+        type="primary"
+        :disabled="!$auth('system:dict-type:create')"
+        @click="openMenuModal({})"
+      >
+        新增
+      </a-button>
+    </template>
+    <template v-if="$router.hasRoute(dictItemRouteName)" #expandedRowRender="{ record }">
+      <a-table
+        size="small"
+        :columns="dictItemColumns"
+        :loading="expandedRowLoading[record.id]"
+        :data-source="expandedRowData[record.id]"
+        :pagination="false"
+      />
+    </template>
+  </DynamicTable>
 </template>
 
 <script lang="ts" setup>
@@ -51,7 +49,7 @@
   });
 
   const expandedRowData = ref<Recordable<any[]>>({});
-  const expandedRowLoding = ref<Recordable<boolean>>({});
+  const expandedRowLoading = ref<Recordable<boolean>>({});
 
   const [DynamicTable, dynamicTableInstance] = useTable({
     formProps: {
@@ -127,10 +125,10 @@
   const handleExpand = async (expanded, record) => {
     const typeId = record.id;
     if (expanded) {
-      expandedRowLoding.value[typeId] = true;
+      expandedRowLoading.value[typeId] = true;
       const { items = [] } = await Api.systemDictItem
         .dictItemList({ typeId })
-        .finally(() => (expandedRowLoding.value[typeId] = false));
+        .finally(() => (expandedRowLoading.value[typeId] = false));
       expandedRowData.value[typeId] = items;
     }
   };

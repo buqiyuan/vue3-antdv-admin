@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useAttrs, onMounted } from 'vue';
+  import { useAttrs } from 'vue';
   import { pick } from 'lodash-es';
   import { Form, Row } from 'ant-design-vue';
   import SchemaFormItem from './schema-form-item.vue';
@@ -99,8 +99,6 @@
 
   defineExpose(instance);
 
-  onMounted(() => {
-    // 初始化表单默认值
-    setDefaultValue(formSchemasRef.value);
-  });
+  // 初始化表单默认值
+  setDefaultValue(formSchemasRef.value);
 </script>
