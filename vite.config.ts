@@ -11,6 +11,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import dayjs from 'dayjs';
 import mockServerPlugin from '@admin-pkg/vite-plugin-msw/vite';
 import TinymceResourcePlugin from '@admin-pkg/vite-plugin-tinymce-resource';
+import Http2Proxy from '@admin-pkg/vite-plugin-http2-proxy';
 import pkg from './package.json';
 import type { UserConfig, ConfigEnv } from 'vite';
 
@@ -55,6 +56,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       }),
       // 指定 mkcert 的下载源为 coding，从 coding.net 镜像下载证书
       mkcert({ source: 'coding' }),
+      // 开启 http2 代理
+      Http2Proxy(),
       mockServerPlugin({ build: isBuild && VITE_MOCK_IN_PROD === 'true' }),
       TinymceResourcePlugin({ baseUrl: '/tinymce-resource/' }),
       createSvgIconsPlugin({
@@ -112,17 +115,16 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 8088,
       open: true,
       proxy: {
-        '/api': {
+        '^/api': {
           target: 'https://nest-api.buqiyuan.site',
           // target: 'http://127.0.0.1:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
-        '/upload': {
-          target: 'hhttps://nest-api.buqiyuan.site/upload',
+        '^/upload': {
+          target: 'https://nest-api.buqiyuan.site/upload',
           // target: 'http://127.0.0.1:7001/upload',
           changeOrigin: true,
-          ws: true,
           rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),
         },
       },

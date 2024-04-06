@@ -1,0 +1,17 @@
+{
+  "name": "@admin-pkg/vite-plugin-http2-proxy",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "http2-proxy": "^5.0.53"
+  }
+}

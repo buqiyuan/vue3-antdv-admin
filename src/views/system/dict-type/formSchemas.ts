@@ -32,5 +32,8 @@ export const baseSchemas: FormSchema<API.DictTypeDto>[] = [
     colProps: {
       span: 24,
     },
+    componentProps: {
+      autoSize: { minRows: 2 },
+    },
   },
 ];

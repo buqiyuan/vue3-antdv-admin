@@ -3,10 +3,10 @@
   "npm.packageManager": "pnpm",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "vue.server.maxOldSpaceSize": 4096,
-  "vue.server.hybridMode": true,
-  "typescript.tsserver.maxTsServerMemory": 4096,
-  // "typescript.tsserver.nodePath": "node",
+  // 保存文件缓慢时，可以考虑开启以下 3 行配置。
+  // "vue.server.maxOldSpaceSize": 4096,
+  // "vue.server.hybridMode": true,
+  // "typescript.tsserver.maxTsServerMemory": 4096,
   "files.eol": "\n",
   "search.exclude": {
     "**/node_modules": true,

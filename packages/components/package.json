@@ -1,6 +1,6 @@
 {
   "name": "@admin-pkg/components",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "type": "module",
   "module": "./dist/index.es.js",
