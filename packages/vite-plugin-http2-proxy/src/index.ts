@@ -1,3 +1,4 @@
+import { version } from 'node:process';
 import http2Proxy from 'http2-proxy';
 import type { Plugin, ProxyOptions } from 'vite';
 
@@ -7,6 +8,13 @@ const error = (message: string): never => {
 
 export default (options?: Record<string, ProxyOptions>): Plugin => {
   let routes: Record<string, ProxyOptions>;
+
+  if (version.startsWith('v2')) {
+    console.warn(
+      '[@admin-pkg/vite-plugin-http2-proxy] http2-proxy is not supported in Node.js v20.x+',
+    );
+    return { name: '@admin-pkg/vite-plugin-http2-proxy' };
+  }
 
   const configure: Plugin['configureServer'] = ({ middlewares, httpServer }) => {
     const proxyOptions = options || routes;
