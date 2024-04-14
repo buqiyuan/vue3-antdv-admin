@@ -19,7 +19,7 @@
 <script setup lang="ts">
   import { ref, computed, watch, type PropType } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { Menu, type MenuTheme } from 'ant-design-vue';
+  import { Menu, type MenuTheme, type MenuProps } from 'ant-design-vue';
   import SubMenuItem from './components/sub-menu-item.vue';
   import { useUserStore } from '@/store/modules/user';
   import { useLayoutSettingStore } from '@/store/modules/layoutSetting';
@@ -80,17 +80,15 @@
   );
 
   // 点击菜单
-  const clickMenuItem = ({ key }) => {
+  const clickMenuItem: MenuProps['onClick'] = ({ key }) => {
     if (key === currentRoute.name) return;
     const preSelectedKeys = selectedKeys.value;
-    const targetRoute = getRouteByName(key);
+    const targetRoute = getRouteByName(key as string);
     const { isExt, extOpenMode } = targetRoute?.meta || {};
     if (targetRoute && isExt && extOpenMode === 1) {
       queueMicrotask(() => {
         selectedKeys.value = preSelectedKeys;
       });
-    } else {
-      router.push({ name: key });
     }
   };
 </script>

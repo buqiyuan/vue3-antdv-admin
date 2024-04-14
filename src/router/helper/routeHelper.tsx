@@ -8,7 +8,10 @@ import basic from '@/router/routes/basic';
 import routeModules from '@/router/routes/modules';
 import { uniqueSlash } from '@/utils/urlUtils';
 
-export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
+export const transformMenuToRoutes = (
+  routeList: RouteRecordRaw[],
+  parentRoute?: RouteRecordRaw,
+) => {
   routeList.forEach((route) => {
     route.meta ||= {} as RouteMeta;
     const { show = 1, type, isExt, extOpenMode } = route.meta;
@@ -34,6 +37,10 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
         route.path = route.path.replace(new RegExp('://'), '/');
       } else if (compPath) {
         route.component = asyncRoutes[compPath];
+        if (typeof parentRoute?.name === 'string') {
+          // 避免重名
+          route.name = `${parentRoute.name}_${route.name as string}`;
+        }
         // 前端 src/views 目录下无对应路由组件
         if (!route.component) {
           route.component = () => import('@/views/error/comp-not-found.vue');
@@ -43,7 +50,7 @@ export const transformMenuToRoutes = (routeList: RouteRecordRaw[]) => {
     }
 
     if (route.children?.length) {
-      transformMenuToRoutes(route.children);
+      transformMenuToRoutes(route.children, route);
     }
   });
   return routeList;
