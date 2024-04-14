@@ -40,7 +40,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
       })
       .map((n) => {
         return {
-          field: n.searchField ?? (getColumnKey(n) as string),
+          field: n.searchField ?? ([] as string[]).concat(getColumnKey(n)).join('.'),
           component: 'Input',
           label: n.title as string,
           colProps: {

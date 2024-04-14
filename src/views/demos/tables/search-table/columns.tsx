@@ -59,6 +59,9 @@ export const tableData = Array.from({ length: 30 }).map((_, i) => {
     gender,
     img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     status: ~~(Math.random() * 2),
+    nested: {
+      prop: `嵌套属性 ${i + 1}`,
+    },
   };
 });
 
@@ -129,6 +132,10 @@ export const columns: TableColumn<ListItemType>[] = [
       component: 'InputNumber',
     },
     customRender: ({ record }) => `${record.price}元`,
+  },
+  {
+    title: '嵌套属性',
+    dataIndex: ['nested', 'prop'],
   },
   {
     title: '状态',
