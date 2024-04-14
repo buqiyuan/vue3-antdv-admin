@@ -9,7 +9,7 @@ import router from '@/router';
 export type TableListItem = API.DictTypeEntity;
 export type TableColumnItem = TableColumn<TableListItem>;
 
-export const dictItemRouteName = '字典项管理';
+export const dictItemRouteName = '/system/dict-item/:id';
 
 const DictCodeRender: FunctionalComponent<TableListItem> = (props) => {
   if (!router.hasRoute(dictItemRouteName)) {

@@ -12,6 +12,10 @@
       </template>
     </Alert>
     <a-card>
+      <a-radio-group v-model:value="layout">
+        <a-radio-button value="horizontal">Horizontal</a-radio-button>
+        <a-radio-button value="vertical">Vertical</a-radio-button>
+      </a-radio-group>
       <SchemaForm @submit="handleSubmit">
         <template #selectA="{ formModel, field }">
           <Select
@@ -59,7 +63,7 @@
 </template>
 
 <script lang="tsx" setup>
-  import { computed, ref, unref } from 'vue';
+  import { computed, ref, unref, watch } from 'vue';
   import { cloneDeep } from 'lodash-es';
   import { Alert, message, Select } from 'ant-design-vue';
   import { schemas } from './form-schema';
@@ -70,7 +74,7 @@
     name: 'DemosFormBasicForm',
   });
 
-  const [SchemaForm] = useForm({
+  const [SchemaForm, SchemaFormInstance] = useForm({
     labelWidth: 200,
     schemas,
     actionColOptions: {
@@ -79,6 +83,7 @@
   });
 
   const keyword = ref<string>('');
+  const layout = ref('horizontal');
 
   const valueSelectA = ref<string[]>([]);
   const valueSelectB = ref<string[]>([]);
@@ -100,6 +105,18 @@
 
   const searchParams = computed<Recordable>(() => {
     return { keyword: unref(keyword) };
+  });
+
+  watch(layout, (val) => {
+    if (val === 'vertical') {
+      SchemaFormInstance.setSchemaFormProps({
+        layout: val,
+        rowProps: { gutter: 20 },
+        labelWidth: null,
+      });
+    } else {
+      SchemaFormInstance.setSchemaFormProps({ layout: val, labelWidth: 200 });
+    }
   });
 
   function onSearch(value: string) {

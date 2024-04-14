@@ -232,7 +232,7 @@ export const useMenuSchemas = (): FormSchema<API.MenuDto>[] => [
     colProps: {
       span: 12,
     },
-    helpMessage: '值为某个的节点名称(可设置当前路由高亮的菜单项，多用于详情页)',
+    helpMessage: '值为某个的节点的路由地址(可设置当前路由高亮的菜单项，多用于详情页)',
     componentProps: {
       placeholder: '需要高亮的菜单项(节点名称)',
     },
