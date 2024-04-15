@@ -127,15 +127,17 @@
   }
 </script>
 
+<style lang="less">
+  .ant-table-cell:hover {
+    .editable-cell .anticon-edit {
+      display: block;
+    }
+  }
+</style>
+
 <style lang="less" scoped>
   .editable-cell {
     position: relative;
-
-    &:hover {
-      .anticon-edit {
-        display: block;
-      }
-    }
 
     .anticon-edit {
       display: none;
