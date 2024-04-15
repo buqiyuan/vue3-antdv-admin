@@ -1,22 +1,18 @@
 import { debounce } from 'lodash-es';
-import { Tag } from 'ant-design-vue';
+import { Tag, Spin } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
 import { waitTime } from '@/utils/common';
+import { useDictStore } from '@/store/modules/dict';
 
 const names = ['王路飞', '王大蛇', '李白', '刺客伍六七'];
+const { fetchDict, dictPending, showDictLabel } = useDictStore();
 
-export const fetchStatusMapData = (keyword = '') => {
-  const data = [
-    {
-      label: '已售罄',
-      value: 0,
-    },
-    {
-      label: '热卖中',
-      value: 1,
-    },
-  ].filter((n) => n.label.includes(keyword));
-  return waitTime<LabelValueOptions>(2000, data);
+export const fetchStatusMapData = async (keyword = '') => {
+  const [data] = await fetchDict('sell_status');
+  return waitTime<LabelValueOptions>(
+    100,
+    data.filter((n) => n.label.includes(keyword)),
+  );
 };
 
 export const getClothesByGender = (gender: number) => {
@@ -88,16 +84,10 @@ export const columns: TableColumn<ListItemType>[] = [
     formItemProps: {
       component: 'Select',
       componentProps: ({ formInstance, formModel }) => ({
-        options: [
-          {
-            label: '男',
-            value: 1,
-          },
-          {
-            label: '女',
-            value: 0,
-          },
-        ],
+        request: async () => {
+          const [data] = await fetchDict('gender');
+          return data;
+        },
         onChange() {
           // 根据当前选择的性别，更新衣服可选项
           formInstance?.updateSchema({
@@ -111,7 +101,12 @@ export const columns: TableColumn<ListItemType>[] = [
         },
       }),
     },
-    customRender: ({ record }) => ['女', '男'][record.gender],
+    // customRender: ({ record }) => ['女', '男'][record.gender],
+    customRender: ({ record }) => (
+      <Spin spinning={dictPending['sell_status']} size="small">
+        {showDictLabel('gender', record.gender)}
+      </Spin>
+    ),
   },
   {
     title: '衣服',
@@ -170,9 +165,11 @@ export const columns: TableColumn<ListItemType>[] = [
       }),
     },
     customRender: ({ record }) => (
-      <Tag color={record.status == 1 ? 'red' : 'default'}>
-        {['已售罄', '热卖中'][record.status]}
-      </Tag>
+      <Spin spinning={dictPending['sell_status']} size="small">
+        <Tag color={record.status == 1 ? 'red' : 'default'}>
+          {showDictLabel('sell_status', record.status)}
+        </Tag>
+      </Spin>
     ),
   },
 ];
