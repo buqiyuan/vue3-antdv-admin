@@ -1,5 +1,5 @@
 import { computed, ref, type Ref } from 'vue';
-import { debounce } from 'lodash-es';
+import { debounce, isBoolean, isString } from 'lodash-es';
 import { useMutationObserver, useResizeObserver } from '@vueuse/core';
 import type { DynamicTableProps } from '../dynamic-table';
 
@@ -10,11 +10,17 @@ type UseScrollParams = {
 
 export type UseScrollType = ReturnType<typeof useScroll>;
 
+// 传入的元素是否有position属性
+const hasPosition = (divElement: HTMLDivElement) => {
+  return divElement instanceof HTMLDivElement && divElement.style.position !== '';
+};
+
 // 获取元素到顶部距离-通用方法
-export const getPositionTop = (node: HTMLElement) => {
+export const getPositionTop = (node: HTMLElement, stopElement?: HTMLDivElement) => {
   let top = node.offsetTop;
   let parent = node.offsetParent as HTMLElement;
-  while (parent != null) {
+
+  while (parent != null && (!stopElement || parent !== stopElement)) {
     top += parent.offsetTop;
     parent = parent.offsetParent as HTMLElement;
   }
@@ -44,8 +50,19 @@ export const useScroll = ({ props, containerElRef }: UseScrollParams) => {
       containerElRef.value.querySelector<HTMLDivElement>('.ant-table-body') ||
       containerElRef.value.querySelector<HTMLDivElement>('.ant-table-tbody');
     if (bodyEl) {
-      const rootElHeight = document.documentElement.offsetHeight;
-      const posTopHeight = getPositionTop(bodyEl as HTMLDivElement);
+      let rootElHeight = document.documentElement.offsetHeight;
+      let posTopHeight = getPositionTop(bodyEl as HTMLDivElement);
+      if (!isBoolean(props.autoHeight) && isString(props.autoHeight)) {
+        const el: HTMLDivElement = document.querySelector<HTMLDivElement>(
+          props.autoHeight,
+        ) as HTMLDivElement;
+        if (!hasPosition(el)) {
+          el.style.position = 'relative';
+        }
+
+        rootElHeight = el.offsetHeight;
+        posTopHeight = getPositionTop(bodyEl as HTMLDivElement, el);
+      }
       const scrollbarHeight = bodyEl.offsetHeight - bodyEl.clientHeight;
       const y = rootElHeight - posTopHeight - scrollbarHeight - paginationHeight - 8;
       scrollY.value = y;

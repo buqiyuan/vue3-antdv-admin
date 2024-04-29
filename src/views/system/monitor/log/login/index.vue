@@ -1,14 +1,20 @@
 <template>
-  <DynamicTable
-    header-title="登录日志"
-    auto-height
-    :data-request="Api.systemLog.logLoginLogPage"
-    :columns="columns"
-  />
+  <div id="auto-height" style="height: 80%">
+    <DynamicTable
+      header-title="登录日志"
+      auto-height="#auto-height"
+      :data-request="Api.systemLog.logLoginLogPage"
+      :columns="columns"
+    />
+  </div>
+
+  <Alert style="margin-top: 20px" message="表格自适应指定容器高度" type="info" show-icon>
+    <template #description> 表格自适应指定容器高度 </template>
+  </Alert>
 </template>
 
 <script setup lang="tsx">
-  import { Tag } from 'ant-design-vue';
+  import { Tag, Alert } from 'ant-design-vue';
   import type { TableColumn } from '@/components/core/dynamic-table';
   import { useTable } from '@/components/core/dynamic-table';
   import Api from '@/api/';
