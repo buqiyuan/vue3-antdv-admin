@@ -35,7 +35,7 @@
     await waitTime(500);
 
     // 手动设置搜索表单的搜索项
-    dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
+    dynamicTableInstance?.getSearchFormRef()?.updateSchema?.([
       {
         field: 'price',
         componentProps: {

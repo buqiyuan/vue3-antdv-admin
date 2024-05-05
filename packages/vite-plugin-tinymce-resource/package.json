@@ -8,6 +8,6 @@
     "build": "tsc"
   },
   "peerDependencies": {
-    "vite": "^5.2.8"
+    "vite": "^5.2.11"
   }
 }

@@ -23,7 +23,6 @@ export function useForm(props?: Partial<SchemaFormProps>) {
       if (props) {
         await nextTick();
         const formInstance = await getFormInstance();
-        // console.log('form onMounted');
         formInstance.setSchemaFormProps?.(props);
       }
     },
@@ -35,7 +34,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
   );
 
   const methods = new Proxy<Ref<SchemaFormInstance>>(formRef, {
-    get(target, key) {
+    get(target, key: string) {
       if (Reflect.has(target, key)) {
         return unref(target);
       }

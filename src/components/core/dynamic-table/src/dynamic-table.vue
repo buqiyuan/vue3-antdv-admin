@@ -8,7 +8,6 @@
           class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
           submit-on-reset
           v-bind="getFormProps"
-          :schemas="formSchemas"
           :table-instance="tableAction"
           @toggle-advanced="(e) => $emit('toggle-advanced', e)"
           @submit="handleSubmit"
@@ -59,7 +58,7 @@
 </template>
 
 <script lang="tsx" setup>
-  import { useSlots, computed } from 'vue';
+  import { useSlots, computed, onBeforeMount } from 'vue';
   import { Table } from 'ant-design-vue';
   import {
     useTableMethods,
@@ -126,7 +125,7 @@
     tableMethods,
     slots,
   });
-  const { getFormProps, replaceFormSlotKey, getFormSlotKeys, formSchemas } = tableForm;
+  const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = tableForm;
 
   // 表单导出
   const exportData2ExcelHooks = useExportData2Excel({
@@ -148,8 +147,6 @@
 
   createTableContext(instance);
 
-  fetchData();
-
   defineExpose(instance);
 
   const tableProps = computed<Recordable>(() => {
@@ -158,6 +155,12 @@
       ...getBindValues.value,
       ...getExpandOption.value,
     };
+  });
+
+  onBeforeMount(() => {
+    if (props.immediate) {
+      fetchData();
+    }
   });
 </script>
 

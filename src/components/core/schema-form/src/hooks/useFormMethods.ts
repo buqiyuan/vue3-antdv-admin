@@ -39,7 +39,10 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
   };
 
   const setSchemaFormProps = (formProps: Partial<SchemaFormProps>) => {
+    const { schemas } = formPropsRef.value;
     formPropsRef.value = deepMerge(unref(formPropsRef) || {}, formProps);
+    // @ts-ignore
+    formPropsRef.value.schemas = schemas?.length ? schemas : formProps.schemas;
   };
 
   // Processing form values

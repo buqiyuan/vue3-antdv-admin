@@ -57,7 +57,7 @@
   // 展开搜索表单时更新英雄皮肤选项值
   const toggleAdvanced = (e) => {
     if (e) {
-      //dynamicTableInstance?.getQueryFormRef().updateSchema([
+      //dynamicTableInstance?.getSearchFormRef().updateSchema([
       //   {
       //     field: 'skin_name',
       //     componentProps: {

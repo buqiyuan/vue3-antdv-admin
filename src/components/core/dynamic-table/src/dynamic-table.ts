@@ -47,6 +47,8 @@ export const dynamicTableProps = {
     // 获取列表数据函数API
     type: Function as PropType<(params: Recordable) => Promise<API.TableListResult | any[]>>,
   },
+  /** 是否立即请求接口 */
+  immediate: { type: Boolean as PropType<boolean>, default: true },
   // 额外的请求参数
   searchParams: {
     type: Object as PropType<Recordable>,

@@ -15,7 +15,7 @@ export type UseTableFormContext = {
 
 export function useTableForm({ tableState, slots, tableMethods }: UseTableFormContext) {
   const { getProps, loadingRef } = tableState;
-  const { getColumnKey, getQueryFormRef } = tableMethods;
+  const { getColumnKey, getSearchFormRef } = tableMethods;
 
   const getFormProps = computed((): SchemaFormProps => {
     const { formProps } = unref(getProps);
@@ -25,6 +25,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
       showAdvancedButton: true,
       layout: 'horizontal',
       labelWidth: 100,
+      schemas: unref(formSchemas),
       ...formProps,
       submitButtonOptions: { loading: unref(loadingRef), ...submitButtonOptions },
       compact: true,
@@ -53,7 +54,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   });
 
   // 同步外部对props的修改
-  watchEffect(() => getQueryFormRef()?.setSchemaFormProps(unref(getFormProps)), {
+  watchEffect(() => getSearchFormRef()?.setSchemaFormProps(unref(getFormProps)), {
     flush: 'post',
   });
 
@@ -73,6 +74,5 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
     getFormProps,
     replaceFormSlotKey,
     getFormSlotKeys,
-    formSchemas,
   };
 }

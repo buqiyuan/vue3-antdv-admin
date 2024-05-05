@@ -68,10 +68,9 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
 
   /**
    * @param {object} params 表格查询参数
-   * @param {boolean} flush 是否将页数重置到第一页
    * @description 获取表格数据
    */
-  const fetchData = debounce(async (params = {}) => {
+  const fetchData = debounce(async (params: Recordable = {}) => {
     const { dataRequest, dataSource, fetchConfig, searchParams } = props;
 
     if (!dataRequest || !isFunction(dataRequest) || Array.isArray(dataSource)) {
@@ -228,7 +227,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   /**
    * @description当外部需要动态改变搜索表单的值或选项时，需要调用此方法获取dynamicFormRef实例
    */
-  const getQueryFormRef = () => queryFormRef.value;
+  const getSearchFormRef = () => queryFormRef.value;
 
   return {
     ...editableMethods,
@@ -238,7 +237,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     handleTableChange,
     getColumnKey,
     fetchData,
-    getQueryFormRef,
+    getSearchFormRef,
     reload,
     onInfiniteScroll,
     handleEditFormValidate,
