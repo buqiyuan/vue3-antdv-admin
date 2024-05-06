@@ -35,7 +35,7 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
           }
           // 解决警告：No match found for location with path "XXXXXXX"
           if (to.name === PAGE_NOT_FOUND_NAME) {
-            next({ path: to.fullPath, replace: true });
+            next({ path: to.fullPath, query: to.query, replace: true });
           }
           // 如果该路由不存在，可能是动态注册的路由，它还没准备好，需要再重定向一次到该路由
           else if (!hasRoute) {
