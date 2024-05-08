@@ -26,7 +26,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     innerPropsRef,
     tableData,
     loadingRef,
-    queryFormRef,
+    searchFormRef,
     paginationRef,
     editFormErrorMsgs,
     searchState,
@@ -103,10 +103,10 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
         ...params,
       };
       await nextTick();
-      if (queryFormRef.value) {
-        const values = await queryFormRef.value.validate();
+      if (searchFormRef.value) {
+        const values = await searchFormRef.value.validate();
         queryParams = {
-          ...queryFormRef.value.handleFormValues(values),
+          ...searchFormRef.value.handleFormValues(values),
           ...queryParams,
         };
       }
@@ -163,8 +163,8 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     const [pagination, filters, sorter] = rest;
     const { sortFn, filterFn } = props;
 
-    if (queryFormRef.value) {
-      await queryFormRef.value.validate();
+    if (searchFormRef.value) {
+      await searchFormRef.value.validate();
     }
     updatePagination(pagination);
 
@@ -227,7 +227,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   /**
    * @description当外部需要动态改变搜索表单的值或选项时，需要调用此方法获取dynamicFormRef实例
    */
-  const getSearchFormRef = () => queryFormRef.value;
+  const getSearchFormRef = () => searchFormRef.value;
 
   return {
     ...editableMethods,

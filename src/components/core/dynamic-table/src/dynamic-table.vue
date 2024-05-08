@@ -4,7 +4,7 @@
       <div ref="containerElRef">
         <SchemaForm
           v-if="getProps.search"
-          ref="queryFormRef"
+          ref="searchFormRef"
           class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
           submit-on-reset
           v-bind="getFormProps"
@@ -90,7 +90,7 @@
     tableData,
     isFullscreen,
     containerElRef,
-    queryFormRef,
+    searchFormRef,
     editTableFormRef,
     getProps,
     getBindValues,

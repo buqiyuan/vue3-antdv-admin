@@ -1,7 +1,7 @@
 {
   "name": "vue3-antdv-admin",
   "version": "2.0.0",
-  "packageManager": "pnpm@9.0.6",
+  "packageManager": "pnpm@9.1.0",
   "type": "module",
   "engines": {
     "node": ">=18"
@@ -59,8 +59,8 @@
     "qs": "~6.12.1",
     "sortablejs": "~1.15.2",
     "tinymce": "^6.8.3",
-    "vue": "~3.4.26",
-    "vue-echarts": "^6.7.1",
+    "vue": "~3.4.27",
+    "vue-echarts": "^6.7.2",
     "vue-i18n": "9.13.1",
     "vue-router": "~4.3.2",
     "vue-types": "~5.1.2",
@@ -77,7 +77,7 @@
     "@faker-js/faker": "^8.4.1",
     "@iconify-json/ant-design": "^1.1.16",
     "@iconify-json/ep": "^1.1.15",
-    "@iconify/json": "^2.2.206",
+    "@iconify/json": "^2.2.207",
     "@types/crypto-js": "^4.2.2",
     "@types/lodash-es": "~4.17.12",
     "@types/node": "~20.12.8",
@@ -92,7 +92,7 @@
     "conventional-changelog-cli": "~4.1.0",
     "core-js": "^3.37.0",
     "cross-env": "~7.0.3",
-    "eslint": "~8.57.0",
+    "eslint": "~9.2.0",
     "eslint-config-prettier": "~9.1.0",
     "eslint-define-config": "~2.1.0",
     "eslint-plugin-import": "~2.29.1",
@@ -103,7 +103,7 @@
     "less": "~4.2.0",
     "lint-staged": "~15.2.2",
     "msw": "^2.2.14",
-    "nx": "^18.3.4",
+    "nx": "^19.0.1",
     "postcss": "~8.4.38",
     "postcss-html": "~1.6.0",
     "postcss-less": "~6.0.0",
@@ -145,7 +145,18 @@
   "license": "MIT",
   "target": "web",
   "pnpm": {
-    "overrides": {}
+    "overrides": {},
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "typescript-eslint>eslint": "^9.0.0",
+        "@typescript-eslint/eslint-plugin>eslint": "^9.0.0",
+        "@typescript-eslint/parser>eslint": "^9.0.0",
+        "@typescript-eslint/type-utils>eslint": "^9.0.0",
+        "@typescript-eslint/utils>eslint": "^9.0.0",
+        "eslint-plugin-import>eslint": "^9.0.0",
+        "eslint-plugin-unused-imports>eslint": "^9.0.0"
+      }
+    }
   },
   "workspaces": [
     "packages/*"

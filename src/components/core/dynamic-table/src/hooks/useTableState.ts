@@ -27,7 +27,7 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   /** 表格实例 */
   const tableRef = ref<InstanceType<typeof Table>>();
   /** 查询表单实例 */
-  const queryFormRef = ref<InstanceType<typeof SchemaForm>>();
+  const searchFormRef = ref<InstanceType<typeof SchemaForm>>();
   /** 编辑表格的表单实例 */
   const editTableFormRef = ref<InstanceType<typeof SchemaForm>>();
   /** 表格数据 */
@@ -130,7 +130,7 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     isFullscreen,
     containerElRef,
     tableData,
-    queryFormRef,
+    searchFormRef,
     innerPropsRef,
     getProps,
     getBindValues,

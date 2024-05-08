@@ -12,7 +12,6 @@ import unusedImports from 'eslint-plugin-unused-imports';
 export default defineFlatConfig([
   {
     ...js.configs.recommended,
-    ignores: ['src/assets/**'],
     plugins: {
       prettier: pluginPrettier,
     },
@@ -185,5 +184,27 @@ export default defineFlatConfig([
         },
       ],
     },
+  },
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'off',
+    },
+    ignores: [
+      'src/assets/**',
+      '*.sh',
+      'node_modules',
+      '*.md',
+      '*.woff',
+      '*.ttf',
+      '.vscode',
+      '.idea',
+      'dist',
+      '/public',
+      '/docs',
+      '.husky',
+      '.local',
+      '/bin',
+      'Dockerfile',
+    ],
   },
 ]);
