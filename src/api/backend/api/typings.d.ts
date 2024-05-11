@@ -805,6 +805,16 @@ declare namespace API {
     pageSize?: number;
     field?: string;
     order?: 'ASC' | 'DESC';
+    /** 角色名称 */
+    name?: string;
+    /** 角色值 */
+    value?: string;
+    /** 角色备注 */
+    remark?: string;
+    /** 状态 */
+    status?: 0 | 1;
+    /** 关联菜单、权限编号 */
+    menuIds?: number[];
     _t?: number;
   };
 

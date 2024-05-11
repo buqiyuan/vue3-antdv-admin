@@ -9,7 +9,13 @@ generateService({
   serversPath: './src/api/backend',
   requestOptionsType: 'RequestOptions',
   // 自定义网络请求函数路径
-  requestImportStatement: 'import { request, type RequestOptions } from "@/utils/request";',
+  requestImportStatement: `
+  /**
+   * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
+   * */
+
+  import { request, type RequestOptions } from "@/utils/request";
+  `,
   hook: {
     afterOpenApiDataInited(openAPIData) {
       const schemas = openAPIData.components?.schemas;
@@ -60,13 +66,13 @@ generateService({
       const moduleName = operationObject.tags?.[0].split(' - ')[0];
 
       // 移除 query 参数的默认值
-      // operationObject.parameters?.forEach((param) => {
-      //   if ('in' in param && param.in === 'query' && param.schema) {
-      //     if (!('$ref' in param.schema) && param.schema.default) {
-      //       Reflect.deleteProperty(param.schema, 'default');
-      //     }
-      //   }
-      // });
+      operationObject.parameters?.forEach((param) => {
+        if ('in' in param && param.in === 'query' && param.schema) {
+          if (!('$ref' in param.schema) && param.schema.default) {
+            Reflect.deleteProperty(param.schema, 'default');
+          }
+        }
+      });
 
       if (moduleName === controllerName) {
         return [controllerName];
