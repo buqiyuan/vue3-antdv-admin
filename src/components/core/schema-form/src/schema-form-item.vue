@@ -21,28 +21,29 @@
       </template>
       <!-- 自定义插槽 -->
       <slot v-if="schema.slot" :name="schema.slot" v-bind="getValues" />
-      <component
-        :is="getComponent"
-        v-else-if="getComponent"
-        :ref="setItemRef(schema.field)"
-        v-bind="getComponentProps"
-        v-model:[modelValueType]="modelValue"
-        :allow-clear="true"
-        :disabled="getDisable"
-        :loading="schema.loading"
-        v-on="componentEvents"
-      >
-        <template v-if="Object.is(schema.loading, true)" #notFoundContent>
-          <Spin size="small" />
-        </template>
-        <template
-          v-for="(slotFn, slotName) in getComponentSlots"
-          #[slotName]="slotData"
-          :key="slotName"
+      <template v-else-if="getComponent">
+        <component
+          :is="getComponent"
+          :ref="setItemRef(schema.field)"
+          v-bind="getComponentProps"
+          v-model:[modelValueType]="modelValue"
+          :allow-clear="true"
+          :disabled="getDisable"
+          :loading="schema.loading"
+          v-on="componentEvents"
         >
-          <component :is="slotFn?.({ ...getValues, slotData }) ?? slotFn" :key="slotName" />
-        </template>
-      </component>
+          <template v-if="Object.is(schema.loading, true)" #notFoundContent>
+            <Spin size="small" />
+          </template>
+          <template
+            v-for="(slotFn, slotName) in getComponentSlots"
+            #[slotName]="slotData"
+            :key="slotName"
+          >
+            <component :is="slotFn?.({ ...getValues, slotData }) ?? slotFn" :key="slotName" />
+          </template>
+        </component>
+      </template>
       <!-- 后置插槽 -->
       <template v-if="schema.afterSlot">
         <slot v-if="isString(schema.afterSlot)" :name="schema.afterSlot" v-bind="getValues">
@@ -260,11 +261,11 @@
    * @description 表单组件事件
    */
   const componentEvents = computed(() => {
-    const componentProps = props.schema?.componentProps || {};
+    const componentProps = getComponentProps.value;
     return Object.keys(componentProps).reduce((prev, key) => {
-      if (/on([A-Z])/.test(key)) {
-        // eg: onChange => change
-        const eventKey = key.replace(/on([A-Z])/, '$1').toLocaleLowerCase();
+      if (/^on([A-Z])/.test(key)) {
+        // e.g: onChange => change
+        const eventKey = key.replace(/^on([A-Z])/, '$1').toLocaleLowerCase();
         prev[eventKey] = componentProps[key];
       }
       return prev;
