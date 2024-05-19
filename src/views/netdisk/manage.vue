@@ -235,12 +235,17 @@
         title: '重命名',
         width: 700,
         onFinish: async (values) => {
-          await Api.netDiskManage.netDiskManageRename({
-            type: record.type,
-            toName: values.toName,
-            name: record.name,
-            path: parsePath(),
-          });
+          await Api.netDiskManage.netDiskManageRename(
+            {
+              type: record.type,
+              toName: values.toName,
+              name: record.name,
+              path: parsePath(),
+            },
+            {
+              successMsg: '修改成功',
+            },
+          );
           refresh();
         },
       },

@@ -5,11 +5,9 @@
     </Divider>
     <Form.Item
       v-else
-      v-bind="{ ...schema.formItemProps }"
+      v-bind="{ ...schema.formItemProps, ...itemLabelWidthProp }"
       :label="renderLabelHelpMessage"
       :name="namePath"
-      :label-col="itemLabelWidthProp.labelCol"
-      :wrapper-col="itemLabelWidthProp.wrapperCol"
       :rules="getRules"
     >
       <!-- 前置插槽 -->
@@ -80,7 +78,7 @@
 
   // schemaForm组件实例
   const formContext = useFormContext();
-  const { formPropsRef, setItemRef, updateSchema, getSchemaByFiled, appendSchemaByField } =
+  const { formPropsRef, setItemRef, updateSchema, getSchemaByField, appendSchemaByField } =
     formContext;
 
   const { t } = useI18n();
@@ -449,7 +447,7 @@
     getShow,
     (val, oldVal) => {
       if (!isEqual(val, oldVal) && val.isIfShow && val.isShow) {
-        if (!getSchemaByFiled(props.schema.field)) {
+        if (!getSchemaByField(props.schema.field)) {
           appendSchemaByField(props.schema);
         }
         initRequestConfig();

@@ -8,13 +8,15 @@ import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 const BASIC_COL_LEN = 24;
 
 type UseAdvancedContext = {
-  instance: SchemaFormType;
+  schemaFormContext: SchemaFormType;
   emit: SchemaFormEmitFn;
 };
 
-export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
+export const useAdvanced = ({ schemaFormContext, emit }: UseAdvancedContext) => {
   const { realWidthRef, screenEnum, screenRef } = useBreakpoint();
-  const { advanceState, getFormProps, formSchemasRef, formModel, defaultFormValues } = instance;
+  const { advanceState, getFormProps, formSchemasRef, formModel, defaultFormValues } =
+    schemaFormContext;
+
   const getEmptySpan = computed((): number => {
     if (!advanceState.isAdvanced) {
       return 0;
@@ -117,7 +119,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
           }),
           formModel,
           field: schema.field,
-          formInstance: instance,
+          formInstance: schemaFormContext,
           values: {
             ...unref(defaultFormValues),
             ...formModel,

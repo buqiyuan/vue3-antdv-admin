@@ -4,9 +4,9 @@ import type { FormSchema } from '../types/form';
 import type { SchemaFormProps } from '../schema-form';
 import { isNumber } from '@/utils/is';
 
-export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<SchemaFormProps>) {
+export function useItemLabelWidth(schemaItemRef: Ref<FormSchema>, propsRef: Ref<SchemaFormProps>) {
   return computed(() => {
-    const schemaItem = unref(schemaRef);
+    const schemaItem = unref(schemaItemRef);
     const { labelCol = {}, wrapperCol = {} } = schemaItem.formItemProps || {};
     const { labelWidth, disabledLabelWidth } = schemaItem;
 
@@ -14,9 +14,10 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
       labelWidth: globalLabelWidth,
       labelCol: globalLabelCol,
       wrapperCol: globWrapperCol,
-    } = unref(formPropsRef);
+      layout,
+    } = unref(propsRef);
 
-    // 如果labelWidth是全局设置的，则会设置所有项
+    // If labelWidth is set globally, all items setting
     if ((!globalLabelWidth && !labelWidth && !globalLabelCol) || disabledLabelWidth) {
       labelCol.style = {
         textAlign: 'left',
@@ -33,7 +34,10 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
 
     return {
       labelCol: { style: { width }, ...col },
-      wrapperCol: { style: { width: `calc(100% - ${width})` }, ...wrapCol },
+      wrapperCol: {
+        style: { width: layout === 'vertical' ? '100%' : `calc(100% - ${width})` },
+        ...wrapCol,
+      },
     };
   });
 }

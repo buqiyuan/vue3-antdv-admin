@@ -12,7 +12,7 @@
 </template>
 <script lang="tsx" setup>
   import { Alert, Input, message } from 'ant-design-vue';
-  import inputNumberRange from './input-number-range.vue';
+  import InputNumberRange from './input-number-range.vue';
   import { type FormSchema, useForm } from '@/components/core/schema-form';
 
   defineOptions({
@@ -37,7 +37,11 @@
           },
         },
       ],
-      component: () => inputNumberRange,
+      component: () => InputNumberRange,
+      // 将多个值映射为多个字段
+      transform([minNum, maxNum] = []) {
+        return { minNum, maxNum };
+      },
     },
     {
       field: 'field1',
@@ -111,5 +115,6 @@
 
   const handleSubmit = (values: any) => {
     message.success(`click search,values:${JSON.stringify(values)}`);
+    console.log('values', values);
   };
 </script>

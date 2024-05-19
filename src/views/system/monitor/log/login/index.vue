@@ -8,6 +8,7 @@
 </template>
 
 <script setup lang="tsx">
+  import dayjs from 'dayjs';
   import { Tag } from 'ant-design-vue';
   import type { TableColumn } from '@/components/core/dynamic-table';
   import { useTable } from '@/components/core/dynamic-table';
@@ -46,7 +47,7 @@
       width: 80,
     },
     {
-      title: '时间',
+      title: '登录时间',
       width: 120,
       dataIndex: 'time',
       customRender({ record }) {
@@ -54,6 +55,17 @@
       },
       formItemProps: {
         component: 'RangePicker',
+        componentProps: {
+          valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        },
+        transform([startDate, endDate] = []) {
+          if (startDate && endDate) {
+            return [
+              dayjs(startDate).startOf('day').format('YYYY-MM-DD HH:mm:ss'),
+              dayjs(startDate).endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+            ];
+          }
+        },
       },
     },
     {

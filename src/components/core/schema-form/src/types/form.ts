@@ -127,8 +127,14 @@ export type FormSchema<T extends object = Recordable> = ComponentSchema<T> & {
   vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => any);
   /** 作用同v-if */
   vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => any);
-
-  // 渲染col内容需要外层包装form-item
+  /**
+   * 转换表单项的值
+   * @param value 转换前的值
+   * @returns 返回值若是基本类型，则将作为当前表单项的最终值；
+   * 若返回值是对象，则对象的 key 将会覆盖当前表单项定义的 field 字段
+   */
+  transform?: (value: any) => any;
+  /** 渲染col内容需要外层包装form-item */
   renderColContent?: CustomRenderFn<T>;
 
   /** Custom slot, in from-item */

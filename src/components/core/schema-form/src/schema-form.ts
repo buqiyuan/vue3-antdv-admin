@@ -21,7 +21,7 @@ export const schemaFormProps = {
   },
   // 标签宽度  固定宽度
   labelWidth: {
-    type: [Number, String] as PropType<number | string | null>,
+    type: [Number, String] as PropType<number | string>,
     default: 0,
   },
   fieldMapToTime: {

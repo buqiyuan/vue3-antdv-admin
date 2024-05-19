@@ -69,7 +69,7 @@
 
   const getSchema = computed(() => {
     const field = props.schema.field;
-    const schema = editTableFormRef.value?.getSchemaByFiled(field) || props.schema;
+    const schema = editTableFormRef.value?.getSchemaByField(field) || props.schema;
     return {
       ...schema,
       colProps: {

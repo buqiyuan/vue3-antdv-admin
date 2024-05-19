@@ -2,20 +2,18 @@
   <Drawer title="文件详情" :width="500" :visible="visible" @close="handleClose">
     <Spin :spinning="loading" class="preview-drawer-inner-box">
       <Space direction="vertical">
-        <Image
-          :style="{
-            width: disabledPreview ? '130px' : '100%',
-            height: disabledPreview ? '85px' : '210px',
-          }"
-          :src="disabledPreview ? noPreviewImage : imageView2Handle"
-          :preview="
-            disabledPreview
-              ? false
-              : {
-                  src: previewSrc,
-                }
-          "
-        />
+        <template v-if="detailInfo.mimeType?.startsWith('image/')">
+          <Image
+            class="w-full h-[210px]"
+            :src="imageView2Handle"
+            :preview="{
+              src: previewSrc,
+            }"
+          />
+        </template>
+        <template v-else>
+          <PreviewResource class="w-full h-[210px]" :url="previewSrc" :type="detailInfo.mimeType" />
+        </template>
         <Descriptions bordered :column="1" size="small">
           <template v-for="key in detailInfoMap.keys()" :key="key">
             <Descriptions.Item
@@ -54,13 +52,12 @@
 
 <script lang="ts" setup>
   import { ref, computed, nextTick } from 'vue';
-  import { isEmpty } from 'lodash-es';
   import { Drawer, message, Spin, Image, Input, Descriptions, Space } from 'ant-design-vue';
   import { formatSizeUnits } from '@/utils';
-  import noPreviewImage from '@/assets/images/no-preview.png';
   import { Api } from '@/api/';
   import { hasPermission } from '@/permission';
   import { formatToDateTime } from '@/utils/dateUtil';
+  import PreviewResource from '@/components/basic/preview-resource/index.vue';
 
   defineOptions({
     name: 'FilePreviewDrawer',
@@ -86,9 +83,6 @@
   const mark = ref('');
   const updateMarkLoading = ref(false);
 
-  const disabledPreview = computed(() => {
-    return isEmpty(previewSrc.value);
-  });
   // 使用七牛图片处理，减少预览耗费流量
   const imageView2Handle = computed(() => {
     return `${previewSrc.value}?imageView2/2/w/500/h/210`;
@@ -116,8 +110,7 @@
       });
       detailInfo.value.putTime = formatToDateTime(data.putTime);
       detailInfo.value.name = name;
-      console.log('detailInfo', detailInfo.value);
-      if (hasPermission('netdisk:manage:download') && data.mimeType.includes('image/')) {
+      if (hasPermission('netdisk:manage:download')) {
         // 可预览
         const url = await Api.netDiskManage.netDiskManageDownload(fileInfo);
         previewSrc.value = url;

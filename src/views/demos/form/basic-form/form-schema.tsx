@@ -1,5 +1,6 @@
 import { UploadOutlined } from '@ant-design/icons-vue';
 import { Radio, Button } from 'ant-design-vue';
+import InputNumberRange from '../custom-form/input-number-range.vue';
 import type { FormSchema } from '@/components/core/schema-form';
 import { optionsListApi } from '@/api/demo/select';
 import { waitTime } from '@/utils/common';
@@ -419,6 +420,51 @@ export const schemas: FormSchema[] = [
     componentProps: {
       options: [], // defalut []
       placeholder: '省份与城市联动',
+    },
+  },
+  {
+    field: 'divider-map',
+    component: 'Divider',
+    label: '字段映射',
+    helpMessage: ['当组件的值为 array 或者 object 时', '你可以根据需要将多个的值映射到不同的字段'],
+  },
+  {
+    field: '[startDate, endDate]',
+    label: '日期范围',
+    colProps: {
+      span: 8,
+    },
+    component: 'RangePicker',
+    componentProps: {
+      format: 'YYYY-MM-DD',
+      valueFormat: 'YYYY-MM-DD',
+      placeholder: ['开始日期', '结束日期'],
+    },
+    transform([startDate, endDate] = []) {
+      return { startDate, endDate };
+    },
+  },
+  {
+    field: 'number-range',
+    label: '数字范围',
+    colProps: {
+      span: 8,
+    },
+    rules: [
+      {
+        required: true,
+        type: 'array',
+        trigger: 'change',
+        validator(_, value: string[]) {
+          const isOk = Array.isArray(value) && value.length === 2 && value.every(Boolean);
+          return isOk ? Promise.resolve() : Promise.reject('请输入数字范围');
+        },
+      },
+    ],
+    component: () => InputNumberRange,
+    // 将多个值映射为多个字段
+    transform([minNum, maxNum] = []) {
+      return { minNum, maxNum };
     },
   },
   {

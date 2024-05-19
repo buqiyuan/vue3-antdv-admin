@@ -1,5 +1,6 @@
 import axios, { CanceledError } from 'axios';
 import { isString } from 'lodash-es';
+import qs from 'qs';
 import { message as $message, Modal } from 'ant-design-vue';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ResultEnum } from '@/enums/httpEnum';
@@ -32,6 +33,9 @@ const service = axios.create({
   baseURL: baseApiUrl,
   timeout: 10000,
   signal: controller.signal,
+  paramsSerializer(params) {
+    return qs.stringify(params, { arrayFormat: 'brackets' });
+  },
 });
 
 service.interceptors.request.use(
