@@ -8,6 +8,11 @@
   "vue.server.hybridMode": true,
   "typescript.tsserver.maxTsServerMemory": 4096,
   "files.eol": "\n",
+  "editor.guides.bracketPairs": true,
+  "editor.bracketPairColorization.enabled": true,
+  "vue.inlayHints.missingProps": true,
+  "vue.autoInsert.dotValue": true,
+  "explorer.copyRelativePathSeparator": "/",
   "search.exclude": {
     "**/node_modules": true,
     "**/*.log": true,

@@ -40,7 +40,7 @@ export const useColumns = () => {
       align: 'center',
       width: 220,
       customRender({ text }) {
-        return formatToDateTime(text);
+        return text ? formatToDateTime(text) : '-';
       },
     },
     {

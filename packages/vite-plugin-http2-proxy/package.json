@@ -1,6 +1,6 @@
 {
   "name": "@admin-pkg/vite-plugin-http2-proxy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "",
   "main": "dist/index.js",
