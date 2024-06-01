@@ -8,7 +8,7 @@
           class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
           submit-on-reset
           v-bind="getFormProps"
-          :table-instance="tableAction"
+          :table-instance="dynamicTableContext"
           @toggle-advanced="(e) => $emit('toggle-advanced', e)"
           @submit="handleSubmit"
         >
@@ -71,7 +71,7 @@
   } from './hooks';
   import { ToolBar } from './components';
   import { dynamicTableProps, dynamicTableEmits } from './dynamic-table';
-  import type { TableActionType } from './types';
+  import type { DynamicTableType } from './types';
   import { SchemaForm } from '@/components/core/schema-form';
 
   defineOptions({
@@ -96,46 +96,31 @@
     getBindValues,
     editFormModel,
   } = tableState;
-  // 表格内部方法
-  const tableMethods = useTableMethods({ state: tableState, props, emit });
-  const { setProps, fetchData, handleSubmit, reload, handleTableChange, handleEditFormValidate } =
-    tableMethods;
-  // 控制编辑行
-  const editableHooks = useEditable({ props, state: tableState });
 
-  const tableAction: TableActionType = {
-    setProps,
-    reload,
-    fetchData,
-    ...editableHooks,
-  };
+  // 创建表格上下文
+  const dynamicTableContext = { props, emit, slots, ...tableState } as DynamicTableType;
+  createTableContext(dynamicTableContext);
+
+  // 表格内部方法
+  const tableMethods = useTableMethods();
+  Object.assign(dynamicTableContext, tableMethods);
+  const { fetchData, handleSubmit, handleTableChange, handleEditFormValidate } = tableMethods;
+  // 控制编辑行
+  const editableHooks = useEditable();
+  Object.assign(dynamicTableContext, editableHooks);
 
   // 表格列的配置描述
-  const { innerColumns } = useColumns({
-    props,
-    slots,
-    state: tableState,
-    methods: tableMethods,
-    tableAction,
-  });
+  const { innerColumns } = useColumns();
 
   // 搜索表单
-  const tableForm = useTableForm({
-    tableState,
-    tableMethods,
-    slots,
-  });
+  const tableForm = useTableForm();
   const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = tableForm;
 
   // 表单导出
-  const exportData2ExcelHooks = useExportData2Excel({
-    props,
-    state: tableState,
-    methods: tableMethods,
-  });
+  const exportData2ExcelHooks = useExportData2Excel();
 
   // 当前组件所有的状态和方法
-  const instance = {
+  Object.assign(dynamicTableContext, {
     ...props,
     ...tableState,
     ...tableForm,
@@ -143,11 +128,9 @@
     ...editableHooks,
     ...exportData2ExcelHooks,
     emit,
-  };
+  });
 
-  createTableContext(instance);
-
-  defineExpose(instance);
+  defineExpose(dynamicTableContext);
 
   const tableProps = computed<Recordable>(() => {
     const { getExpandOption } = tableMethods;

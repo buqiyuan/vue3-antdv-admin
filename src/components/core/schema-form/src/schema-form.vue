@@ -61,8 +61,6 @@
   const emit = defineEmits(schemaFormEmits);
   const attrs = useAttrs();
 
-  const schemaFormContext: SchemaFormType = {} as SchemaFormType;
-
   // 表单内部状态
   const formState = useFormState({ props, attrs });
   const {
@@ -74,12 +72,18 @@
     formSchemasRef,
   } = formState;
 
+  // 创建表单上下文
+  const schemaFormContext: SchemaFormType = { ...formState, emit } as SchemaFormType;
+  createFormContext(schemaFormContext);
+
   // 表单内部方法
-  const formMethods = useFormMethods({ ...formState, emit, schemaFormContext });
+  const formMethods = useFormMethods();
   const { handleEnterPress, setDefaultValue } = formMethods;
 
   // a-form表单事件二次封装和扩展
-  const formEvents = useFormEvents({ ...formState, emit, schemaFormContext });
+  const formEvents = useFormEvents();
+  // 搜索表单 展开/收起 表单项hooks
+  const { handleToggleAdvanced } = useAdvanced();
 
   // 当前组件所有的状态和方法
   Object.assign(schemaFormContext, {
@@ -88,15 +92,7 @@
     ...formMethods,
   });
 
-  // 搜索表单 展开/收起 表单项hooks
-  const { handleToggleAdvanced } = useAdvanced({
-    schemaFormContext,
-    emit,
-  });
-
   emit('register', schemaFormContext);
-
-  createFormContext(schemaFormContext);
 
   defineExpose(schemaFormContext);
 

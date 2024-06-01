@@ -1,21 +1,13 @@
 import { unref, computed, watchEffect } from 'vue';
 import { ColumnKeyFlag } from '../types/column';
-import type { TableMethods } from './useTableMethods';
-import type { TableState } from './useTableState';
-import type { ComputedRef, Slots } from 'vue';
+import { useTableContext } from './useTableContext';
+import type { ComputedRef } from 'vue';
 import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form';
 
 export type TableForm = ReturnType<typeof useTableForm>;
 
-export type UseTableFormContext = {
-  tableState: TableState;
-  tableMethods: TableMethods;
-  slots: Slots;
-};
-
-export function useTableForm({ tableState, slots, tableMethods }: UseTableFormContext) {
-  const { getProps, loadingRef } = tableState;
-  const { getColumnKey, getSearchFormRef } = tableMethods;
+export function useTableForm() {
+  const { slots, getProps, loadingRef, getColumnKey, getSearchFormRef } = useTableContext();
 
   const getFormProps = computed((): SchemaFormProps => {
     const { formProps } = unref(getProps);

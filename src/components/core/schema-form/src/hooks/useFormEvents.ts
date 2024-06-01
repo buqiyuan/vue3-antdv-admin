@@ -1,17 +1,12 @@
 import { unref } from 'vue';
-import type { FormState, SchemaFormType } from './index';
-import type { SchemaFormEmitFn } from '../schema-form';
+import { useFormContext } from './useFormContext';
 import { isFunction } from '@/utils/is';
-
-type UseFormActionContext = FormState & {
-  schemaFormContext: SchemaFormType;
-  emit: SchemaFormEmitFn;
-};
 
 export type FormEvents = ReturnType<typeof useFormEvents>;
 
-export function useFormEvents(formActionContext: UseFormActionContext) {
-  const { emit, getFormProps, schemaFormRef, schemaFormContext } = formActionContext;
+export function useFormEvents() {
+  const schemaFormContext = useFormContext();
+  const { emit, getFormProps, schemaFormRef } = schemaFormContext;
 
   async function handleSubmit(e?: Event) {
     e?.preventDefault?.();

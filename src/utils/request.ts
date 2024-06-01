@@ -31,6 +31,7 @@ export const baseApiUrl = import.meta.env.VITE_BASE_API_URL;
 const controller = new AbortController();
 const service = axios.create({
   baseURL: baseApiUrl,
+  // adapter: 'fetch',
   timeout: 10000,
   signal: controller.signal,
   paramsSerializer(params) {

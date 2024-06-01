@@ -2,24 +2,20 @@ import { toRaw, unref } from 'vue';
 import { cloneDeep, set, unset, isNil, uniqBy } from 'lodash-es';
 import dayjs from 'dayjs';
 import { dateItemType, handleInputNumberValue } from '../helper';
-import type { FormState } from './useFormState';
-import type { SchemaFormEmitFn, SchemaFormProps } from '../schema-form';
+import { useFormContext } from './useFormContext';
+import type { SchemaFormProps } from '../schema-form';
 import type { UnwrapFormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
-import type { SchemaFormType } from './';
 import { deepMerge } from '@/utils/';
 import { isFunction, isObject, isArray, isString } from '@/utils/is';
 import { dateUtil } from '@/utils/dateUtil';
 
 type FormSchema = UnwrapFormSchema;
-type UseFormMethodsContext = FormState & {
-  schemaFormContext: SchemaFormType;
-  emit: SchemaFormEmitFn;
-};
 
 export type FormMethods = ReturnType<typeof useFormMethods>;
 
-export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
+export const useFormMethods = () => {
+  const schemaFormContext = useFormContext();
   const {
     compRefMap,
     formModel,
@@ -31,8 +27,7 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
     defaultFormValues,
     originComponentPropsFnMap,
     emit,
-    schemaFormContext,
-  } = formMethodsContext;
+  } = schemaFormContext;
 
   // 将所有的表单组件实例保存起来, 方便外面通过表单组件实例操作
   const setItemRef = (field: string) => {

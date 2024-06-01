@@ -1,12 +1,12 @@
-import { provide, inject } from 'vue';
+import { injectLocal, provideLocal } from '@vueuse/core';
 import type { SchemaFormType } from './';
 
 const key = Symbol('schema-form');
 
 export async function createFormContext(instance: SchemaFormType) {
-  provide(key, instance);
+  provideLocal(key, instance);
 }
 
 export function useFormContext(formProps = {}) {
-  return inject(key, formProps) as SchemaFormType;
+  return injectLocal(key, formProps) as SchemaFormType;
 }

@@ -1,8 +1,7 @@
-import { computed, reactive, ref, unref, watch } from 'vue';
+import { computed, reactive, ref, unref, watch, type Slots } from 'vue';
 import { omit } from 'lodash-es';
 import tableConfig from '../dynamic-table.config';
 import { useScroll } from './useScroll';
-import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
 import type { TableProps, Table } from 'ant-design-vue';
 import type { SchemaForm } from '@/components/core/schema-form';
@@ -10,7 +9,7 @@ import { useI18n } from '@/hooks/useI18n';
 
 export type Pagination = TableProps['pagination'];
 
-export interface TableState extends ReturnType<typeof useTableState> {}
+export type TableState = ReturnType<typeof useTableState>;
 
 export type UseTableStateParams = {
   props: DynamicTableProps;

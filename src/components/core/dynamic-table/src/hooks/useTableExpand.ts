@@ -1,18 +1,8 @@
 import { computed, unref, toRaw, ref } from 'vue';
-import type {
-  TableState,
-  DynamicTableProps,
-  DynamicTableEmitFn,
-} from '@/components/core/dynamic-table';
+import { useTableContext } from './useTableContext';
 
-type UseTableExpandContext = {
-  state: TableState;
-  props: DynamicTableProps;
-  emit: DynamicTableEmitFn;
-};
-
-export function useTableExpand({ state, props, emit }: UseTableExpandContext) {
-  const { tableData } = state;
+export function useTableExpand() {
+  const { tableData, props, emit } = useTableContext();
   // 表格为树形结构时 展开的行
   const expandedRowKeys = ref<Key[]>([]);
 

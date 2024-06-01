@@ -1,26 +1,21 @@
 import { nextTick, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { message } from 'ant-design-vue';
-import type { DynamicTableProps } from '../dynamic-table';
-import type { TableState } from './useTableState';
+import { useTableContext } from './useTableContext';
 import type { TableColumn } from '../types/column';
-
-type UseTableMethodsContext = {
-  state: TableState;
-  props: DynamicTableProps;
-};
 
 export type UseEditableType = ReturnType<typeof useEditable>;
 
-export const useEditable = ({ state, props }: UseTableMethodsContext) => {
+export const useEditable = () => {
   const {
+    props,
     tableData,
     editFormModel,
     editTableFormRef,
     editFormErrorMsgs,
     editableCellKeys,
     editableRowKeys,
-  } = state;
+  } = useTableContext();
 
   watch(
     () => props.editableType,
