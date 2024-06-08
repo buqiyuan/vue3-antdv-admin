@@ -45,7 +45,7 @@
     "@iconify/vue": "^4.1.2",
     "@tinymce/tinymce-vue": "^5.1.1",
     "@vueuse/core": "~10.10.0",
-    "ant-design-vue": "~4.2.1",
+    "ant-design-vue": "~4.2.2",
     "axios": "~1.7.2",
     "crypto-js": "^4.2.0",
     "dayjs": "~1.11.11",
@@ -61,7 +61,7 @@
     "sortablejs": "~1.15.2",
     "tinymce": "^6.8.3",
     "vue": "~3.4.27",
-    "vue-echarts": "^6.7.2",
+    "vue-echarts": "^6.7.3",
     "vue-i18n": "9.13.1",
     "vue-router": "~4.3.2",
     "vue-types": "~5.1.2",
@@ -84,8 +84,8 @@
     "@types/node": "~20.13.0",
     "@types/qs": "^6.9.15",
     "@types/sortablejs": "^1.15.8",
-    "@typescript-eslint/eslint-plugin": "~7.11.0",
-    "@typescript-eslint/parser": "~7.11.0",
+    "@typescript-eslint/eslint-plugin": "~7.12.0",
+    "@typescript-eslint/parser": "~7.12.0",
     "@umijs/openapi": "^1.12.1",
     "@vitejs/plugin-vue": "~5.0.5",
     "@vitejs/plugin-vue-jsx": "~4.0.0",
@@ -105,11 +105,11 @@
     "less": "~4.2.0",
     "lint-staged": "~15.2.5",
     "msw": "^2.3.1",
-    "nx": "^19.1.1",
+    "nx": "^19.2.2",
     "postcss": "~8.4.38",
     "postcss-html": "~1.7.0",
     "postcss-less": "~6.0.0",
-    "prettier": "~3.2.5",
+    "prettier": "~3.3.1",
     "rimraf": "~5.0.7",
     "stylelint": "~16.6.1",
     "stylelint-config-property-sort-order-smacss": "^10.0.0",
@@ -121,13 +121,13 @@
     "typescript": "~5.4.5",
     "unocss": "^0.60.4",
     "unplugin-vue-components": "~0.27.0",
-    "vite": "~5.2.12",
+    "vite": "~5.2.13",
     "vite-plugin-checker": "~0.6.4",
     "vite-plugin-inspect": "^0.8.4",
     "vite-plugin-mkcert": "^1.17.5",
     "vite-plugin-svg-icons": "~2.0.1",
     "vue-eslint-parser": "~9.4.3",
-    "vue-tsc": "~2.0.19"
+    "vue-tsc": "~2.0.20"
   },
   "__npminstall_done": false,
   "repository": {
@@ -158,6 +158,17 @@
         "eslint-plugin-import>eslint": "^9.0.0",
         "eslint-plugin-unused-imports>eslint": "^9.0.0"
       }
+    }
+  },
+  "dependenciesMeta": {
+    "@admin-pkg/vite-plugin-http2-proxy": {
+      "injected": true
+    },
+    "@admin-pkg/vite-plugin-msw": {
+      "injected": true
+    },
+    "@admin-pkg/vite-plugin-tinymce-resource": {
+      "injected": true
     }
   },
   "workspaces": [

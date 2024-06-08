@@ -74,6 +74,10 @@
                   await waitTime(2000);
                   cancelEditable(record.id);
                   message.success({ content: '保存成功!', key: record.id, duration: 2 });
+                  Object.assign(record, {
+                    ...result,
+                    img: result.img[0]?.thumbUrl || record.img,
+                  });
                 },
               },
               {
@@ -102,6 +106,7 @@
   const handleSave: OnSave = async (rowKey, record, originRow) => {
     console.log('handleSave', rowKey, record, originRow);
     await waitTime(2000);
+    Object.assign(originRow, record);
   };
 </script>
 

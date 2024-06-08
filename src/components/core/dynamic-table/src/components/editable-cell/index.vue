@@ -105,7 +105,11 @@
   const handleSaveCell = async () => {
     const { rowKey, column } = props;
     await validateCell(rowKey!, dataIndex.value);
-    const saveRes = tableContext.onSave?.(rowKey!, editFormModel.value[rowKey!], column?.record);
+    const saveRes = tableContext.props.onSave?.(
+      rowKey!,
+      editFormModel.value[rowKey!],
+      column?.record,
+    );
     if (isPromise(saveRes)) {
       saving.value = true;
       await saveRes.finally(() => (saving.value = false));
@@ -116,7 +120,7 @@
 
   const handleCancelSaveCell = () => {
     const { rowKey, column } = props;
-    tableContext?.onCancel?.(rowKey!, editFormModel.value[rowKey!], column?.record);
+    tableContext.props?.onCancel?.(rowKey!, editFormModel.value[rowKey!], column?.record);
     isCellEdit.value = false;
     cancelCellEditable(props.rowKey!, dataIndex.value);
   };

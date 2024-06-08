@@ -13,5 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "http2-proxy": "^5.0.53"
+  },
+  "peerDependencies": {
+    "vite": "^5.2.11"
   }
 }
