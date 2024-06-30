@@ -167,6 +167,7 @@ export const columns: TableColumn<ListItemType>[] = [
         }, 500),
         onChange(value: string) {
           console.log('onChange', value);
+          formInstance.setFieldsValue({ status: value });
         },
       }),
     },

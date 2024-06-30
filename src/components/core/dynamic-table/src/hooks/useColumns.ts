@@ -1,4 +1,4 @@
-import { ref, watchEffect, unref, h } from 'vue';
+import { computed, unref, h } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { Input } from 'ant-design-vue';
 import { EditableCell } from '../components';
@@ -13,9 +13,8 @@ import { TableAction } from '@/components/core/dynamic-table/src/components';
 export const useColumns = () => {
   const tableContext = useTableContext();
   const { slots, props, getProps, paginationRef } = tableContext;
-  const innerColumns = ref(props.columns);
 
-  watchEffect(() => {
+  const innerColumns = computed(() => {
     const innerProps = { ...unref(getProps) };
 
     const columns = cloneDeep(innerProps!.columns!.filter((n) => !n.hideInTable));
@@ -41,8 +40,7 @@ export const useColumns = () => {
       } as TableColumn);
     }
 
-    // @ts-ignore
-    innerColumns.value = columns.map((item) => {
+    return columns.map((item) => {
       const customRender = item.customRender;
 
       const rowKey = props.rowKey as string;

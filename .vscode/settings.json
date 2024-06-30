@@ -61,7 +61,7 @@
     "**/dist/**": true,
     "**/yarn.lock": true
   },
-  "eslint.experimental.useFlatConfig": true,
+  "eslint.useFlatConfig": true,
   "stylelint.enable": true,
   "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
   "path-intellisense.mappings": {

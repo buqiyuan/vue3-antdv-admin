@@ -45,8 +45,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "types/**/*.d.ts",
-    "types/**/*.ts",
-    "vite.config.ts"
+    "types/**/*.ts"
   ],
   "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"],
   "references": [

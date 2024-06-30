@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch, nextTick, defineModel } from 'vue';
+  import { ref, watch, nextTick } from 'vue';
   import { useRoute } from 'vue-router';
   import { modalProps } from 'ant-design-vue/es/modal/Modal';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';

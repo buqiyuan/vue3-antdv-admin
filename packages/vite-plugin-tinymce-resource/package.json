@@ -2,8 +2,9 @@
   "name": "@admin-pkg/vite-plugin-tinymce-resource",
   "version": "0.0.5",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": "./dist/index.js",
   "scripts": {
     "build": "tsc"
   },

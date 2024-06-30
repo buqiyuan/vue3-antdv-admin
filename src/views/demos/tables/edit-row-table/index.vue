@@ -107,6 +107,7 @@
     console.log('handleSave', rowKey, record, originRow);
     await waitTime(2000);
     Object.assign(originRow, record);
+    console.log('originRow', originRow);
   };
 </script>
 
