@@ -121,6 +121,7 @@
 
   // 当前组件所有的状态和方法
   Object.assign(dynamicTableContext, {
+    innerColumns,
     ...props,
     ...tableState,
     ...tableForm,

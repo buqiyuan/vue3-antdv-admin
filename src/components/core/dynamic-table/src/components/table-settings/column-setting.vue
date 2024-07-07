@@ -86,10 +86,11 @@
 
   const { t } = useI18n();
   const table = useTableContext();
+
   let inited = false;
-  const defaultColumns = cloneDeep<TableColumn[]>(table.columns);
-  const defaultShowIndex = !!table.showIndex;
-  const defaultBordered = table.bordered;
+  const defaultColumns = cloneDeep<TableColumn[]>(table.innerColumns.value);
+  const defaultShowIndex = !!table.props.showIndex;
+  const defaultBordered = table.props.bordered;
   const tableColumns = ref<TableColumn[]>([]);
 
   const checkAll = computed<boolean>({
@@ -103,7 +104,7 @@
   });
 
   const checkIndex = ref(defaultShowIndex);
-  const checkBordered = ref(table.bordered);
+  const checkBordered = ref(table.props.bordered);
   const columnListRef = ref<HTMLDivElement>();
 
   // 初始化选中状态
