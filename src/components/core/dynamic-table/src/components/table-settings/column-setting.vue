@@ -78,7 +78,7 @@
   import { cloneDeep } from 'lodash-es';
   import { Tooltip, Popover, Divider } from 'ant-design-vue';
   import { useTableContext } from '../../hooks/useTableContext';
-  import type { TableColumn } from '../../types/column';
+  import { ColumnKeyFlag, type TableColumn } from '../../types/column';
   import Checkbox from '@/components/basic/check-box/index.vue';
   import { useSortable } from '@/hooks/useSortable';
   import { isNil } from '@/utils/is';
@@ -88,7 +88,9 @@
   const table = useTableContext();
 
   let inited = false;
-  const defaultColumns = cloneDeep<TableColumn[]>(table.innerColumns.value);
+  const defaultColumns = cloneDeep<TableColumn[]>(
+    table.innerColumns.value.filter((n) => n.dataIndex !== ColumnKeyFlag.INDEX),
+  );
   const defaultShowIndex = !!table.props.showIndex;
   const defaultBordered = table.props.bordered;
   const tableColumns = ref<TableColumn[]>([]);

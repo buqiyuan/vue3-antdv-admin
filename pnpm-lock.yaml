@@ -214,26 +214,26 @@ importers:
         specifier: ~5.0.8
         version: 5.0.9
       stylelint:
-        specifier: ~16.6.1
-        version: 16.6.1(typescript@5.5.3)
+        specifier: ~16.7.0
+        version: 16.7.0(typescript@5.5.3)
       stylelint-config-property-sort-order-smacss:
         specifier: ^10.0.0
-        version: 10.0.0(stylelint@16.6.1(typescript@5.5.3))
+        version: 10.0.0(stylelint@16.7.0(typescript@5.5.3))
       stylelint-config-recommended:
         specifier: ~14.0.1
-        version: 14.0.1(stylelint@16.6.1(typescript@5.5.3))
+        version: 14.0.1(stylelint@16.7.0(typescript@5.5.3))
       stylelint-config-recommended-vue:
         specifier: ~1.5.0
-        version: 1.5.0(postcss-html@1.7.0)(stylelint@16.6.1(typescript@5.5.3))
+        version: 1.5.0(postcss-html@1.7.0)(stylelint@16.7.0(typescript@5.5.3))
       stylelint-config-standard:
         specifier: ~36.0.1
-        version: 36.0.1(stylelint@16.6.1(typescript@5.5.3))
+        version: 36.0.1(stylelint@16.7.0(typescript@5.5.3))
       stylelint-order:
         specifier: ~6.0.4
-        version: 6.0.4(stylelint@16.6.1(typescript@5.5.3))
+        version: 6.0.4(stylelint@16.7.0(typescript@5.5.3))
       stylelint-prettier:
         specifier: ^5.0.0
-        version: 5.0.0(prettier@3.3.2)(stylelint@16.6.1(typescript@5.5.3))
+        version: 5.0.0(prettier@3.3.2)(stylelint@16.7.0(typescript@5.5.3))
       typescript:
         specifier: ~5.5.3
         version: 5.5.3
@@ -248,7 +248,7 @@ importers:
         version: 5.3.3(@types/node@20.13.0)(less@4.2.0)(sugarss@2.0.0)
       vite-plugin-checker:
         specifier: ~0.7.1
-        version: 0.7.1(eslint@9.6.0)(meow@9.0.0)(optionator@0.9.4)(stylelint@16.6.1(typescript@5.5.3))(typescript@5.5.3)(vite@5.3.3(@types/node@20.13.0)(less@4.2.0)(sugarss@2.0.0))(vue-tsc@2.0.26(typescript@5.5.3))
+        version: 0.7.1(eslint@9.6.0)(meow@9.0.0)(optionator@0.9.4)(stylelint@16.7.0(typescript@5.5.3))(typescript@5.5.3)(vite@5.3.3(@types/node@20.13.0)(less@4.2.0)(sugarss@2.0.0))(vue-tsc@2.0.26(typescript@5.5.3))
       vite-plugin-inspect:
         specifier: ^0.8.4
         version: 0.8.4(rollup@4.18.1)(vite@5.3.3(@types/node@20.13.0)(less@4.2.0)(sugarss@2.0.0))
@@ -4262,8 +4262,8 @@ packages:
   known-css-properties@0.21.0:
     resolution: {integrity: sha512-sZLUnTqimCkvkgRS+kbPlYW5o8q5w1cu+uIisKpEWkj31I8mx8kNG162DwRav8Zirkva6N5uoFsm9kzK4mUXjw==}
 
-  known-css-properties@0.31.0:
-    resolution: {integrity: sha512-sBPIUGTNF0czz0mwGGUoKKJC8Q7On1GPbCSFPfyEsfHb2DyBG0Y4QtV+EVWpINSaiGKZblDNuF5AezxSgOhesQ==}
+  known-css-properties@0.34.0:
+    resolution: {integrity: sha512-tBECoUqNFbyAY4RrbqsBQqDFpGXAEbdD5QKr8kACx3+rnArmuuR22nKQWKazvp07N9yjTyDZaw/20UIH8tL9DQ==}
 
   kolorist@1.8.0:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
@@ -5770,8 +5770,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  stylelint@16.6.1:
-    resolution: {integrity: sha512-yNgz2PqWLkhH2hw6X9AweV9YvoafbAD5ZsFdKN9BvSDVwGvPh+AUIrn7lYwy1S7IHmtFin75LLfX1m0D2tHu8Q==}
+  stylelint@16.7.0:
+    resolution: {integrity: sha512-Q1ATiXlz+wYr37a7TGsfvqYn2nSR3T/isw3IWlZQzFzCNoACHuGBb6xBplZXz56/uDRJHIygxjh7jbV/8isewA==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -11099,7 +11099,7 @@ snapshots:
 
   known-css-properties@0.21.0: {}
 
-  known-css-properties@0.31.0: {}
+  known-css-properties@0.34.0: {}
 
   kolorist@1.8.0: {}
 
@@ -12667,32 +12667,32 @@ snapshots:
     dependencies:
       stylelint: 13.13.1
 
-  stylelint-config-html@1.1.0(postcss-html@1.7.0)(stylelint@16.6.1(typescript@5.5.3)):
+  stylelint-config-html@1.1.0(postcss-html@1.7.0)(stylelint@16.7.0(typescript@5.5.3)):
     dependencies:
       postcss-html: 1.7.0
-      stylelint: 16.6.1(typescript@5.5.3)
+      stylelint: 16.7.0(typescript@5.5.3)
 
   stylelint-config-prettier@8.0.2(stylelint@13.13.1):
     dependencies:
       stylelint: 13.13.1
 
-  stylelint-config-property-sort-order-smacss@10.0.0(stylelint@16.6.1(typescript@5.5.3)):
+  stylelint-config-property-sort-order-smacss@10.0.0(stylelint@16.7.0(typescript@5.5.3)):
     dependencies:
       css-property-sort-order-smacss: 2.2.0
-      stylelint: 16.6.1(typescript@5.5.3)
-      stylelint-order: 6.0.4(stylelint@16.6.1(typescript@5.5.3))
+      stylelint: 16.7.0(typescript@5.5.3)
+      stylelint-order: 6.0.4(stylelint@16.7.0(typescript@5.5.3))
 
-  stylelint-config-recommended-vue@1.5.0(postcss-html@1.7.0)(stylelint@16.6.1(typescript@5.5.3)):
+  stylelint-config-recommended-vue@1.5.0(postcss-html@1.7.0)(stylelint@16.7.0(typescript@5.5.3)):
     dependencies:
       postcss-html: 1.7.0
       semver: 7.6.2
-      stylelint: 16.6.1(typescript@5.5.3)
-      stylelint-config-html: 1.1.0(postcss-html@1.7.0)(stylelint@16.6.1(typescript@5.5.3))
-      stylelint-config-recommended: 14.0.1(stylelint@16.6.1(typescript@5.5.3))
+      stylelint: 16.7.0(typescript@5.5.3)
+      stylelint-config-html: 1.1.0(postcss-html@1.7.0)(stylelint@16.7.0(typescript@5.5.3))
+      stylelint-config-recommended: 14.0.1(stylelint@16.7.0(typescript@5.5.3))
 
-  stylelint-config-recommended@14.0.1(stylelint@16.6.1(typescript@5.5.3)):
+  stylelint-config-recommended@14.0.1(stylelint@16.7.0(typescript@5.5.3)):
     dependencies:
-      stylelint: 16.6.1(typescript@5.5.3)
+      stylelint: 16.7.0(typescript@5.5.3)
 
   stylelint-config-recommended@3.0.0(stylelint@13.13.1):
     dependencies:
@@ -12703,26 +12703,26 @@ snapshots:
       stylelint: 13.13.1
       stylelint-config-recommended: 3.0.0(stylelint@13.13.1)
 
-  stylelint-config-standard@36.0.1(stylelint@16.6.1(typescript@5.5.3)):
+  stylelint-config-standard@36.0.1(stylelint@16.7.0(typescript@5.5.3)):
     dependencies:
-      stylelint: 16.6.1(typescript@5.5.3)
-      stylelint-config-recommended: 14.0.1(stylelint@16.6.1(typescript@5.5.3))
+      stylelint: 16.7.0(typescript@5.5.3)
+      stylelint-config-recommended: 14.0.1(stylelint@16.7.0(typescript@5.5.3))
 
   stylelint-declaration-block-no-ignored-properties@2.8.0(stylelint@13.13.1):
     dependencies:
       stylelint: 13.13.1
 
-  stylelint-order@6.0.4(stylelint@16.6.1(typescript@5.5.3)):
+  stylelint-order@6.0.4(stylelint@16.7.0(typescript@5.5.3)):
     dependencies:
       postcss: 8.4.39
       postcss-sorting: 8.0.2(postcss@8.4.39)
-      stylelint: 16.6.1(typescript@5.5.3)
+      stylelint: 16.7.0(typescript@5.5.3)
 
-  stylelint-prettier@5.0.0(prettier@3.3.2)(stylelint@16.6.1(typescript@5.5.3)):
+  stylelint-prettier@5.0.0(prettier@3.3.2)(stylelint@16.7.0(typescript@5.5.3)):
     dependencies:
       prettier: 3.3.2
       prettier-linter-helpers: 1.0.0
-      stylelint: 16.6.1(typescript@5.5.3)
+      stylelint: 16.7.0(typescript@5.5.3)
 
   stylelint@13.13.1:
     dependencies:
@@ -12779,7 +12779,7 @@ snapshots:
       - postcss-markdown
       - supports-color
 
-  stylelint@16.6.1(typescript@5.5.3):
+  stylelint@16.7.0(typescript@5.5.3):
     dependencies:
       '@csstools/css-parser-algorithms': 2.7.1(@csstools/css-tokenizer@2.4.1)
       '@csstools/css-tokenizer': 2.4.1
@@ -12802,7 +12802,7 @@ snapshots:
       ignore: 5.3.1
       imurmurhash: 0.1.4
       is-plain-object: 5.0.0
-      known-css-properties: 0.31.0
+      known-css-properties: 0.34.0
       mathml-tag-names: 2.1.3
       meow: 13.2.0
       micromatch: 4.0.7
@@ -13299,7 +13299,7 @@ snapshots:
       unist-util-stringify-position: 2.0.3
       vfile-message: 2.0.4
 
-  vite-plugin-checker@0.7.1(eslint@9.6.0)(meow@9.0.0)(optionator@0.9.4)(stylelint@16.6.1(typescript@5.5.3))(typescript@5.5.3)(vite@5.3.3(@types/node@20.13.0)(less@4.2.0)(sugarss@2.0.0))(vue-tsc@2.0.26(typescript@5.5.3)):
+  vite-plugin-checker@0.7.1(eslint@9.6.0)(meow@9.0.0)(optionator@0.9.4)(stylelint@16.7.0(typescript@5.5.3))(typescript@5.5.3)(vite@5.3.3(@types/node@20.13.0)(less@4.2.0)(sugarss@2.0.0))(vue-tsc@2.0.26(typescript@5.5.3)):
     dependencies:
       '@babel/code-frame': 7.24.7
       ansi-escapes: 4.3.2
@@ -13320,7 +13320,7 @@ snapshots:
       eslint: 9.6.0
       meow: 9.0.0
       optionator: 0.9.4
-      stylelint: 16.6.1(typescript@5.5.3)
+      stylelint: 16.7.0(typescript@5.5.3)
       typescript: 5.5.3
       vue-tsc: 2.0.26(typescript@5.5.3)
 

@@ -111,7 +111,7 @@
     "postcss-less": "~6.0.0",
     "prettier": "~3.3.2",
     "rimraf": "~5.0.8",
-    "stylelint": "~16.6.1",
+    "stylelint": "~16.7.0",
     "stylelint-config-property-sort-order-smacss": "^10.0.0",
     "stylelint-config-recommended": "~14.0.1",
     "stylelint-config-recommended-vue": "~1.5.0",
