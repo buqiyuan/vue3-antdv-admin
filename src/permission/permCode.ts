@@ -2,7 +2,7 @@
  * 从后端接口获取：/api/system/menus/permissions
  * @description 权限列表, 仅供开发时提供 ts 类型提示，无实际作用
  */
-const permissions = [
+const _permissions = [
   'system:role:list',
   'system:role:create',
   'system:role:read',
@@ -80,6 +80,6 @@ const permissions = [
   'upload:upload',
 ] as const;
 
-export type PermissionType = (typeof permissions)[number];
+export type PermissionType = (typeof _permissions)[number];
 
 // console.log('permissions', permissions);

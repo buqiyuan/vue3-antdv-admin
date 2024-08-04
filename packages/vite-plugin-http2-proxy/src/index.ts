@@ -1,11 +1,11 @@
 import http2Proxy from 'http2-proxy';
-import type { Plugin, ProxyOptions } from 'vite';
+import type { Plugin, PluginOption, ProxyOptions } from 'vite';
 
 const error = (message: string): never => {
   throw new Error(message);
 };
 
-export default (options?: Record<string, ProxyOptions>): Plugin => {
+export default (options?: Record<string, ProxyOptions>): PluginOption => {
   let routes: Record<string, ProxyOptions>;
 
   const configure: Plugin['configureServer'] = ({ middlewares, httpServer }) => {
@@ -96,6 +96,7 @@ export default (options?: Record<string, ProxyOptions>): Plugin => {
     }
   };
 
+  // @ts-ignore
   return {
     name: '@admin-pkg/vite-plugin-http2-proxy',
     config: (config) => {

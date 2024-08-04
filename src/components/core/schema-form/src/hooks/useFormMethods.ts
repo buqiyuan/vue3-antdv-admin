@@ -246,7 +246,10 @@ export const useFormMethods = () => {
 
   async function resetFields(): Promise<void> {
     const { resetFunc, submitOnReset } = unref(getFormProps);
-    resetFunc && isFunction(resetFunc) && (await resetFunc());
+
+    if (isFunction(resetFunc)) {
+      await resetFunc();
+    }
 
     Object.keys(formModel).forEach((key) => {
       set(formModel, key, defaultFormValues[key]);

@@ -57,7 +57,7 @@ export const useColumns = () => {
         /** 当前单元格是否允许被编辑 */
         const isCellEditable = isBoolean(item.editable)
           ? item.editable
-          : item.editable?.(options) ?? true;
+          : (item.editable?.(options) ?? true);
         /** 是否允许被编辑 */
         const isShowEditable =
           (isEditableRow || isEditableCell) &&

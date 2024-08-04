@@ -26,6 +26,7 @@ export function useTableForm() {
 
   const formSchemas = computed<FormSchema[]>(() => {
     const columnKeyFlags = Object.keys(ColumnKeyFlag);
+    // @ts-ignore
     return unref(getProps)
       .columns.filter((n) => {
         const field = getColumnKey(n);

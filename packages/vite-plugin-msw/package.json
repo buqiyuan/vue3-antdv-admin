@@ -51,6 +51,6 @@
   },
   "peerDependencies": {
     "msw": "^2.3.0",
-    "vite": "^5.2.11"
+    "vite": "^5.3.5"
   }
 }

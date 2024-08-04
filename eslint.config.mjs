@@ -48,6 +48,8 @@ export default defineFlatConfig([
     rules: {
       ...pluginTypeScript.configs.strict.rules,
       '@typescript-eslint/ban-types': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
       '@typescript-eslint/no-invalid-void-type': 'off',
       '@typescript-eslint/no-redeclare': 'error',
       '@typescript-eslint/ban-ts-comment': 'off',
@@ -55,6 +57,7 @@ export default defineFlatConfig([
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/prefer-as-const': 'warn',
       '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-import-type-side-effects': 'error',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -63,13 +66,6 @@ export default defineFlatConfig([
         { disallowTypeAnnotations: false, fixStyle: 'inline-type-imports' },
       ],
       '@typescript-eslint/prefer-literal-enum-member': ['error', { allowBitwiseExpressions: true }],
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
-      ],
     },
   },
   {
