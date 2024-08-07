@@ -1,6 +1,6 @@
 <template>
   <template v-for="(actionItem, index) in getActions" :key="`${index}-${actionItem.label}`">
-    <ActionItemRender v-bind="actionItem">
+    <ActionItemRender :action="actionItem">
       <a-button
         type="link"
         size="small"
@@ -24,7 +24,7 @@
   import { Icon } from '@/components/basic/icon';
   import { isPromise } from '@/utils/is';
 
-  const ActionItemRender: FunctionalComponent<ActionItem> = (action, { slots }) => {
+  const ActionItemRender: FunctionalComponent<{ action: ActionItem }> = ({ action }, { slots }) => {
     const { popConfirm, tooltip } = action;
     const PopconfirmRender = () => {
       if (popConfirm) {
