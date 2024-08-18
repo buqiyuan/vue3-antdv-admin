@@ -406,7 +406,7 @@
       const { component } = unref(schema);
       const componentProps = newSchema.componentProps as ComponentProps;
 
-      if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
+      if (['Select', 'RadioGroup', 'CheckboxGroup'].some((n) => n === component)) {
         componentProps.options = result;
       } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
         componentProps.treeData = result;
