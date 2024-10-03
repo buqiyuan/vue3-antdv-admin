@@ -1,0 +1,1 @@
+import{d as o,q as n,v as a,x as s,c as r,ab as p}from"./index-BrBwdKly.js";const _=o({name:"DemosNestedRoutesTwo",__name:"route-two",setup(u){return(c,e)=>{const t=p;return n(),a("div",null,[e[0]||(e[0]=s("div",null,"路由二",-1)),r(t)])}}});export{_ as default};
