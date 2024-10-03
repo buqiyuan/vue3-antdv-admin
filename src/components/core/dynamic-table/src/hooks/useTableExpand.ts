@@ -1,8 +1,17 @@
 import { computed, unref, toRaw, ref } from 'vue';
-import { useTableContext } from './useTableContext';
+import type { DynamicTableEmitFn, DynamicTableProps } from '../dynamic-table';
+import type { TableState } from './useTableState';
 
-export function useTableExpand() {
-  const { tableData, props, emit } = useTableContext();
+interface UseTableExpandPayload {
+  tableState: TableState;
+  props: DynamicTableProps;
+  emit: DynamicTableEmitFn;
+}
+export type TableExpand = ReturnType<typeof useTableExpand>;
+
+export function useTableExpand(payload: UseTableExpandPayload) {
+  const { props, emit, tableState } = payload;
+  const { tableData } = tableState;
   // 表格为树形结构时 展开的行
   const expandedRowKeys = ref<Key[]>([]);
 

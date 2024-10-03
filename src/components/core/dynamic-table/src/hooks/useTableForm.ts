@@ -1,18 +1,26 @@
-import { unref, computed, watchEffect } from 'vue';
+import { unref, computed, watchEffect, useSlots } from 'vue';
 import { ColumnKeyFlag } from '../types/column';
-import { useTableContext } from './useTableContext';
 import type { ComputedRef } from 'vue';
 import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form';
+import type { TableState } from './useTableState';
+import type { TableMethods } from './useTableMethods';
 
 export type TableForm = ReturnType<typeof useTableForm>;
 
-export function useTableForm() {
-  const { slots, getProps, loadingRef, getColumnKey, getSearchFormRef } = useTableContext();
+interface UseTableFormPayload {
+  tableState: TableState;
+  tableMethods: TableMethods;
+}
+
+export function useTableForm(payload: UseTableFormPayload) {
+  const slots = useSlots();
+  const { tableState, tableMethods } = payload;
+  const { getProps, loadingRef } = tableState;
+  const { getColumnKey, getSearchFormRef } = tableMethods;
 
   const getFormProps = computed((): SchemaFormProps => {
     const { formProps } = unref(getProps);
     const { submitButtonOptions } = formProps || {};
-    // @ts-ignore
     return {
       showAdvancedButton: true,
       layout: 'horizontal',
@@ -64,6 +72,7 @@ export function useTableForm() {
   }
 
   return {
+    formSchemas,
     getFormProps,
     replaceFormSlotKey,
     getFormSlotKeys,

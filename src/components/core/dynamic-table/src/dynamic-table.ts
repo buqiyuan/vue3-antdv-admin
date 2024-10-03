@@ -1,6 +1,6 @@
 import { tableProps } from 'ant-design-vue/es/table';
 import tableConfig from './dynamic-table.config';
-import type { PropType, ExtractPublicPropTypes } from 'vue';
+import type { PropType, ExtractPublicPropTypes, EmitsToProps, EmitFn } from 'vue';
 import type { BookType } from 'xlsx';
 import type { TableColumn, OnChangeCallbackParams, EditableType, OnSave, OnCancel } from './types/';
 import type { SchemaFormProps } from '@/components/core/schema-form';
@@ -20,7 +20,7 @@ export const dynamicTableProps = {
   },
   /** 表单属性配置 */
   formProps: {
-    type: Object as PropType<SchemaFormProps>,
+    type: Object as PropType<Partial<SchemaFormProps>>,
     default: () => ({}),
   },
   /** 表格列配置 */

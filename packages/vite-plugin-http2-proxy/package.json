@@ -15,7 +15,5 @@
   "dependencies": {
     "http2-proxy": "^5.0.53"
   },
-  "peerDependencies": {
-    "vite": "^5.3.5"
-  }
+  "peerDependencies": {}
 }

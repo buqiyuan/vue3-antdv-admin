@@ -1,27 +1,36 @@
-import { computed, unref, h } from 'vue';
+import { computed, unref, h, useSlots } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { Input } from 'ant-design-vue';
 import { EditableCell } from '../components';
 import { ColumnKeyFlag, columnKeyFlags, type CustomRenderParams } from '../types/column';
 import tableConfig from '../dynamic-table.config';
-import { useTableContext } from './useTableContext';
-import type { TableColumn } from '@/components/core/dynamic-table';
+import type { TableState } from './useTableState';
+import type { TableMethods } from './useTableMethods';
+import type { DynamicTableProps, TableColumn } from '@/components/core/dynamic-table';
 import type { FormSchema } from '@/components/core/schema-form';
 import { isBoolean } from '@/utils/is';
 import { TableAction } from '@/components/core/dynamic-table/src/components';
 
-export const useColumns = () => {
-  const tableContext = useTableContext();
-  const { slots, props, getProps, paginationRef } = tableContext;
+interface UseColumnsPayload {
+  tableState: TableState;
+  props: DynamicTableProps;
+  tableMethods: TableMethods;
+}
+
+export const useColumns = (payload: UseColumnsPayload) => {
+  const slots = useSlots();
+  const { tableState, props, tableMethods } = payload;
+  const { getProps, paginationRef } = tableState;
+  const { getColumnKey, isEditable } = tableMethods;
 
   const innerColumns = computed(() => {
-    const innerProps = { ...unref(getProps) };
+    const innerProps = cloneDeep(unref(getProps));
 
-    const columns = cloneDeep(innerProps!.columns!.filter((n) => !n.hideInTable));
+    // @ts-ignore
+    const columns = innerProps!.columns!.filter((n) => !n.hideInTable);
 
     // 是否添加序号列
     if (innerProps?.showIndex) {
-      // @ts-ignore
       columns.unshift({
         dataIndex: ColumnKeyFlag.INDEX,
         title: '序号',
@@ -44,14 +53,14 @@ export const useColumns = () => {
       const customRender = item.customRender;
 
       const rowKey = props.rowKey as string;
-      const columnKey = tableContext.getColumnKey(item) as string;
+      const columnKey = getColumnKey(item) as string;
 
       item.align ||= tableConfig.defaultAlign;
-
+      console.log('item');
       item.customRender = (options) => {
         const { record, index, text } = options as CustomRenderParams<Recordable<any>>;
         /** 当前行是否开启了编辑行模式 */
-        const isEditableRow = tableContext.isEditable(record[rowKey]);
+        const isEditableRow = isEditable(record[rowKey]);
         /** 是否开启了单元格编辑模式 */
         const isEditableCell = innerProps.editableType === 'cell';
         /** 当前单元格是否允许被编辑 */
@@ -82,6 +91,9 @@ export const useColumns = () => {
       if (item.actions && columnKey === ColumnKeyFlag.ACTION) {
         item.customRender = (options) => {
           const { record, index } = options;
+          const tableContext = {
+            ...tableMethods,
+          };
           return h(TableAction, {
             actions: item.actions!(options, tableContext),
             rowKey: record[rowKey] ?? index,
@@ -111,7 +123,7 @@ export const useColumns = () => {
 
   /** 获取当前行的form schema */
   const getColumnFormSchema = (item: TableColumn, record: Recordable): FormSchema => {
-    const key = tableContext.getColumnKey(item) as string;
+    const key = getColumnKey(item) as string;
     /** 是否继承搜索表单的属性 */
     const isExtendSearchFormProps = !Object.is(
       item.editFormItemProps?.extendSearchFormProps,

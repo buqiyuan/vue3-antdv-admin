@@ -58,7 +58,7 @@
 </template>
 
 <script lang="tsx" setup>
-  import { useSlots, computed, onBeforeMount } from 'vue';
+  import { computed, onBeforeMount } from 'vue';
   import { Table } from 'ant-design-vue';
   import {
     useTableMethods,
@@ -67,11 +67,9 @@
     useTableForm,
     useTableState,
     useColumns,
-    useEditable,
   } from './hooks';
   import { ToolBar } from './components';
   import { dynamicTableProps, dynamicTableEmits } from './dynamic-table';
-  import type { DynamicTableType } from './types';
   import { SchemaForm } from '@/components/core/schema-form';
 
   defineOptions({
@@ -81,10 +79,9 @@
 
   const props = defineProps(dynamicTableProps);
   const emit = defineEmits(dynamicTableEmits);
-  const slots = useSlots();
 
   // 表格内部状态
-  const tableState = useTableState({ props, slots });
+  const tableState = useTableState(props);
   const {
     tableRef,
     tableData,
@@ -97,39 +94,33 @@
     editFormModel,
   } = tableState;
 
-  // 创建表格上下文
-  const dynamicTableContext = { props, emit, slots, ...tableState } as DynamicTableType;
-  createTableContext(dynamicTableContext);
-
   // 表格内部方法
-  const tableMethods = useTableMethods();
-  Object.assign(dynamicTableContext, tableMethods);
+  const tableMethods = useTableMethods({ props, emit, tableState });
   const { fetchData, handleSubmit, handleTableChange, handleEditFormValidate } = tableMethods;
-  // 控制编辑行
-  const editableHooks = useEditable();
-  Object.assign(dynamicTableContext, editableHooks);
 
   // 表格列的配置描述
-  const { innerColumns } = useColumns();
+  const { innerColumns } = useColumns({ props, tableState, tableMethods });
 
   // 搜索表单
-  const tableForm = useTableForm();
+  const tableForm = useTableForm({ tableState, tableMethods });
   const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = tableForm;
 
   // 表单导出
-  const exportData2ExcelHooks = useExportData2Excel();
+  const exportData2ExcelHooks = useExportData2Excel({ props, tableState, tableMethods });
 
   // 当前组件所有的状态和方法
-  Object.assign(dynamicTableContext, {
+  const dynamicTableContext = {
+    props,
+    emit,
     innerColumns,
-    ...props,
     ...tableState,
     ...tableForm,
     ...tableMethods,
-    ...editableHooks,
     ...exportData2ExcelHooks,
-    emit,
-  });
+  };
+
+  // 创建表格上下文
+  createTableContext(dynamicTableContext);
 
   defineExpose(dynamicTableContext);
 

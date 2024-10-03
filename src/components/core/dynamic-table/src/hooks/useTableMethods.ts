@@ -4,10 +4,9 @@ import { useInfiniteScroll } from '@vueuse/core';
 import tableConfig from '../dynamic-table.config';
 import { useEditable } from './useEditable';
 import { useTableExpand } from './useTableExpand';
-import { useTableContext } from './useTableContext';
-import type { DynamicTableProps } from '../dynamic-table';
+import type { TableState, Pagination } from './useTableState';
+import type { DynamicTableEmitFn, DynamicTableProps } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
-import type { Pagination } from './useTableState';
 import type { FormProps } from 'ant-design-vue';
 import { warn } from '@/utils/log';
 import { isObject } from '@/utils/is';
@@ -15,11 +14,15 @@ import { isObject } from '@/utils/is';
 export type UseInfiniteScrollParams = Parameters<typeof useInfiniteScroll>;
 
 export type TableMethods = ReturnType<typeof useTableMethods>;
+interface UseTableMethodsPayload {
+  tableState: TableState;
+  emit: DynamicTableEmitFn;
+  props: DynamicTableProps;
+}
 
-export const useTableMethods = () => {
+export const useTableMethods = (payload: UseTableMethodsPayload) => {
+  const { props, emit, tableState } = payload;
   const {
-    props,
-    emit,
     innerPropsRef,
     tableData,
     loadingRef,
@@ -27,10 +30,10 @@ export const useTableMethods = () => {
     paginationRef,
     editFormErrorMsgs,
     searchState,
-  } = useTableContext();
+  } = tableState;
   // 可编辑行
-  const editableMethods = useEditable();
-  const expandMethods = useTableExpand();
+  const editableMethods = useEditable({ props, tableState });
+  const expandMethods = useTableExpand({ props, tableState, emit });
 
   watch(
     () => props.searchParams,

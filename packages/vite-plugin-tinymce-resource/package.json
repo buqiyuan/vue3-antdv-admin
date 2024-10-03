@@ -8,7 +8,5 @@
   "scripts": {
     "build": "tsc"
   },
-  "peerDependencies": {
-    "vite": "^5.3.5"
-  }
+  "peerDependencies": {}
 }

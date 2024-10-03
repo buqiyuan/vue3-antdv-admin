@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, ref, unref, watch, type UnwrapRef } from 'vue';
+  import { computed, nextTick, ref, toRaw, unref, watch, type UnwrapRef } from 'vue';
   import {
     SettingOutlined,
     VerticalRightOutlined,
@@ -88,7 +88,7 @@
   const table = useTableContext();
 
   let inited = false;
-  const defaultColumns = cloneDeep<TableColumn[]>(
+  const defaultColumns = toRaw(
     table.innerColumns.value.filter((n) => n.dataIndex !== ColumnKeyFlag.INDEX),
   );
   const defaultShowIndex = !!table.props.showIndex;

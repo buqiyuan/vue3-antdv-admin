@@ -1,4 +1,4 @@
-import { computed, reactive, ref, unref, watch, type Slots } from 'vue';
+import { computed, reactive, ref, unref, watch, useSlots } from 'vue';
 import { omit } from 'lodash-es';
 import tableConfig from '../dynamic-table.config';
 import { useScroll } from './useScroll';
@@ -11,18 +11,14 @@ export type Pagination = TableProps['pagination'];
 
 export type TableState = ReturnType<typeof useTableState>;
 
-export type UseTableStateParams = {
-  props: DynamicTableProps;
-  slots: Slots;
-};
-
 interface SearchState {
   sortInfo: Recordable;
   filterInfo: Record<string, string[]>;
 }
 
-export const useTableState = ({ props, slots }: UseTableStateParams) => {
+export const useTableState = (props: DynamicTableProps) => {
   const { t } = useI18n();
+  const slots = useSlots();
   /** 表格实例 */
   const tableRef = ref<InstanceType<typeof Table>>();
   /** 查询表单实例 */

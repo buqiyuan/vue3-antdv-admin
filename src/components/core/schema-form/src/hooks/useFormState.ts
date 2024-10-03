@@ -1,6 +1,6 @@
-import { computed, reactive, ref, unref, watch } from 'vue';
-import { cloneDeep, isUndefined, set } from 'lodash-es';
-import type { SetupContext, DefineComponent } from 'vue';
+import { computed, reactive, ref, unref, watch, useAttrs } from 'vue';
+import { isUndefined, set } from 'lodash-es';
+import type { DefineComponent } from 'vue';
 import type { AdvanceState } from '../types/hooks';
 import type { SchemaFormProps } from '../schema-form';
 import type { FormInstance } from 'ant-design-vue';
@@ -9,14 +9,10 @@ import { isFunction } from '@/utils/is';
 
 export type FormState = ReturnType<typeof useFormState>;
 
-export type useFormStateParams = {
-  props: SchemaFormProps;
-  attrs: SetupContext['attrs'];
-};
-
-export const useFormState = ({ props, attrs }: useFormStateParams) => {
+export const useFormState = (props: SchemaFormProps) => {
+  const attrs = useAttrs();
   /** // TODO 将formSchema克隆一份，避免修改原有的formSchema */
-  const formPropsRef = ref<SchemaFormProps>(cloneDeep(props));
+  const formPropsRef = ref<SchemaFormProps>({ ...props });
   /** 表单项数据 */
   const formModel = reactive({ ...props.initialValues });
   /** 表单默认数据 */
@@ -87,6 +83,5 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     getRowConfig,
     getFormActionBindProps,
     originComponentPropsFnMap,
-    formSchemasRef: computed(() => unref(formPropsRef).schemas || []),
   };
 };

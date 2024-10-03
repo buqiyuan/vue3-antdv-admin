@@ -3,10 +3,6 @@
   "npm.packageManager": "pnpm",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  // 保存文件缓慢时，可以考虑开启以下 3 行配置。
-  "vue.server.maxOldSpaceSize": 4096,
-  "vue.server.hybridMode": true,
-  "typescript.tsserver.maxTsServerMemory": 4096,
   "files.eol": "\n",
   "editor.guides.bracketPairs": true,
   "editor.bracketPairColorization.enabled": true,
@@ -92,15 +88,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.fixAll.stylelint": "explicit"
-  },
-  "[vue]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit",
-      "source.fixAll.stylelint": "explicit"
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "source.fixAll.eslint": "explicit"
   },
   "i18n-ally.localesPaths": ["src/locales/lang"],
   "i18n-ally.keystyle": "nested",

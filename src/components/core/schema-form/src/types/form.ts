@@ -1,11 +1,12 @@
 import type { RowProps } from 'ant-design-vue';
 import type { RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
-import type { Component, ComputedRef, UnwrapRef, VNode } from 'vue';
+import type { Component, ComputedRef, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ColEx, ComponentType, ComponentProps } from './component';
-import type { SchemaFormType } from '../hooks';
+
 import type { TableActionType } from '@/components/core/dynamic-table';
+import type { SchemaFormInstance } from '../hooks/useFormContext';
 
 export type { RowProps };
 
@@ -33,7 +34,7 @@ export interface RenderCallbackParams<
   /** 非响应式的表单数据对象(最终表单要提交的数据) */
   values: any;
   /** 动态表单实例 */
-  formInstance: SchemaFormType;
+  formInstance: SchemaFormInstance;
   /** 动态表格实例 */
   tableInstance?: TableActionType;
   /** 动态表格rowKey */
@@ -49,8 +50,6 @@ export type CustomRenderFn<T extends object = Recordable> = (
 export interface ButtonProps extends AntdButtonProps {
   text?: string;
 }
-
-export type UnwrapFormSchema<T extends object = Recordable> = UnwrapRef<FormSchema<T>>;
 
 type ComponentSchema<T extends object = Recordable> =
   | {

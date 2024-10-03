@@ -1,21 +1,24 @@
 import { toRaw, unref } from 'vue';
-import { cloneDeep, set, unset, isNil, uniqBy } from 'lodash-es';
+import { set, unset, isNil, uniqBy } from 'lodash-es';
 import dayjs from 'dayjs';
 import { dateItemType, handleInputNumberValue } from '../helper';
-import { useFormContext } from './useFormContext';
-import type { SchemaFormProps } from '../schema-form';
-import type { UnwrapFormSchema } from '../types/form';
+import type { SchemaFormEmitFn, SchemaFormProps } from '../schema-form';
+import type { FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
+import type { FormState } from './useFormState';
 import { deepMerge } from '@/utils/';
 import { isFunction, isObject, isArray, isString } from '@/utils/is';
 import { dateUtil } from '@/utils/dateUtil';
 
-type FormSchema = UnwrapFormSchema;
+interface UseFormMethodsPayload {
+  formState: FormState;
+  emit: SchemaFormEmitFn;
+}
 
 export type FormMethods = ReturnType<typeof useFormMethods>;
 
-export const useFormMethods = () => {
-  const schemaFormContext = useFormContext();
+export const useFormMethods = (payload: UseFormMethodsPayload) => {
+  const { formState, emit } = payload;
   const {
     compRefMap,
     formModel,
@@ -23,11 +26,9 @@ export const useFormMethods = () => {
     cacheFormModel,
     schemaFormRef,
     getFormProps,
-    formSchemasRef,
     defaultFormValues,
     originComponentPropsFnMap,
-    emit,
-  } = schemaFormContext;
+  } = formState;
 
   // 将所有的表单组件实例保存起来, 方便外面通过表单组件实例操作
   const setItemRef = (field: string) => {
@@ -48,6 +49,7 @@ export const useFormMethods = () => {
    * @description: Is it time
    */
   function itemIsDateType(key: string) {
+    // @ts-ignore
     return unref(formPropsRef).schemas?.some((item) => {
       return item.field === key && isString(item.component)
         ? dateItemType.includes(item.component)
@@ -59,8 +61,7 @@ export const useFormMethods = () => {
    * @description: 设置表单字段值
    */
   async function setFieldsValue(values: Recordable) {
-    const schemas = unref(formSchemasRef);
-    // @ts-ignore
+    const schemas = unref(formPropsRef).schemas;
     const fields = schemas.map((item) => item.field).filter(Boolean);
 
     Object.assign(cacheFormModel, values);
@@ -116,7 +117,7 @@ export const useFormMethods = () => {
    * @description: 插入到指定 field 后面，如果没传指定 field，则插入到最后,当 first = true 时插入到第一个位置
    */
   async function appendSchemaByField(schemaItem: FormSchema, prefixField?: string, first = false) {
-    const schemaList = cloneDeep(unref(formSchemasRef));
+    const schemaList = [...unref(formPropsRef).schemas];
 
     const index = schemaList.findIndex((schema) => schema.field === prefixField);
 
@@ -129,6 +130,7 @@ export const useFormMethods = () => {
       schemaList.splice(index + 1, 0, schemaItem);
     }
     formPropsRef.value.schemas = schemaList;
+    console.log('formPropsRef', formPropsRef);
     setDefaultValue(formPropsRef.value.schemas);
   }
 
@@ -136,7 +138,7 @@ export const useFormMethods = () => {
    * @description: 根据 field 删除 Schema
    */
   async function removeSchemaByField(fields: string | string[]): Promise<void> {
-    const schemaList = cloneDeep(unref(formSchemasRef));
+    const schemaList = [...unref(formPropsRef).schemas];
 
     if (!fields) {
       return;
@@ -163,7 +165,7 @@ export const useFormMethods = () => {
    * @description: 根据 field 查找 Schema
    */
   function getSchemaByField(field: string): FormSchema | undefined {
-    return unref(formSchemasRef).find((schema) => field === schema.field);
+    return unref(formPropsRef).schemas.find((schema) => field === schema.field);
   }
 
   /**
@@ -191,7 +193,7 @@ export const useFormMethods = () => {
     const schemas: FormSchema[] = [];
     const updatedSchemas: FormSchema[] = [];
 
-    unref(formSchemasRef).forEach((val) => {
+    unref(formPropsRef).schemas.forEach((val) => {
       const updateItem = updateData.find((n) => val.field === n.field);
       if (updateItem) {
         const compProps = updateItem.componentProps;
@@ -216,7 +218,7 @@ export const useFormMethods = () => {
     });
 
     setDefaultValue(updatedSchemas);
-    formPropsRef.value.schemas = uniqBy<UnwrapFormSchema>(schemas, 'field');
+    formPropsRef.value.schemas = uniqBy<FormSchema>(schemas, 'field');
   };
 
   function setDefaultValue(data: FormSchema | FormSchema[]) {
@@ -256,7 +258,7 @@ export const useFormMethods = () => {
     });
 
     emit('reset', formModel);
-    submitOnReset && schemaFormContext.submit();
+    submitOnReset && handleSubmit();
     setTimeout(clearValidate);
   }
 
@@ -293,6 +295,7 @@ export const useFormMethods = () => {
 
   const setSchemaFormProps = (formProps: Partial<SchemaFormProps>) => {
     const { schemas } = formPropsRef.value;
+    // TODO: deepMerge
     formPropsRef.value = deepMerge(unref(formPropsRef) || {}, formProps);
     // @ts-ignore
     formPropsRef.value.schemas = schemas?.length ? schemas : formProps.schemas;
@@ -369,12 +372,32 @@ export const useFormMethods = () => {
     if (e.key === 'Enter' && e.target && e.target instanceof HTMLElement) {
       const target: HTMLElement = e.target as HTMLElement;
       if (target && target.tagName && target.tagName.toUpperCase() == 'INPUT') {
-        schemaFormContext.submit(e);
+        handleSubmit(e);
       }
     }
   };
 
+  async function handleSubmit(e?: Event) {
+    e?.preventDefault?.();
+    const { submitFunc } = unref(getFormProps);
+    if (submitFunc && isFunction(submitFunc)) {
+      await submitFunc();
+      return;
+    }
+    const formEl = unref(schemaFormRef);
+    if (!formEl) return;
+    try {
+      const values = await validate();
+      const res = handleFormValues(values);
+      emit('submit', res);
+      return res;
+    } catch (error: any) {
+      return Promise.reject(error);
+    }
+  }
+
   return {
+    submit: handleSubmit,
     setItemRef,
     clearValidate,
     validate,

@@ -118,8 +118,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       open: true,
       proxy: {
         '^/api': {
-          // target: 'https://nest-api.buqiyuan.site',
-          target: 'http://127.0.0.1:7001',
+          target: 'https://nest-api.buqiyuan.site',
+          // target: 'http://127.0.0.1:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
@@ -154,16 +154,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       rollupOptions: {
         output: {
           // minifyInternalExports: false,
-          manualChunks(id) {
-            //TODO fix circular imports
-            if (id.includes('/src/locales/helper.ts')) {
-              return 'antdv';
-            } else if (id.includes('node_modules/ant-design-vue/')) {
-              return 'antdv';
-            } else if (/node_modules\/(vue|vue-router|pinia)\//.test(id)) {
-              return 'vue';
-            }
-          },
         },
         onwarn(warning, rollupWarn) {
           // ignore circular dependency warning

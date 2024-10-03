@@ -85,7 +85,6 @@
 
   const { schema } = toRefs(props);
 
-  // @ts-ignore
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
 
   const namePath = computed<string[]>(() => {
@@ -207,7 +206,7 @@
   const getComponent = computed(() => {
     const component = props.schema.component;
     return isString(component)
-      ? componentMap[component] ?? vnodeFactory(component)
+      ? (componentMap[component] ?? vnodeFactory(component))
       : vnodeFactory(component);
   });
 

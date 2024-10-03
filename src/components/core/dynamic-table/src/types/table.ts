@@ -1,14 +1,5 @@
 import type { TableProps } from 'ant-design-vue';
 import type { TablePaginationConfig } from 'ant-design-vue/es/table';
-import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
-import type {
-  ExportData2Excel,
-  TableForm,
-  TableMethods,
-  TableState,
-  UseEditableType,
-} from '../hooks';
-import type { Slots } from 'vue';
 
 /**
  * 加载表格数据的参数
@@ -48,13 +39,3 @@ export type OnCancel<T = any> = (
   /** 原始值，可以用于判断是否修改 */
   originRow: T,
 ) => any | void;
-
-export type DynamicTableType = TableState &
-  ExportData2Excel &
-  UseEditableType &
-  TableForm &
-  TableMethods & {
-    props: DynamicTableProps;
-    emit: DynamicTableEmitFn;
-    slots: Slots;
-  };

@@ -1,16 +1,23 @@
 import { computed, unref, watch } from 'vue';
 import { useFormContext } from './useFormContext';
 import type { ColEx } from '../types/component';
+import type { FormState } from './useFormState';
+import type { SchemaFormEmitFn } from '../schema-form';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 
 const BASIC_COL_LEN = 24;
 
-export const useAdvanced = () => {
-  const schemaFormContext = useFormContext();
+interface UseAdvancedPayload {
+  formState: FormState;
+  emit: SchemaFormEmitFn;
+}
+
+export const useAdvanced = (payload: UseAdvancedPayload) => {
+  const { formState, emit } = payload;
+  const formContext = useFormContext();
   const { realWidthRef, screenEnum, screenRef } = useBreakpoint();
-  const { advanceState, getFormProps, formSchemasRef, formModel, defaultFormValues, emit } =
-    schemaFormContext;
+  const { advanceState, getFormProps, formPropsRef, formModel, defaultFormValues } = formState;
 
   const getEmptySpan = computed((): number => {
     if (!advanceState.isAdvanced) {
@@ -33,7 +40,7 @@ export const useAdvanced = () => {
   });
 
   watch(
-    [formSchemasRef, () => advanceState.isAdvanced, () => unref(realWidthRef)],
+    [() => formPropsRef.value.schemas, () => advanceState.isAdvanced, () => unref(realWidthRef)],
     () => {
       const { showAdvancedButton } = unref(getFormProps);
       if (showAdvancedButton) {
@@ -98,7 +105,7 @@ export const useAdvanced = () => {
     let realItemColSum = 0;
     const { baseColProps = {} } = unref(getFormProps);
 
-    for (const schema of unref(formSchemasRef)) {
+    for (const schema of unref(formPropsRef).schemas) {
       const { vShow, colProps } = schema;
       let isShow = true;
 
@@ -110,11 +117,11 @@ export const useAdvanced = () => {
         isShow = vShow({
           schema: computed(() => {
             // @ts-ignore
-            return unref(formSchemasRef).find((n) => n.field === schema.field) as any;
+            return unref(formSchemasRef).schemas.find((n) => n.field === schema.field) as any;
           }),
           formModel,
           field: schema.field,
-          formInstance: schemaFormContext,
+          formInstance: formContext,
           values: {
             ...unref(defaultFormValues),
             ...formModel,

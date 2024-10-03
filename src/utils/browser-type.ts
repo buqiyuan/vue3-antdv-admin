@@ -63,8 +63,8 @@ export default function BrowserType(lang: 'zh-cn' | 'en' = 'en') {
           [testUa(/chrome/g), 'chrome'], // chrome浏览器
           [testUa(/opr/g), 'opera'], // opera浏览器
           [testUa(/edge/g), 'edge'], // edge浏览器
-        ]).get(true),
-      ] || 'unknow',
+        ]).get(true) || 'unknow',
+      ],
     ], // [webkit内核, xxx浏览器]
     [testUa(/gecko/g) && testUa(/firefox/g), ['gecko', 'firefox']], // [gecko内核,firefox浏览器]
     [testUa(/presto/g), ['presto', 'opera']], // [presto内核,opera浏览器]
