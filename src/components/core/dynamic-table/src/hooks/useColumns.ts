@@ -56,7 +56,7 @@ export const useColumns = (payload: UseColumnsPayload) => {
       const columnKey = getColumnKey(item) as string;
 
       item.align ||= tableConfig.defaultAlign;
-      console.log('item');
+
       item.customRender = (options) => {
         const { record, index, text } = options as CustomRenderParams<Recordable<any>>;
         /** 当前行是否开启了编辑行模式 */

@@ -1,5 +1,6 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.tsserver.maxTsServerMemory": 4096,
   "npm.packageManager": "pnpm",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -8,6 +9,7 @@
   "editor.bracketPairColorization.enabled": true,
   "vue.inlayHints.missingProps": true,
   "vue.autoInsert.dotValue": true,
+  "vue.server.maxOldSpaceSize": 4096,
   "explorer.copyRelativePathSeparator": "/",
   "search.exclude": {
     "**/node_modules": true,
@@ -88,7 +90,15 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "[vue]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.fixAll.stylelint": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "i18n-ally.localesPaths": ["src/locales/lang"],
   "i18n-ally.keystyle": "nested",

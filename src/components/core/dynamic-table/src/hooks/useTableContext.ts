@@ -10,7 +10,7 @@ type DynamicTableType = { props: DynamicTableProps } & TableMethods &
 
 const key = Symbol('dynamic-table');
 
-export function createTableContext(instance) {
+export function createTableContext(instance: DynamicTableType) {
   provideLocal(key, instance);
 }
 

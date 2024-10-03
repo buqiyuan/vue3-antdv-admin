@@ -6,7 +6,7 @@ export interface SchemaFormInstance extends FormMethods, FormState {}
 
 const key = Symbol('schema-form');
 
-export async function createFormContext(instance) {
+export async function createFormContext(instance: SchemaFormInstance) {
   provideLocal(key, instance);
 }
 

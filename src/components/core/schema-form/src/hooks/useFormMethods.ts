@@ -130,7 +130,6 @@ export const useFormMethods = (payload: UseFormMethodsPayload) => {
       schemaList.splice(index + 1, 0, schemaItem);
     }
     formPropsRef.value.schemas = schemaList;
-    console.log('formPropsRef', formPropsRef);
     setDefaultValue(formPropsRef.value.schemas);
   }
 
