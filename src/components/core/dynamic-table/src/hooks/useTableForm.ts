@@ -15,11 +15,11 @@ interface UseTableFormPayload {
 export function useTableForm(payload: UseTableFormPayload) {
   const slots = useSlots();
   const { tableState, tableMethods } = payload;
-  const { getProps, loadingRef } = tableState;
+  const { innerPropsRef, loadingRef } = tableState;
   const { getColumnKey, getSearchFormRef } = tableMethods;
 
   const getFormProps = computed((): SchemaFormProps => {
-    const { formProps } = unref(getProps);
+    const { formProps } = unref(innerPropsRef);
     const { submitButtonOptions } = formProps || {};
     return {
       showAdvancedButton: true,
@@ -35,7 +35,7 @@ export function useTableForm(payload: UseTableFormPayload) {
   const formSchemas = computed<FormSchema[]>(() => {
     const columnKeyFlags = Object.keys(ColumnKeyFlag);
     // @ts-ignore
-    return unref(getProps)
+    return unref(innerPropsRef)
       .columns.filter((n) => {
         const field = getColumnKey(n);
         return !n.hideInSearch && !!field && !columnKeyFlags.includes(field as string);

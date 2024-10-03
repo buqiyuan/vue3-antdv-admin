@@ -28,7 +28,7 @@ export const useTableState = (props: DynamicTableProps) => {
   /** 表格数据 */
   const tableData = ref<any[]>([]);
   /** 内部属性 */
-  const innerPropsRef = ref<Partial<DynamicTableProps>>({});
+  const innerPropsRef = ref<Partial<DynamicTableProps>>({ ...props });
   /** 分页配置参数 */
   const paginationRef = ref<NonNullable<Pagination>>(false);
   /** 表格加载 */
@@ -67,13 +67,8 @@ export const useTableState = (props: DynamicTableProps) => {
       ...props.pagination,
     };
   }
-
-  const getProps = computed(() => {
-    return Object.assign({}, props, unref(innerPropsRef));
-  });
-
   const getBindValues = computed(() => {
-    const props = unref(getProps);
+    const props = unref(innerPropsRef);
 
     let propsData: Recordable = {
       ...props,
@@ -127,7 +122,6 @@ export const useTableState = (props: DynamicTableProps) => {
     tableData,
     searchFormRef,
     innerPropsRef,
-    getProps,
     getBindValues,
     paginationRef,
     editFormModel,

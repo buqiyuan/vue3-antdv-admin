@@ -16,15 +16,16 @@ interface UseColumnsPayload {
   props: DynamicTableProps;
   tableMethods: TableMethods;
 }
+export type UseColumnsType = ReturnType<typeof useColumns>;
 
 export const useColumns = (payload: UseColumnsPayload) => {
   const slots = useSlots();
   const { tableState, props, tableMethods } = payload;
-  const { getProps, paginationRef } = tableState;
+  const { innerPropsRef, paginationRef } = tableState;
   const { getColumnKey, isEditable } = tableMethods;
 
   const innerColumns = computed(() => {
-    const innerProps = cloneDeep(unref(getProps));
+    const innerProps = cloneDeep(unref(innerPropsRef));
 
     // @ts-ignore
     const columns = innerProps!.columns!.filter((n) => !n.hideInTable);
@@ -135,7 +136,7 @@ export const useColumns = (payload: UseColumnsPayload) => {
       component: () => Input,
       defaultValue: record[key],
       colProps: {
-        span: unref(getProps).editableType === 'cell' ? 20 : 24,
+        span: unref(innerPropsRef).editableType === 'cell' ? 20 : 24,
       },
       formItemProps: {
         help: '',

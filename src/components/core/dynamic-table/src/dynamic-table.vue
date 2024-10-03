@@ -3,7 +3,7 @@
     <Teleport to="body" :disabled="!isFullscreen">
       <div ref="containerElRef">
         <SchemaForm
-          v-if="getProps.search"
+          v-if="innerPropsRef.search"
           ref="searchFormRef"
           class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
           submit-on-reset
@@ -24,7 +24,7 @@
             :title-tooltip="titleTooltip"
             :show-table-setting="showTableSetting"
           >
-            <template v-for="name of Object.keys($slots)" #[name]="data">
+            <template v-for="name of Object.keys($slots)" #[name]="data" :key="name">
               <slot :name="name" v-bind="data || {}" />
             </template>
           </ToolBar>
@@ -89,7 +89,7 @@
     containerElRef,
     searchFormRef,
     editTableFormRef,
-    getProps,
+    innerPropsRef,
     getBindValues,
     editFormModel,
   } = tableState;
@@ -110,7 +110,7 @@
 
   // 当前组件所有的状态和方法
   const dynamicTableContext = {
-    props,
+    tableProps: props,
     emit,
     innerColumns,
     ...tableState,

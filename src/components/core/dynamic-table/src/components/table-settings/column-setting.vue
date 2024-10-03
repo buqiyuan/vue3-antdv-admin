@@ -27,7 +27,7 @@
       </template>
       <template #content>
         <div ref="columnListRef">
-          <template v-for="item in tableColumns" :key="table.getColumnKey(item)">
+          <template v-for="item in tableColumns" :key="getColumnKey(item)">
             <div class="check-item">
               <div style="padding: 4px 16px 8px 0">
                 <DragOutlined class="table-column-drag-icon pr-6px cursor-move" />
@@ -85,14 +85,14 @@
   import { useI18n } from '@/hooks/useI18n';
 
   const { t } = useI18n();
-  const table = useTableContext();
+  const { tableProps, innerColumns, setProps, getColumnKey } = useTableContext();
 
   let inited = false;
   const defaultColumns = toRaw(
-    table.innerColumns.value.filter((n) => n.dataIndex !== ColumnKeyFlag.INDEX),
+    innerColumns.value?.filter((n) => n.dataIndex !== ColumnKeyFlag.INDEX),
   );
-  const defaultShowIndex = !!table.props.showIndex;
-  const defaultBordered = table.props.bordered;
+  const defaultShowIndex = !!tableProps.showIndex;
+  const defaultBordered = tableProps.bordered;
   const tableColumns = ref<TableColumn[]>([]);
 
   const checkAll = computed<boolean>({
@@ -106,7 +106,7 @@
   });
 
   const checkIndex = ref(defaultShowIndex);
-  const checkBordered = ref(table.props.bordered);
+  const checkBordered = ref(tableProps.bordered);
   const columnListRef = ref<HTMLDivElement>();
 
   // 初始化选中状态
@@ -129,8 +129,7 @@
   watch(
     tableColumns,
     (columns) => {
-      // @ts-ignore
-      table.setProps({ columns });
+      setProps({ columns });
     },
     {
       deep: true,
@@ -138,11 +137,11 @@
   );
   // 设置序号列
   const handleIndexCheckChange = (e) => {
-    table.setProps({ showIndex: e.target.checked });
+    setProps({ showIndex: e.target.checked });
   };
   // 设置边框
   const handleBorderedCheckChange = (e) => {
-    table.setProps({ bordered: e.target.checked });
+    setProps({ bordered: e.target.checked });
   };
 
   const handleColumnFixed = (columItem, direction: 'left' | 'right') => {
@@ -175,7 +174,7 @@
 
   const reset = () => {
     initCheckStatus();
-    table.setProps({ showIndex: defaultShowIndex, bordered: defaultBordered });
+    setProps({ showIndex: defaultShowIndex, bordered: defaultBordered });
   };
 </script>
 

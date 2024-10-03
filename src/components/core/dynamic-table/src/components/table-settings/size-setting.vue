@@ -36,7 +36,7 @@
   const { t } = useI18n();
   const table = useTableContext();
 
-  const selectedKeysRef = ref<SizeType[]>([unref(table.getProps)?.size || 'large']);
+  const selectedKeysRef = ref<SizeType[]>([unref(table.innerPropsRef)?.size || 'large']);
 
   function handleMenuClick({ key }: MenuInfo & { key: SizeType }) {
     selectedKeysRef.value = [key];
