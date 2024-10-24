@@ -1,4 +1,4 @@
-import { computed, unref, h, useSlots } from 'vue';
+import { unref, h, useSlots, ref, watchEffect } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { Input } from 'ant-design-vue';
 import { EditableCell } from '../components';
@@ -24,7 +24,9 @@ export const useColumns = (payload: UseColumnsPayload) => {
   const { innerPropsRef, paginationRef } = tableState;
   const { getColumnKey, isEditable } = tableMethods;
 
-  const innerColumns = computed(() => {
+  const innerColumns = ref<TableColumn[]>([]);
+
+  watchEffect(() => {
     const innerProps = cloneDeep(unref(innerPropsRef));
 
     // @ts-ignore
@@ -50,7 +52,7 @@ export const useColumns = (payload: UseColumnsPayload) => {
       } as TableColumn);
     }
 
-    return columns.map((item) => {
+    innerColumns.value = columns.map((item) => {
       const customRender = item.customRender;
 
       const rowKey = props.rowKey as string;
