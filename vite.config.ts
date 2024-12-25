@@ -118,14 +118,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       open: true,
       proxy: {
         '^/api': {
-          target: 'https://nest-api.buqiyuan.site',
-          // target: 'http://127.0.0.1:7001',
+          // target: 'https://nest-admin.buqiyuan.top',
+          target: 'http://127.0.0.1:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
         '^/upload': {
-          target: 'https://nest-api.buqiyuan.site/upload',
-          // target: 'http://127.0.0.1:7001/upload',
+          // target: 'https://nest-admin.buqiyuan.top/upload',
+          target: 'http://127.0.0.1:7001/upload',
           changeOrigin: true,
           rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),
         },
