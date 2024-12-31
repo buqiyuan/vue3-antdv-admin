@@ -141,7 +141,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
     },
     esbuild: {
-      pure: VITE_DROP_CONSOLE === 'true' ? ['console.log', 'debugger'] : [],
+      pure: VITE_DROP_CONSOLE === 'true' ? ['console.log'] : [],
+      drop: VITE_DROP_CONSOLE === 'true' ? ['debugger'] : [],
       supported: {
         // https://github.com/vitejs/vite/pull/8665
         'top-level-await': true,
