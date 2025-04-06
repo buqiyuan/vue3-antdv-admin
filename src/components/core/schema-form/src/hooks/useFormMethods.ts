@@ -356,7 +356,10 @@ export const useFormMethods = (payload: UseFormMethodsPayload) => {
       }
 
       const [startTime, endTime]: string[] = values[field];
-
+      if (!startTime || !endTime) {
+        Reflect.deleteProperty(values, field);
+        continue;
+      }
       values[startTimeKey] = dateUtil(startTime).format(format);
       values[endTimeKey] = dateUtil(endTime).format(format);
       Reflect.deleteProperty(values, field);
