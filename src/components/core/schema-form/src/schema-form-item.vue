@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="tsx">
-  import { computed, unref, toRefs, isVNode, watch, nextTick } from 'vue';
+  import { computed, unref, toRefs, isVNode, watch, nextTick, ref } from 'vue';
   import { cloneDeep, debounce, isEqual } from 'lodash-es';
   import { Form, Col, Spin, Divider } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
@@ -83,7 +83,21 @@
 
   const { t } = useI18n();
 
-  const { schema } = toRefs(props);
+  // const { schema } = toRefs(props);
+  function deepCopy(obj) {
+    if (typeof obj !== 'object' || obj === null) {
+      return obj;
+    }
+
+    let copy = {};
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        copy[key] = deepCopy(obj[key]);
+      }
+    }
+    return copy;
+  }
+  const schema = ref(deepCopy(props.schema));
 
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
 
