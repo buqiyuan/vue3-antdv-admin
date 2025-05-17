@@ -1,18 +1,18 @@
-import { debounce } from 'lodash-es';
-import { PlusOutlined } from '@ant-design/icons-vue';
-import { Tag, Image } from 'ant-design-vue';
-import type { TableColumn } from '@/components/core/dynamic-table';
+import type { TableColumn } from '@/components/core/dynamic-table'
+import { PlusOutlined } from '@ant-design/icons-vue'
+import { Image, Tag } from 'ant-design-vue'
+import { debounce } from 'lodash-es'
 
 import {
   fetchStatusMapData,
   getClothesByGender,
   tableData,
-} from '@/views/demos/tables/search-table/columns';
+} from '@/views/demos/tables/search-table/columns'
 
-export { tableData };
+export { tableData }
 
 // 数据项类型
-export type ListItemType = (typeof tableData)[number];
+export type ListItemType = (typeof tableData)[number]
 // 使用TableColumn<ListItemType> 将会限制dataIndex的类型，但换来的是dataIndex有类型提示
 export const columns: TableColumn<ListItemType>[] = [
   {
@@ -23,7 +23,7 @@ export const columns: TableColumn<ListItemType>[] = [
     defaultEditable: true,
     editable: ({ index }) => {
       // 第一行不允许被编辑
-      return index > 0;
+      return index > 0
     },
     formItemProps: {
       defaultValue: '李白',
@@ -53,7 +53,7 @@ export const columns: TableColumn<ListItemType>[] = [
           },
         ],
         onChange() {
-          console.log('formModel', formModel);
+          console.log('formModel', formModel)
 
           // 根据当前选择的性别，更新衣服可选项
           formInstance?.updateSchema({
@@ -61,8 +61,8 @@ export const columns: TableColumn<ListItemType>[] = [
             componentProps: {
               options: getClothesByGender(formModel.gender),
             },
-          });
-          formModel['clothes'] = '';
+          })
+          formModel.clothes = ''
         },
       }),
     },
@@ -79,8 +79,8 @@ export const columns: TableColumn<ListItemType>[] = [
             componentProps: {
               options: getClothesByGender(formModel.gender),
             },
-          });
-          formModel['clothes'] = '';
+          })
+          formModel.clothes = ''
         },
       }),
     },
@@ -95,6 +95,7 @@ export const columns: TableColumn<ListItemType>[] = [
         options: getClothesByGender(formModel.gender),
       }),
     },
+    customRender: ({ record }) => getClothesByGender(record.gender).find(item => item.value === record.clothes)?.label,
   },
   {
     title: '图片',
@@ -117,14 +118,16 @@ export const columns: TableColumn<ListItemType>[] = [
       },
       componentSlots: ({ formModel }) => ({
         default: () =>
-          formModel['img']?.length ? (
-            ''
-          ) : (
-            <div>
-              <PlusOutlined />
-              <div class="mt-8px">Upload</div>
-            </div>
-          ),
+          formModel.img?.length
+            ? (
+                ''
+              )
+            : (
+                <div>
+                  <PlusOutlined />
+                  <div class="mt-8px">Upload</div>
+                </div>
+              ),
       }),
     },
     customRender: ({ record }) => <Image width={100} src={record.img}></Image>,
@@ -147,27 +150,27 @@ export const columns: TableColumn<ListItemType>[] = [
         showSearch: true,
         filterOption: false,
         request: () => {
-          return fetchStatusMapData();
+          return fetchStatusMapData()
         },
         onSearch: debounce(async (keyword) => {
-          schema.value.loading = true;
+          schema.value.loading = true
           const newSchema = {
             field: schema.value.field,
             componentProps: {
               options: [] as LabelValueOptions,
             },
-          };
-          formInstance?.updateSchema([newSchema]);
+          }
+          formInstance?.updateSchema([newSchema])
           const result = await fetchStatusMapData(keyword).finally(
             () => (schema.value.loading = false),
-          );
-          console.log('onSearch keyword', keyword, formInstance, newSchema);
-          newSchema.componentProps.options = result;
-          formInstance?.updateSchema([newSchema]);
+          )
+          console.log('onSearch keyword', keyword, formInstance, newSchema)
+          newSchema.componentProps.options = result
+          formInstance?.updateSchema([newSchema])
         }, 500),
         onChange(value: string) {
-          console.log('onChange', value);
-          formInstance.setFieldsValue({ status: value });
+          console.log('onChange', value)
+          formInstance.setFieldsValue({ status: value })
         },
       }),
     },
@@ -180,4 +183,4 @@ export const columns: TableColumn<ListItemType>[] = [
       </Tag>
     ),
   },
-];
+]

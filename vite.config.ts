@@ -1,22 +1,23 @@
-import { resolve } from 'node:path';
-import { loadEnv } from 'vite';
-import vueJsx from '@vitejs/plugin-vue-jsx';
-import mkcert from 'vite-plugin-mkcert';
-import vue from '@vitejs/plugin-vue';
-import checker from 'vite-plugin-checker';
-import Components from 'unplugin-vue-components/vite';
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
-import Unocss from 'unocss/vite';
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
-import dayjs from 'dayjs';
-import mockServerPlugin from '@admin-pkg/vite-plugin-msw/vite';
-import TinymceResourcePlugin from '@admin-pkg/vite-plugin-tinymce-resource';
-import Http2Proxy from '@admin-pkg/vite-plugin-http2-proxy';
-import Inspector from 'vite-plugin-vue-inspector';
-import pkg from './package.json';
-import type { UserConfig, ConfigEnv } from 'vite';
+import type { ConfigEnv, UserConfig } from 'vite'
+import https from 'node:https'
+import { resolve } from 'node:path'
+import Http2Proxy from '@admin-pkg/vite-plugin-http2-proxy'
+import mockServerPlugin from '@admin-pkg/vite-plugin-msw/vite'
+import TinymceResourcePlugin from '@admin-pkg/vite-plugin-tinymce-resource'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import dayjs from 'dayjs'
+import Unocss from 'unocss/vite'
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+import { loadEnv } from 'vite'
+import checker from 'vite-plugin-checker'
+import mkcert from 'vite-plugin-mkcert'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import VueDevTools from 'vite-plugin-vue-devtools'
+import pkg from './package.json'
 
-const CWD = process.cwd();
+const CWD = process.cwd()
 
 // 环境变量
 // const BASE_ENV_CONFIG = loadEnv('', CWD);
@@ -26,15 +27,17 @@ const CWD = process.cwd();
 const __APP_INFO__ = {
   pkg,
   lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-};
+}
 
-// https://vitejs.dev/config/
+/**
+ * https://vitejs.dev/config/
+ */
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   // 环境变量
-  const { VITE_BASE_URL, VITE_DROP_CONSOLE, VITE_MOCK_IN_PROD } = loadEnv(mode, CWD);
+  const { VITE_BASE_URL, VITE_DROP_CONSOLE, VITE_MOCK_IN_PROD } = loadEnv(mode, CWD)
 
-  const isDev = command === 'serve';
-  const isBuild = command === 'build';
+  const isDev = command === 'serve'
+  const isBuild = command === 'build'
 
   return {
     base: VITE_BASE_URL,
@@ -51,7 +54,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     plugins: [
       vue(),
-      Inspector(),
+      VueDevTools(),
       Unocss(),
       vueJsx({
         // options are passed on to @vue/babel-plugin-jsx
@@ -88,18 +91,18 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         ],
       }),
       // https://github.com/fi3ework/vite-plugin-checker
-      isDev &&
-        checker({
-          typescript: true,
-          // vueTsc: true,
-          eslint: {
-            useFlatConfig: true,
-            lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
-          },
-          overlay: {
-            initialIsOpen: false,
-          },
-        }),
+      // isDev &&
+      //   checker({
+      //     typescript: true,
+      //     // vueTsc: true,
+      //     eslint: {
+      //       useFlatConfig: true,
+      //       lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
+      //     },
+      //     overlay: {
+      //       initialIsOpen: false,
+      //     },
+      //   }),
     ],
     css: {
       preprocessorOptions: {
@@ -120,14 +123,16 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '^/api': {
           // target: 'https://nest-admin.buqiyuan.top',
           target: 'http://127.0.0.1:7001',
+          secure: false,
+          agent: new https.Agent(),
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: path => path.replace(/^\/api/, ''),
         },
         '^/upload': {
           // target: 'https://nest-admin.buqiyuan.top/upload',
           target: 'http://127.0.0.1:7001/upload',
           changeOrigin: true,
-          rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),
+          rewrite: path => path.replace(/^\/upload/, ''),
         },
       },
       // 提前转换和缓存文件以进行预热。可以在服务器启动时提高初始页面加载速度，并防止转换瀑布。
@@ -150,7 +155,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     build: {
       minify: 'esbuild',
-      cssTarget: 'chrome89',
+      cssTarget: 'chrome108',
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {
@@ -159,14 +164,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         onwarn(warning, rollupWarn) {
           // ignore circular dependency warning
           if (
-            warning.code === 'CYCLIC_CROSS_CHUNK_REEXPORT' &&
-            warning.exporter?.includes('src/api/')
+            warning.code === 'CYCLIC_CROSS_CHUNK_REEXPORT'
+            && warning.exporter?.includes('src/api/')
           ) {
-            return;
+            return
           }
-          rollupWarn(warning);
+          rollupWarn(warning)
         },
       },
     },
-  };
-};
+  }
+}

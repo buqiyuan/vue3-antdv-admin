@@ -1,42 +1,47 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "ESNext",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "lib": ["dom", "esnext", "DOM.Iterable"],
+    "noLib": false, // 不排除默认库文件（比如 lib.d.ts）的类型检查。
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true, // 启用对装饰器的实验性支持。
+    "baseUrl": ".",
     "module": "ESNext",
     /*  Bundler mode | 编译相关 */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    "removeComments": true,
-    "useUnknownInCatchVariables": false, //是否允许在 catch 语句中使用 unknown 类型的变量。
-    "declarationMap": false, //是否为每个生成的 .d.ts 文件生成源映射。
-    "inlineSources": false, //是否将源文件的内容嵌入到源映射中。
-    "skipLibCheck": true, //跳过所有的 *.d.ts 文件的类型检查。
-    "preserveWatchOutput": true, //在 TypeScript 的观察模式下保留控制台输出。
-    "experimentalDecorators": true, //启用对装饰器的实验性支持。
-    "noLib": false, //不排除默认库文件（比如 lib.d.ts）的类型检查。
-    "allowSyntheticDefaultImports": true,
-    "jsxImportSource": "vue",
+    "types": ["node", "vite/client"],
+    "allowImportingTsExtensions": true,
     "allowJs": true,
     /* Linting | 代码质量相关 */
     "strict": true,
-    "useDefineForClassFields": true,
-    "noImplicitOverride": true,
-    "noUnusedLocals": true,
-    "forceConsistentCasingInFileNames": true,
-    "noUnusedParameters": false,
     "strictFunctionTypes": false,
     "noImplicitAny": false,
-    "lib": ["dom", "esnext", "DOM.Iterable"],
-    "types": ["node", "vite/client"],
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "useUnknownInCatchVariables": false, // 是否允许在 catch 语句中使用 unknown 类型的变量。
+    "declarationMap": false, // 是否为每个生成的 .d.ts 文件生成源映射。
+    "inlineSources": false, // 是否将源文件的内容嵌入到源映射中。
+    "noEmit": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "skipLibCheck": true, // 跳过所有的 *.d.ts 文件的类型检查。
+    "preserveWatchOutput": true // 在 TypeScript 的观察模式下保留控制台输出。
   },
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
   "include": [
     "**/*.d.ts",
     "mock/**/*",
@@ -47,10 +52,5 @@
     "types/**/*.d.ts",
     "types/**/*.ts"
   ],
-  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+  "exclude": ["node_modules", "dist", "**/*.js", "**/*.md", "src/**/*.md"]
 }
