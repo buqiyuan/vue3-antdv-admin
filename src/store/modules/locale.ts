@@ -8,8 +8,7 @@ interface LocaleState {
   locale: LocaleType;
 }
 
-export const useLocaleStore = defineStore({
-  id: 'locale',
+export const useLocaleStore = defineStore('locale',{
   state: (): LocaleState => ({
     locale: Storage.get(LOCALE_KEY, 'zh_CN'),
   }),

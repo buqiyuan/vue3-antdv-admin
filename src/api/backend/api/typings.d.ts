@@ -120,6 +120,10 @@ declare namespace API {
   };
 
   type DeptEntity = {
+    /** 创建者 */
+    creator: string;
+    /** 更新者 */
+    updater: string;
     /** 部门名称 */
     name: string;
     /** 排序 */
@@ -241,7 +245,7 @@ declare namespace API {
     updater: string;
     /** 字典名称 */
     name: string;
-    /** 字典类型 */
+    /** 字典编码 */
     code: string;
     /**  状态 */
     status: number;
@@ -458,32 +462,15 @@ declare namespace API {
     component?: string;
   };
 
-  type MenuEntity = {
-    parentId: number;
-    name: string;
-    path: string;
-    permission: string;
-    type: number;
-    icon: string;
-    orderNo: number;
-    component: string;
-    isExt: boolean;
-    extOpenMode: number;
-    keepAlive: number;
-    show: number;
-    activeMenu: string;
-    status: number;
-    roles: RoleEntity[];
-    id: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-
   type MenuInfoParams = {
     id: number;
   };
 
   type MenuItemInfo = {
+    /** 创建者 */
+    creator: string;
+    /** 更新者 */
+    updater: string;
     children: MenuItemInfo[];
     parentId: number;
     name: string;
@@ -537,6 +524,10 @@ declare namespace API {
   };
 
   type MenuMeta = {
+    /** 创建者 */
+    creator?: string;
+    /** 更新者 */
+    updater?: string;
     title: string;
     permission?: string;
     type?: number;
@@ -753,7 +744,7 @@ declare namespace API {
   type RoleDto = {
     /** 角色名称 */
     name: string;
-    /** 角色值 */
+    /** 角色标识 */
     value: string;
     /** 角色备注 */
     remark?: string;
@@ -764,6 +755,10 @@ declare namespace API {
   };
 
   type RoleEntity = {
+    /** 创建者 */
+    creator: string;
+    /** 更新者 */
+    updater: string;
     /** 角色名 */
     name: string;
     /** 角色标识 */
@@ -780,6 +775,10 @@ declare namespace API {
   };
 
   type RoleInfo = {
+    /** 创建者 */
+    creator: string;
+    /** 更新者 */
+    updater: string;
     /** 角色名 */
     name: string;
     /** 角色标识 */
@@ -805,13 +804,23 @@ declare namespace API {
     pageSize?: number;
     field?: string;
     order?: 'ASC' | 'DESC';
+    /** 角色名称 */
+    name?: string;
+    /** 角色值 */
+    value?: string;
+    /** 角色备注 */
+    remark?: string;
+    /** 状态 */
+    status?: 0 | 1;
+    /** 关联菜单、权限编号 */
+    menuIds?: number[];
     _t?: number;
   };
 
   type RoleUpdateDto = {
     /** 角色名称 */
     name?: string;
-    /** 角色值 */
+    /** 角色标识 */
     value?: string;
     /** 角色备注 */
     remark?: string;

@@ -7,7 +7,6 @@ const store = createPinia();
 store.use(
   createPersistedState({
     key: (id) => `__persisted__${id}`,
-    auto: false,
   }),
 );
 

@@ -1,7 +1,7 @@
 <template>
   <teleport :to="getContainer || 'body'">
     <ProConfigProvider>
-      <div ref="modalWrapRef" class="draggable-modal" :class="{ fullscreen: fullscreenModel }">
+      <div ref="modalWrap" class="draggable-modal" :class="{ fullscreen: fullscreenModel }">
         <Modal
           v-bind="omit(props, ['open', 'onCancel', 'onOk', 'onUpdate:open'])"
           v-model:open="openModel"
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch, nextTick, defineModel } from 'vue';
+  import { ref, watch, nextTick, useTemplateRef } from 'vue';
   import { useRoute } from 'vue-router';
   import { modalProps } from 'ant-design-vue/es/modal/Modal';
   import { CloseOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons-vue';
@@ -75,7 +75,7 @@
 
   // 是否已经初始化过了
   let inited = false;
-  const modalWrapRef = ref<HTMLDivElement>();
+  const modalWrapRef = useTemplateRef('modalWrap');
 
   const closeModal = () => {
     openModel.value = false;

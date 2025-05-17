@@ -53,6 +53,7 @@
 
   const tableContext = useTableContext();
   const {
+    tableProps,
     editFormModel,
     editTableFormRef,
     editFormErrorMsgs,
@@ -69,7 +70,7 @@
 
   const getSchema = computed(() => {
     const field = props.schema.field;
-    const schema = editTableFormRef.value?.getSchemaByFiled(field) || props.schema;
+    const schema = editTableFormRef.value?.getSchemaByField(field) || props.schema;
     return {
       ...schema,
       colProps: {
@@ -105,7 +106,7 @@
   const handleSaveCell = async () => {
     const { rowKey, column } = props;
     await validateCell(rowKey!, dataIndex.value);
-    const saveRes = tableContext.onSave?.(rowKey!, editFormModel.value[rowKey!], column?.record);
+    const saveRes = tableProps.onSave?.(rowKey!, editFormModel.value[rowKey!], column?.record);
     if (isPromise(saveRes)) {
       saving.value = true;
       await saveRes.finally(() => (saving.value = false));
@@ -116,7 +117,7 @@
 
   const handleCancelSaveCell = () => {
     const { rowKey, column } = props;
-    tableContext?.onCancel?.(rowKey!, editFormModel.value[rowKey!], column?.record);
+    tableProps.onCancel?.(rowKey!, editFormModel.value[rowKey!], column?.record);
     isCellEdit.value = false;
     cancelCellEditable(props.rowKey!, dataIndex.value);
   };

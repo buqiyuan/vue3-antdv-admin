@@ -46,11 +46,9 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "typescript": "~5.4.2",
-    "vite": "^5.1.5"
+    "typescript": "~5.5.4"
   },
   "peerDependencies": {
-    "vite": "^5.0.0",
     "vue": "^3.4.0"
   }
 }

@@ -42,15 +42,14 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@mswjs/interceptors": "^0.26.15",
+    "@mswjs/interceptors": "^0.36.1",
     "headers-polyfill": "^4.0.3",
     "strict-event-emitter": "^0.5.1"
   },
   "devDependencies": {
-    "tsup": "^8.0.2"
+    "tsup": "^8.3.0"
   },
   "peerDependencies": {
-    "msw": "^2.2.13",
-    "vite": "^5.2.8"
+    "msw": "^2.3.0"
   }
 }

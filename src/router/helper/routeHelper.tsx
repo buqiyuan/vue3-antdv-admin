@@ -20,10 +20,12 @@ export const transformMenuToRoutes = (
     // 是否在菜单中隐藏
     route.meta.hideInMenu ??= !show;
 
-    // 规范化路由路径
-    route.path = route.path.startsWith('/') ? route.path : `/${route.path}`;
-    if (parentRoute?.path && !route.path.startsWith(parentRoute.path)) {
-      route.path = uniqueSlash(`${parentRoute.path}/${route.path}`);
+    if (!isExt) {
+      // 规范化路由路径
+      route.path = route.path.startsWith('/') ? route.path : `/${route.path}`;
+      if (parentRoute?.path && !route.path.startsWith(parentRoute.path)) {
+        route.path = uniqueSlash(`${parentRoute.path}/${route.path}`);
+      }
     }
     // 以路由路径作为唯一的路由名称
     route.name = route.path;

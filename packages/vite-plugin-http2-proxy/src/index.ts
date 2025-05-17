@@ -1,25 +1,17 @@
-import { version } from 'node:process';
 import http2Proxy from 'http2-proxy';
-import type { Plugin, ProxyOptions } from 'vite';
+import type { Plugin, PluginOption, ProxyOptions } from 'vite';
 
 const error = (message: string): never => {
   throw new Error(message);
 };
 
-export default (options?: Record<string, ProxyOptions>): Plugin => {
+export default (options?: Record<string, ProxyOptions>): PluginOption => {
   let routes: Record<string, ProxyOptions>;
-
-  if (version.startsWith('v2')) {
-    console.warn(
-      '[@admin-pkg/vite-plugin-http2-proxy] http2-proxy is not supported in Node.js v20.x+',
-    );
-    return { name: '@admin-pkg/vite-plugin-http2-proxy' };
-  }
 
   const configure: Plugin['configureServer'] = ({ middlewares, httpServer }) => {
     const proxyOptions = options || routes;
     for (const [regexp, serverOptions] of Object.entries(proxyOptions)) {
-      const { target, rewrite, headers, ws, secure = true } = serverOptions;
+      const { target, rewrite, headers, ws, secure = true, timeout = 30_000 } = serverOptions;
       if (!target) {
         continue;
       }
@@ -56,6 +48,7 @@ export default (options?: Record<string, ProxyOptions>): Plugin => {
               {
                 port: 443,
                 path: pathname + search,
+                proxyTimeout: timeout,
                 hostname: urlObj.hostname,
                 ['rejectUnauthorized' as never]: secure,
                 ...serverOptions,
@@ -83,6 +76,7 @@ export default (options?: Record<string, ProxyOptions>): Plugin => {
                 port,
                 hostname: urlObj.hostname,
                 path: pathname + search,
+                proxyTimeout: timeout,
                 onReq: async (_, options) => {
                   options.headers = {
                     ...options.headers,
@@ -102,6 +96,7 @@ export default (options?: Record<string, ProxyOptions>): Plugin => {
     }
   };
 
+  // @ts-ignore
   return {
     name: '@admin-pkg/vite-plugin-http2-proxy',
     config: (config) => {
@@ -121,7 +116,8 @@ export default (options?: Record<string, ProxyOptions>): Plugin => {
       );
 
       if (server) {
-        server.proxy = undefined;
+        // https://cn.vitejs.dev/config/server-options#server-https
+        Reflect.deleteProperty(server, 'proxy');
       }
       return config;
     },

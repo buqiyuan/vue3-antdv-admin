@@ -1,14 +1,10 @@
 <template>
   <ProConfigProvider :theme="btnTheme">
-    <Button v-bind="{ ...$attrs, ...props }" :type="buttonType">
-      <template v-for="(_, key) in $slots" #[key]>
-        <slot :name="key" />
-      </template>
-    </Button>
+    <component :is="h(Button, { ...$attrs, ...props, type: buttonType }, $slots)" />
   </ProConfigProvider>
 </template>
 <script lang="ts" setup>
-  import { computed } from 'vue';
+  import { computed, h } from 'vue';
   import { Button } from 'ant-design-vue';
   import { buttonProps, buttonColorPrimary, aButtonTypes } from './button';
   import type { ButtonType, AButtonType } from './button';

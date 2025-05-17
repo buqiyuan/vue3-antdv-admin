@@ -32,7 +32,7 @@ export function useLocale() {
   const getLocale = computed(() => localeStore.getLocale);
 
   const getAntdLocale = computed<Locale>((): any => {
-    return i18n.global.getLocaleMessage(unref(getLocale)).antdLocale;
+    return i18n.global.getLocaleMessage(unref(getLocale))['antdLocale'];
   });
 
   // Switching the language will change the locale of useI18n

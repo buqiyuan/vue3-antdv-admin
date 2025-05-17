@@ -59,10 +59,6 @@ export function isPromise<T = any>(val: unknown): val is Promise<T> {
   );
 }
 
-export function isAsyncFunction(val: unknown): val is Function {
-  return is(val, 'AsyncFunction');
-}
-
 export function isWindow(val: any): val is Window {
   return typeof window !== 'undefined' && is(val, 'Window');
 }

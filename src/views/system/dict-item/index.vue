@@ -6,6 +6,7 @@
       :data-request="Api.systemDictItem.dictItemList"
       :columns="columns"
       bordered
+      :immediate="false"
       size="small"
       :search-params="{ typeId }"
     >
@@ -23,15 +24,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onBeforeMount } from 'vue';
   import { useRoute } from 'vue-router';
   import {
     baseColumns,
-    getSearchFormSchemas,
+    searchFormSchemas,
     type TableListItem,
     type TableColumnItem,
   } from './columns';
-  import { getBaseSchemas } from './formSchemas';
+  import { baseSchemas } from './formSchemas';
   import { useTable } from '@/components/core/dynamic-table';
   import { useFormModal } from '@/hooks/useModal/';
   import Api from '@/api/';
@@ -44,19 +45,11 @@
   const tabsViewStore = useTabsViewStore();
   const route = useRoute();
   const typeId = ref(Number(route.params.id));
-  const dictTypeList = ref<any[]>([]);
-
-  const data = await Api.systemDictType.dictTypeGetAll();
-  dictTypeList.value = data.map((n) => ({ label: n.name, value: n.id, code: n.code }));
-
-  onMounted(() => {
-    const targetDict = data.find((n) => n.id === typeId.value);
-    tabsViewStore.updateTabTitle(`${route.meta.title}(${targetDict?.name})`);
-  });
+  let dictTypeList: LabelValueOptions = [];
 
   const [DynamicTable, dynamicTableInstance] = useTable({
     formProps: {
-      schemas: getSearchFormSchemas(dictTypeList.value, handleDictTypeChange),
+      schemas: searchFormSchemas,
       initialValues: { typeId: typeId.value },
       onReset(model) {
         if (Number.isInteger(model?.typeId)) {
@@ -67,6 +60,27 @@
   });
 
   const [showModal] = useFormModal();
+
+  onBeforeMount(async () => {
+    const data = await Api.systemDictType.dictTypeGetAll();
+    dictTypeList = data.map((n) => ({ label: n.name, value: n.id, code: n.code }));
+
+    const targetDict = data.find((n) => n.id === typeId.value);
+    tabsViewStore.updateTabTitle(`${route.meta.title}(${targetDict?.name})`);
+    // 动态更新搜索表单项
+    dynamicTableInstance?.getSearchFormRef()?.updateSchema?.([
+      {
+        field: 'typeId',
+        componentProps: {
+          options: dictTypeList,
+          onChange(value) {
+            typeId.value = value;
+          },
+        },
+      },
+    ]);
+    dynamicTableInstance?.reload();
+  });
 
   /**
    * @description 打开新增/编辑弹窗
@@ -89,10 +103,20 @@
       },
       formProps: {
         labelWidth: 120,
-        schemas: getBaseSchemas(dictTypeList.value, typeId.value),
+        schemas: baseSchemas,
       },
     });
+
+    formRef?.updateSchema({
+      field: 'typeId',
+      componentProps: {
+        options: dictTypeList,
+        disabled: true,
+      },
+    });
+
     formRef?.setFieldsValue({
+      typeId: typeId.value,
       ...record,
     });
   };
@@ -100,10 +124,6 @@
     await Api.systemDictItem.dictItemDelete({ id: record.id });
     dynamicTableInstance?.reload();
   };
-
-  function handleDictTypeChange(value) {
-    typeId.value = value;
-  }
 
   const columns: TableColumnItem[] = [
     ...baseColumns,

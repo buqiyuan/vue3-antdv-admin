@@ -5,11 +5,9 @@
     </Divider>
     <Form.Item
       v-else
-      v-bind="{ ...schema.formItemProps }"
+      v-bind="{ ...schema.formItemProps, ...itemLabelWidthProp }"
       :label="renderLabelHelpMessage"
       :name="namePath"
-      :label-col="itemLabelWidthProp.labelCol"
-      :wrapper-col="itemLabelWidthProp.wrapperCol"
       :rules="getRules"
     >
       <!-- 前置插槽 -->
@@ -21,28 +19,29 @@
       </template>
       <!-- 自定义插槽 -->
       <slot v-if="schema.slot" :name="schema.slot" v-bind="getValues" />
-      <component
-        :is="getComponent"
-        v-else-if="getComponent"
-        :ref="setItemRef(schema.field)"
-        v-bind="getComponentProps"
-        v-model:[modelValueType]="modelValue"
-        :allow-clear="true"
-        :disabled="getDisable"
-        :loading="schema.loading"
-        v-on="componentEvents"
-      >
-        <template v-if="Object.is(schema.loading, true)" #notFoundContent>
-          <Spin size="small" />
-        </template>
-        <template
-          v-for="(slotFn, slotName) in getComponentSlots"
-          #[slotName]="slotData"
-          :key="slotName"
+      <template v-else-if="getComponent">
+        <component
+          :is="getComponent"
+          :ref="setItemRef(schema.field)"
+          v-bind="getComponentProps"
+          v-model:[modelValueType]="modelValue"
+          :allow-clear="true"
+          :disabled="getDisable"
+          :loading="schema.loading"
+          v-on="componentEvents"
         >
-          <component :is="slotFn?.({ ...getValues, slotData }) ?? slotFn" :key="slotName" />
-        </template>
-      </component>
+          <template v-if="Object.is(schema.loading, true)" #notFoundContent>
+            <Spin size="small" />
+          </template>
+          <template
+            v-for="(slotFn, slotName) in getComponentSlots"
+            #[slotName]="slotData"
+            :key="slotName"
+          >
+            <component :is="slotFn?.({ ...getValues, slotData }) ?? slotFn" :key="slotName" />
+          </template>
+        </component>
+      </template>
       <!-- 后置插槽 -->
       <template v-if="schema.afterSlot">
         <slot v-if="isString(schema.afterSlot)" :name="schema.afterSlot" v-bind="getValues">
@@ -55,7 +54,7 @@
 </template>
 
 <script setup lang="tsx">
-  import { computed, unref, toRefs, isVNode, watch, nextTick } from 'vue';
+  import { computed, unref, toRefs, isVNode, watch, nextTick, ref } from 'vue';
   import { cloneDeep, debounce, isEqual } from 'lodash-es';
   import { Form, Col, Spin, Divider } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
@@ -79,14 +78,27 @@
 
   // schemaForm组件实例
   const formContext = useFormContext();
-  const { formPropsRef, setItemRef, updateSchema, getSchemaByFiled, appendSchemaByField } =
+  const { formPropsRef, setItemRef, updateSchema, getSchemaByField, appendSchemaByField } =
     formContext;
 
   const { t } = useI18n();
 
-  const { schema } = toRefs(props);
+  // const { schema } = toRefs(props);
+  function deepCopy(obj) {
+    if (typeof obj !== 'object' || obj === null) {
+      return obj;
+    }
 
-  // @ts-ignore
+    let copy = {};
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        copy[key] = deepCopy(obj[key]);
+      }
+    }
+    return copy;
+  }
+  const schema = ref(deepCopy(props.schema));
+
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
 
   const namePath = computed<string[]>(() => {
@@ -208,7 +220,7 @@
   const getComponent = computed(() => {
     const component = props.schema.component;
     return isString(component)
-      ? componentMap[component] ?? vnodeFactory(component)
+      ? (componentMap[component] ?? vnodeFactory(component))
       : vnodeFactory(component);
   });
 
@@ -260,11 +272,11 @@
    * @description 表单组件事件
    */
   const componentEvents = computed(() => {
-    const componentProps = props.schema?.componentProps || {};
+    const componentProps = getComponentProps.value;
     return Object.keys(componentProps).reduce((prev, key) => {
-      if (/on([A-Z])/.test(key)) {
-        // eg: onChange => change
-        const eventKey = key.replace(/on([A-Z])/, '$1').toLocaleLowerCase();
+      if (/^on([A-Z])/.test(key)) {
+        // e.g: onChange => change
+        const eventKey = key.replace(/^on([A-Z])/, '$1').toLocaleLowerCase();
         prev[eventKey] = componentProps[key];
       }
       return prev;
@@ -407,7 +419,7 @@
       const { component } = unref(schema);
       const componentProps = newSchema.componentProps as ComponentProps;
 
-      if (['Select', 'RadioGroup', 'CheckBoxGroup'].some((n) => n === component)) {
+      if (['Select', 'RadioGroup', 'CheckboxGroup'].some((n) => n === component)) {
         componentProps.options = result;
       } else if (['TreeSelect', 'Tree'].some((n) => n === component)) {
         componentProps.treeData = result;
@@ -448,7 +460,7 @@
     getShow,
     (val, oldVal) => {
       if (!isEqual(val, oldVal) && val.isIfShow && val.isShow) {
-        if (!getSchemaByFiled(props.schema.field)) {
+        if (!getSchemaByField(props.schema.field)) {
           appendSchemaByField(props.schema);
         }
         initRequestConfig();

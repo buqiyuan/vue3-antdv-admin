@@ -1,109 +1,113 @@
 {
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "npm.packageManager": "pnpm",
-  "editor.tabSize": 2,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  // 保存文件缓慢时，可以考虑开启以下 3 行配置。
-  // "vue.server.maxOldSpaceSize": 4096,
-  // "vue.server.hybridMode": true,
-  // "typescript.tsserver.maxTsServerMemory": 4096,
-  "files.eol": "\n",
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/*.log": true,
-    "**/*.log*": true,
-    "**/bower_components": true,
-    "**/dist": true,
-    "**/elehukouben": true,
-    "**/.git": true,
-    "**/.gitignore": true,
-    "**/.svn": true,
-    "**/.DS_Store": true,
-    "**/.idea": true,
-    "**/.vscode": false,
-    "**/yarn.lock": true,
-    "**/tmp": true,
-    "out": true,
-    "dist": true,
-    "node_modules": true,
-    "CHANGELOG.md": true,
-    "examples": true,
-    "res": true,
-    "screenshots": true,
-    "yarn-error.log": true,
-    "**/.yarn": true
-  },
-  "files.exclude": {
-    "**/.cache": true,
-    "**/.editorconfig": true,
-    "**/.eslintcache": true,
-    "**/bower_components": true,
-    "**/.idea": true,
-    "**/tmp": true,
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true
-  },
-  "files.watcherExclude": {
-    "**/.git/objects/**": true,
-    "**/.git/subtree-cache/**": true,
-    "**/.vscode/**": true,
-    "**/node_modules/**": true,
-    "**/tmp/**": true,
-    "**/bower_components/**": true,
-    "**/dist/**": true,
-    "**/yarn.lock": true
-  },
-  "eslint.experimental.useFlatConfig": true,
-  "stylelint.enable": true,
-  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
-  "path-intellisense.mappings": {
-    "@/": "${workspaceRoot}/src"
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[less]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  // Disable the default formatter, use eslint instead
+  "prettier.enable": false,
+  "editor.formatOnSave": false,
+  // Auto fix
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
-    "source.fixAll.stylelint": "explicit"
+    "source.organizeImports": "never"
   },
-  "[vue]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit",
-      "source.fixAll.stylelint": "explicit"
+  // Silent the stylistic rules in you IDE, but still auto fix them
+  "eslint.rules.customizations": [
+    {
+      "rule": "style/*",
+      "severity": "off",
+      "fixable": true
     },
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    {
+      "rule": "format/*",
+      "severity": "off",
+      "fixable": true
+    },
+    {
+      "rule": "*-indent",
+      "severity": "off",
+      "fixable": true
+    },
+    {
+      "rule": "*-spacing",
+      "severity": "off",
+      "fixable": true
+    },
+    {
+      "rule": "*-spaces",
+      "severity": "off",
+      "fixable": true
+    },
+    {
+      "rule": "*-order",
+      "severity": "off",
+      "fixable": true
+    },
+    {
+      "rule": "*-dangle",
+      "severity": "off",
+      "fixable": true
+    },
+    {
+      "rule": "*-newline",
+      "severity": "off",
+      "fixable": true
+    },
+    {
+      "rule": "*quotes",
+      "severity": "off",
+      "fixable": true
+    },
+    {
+      "rule": "*semi",
+      "severity": "off",
+      "fixable": true
+    }
+  ],
+  // Enable eslint for all supported languages
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml",
+    "toml",
+    "xml",
+    "gql",
+    "graphql",
+    "astro",
+    "svelte",
+    "css",
+    "less",
+    "scss",
+    "pcss",
+    "postcss"
+  ],
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/dist-vite": true,
+    "**/out": true,
+    "**/build": true,
+    "**/.git": true,
+    "**/.vscode": true
   },
-  "i18n-ally.localesPaths": ["src/locales/lang"],
+  "i18n-ally.localesPaths": [
+    "src/locales/lang"
+  ],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sortKeys": true,
   "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespaces}.{ext}",
-  "i18n-ally.enabledParsers": ["json"],
+  "i18n-ally.enabledParsers": [
+    "json"
+  ],
   "i18n-ally.sourceLanguage": "en",
   "i18n-ally.displayLanguage": "zh-CN",
-  "i18n-ally.enabledFrameworks": ["vue", "react"]
+  "i18n-ally.enabledFrameworks": [
+    "vue",
+    "react"
+  ]
 }

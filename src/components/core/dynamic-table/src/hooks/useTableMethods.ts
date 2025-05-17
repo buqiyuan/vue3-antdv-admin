@@ -4,9 +4,9 @@ import { useInfiniteScroll } from '@vueuse/core';
 import tableConfig from '../dynamic-table.config';
 import { useEditable } from './useEditable';
 import { useTableExpand } from './useTableExpand';
-import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
+import type { TableState, Pagination } from './useTableState';
+import type { DynamicTableEmitFn, DynamicTableProps } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
-import type { Pagination, TableState } from './useTableState';
 import type { FormProps } from 'ant-design-vue';
 import { warn } from '@/utils/log';
 import { isObject } from '@/utils/is';
@@ -14,26 +14,26 @@ import { isObject } from '@/utils/is';
 export type UseInfiniteScrollParams = Parameters<typeof useInfiniteScroll>;
 
 export type TableMethods = ReturnType<typeof useTableMethods>;
-
-export type UseTableMethodsContext = {
-  state: TableState;
-  props: DynamicTableProps;
+interface UseTableMethodsPayload {
+  tableState: TableState;
   emit: DynamicTableEmitFn;
-};
+  props: DynamicTableProps;
+}
 
-export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) => {
+export const useTableMethods = (payload: UseTableMethodsPayload) => {
+  const { props, emit, tableState } = payload;
   const {
     innerPropsRef,
     tableData,
     loadingRef,
-    queryFormRef,
+    searchFormRef,
     paginationRef,
     editFormErrorMsgs,
     searchState,
-  } = state;
+  } = tableState;
   // 可编辑行
-  const editableMethods = useEditable({ state, props });
-  const expandMethods = useTableExpand({ state, props, emit });
+  const editableMethods = useEditable({ props, tableState });
+  const expandMethods = useTableExpand({ props, tableState, emit });
 
   watch(
     () => props.searchParams,
@@ -68,10 +68,9 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
 
   /**
    * @param {object} params 表格查询参数
-   * @param {boolean} flush 是否将页数重置到第一页
    * @description 获取表格数据
    */
-  const fetchData = debounce(async (params = {}) => {
+  const fetchData = debounce(async (params: Recordable = {}) => {
     const { dataRequest, dataSource, fetchConfig, searchParams } = props;
 
     if (!dataRequest || !isFunction(dataRequest) || Array.isArray(dataSource)) {
@@ -104,10 +103,10 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
         ...params,
       };
       await nextTick();
-      if (queryFormRef.value) {
-        const values = await queryFormRef.value.validate();
+      if (searchFormRef.value) {
+        const values = await searchFormRef.value.validate();
         queryParams = {
-          ...queryFormRef.value.handleFormValues(values),
+          ...searchFormRef.value.handleFormValues(values),
           ...queryParams,
         };
       }
@@ -164,8 +163,8 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     const [pagination, filters, sorter] = rest;
     const { sortFn, filterFn } = props;
 
-    if (queryFormRef.value) {
-      await queryFormRef.value.validate();
+    if (searchFormRef.value) {
+      await searchFormRef.value.validate();
     }
     updatePagination(pagination);
 
@@ -228,7 +227,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
   /**
    * @description当外部需要动态改变搜索表单的值或选项时，需要调用此方法获取dynamicFormRef实例
    */
-  const getQueryFormRef = () => queryFormRef.value;
+  const getSearchFormRef = () => searchFormRef.value;
 
   return {
     ...editableMethods,
@@ -238,7 +237,7 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     handleTableChange,
     getColumnKey,
     fetchData,
-    getQueryFormRef,
+    getSearchFormRef,
     reload,
     onInfiniteScroll,
     handleEditFormValidate,

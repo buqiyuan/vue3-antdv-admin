@@ -1,25 +1,28 @@
 import { get, isEmpty } from 'lodash-es';
 import { columnKeyFlags } from '../types';
+import type { TableState } from './useTableState';
 import type { DynamicTableProps } from '../dynamic-table';
-import type { TableMethods, TableState } from './index';
+import type { TableMethods } from './useTableMethods';
 import { exportJson2Excel } from '@/utils/Export2Excel';
 
-export type UseExportData2ExcelContext = {
-  state: TableState;
-  methods: TableMethods;
-  props: DynamicTableProps;
-};
-
 export type ExportData2Excel = ReturnType<typeof useExportData2Excel>;
+
+interface UseExportData2ExcelPayload {
+  tableState: TableState;
+  props: DynamicTableProps;
+  tableMethods: TableMethods;
+}
 
 /**
  * 导出表格Excel
  */
-export const useExportData2Excel = ({ props, state, methods }: UseExportData2ExcelContext) => {
+export const useExportData2Excel = (payload: UseExportData2ExcelPayload) => {
+  const { tableState, props, tableMethods } = payload;
+  const { tableData } = tableState;
+  const { getColumnKey } = tableMethods;
+
   const exportData2Excel = () => {
     const { columns, exportFormatter, exportFileName, exportBookType, exportAutoWidth } = props;
-    const { getColumnKey } = methods;
-    const { tableData } = state;
 
     const theaders = columns.filter((n) => {
       const key = getColumnKey(n);

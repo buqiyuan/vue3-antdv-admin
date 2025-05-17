@@ -1,30 +1,31 @@
-import { unref, computed, watchEffect } from 'vue';
+import { unref, computed, watchEffect, useSlots } from 'vue';
 import { ColumnKeyFlag } from '../types/column';
-import type { TableMethods } from './useTableMethods';
-import type { TableState } from './useTableState';
-import type { ComputedRef, Slots } from 'vue';
+import type { ComputedRef } from 'vue';
 import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form';
+import type { TableState } from './useTableState';
+import type { TableMethods } from './useTableMethods';
 
 export type TableForm = ReturnType<typeof useTableForm>;
 
-export type UseTableFormContext = {
+interface UseTableFormPayload {
   tableState: TableState;
   tableMethods: TableMethods;
-  slots: Slots;
-};
+}
 
-export function useTableForm({ tableState, slots, tableMethods }: UseTableFormContext) {
-  const { getProps, loadingRef } = tableState;
-  const { getColumnKey, getQueryFormRef } = tableMethods;
+export function useTableForm(payload: UseTableFormPayload) {
+  const slots = useSlots();
+  const { tableState, tableMethods } = payload;
+  const { innerPropsRef, loadingRef } = tableState;
+  const { getColumnKey, getSearchFormRef } = tableMethods;
 
   const getFormProps = computed((): SchemaFormProps => {
-    const { formProps } = unref(getProps);
+    const { formProps } = unref(innerPropsRef);
     const { submitButtonOptions } = formProps || {};
-    // @ts-ignore
     return {
       showAdvancedButton: true,
       layout: 'horizontal',
       labelWidth: 100,
+      schemas: unref(formSchemas),
       ...formProps,
       submitButtonOptions: { loading: unref(loadingRef), ...submitButtonOptions },
       compact: true,
@@ -33,7 +34,8 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
 
   const formSchemas = computed<FormSchema[]>(() => {
     const columnKeyFlags = Object.keys(ColumnKeyFlag);
-    return unref(getProps)
+    // @ts-ignore
+    return unref(innerPropsRef)
       .columns.filter((n) => {
         const field = getColumnKey(n);
         return !n.hideInSearch && !!field && !columnKeyFlags.includes(field as string);
@@ -53,7 +55,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   });
 
   // 同步外部对props的修改
-  watchEffect(() => getQueryFormRef()?.setSchemaFormProps(unref(getFormProps)), {
+  watchEffect(() => getSearchFormRef()?.setSchemaFormProps(unref(getFormProps)), {
     flush: 'post',
   });
 
@@ -70,9 +72,9 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   }
 
   return {
+    formSchemas,
     getFormProps,
     replaceFormSlotKey,
     getFormSlotKeys,
-    formSchemas,
   };
 }

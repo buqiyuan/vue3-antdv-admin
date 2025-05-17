@@ -1,19 +1,11 @@
 import type { FormSchema } from '@/components/core/schema-form/';
 
-export const getBaseSchemas = (
-  dictTypeList: any[],
-  typeId: number,
-): FormSchema<API.DictItemDto>[] => [
+export const baseSchemas: FormSchema<API.DictItemDto>[] = [
   {
     field: 'typeId',
     component: 'Select',
     label: '所属字典类型',
     rules: [{ required: true, type: 'number' }],
-    defaultValue: typeId,
-    componentProps: {
-      options: dictTypeList,
-      disabled: true,
-    },
   },
   {
     field: 'label',

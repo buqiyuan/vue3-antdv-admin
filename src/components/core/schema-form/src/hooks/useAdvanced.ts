@@ -1,20 +1,24 @@
 import { computed, unref, watch } from 'vue';
-import type { SchemaFormEmitFn } from '../schema-form';
+import { useFormContext } from './useFormContext';
 import type { ColEx } from '../types/component';
-import type { SchemaFormType } from './';
+import type { FormState } from './useFormState';
+import type { SchemaFormEmitFn } from '../schema-form';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 
 const BASIC_COL_LEN = 24;
 
-type UseAdvancedContext = {
-  instance: SchemaFormType;
+interface UseAdvancedPayload {
+  formState: FormState;
   emit: SchemaFormEmitFn;
-};
+}
 
-export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
+export const useAdvanced = (payload: UseAdvancedPayload) => {
+  const { formState, emit } = payload;
+  const formContext = useFormContext();
   const { realWidthRef, screenEnum, screenRef } = useBreakpoint();
-  const { advanceState, getFormProps, formSchemasRef, formModel, defaultFormValues } = instance;
+  const { advanceState, getFormProps, formPropsRef, formModel, defaultFormValues } = formState;
+
   const getEmptySpan = computed((): number => {
     if (!advanceState.isAdvanced) {
       return 0;
@@ -36,7 +40,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
   });
 
   watch(
-    [formSchemasRef, () => advanceState.isAdvanced, () => unref(realWidthRef)],
+    [() => formPropsRef.value.schemas, () => advanceState.isAdvanced, () => unref(realWidthRef)],
     () => {
       const { showAdvancedButton } = unref(getFormProps);
       if (showAdvancedButton) {
@@ -101,7 +105,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
     let realItemColSum = 0;
     const { baseColProps = {} } = unref(getFormProps);
 
-    for (const schema of unref(formSchemasRef)) {
+    for (const schema of unref(formPropsRef).schemas) {
       const { vShow, colProps } = schema;
       let isShow = true;
 
@@ -113,11 +117,11 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
         isShow = vShow({
           schema: computed(() => {
             // @ts-ignore
-            return unref(formSchemasRef).find((n) => n.field === schema.field) as any;
+            return unref(formSchemasRef).schemas.find((n) => n.field === schema.field) as any;
           }),
           formModel,
           field: schema.field,
-          formInstance: instance,
+          formInstance: formContext,
           values: {
             ...unref(defaultFormValues),
             ...formModel,

@@ -51,19 +51,12 @@ export const baseColumns: TableColumnItem[] = [
   },
 ];
 
-export const getSearchFormSchemas = (
-  dictTypeList: any[],
-  onChange: (value) => any,
-): FormSchema[] => [
+export const searchFormSchemas: FormSchema[] = [
   {
     field: 'typeId',
     label: '字典类型',
     component: 'Select',
     colProps: { span: 8 },
-    componentProps: {
-      options: dictTypeList,
-      onChange,
-    },
   },
   {
     field: 'label',

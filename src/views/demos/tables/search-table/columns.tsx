@@ -50,7 +50,7 @@ export const tableData = Array.from({ length: 30 }).map((_, i) => {
     id: i + 1,
     date: new Date().toLocaleString(),
     name: names[~~(Math.random() * 4)],
-    clothes: getClothesByGender(gender)[~~(Math.random() * 2)].label,
+    clothes: ~~(Math.random() * 2),
     price: ~~(Math.random() * 1000),
     gender,
     img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',

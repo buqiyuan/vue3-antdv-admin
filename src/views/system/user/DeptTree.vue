@@ -12,6 +12,7 @@
   const originDeptTree = ref<API.DeptEntity[]>([]);
   const expandedKeys = ref<number[]>([]);
   const autoExpandParent = ref(true);
+  const spinning = ref(true);
 
   const deptTree = computed(() => {
     return filterDeptByKeyword(
@@ -35,7 +36,10 @@
    * 获取部门列表
    */
   const fetchDeptList = async () => {
-    originDeptTree.value = await Api.systemDept.deptList({});
+    spinning.value = true;
+    originDeptTree.value = await Api.systemDept
+      .deptList({})
+      .finally(() => (spinning.value = false));
     expandedKeys.value = [...expandedKeys.value, ...originDeptTree.value.map((n) => Number(n.id))];
     emit('init', originDeptTree.value);
   };
@@ -84,14 +88,17 @@
       </template>
     </a-dropdown>
   </div>
-  <a-tree
-    v-model:expandedKeys="expandedKeys"
-    :auto-expand-parent="autoExpandParent"
-    :tree-data="deptTree"
-    :field-names="{ key: 'id', title: 'name' }"
-    @select="onTreeSelect"
-    @expand="onExpand"
-  />
+  <a-spin :spinning="spinning">
+    <a-tree
+      v-model:expandedKeys="expandedKeys"
+      class="min-h-1xl"
+      :auto-expand-parent="autoExpandParent"
+      :tree-data="deptTree"
+      :field-names="{ key: 'id', title: 'name' }"
+      @select="onTreeSelect"
+      @expand="onExpand"
+    />
+  </a-spin>
 </template>
 
 <style lang="less" scoped>

@@ -33,6 +33,7 @@
 
     return {
       base_url: baseUrl,
+      license_key: 'gpl',
       height,
       toolbar,
       menubar: 'file edit insert view format table',

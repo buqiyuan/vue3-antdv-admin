@@ -151,7 +151,7 @@ export const useTabsViewStore = defineStore(
   },
   {
     persist: {
-      paths: ['tabsList'],
+      pick: ['tabsList'],
     },
   },
 );

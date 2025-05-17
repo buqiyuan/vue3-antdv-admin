@@ -24,13 +24,13 @@
 <template>
   <a-form-item-rest>
     <a-input-group compact>
-      <a-input
+      <a-input-number
         v-model:value="minimum"
         style="width: 100px; text-align: center"
         placeholder="Minimum"
       />
       <div class="!align-sub px-1"> 至 </div>
-      <a-input
+      <a-input-number
         v-model:value="maximum"
         class="site-input-right"
         style="width: 100px; text-align: center"

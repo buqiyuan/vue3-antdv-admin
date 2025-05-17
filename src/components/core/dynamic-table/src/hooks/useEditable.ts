@@ -1,18 +1,19 @@
 import { nextTick, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { message } from 'ant-design-vue';
-import type { DynamicTableProps } from '../dynamic-table';
-import type { TableState } from './useTableState';
 import type { TableColumn } from '../types/column';
-
-type UseTableMethodsContext = {
-  state: TableState;
-  props: DynamicTableProps;
-};
+import type { TableState } from './useTableState';
+import type { DynamicTableProps } from '../dynamic-table';
 
 export type UseEditableType = ReturnType<typeof useEditable>;
 
-export const useEditable = ({ state, props }: UseTableMethodsContext) => {
+interface UseEditablePayload {
+  tableState: TableState;
+  props: DynamicTableProps;
+}
+
+export const useEditable = (payload: UseEditablePayload) => {
+  const { props, tableState } = payload;
   const {
     tableData,
     editFormModel,
@@ -20,7 +21,7 @@ export const useEditable = ({ state, props }: UseTableMethodsContext) => {
     editFormErrorMsgs,
     editableCellKeys,
     editableRowKeys,
-  } = state;
+  } = tableState;
 
   watch(
     () => props.editableType,
@@ -55,6 +56,12 @@ export const useEditable = ({ state, props }: UseTableMethodsContext) => {
     columns?.forEach((item) => {
       const { formItemProps, editFormItemProps } = item;
       const field = (item.dataIndex || item.key) as string;
+
+      // https://github.com/buqiyuan/vue3-antdv-admin/issues/194
+      if (!Reflect.has(editValue, field)) {
+        Reflect.set(editValue, field, undefined);
+      }
+
       if (
         !Object.is(editFormItemProps?.extendSearchFormProps, false) &&
         formItemProps &&
