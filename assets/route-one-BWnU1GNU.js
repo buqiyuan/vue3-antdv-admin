@@ -1,0 +1,1 @@
+import{d as t,q as o,v as a,x as s,e as r,a8 as p}from"./index-Clv9zNM3.js";const c=t({name:"DemosNestedRoutesOne",__name:"route-one",setup(u){return(m,e)=>{const n=p;return a(),o("div",null,[e[0]||(e[0]=s("div",null,"路由一",-1)),r(n)])}}});export{c as default};

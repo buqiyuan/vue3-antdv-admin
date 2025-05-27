@@ -1,0 +1,1 @@
+import{aD as o}from"./index-Clv9zNM3.js";function t(e){return o({url:"/demo/wzry/hero_list",method:"get",params:e})}function l(e){return o({url:"/demo/lol/hero_list",method:"get",params:e})}function n({id:e}){return o({url:`/demo/lol/hero_info/${e}`,method:"get"})}export{l as a,t as b,n as g};
