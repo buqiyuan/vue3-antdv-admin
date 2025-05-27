@@ -4,7 +4,7 @@ import type { ComponentType } from './componentMap'
 import type { ComponentProps, CustomRenderFn, FormSchema, RenderCallbackParams } from './types/'
 import { Col, Divider, Form, Spin } from 'ant-design-vue'
 import { cloneDeep, debounce, isEqual } from 'lodash-es'
-import { computed, isVNode, nextTick, ref, toRef, unref, watch } from 'vue'
+import { computed, isVNode, nextTick, toRefs, unref, watch } from 'vue'
 import BasicHelp from '@/components/basic/basic-help/index.vue'
 import { useI18n } from '@/hooks/useI18n'
 import { isArray, isBoolean, isFunction, isNull, isObject, isString } from '@/utils/is'
@@ -28,19 +28,9 @@ const { formPropsRef, setItemRef, updateSchema, getSchemaByField, appendSchemaBy
 
 const { t } = useI18n()
 
-const schemaRef = toRef(props, 'schema')
-const schema = ref(cloneDeep(props.schema))
+const { schema } = toRefs(props)
 
-// 监听schema的变化，更新本地引用
-watch(
-  () => props.schema,
-  (newSchema) => {
-    schema.value = cloneDeep(newSchema)
-  },
-  { deep: true },
-)
-
-const itemLabelWidthProp = useItemLabelWidth(schemaRef, formPropsRef)
+const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef)
 
 const namePath = computed<string[]>(() => {
   return isArray(schema.value.field) ? schema.value.field : schema.value.field.split('.')

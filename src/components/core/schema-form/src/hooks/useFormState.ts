@@ -1,5 +1,5 @@
 import { computed, reactive, ref, unref, watch, useAttrs } from 'vue';
-import { isUndefined, set } from 'lodash-es';
+import { isUndefined, set, cloneDeep } from 'lodash-es';
 import type { DefineComponent } from 'vue';
 import type { AdvanceState } from '../types/hooks';
 import type { SchemaFormProps } from '../schema-form';
@@ -12,7 +12,7 @@ export type FormState = ReturnType<typeof useFormState>;
 export const useFormState = (props: SchemaFormProps) => {
   const attrs = useAttrs();
   /** // TODO 将formSchema克隆一份，避免修改原有的formSchema */
-  const formPropsRef = ref<SchemaFormProps>({ ...props });
+  const formPropsRef = ref<SchemaFormProps>({ ...props, schemas: cloneDeep(props.schemas) });
   /** 表单项数据 */
   const formModel = reactive({ ...props.initialValues });
   /** 表单默认数据 */

@@ -116,9 +116,9 @@ export const useTableState = (props: DynamicTableProps) => {
   )
 
   // 同步外部对props的修改
-  watchEffect(() => {
-    if (props.formProps) {
-      searchFormRef.value?.setSchemaFormProps(props.formProps)
+  watch(() => props.formProps, (val) => {
+    if (val) {
+      searchFormRef.value?.setSchemaFormProps(val)
     }
   })
 
