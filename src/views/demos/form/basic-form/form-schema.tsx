@@ -1,9 +1,9 @@
-import { UploadOutlined } from '@ant-design/icons-vue';
-import { Radio, Button } from 'ant-design-vue';
-import InputNumberRange from '../custom-form/input-number-range.vue';
-import type { FormSchema } from '@/components/core/schema-form';
-import { optionsListApi } from '@/api/demo/select';
-import { waitTime } from '@/utils/common';
+import type { FormSchema } from '@/components/core/schema-form'
+import { UploadOutlined } from '@ant-design/icons-vue'
+import { Button, Radio } from 'ant-design-vue'
+import { optionsListApi } from '@/api/demo/select'
+import { waitTime } from '@/utils/common'
+import InputNumberRange from '../custom-form/input-number-range.vue'
 
 const provincesOptions = [
   {
@@ -18,7 +18,7 @@ const provincesOptions = [
     value: '2',
     key: '2',
   },
-];
+]
 const citiesOptionsData = {
   guangdong: [
     {
@@ -54,16 +54,16 @@ const citiesOptionsData = {
       key: '3',
     },
   ],
-};
+}
 
 const fetchOptionList = async () => {
-  await waitTime(3000);
-  const data = await optionsListApi();
-  return data.map((item) => ({
+  await waitTime(3000)
+  const data = await optionsListApi()
+  return data.map(item => ({
     label: item.name,
     value: item.id,
-  }));
-};
+  }))
+}
 
 export const schemas: FormSchema[] = [
   {
@@ -80,20 +80,22 @@ export const schemas: FormSchema[] = [
       span: 8,
     },
     // componentProps:{},
-    // can func
+    /**
+     * can func
+     */
     componentProps: () => {
       return {
         placeholder: '自定义placeholder',
         onChange: (e: any) => {
-          console.log(e);
+          console.log(e)
         },
-      };
+      }
     },
     componentSlots: () => {
       return {
         prefix: () => 'pSlot',
         suffix: () => 'sSlot',
-      };
+      }
     },
   },
   {
@@ -106,7 +108,7 @@ export const schemas: FormSchema[] = [
     },
     componentProps: {
       onChange: (e: any) => {
-        console.log(e);
+        console.log(e)
       },
     },
     afterSlot: '天',
@@ -273,13 +275,15 @@ export const schemas: FormSchema[] = [
     label: '懒加载远程下拉',
     required: true,
     componentProps: {
-      // more details see /src/components/Form/src/components/ApiSelect.vue
+      /**
+       * more details see /src/components/Form/src/components/ApiSelect.vue
+       */
       request: async (values) => {
-        console.log('field30 fetch', values);
-        return await fetchOptionList();
+        console.log('field30 fetch', values)
+        return await fetchOptionList()
       },
       onChange: (e) => {
-        console.log('selected:', e);
+        console.log('selected:', e)
       },
     },
     colProps: {
@@ -326,8 +330,8 @@ export const schemas: FormSchema[] = [
             title: `选项 ${i}-${j}`,
             value: `选项 ${i}-${j}`,
           })),
-        }));
-        return waitTime(2000, treeData);
+        }))
+        return waitTime(2000, treeData)
       },
     },
     colProps: {
@@ -337,8 +341,8 @@ export const schemas: FormSchema[] = [
   {
     field: 'field34',
     component: ({ schema }) => {
-      const options = schema.value.componentProps?.requestResult || [];
-      return <Radio.Group options={options.slice(0, 2)}></Radio.Group>;
+      const options = schema.value.componentProps?.requestResult || []
+      return <Radio.Group options={options.slice(0, 2)}></Radio.Group>
     },
     label: '远程Radio',
     helpMessage: ['RadioGroup组件', '使用接口提供的数据生成选项'],
@@ -346,8 +350,8 @@ export const schemas: FormSchema[] = [
     componentProps: {
       optionType: 'button',
       request: async () => {
-        const data = await fetchOptionList();
-        return data;
+        const data = await fetchOptionList()
+        return data
       },
     },
     defaultValue: '0',
@@ -364,8 +368,8 @@ export const schemas: FormSchema[] = [
     componentProps: {
       optionType: 'button',
       request: async () => {
-        const data = await fetchOptionList();
-        return data.slice(0, 2);
+        const data = await fetchOptionList()
+        return data.slice(0, 2)
       },
     },
     defaultValue: '1',
@@ -387,27 +391,30 @@ export const schemas: FormSchema[] = [
     },
     componentProps: ({ formModel, formInstance }) => {
       return {
-        options: provincesOptions,
         placeholder: '省份与城市联动',
+        request: async () => {
+          await waitTime(3000)
+          return provincesOptions
+        },
         onChange: (id: string) => {
-          // console.log(id);
-          const citiesOptions =
-            {
+          console.log('province', id, formModel)
+          const citiesOptions
+            = {
               1: citiesOptionsData.guangdong,
               2: citiesOptionsData.jiangsu,
-            }[id] || [];
+            }[id] || []
 
-          formModel.city = undefined; //  reset city value
-          const { updateSchema } = formInstance;
+          formModel.city = undefined //  reset city value
+          const { updateSchema } = formInstance
           // console.log('citiesOptions', citiesOptions);
           updateSchema({
             field: 'city',
             componentProps: {
               options: citiesOptions,
             },
-          });
+          })
         },
-      };
+      }
     },
   },
   {
@@ -441,7 +448,7 @@ export const schemas: FormSchema[] = [
       placeholder: ['开始日期', '结束日期'],
     },
     transform([startDate, endDate] = []) {
-      return { startDate, endDate };
+      return { startDate, endDate }
     },
   },
   {
@@ -456,15 +463,17 @@ export const schemas: FormSchema[] = [
         type: 'array',
         trigger: 'change',
         validator(_, value: string[]) {
-          const isOk = Array.isArray(value) && value.length === 2 && value.every(Boolean);
-          return isOk ? Promise.resolve() : Promise.reject('请输入数字范围');
+          const isOk = Array.isArray(value) && value.length === 2 && value.every(Boolean)
+          return isOk ? Promise.resolve() : Promise.reject('请输入数字范围')
         },
       },
     ],
     component: () => InputNumberRange,
-    // 将多个值映射为多个字段
+    /**
+     * 将多个值映射为多个字段
+     */
     transform([minNum, maxNum] = []) {
-      return { minNum, maxNum };
+      return { minNum, maxNum }
     },
   },
   {
@@ -550,9 +559,11 @@ export const schemas: FormSchema[] = [
     componentSlots: {
       default: () => (
         <Button>
-          <UploadOutlined /> Click to Upload
+          <UploadOutlined />
+          {' '}
+          Click to Upload
         </Button>
       ),
     },
   },
-];
+]

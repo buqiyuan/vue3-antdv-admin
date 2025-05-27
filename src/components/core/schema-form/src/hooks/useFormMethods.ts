@@ -297,7 +297,7 @@ export const useFormMethods = (payload: UseFormMethodsPayload) => {
     // TODO: deepMerge
     formPropsRef.value = deepMerge(unref(formPropsRef) || {}, formProps);
     // @ts-ignore
-    formPropsRef.value.schemas = schemas?.length ? schemas : formProps.schemas;
+    formPropsRef.value.schemas = schemas?.length ? schemas : cloneDeep(formProps.schemas);
   };
 
   // Processing form values
