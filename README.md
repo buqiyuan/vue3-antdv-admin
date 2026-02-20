@@ -87,3 +87,7 @@ pnpm build
 
 <a href="https://www.jetbrains.com/?from=Mybatis-PageHelper" target="_blank">
 <img src="https://user-images.githubusercontent.com/1787798/69898077-4f4e3d00-138f-11ea-81f9-96fb7c49da89.png" height="200"/></a>
+
+## Deployment
+
+[![Deploy on Hostinger](https://assets.hostinger.com/vps/deploy.svg)](https://www.hostinger.com/web-apps-hosting)
