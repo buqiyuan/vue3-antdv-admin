@@ -92,3 +92,7 @@ docker build -t vue3-antdv-admin .
 ```
 
 镜像里执行 `pnpm exec vp build`。生产构建的 `VITE_BASE_URL` 来自 `.env.production`（默认 `/vue3-antdv-admin/`）。
+
+## Deployment
+
+[![Deploy on Hostinger](https://assets.hostinger.com/vps/deploy.svg)](https://www.hostinger.com/web-apps-hosting)
