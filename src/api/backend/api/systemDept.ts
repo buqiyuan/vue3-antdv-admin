@@ -5,7 +5,7 @@
  * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
  * */
 
-import { request, type RequestOptions } from '@/utils/request';
+import { request, type RequestOptions } from "@/utils/request";
 
 /** 获取部门列表 GET /api/system/depts */
 export async function deptList(
@@ -13,8 +13,8 @@ export async function deptList(
   params: API.DeptListParams,
   options?: RequestOptions,
 ) {
-  return request<API.DeptEntity[]>('/api/system/depts', {
-    method: 'GET',
+  return request<API.DeptEntity[]>("/api/system/depts", {
+    method: "GET",
     params: {
       ...params,
     },
@@ -24,13 +24,13 @@ export async function deptList(
 
 /** 创建部门 POST /api/system/depts */
 export async function deptCreate(body: API.DeptDto, options?: RequestOptions) {
-  return request<any>('/api/system/depts', {
-    method: 'POST',
+  return request<any>("/api/system/depts", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     data: body,
-    ...(options || { successMsg: '创建成功' }),
+    ...(options || { successMsg: "创建成功" }),
   });
 }
 
@@ -42,7 +42,7 @@ export async function deptInfo(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.DeptEntity>(`/api/system/depts/${param0}`, {
-    method: 'GET',
+    method: "GET",
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -57,13 +57,13 @@ export async function deptUpdate(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/depts/${param0}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     params: { ...queryParams },
     data: body,
-    ...(options || { successMsg: '更新成功' }),
+    ...(options || { successMsg: "更新成功" }),
   });
 }
 
@@ -75,8 +75,8 @@ export async function deptDelete(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/depts/${param0}`, {
-    method: 'DELETE',
+    method: "DELETE",
     params: { ...queryParams },
-    ...(options || { successMsg: '删除成功' }),
+    ...(options || { successMsg: "删除成功" }),
   });
 }

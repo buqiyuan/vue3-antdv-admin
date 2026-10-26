@@ -5,7 +5,7 @@
  * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
  * */
 
-import { request, type RequestOptions } from '@/utils/request';
+import { request, type RequestOptions } from "@/utils/request";
 
 /** 获取字典项列表 GET /api/system/dict-item */
 export async function dictItemList(
@@ -22,8 +22,8 @@ export async function dictItemList(
       totalPages?: number;
       currentPage?: number;
     };
-  }>('/api/system/dict-item', {
-    method: 'GET',
+  }>("/api/system/dict-item", {
+    method: "GET",
     params: {
       ...params,
     },
@@ -33,13 +33,13 @@ export async function dictItemList(
 
 /** 新增字典项 POST /api/system/dict-item */
 export async function dictItemCreate(body: API.DictItemDto, options?: RequestOptions) {
-  return request<any>('/api/system/dict-item', {
-    method: 'POST',
+  return request<any>("/api/system/dict-item", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     data: body,
-    ...(options || { successMsg: '创建成功' }),
+    ...(options || { successMsg: "创建成功" }),
   });
 }
 
@@ -51,7 +51,7 @@ export async function dictItemInfo(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.DictItemEntity>(`/api/system/dict-item/${param0}`, {
-    method: 'GET',
+    method: "GET",
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -66,13 +66,13 @@ export async function dictItemUpdate(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/dict-item/${param0}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     params: { ...queryParams },
     data: body,
-    ...(options || { successMsg: '更新成功' }),
+    ...(options || { successMsg: "更新成功" }),
   });
 }
 
@@ -84,8 +84,8 @@ export async function dictItemDelete(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/dict-item/${param0}`, {
-    method: 'DELETE',
+    method: "DELETE",
     params: { ...queryParams },
-    ...(options || { successMsg: '删除成功' }),
+    ...(options || { successMsg: "删除成功" }),
   });
 }

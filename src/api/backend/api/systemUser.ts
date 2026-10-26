@@ -5,7 +5,7 @@
  * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
  * */
 
-import { request, type RequestOptions } from '@/utils/request';
+import { request, type RequestOptions } from "@/utils/request";
 
 /** 获取用户列表 GET /api/system/users */
 export async function userList(
@@ -22,8 +22,8 @@ export async function userList(
       totalPages?: number;
       currentPage?: number;
     };
-  }>('/api/system/users', {
-    method: 'GET',
+  }>("/api/system/users", {
+    method: "GET",
     params: {
       ...params,
     },
@@ -33,13 +33,13 @@ export async function userList(
 
 /** 新增用户 POST /api/system/users */
 export async function userCreate(body: API.UserDto, options?: RequestOptions) {
-  return request<any>('/api/system/users', {
-    method: 'POST',
+  return request<any>("/api/system/users", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     data: body,
-    ...(options || { successMsg: '创建成功' }),
+    ...(options || { successMsg: "创建成功" }),
   });
 }
 
@@ -51,7 +51,7 @@ export async function userRead(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.UserEntity>(`/api/system/users/${param0}`, {
-    method: 'GET',
+    method: "GET",
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -66,13 +66,13 @@ export async function userUpdate(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/users/${param0}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     params: { ...queryParams },
     data: body,
-    ...(options || { successMsg: '更新成功' }),
+    ...(options || { successMsg: "更新成功" }),
   });
 }
 
@@ -84,9 +84,9 @@ export async function userDelete(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/users/${param0}`, {
-    method: 'DELETE',
+    method: "DELETE",
     params: { ...queryParams },
-    ...(options || { successMsg: '删除成功' }),
+    ...(options || { successMsg: "删除成功" }),
   });
 }
 
@@ -99,9 +99,9 @@ export async function userPassword(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/users/${param0}/password`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     params: { ...queryParams },
     data: body,

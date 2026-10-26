@@ -5,7 +5,7 @@
  * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
  * */
 
-import { request, type RequestOptions } from '@/utils/request';
+import { request, type RequestOptions } from "@/utils/request";
 
 /** 获取任务列表 GET /api/system/tasks */
 export async function taskList(
@@ -22,8 +22,8 @@ export async function taskList(
       totalPages?: number;
       currentPage?: number;
     };
-  }>('/api/system/tasks', {
-    method: 'GET',
+  }>("/api/system/tasks", {
+    method: "GET",
     params: {
       ...params,
     },
@@ -33,10 +33,10 @@ export async function taskList(
 
 /** 添加任务 POST /api/system/tasks */
 export async function taskCreate(body: API.TaskDto, options?: RequestOptions) {
-  return request<any>('/api/system/tasks', {
-    method: 'POST',
+  return request<any>("/api/system/tasks", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     data: body,
     ...(options || {}),
@@ -51,7 +51,7 @@ export async function taskInfo(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.TaskEntity>(`/api/system/tasks/${param0}`, {
-    method: 'GET',
+    method: "GET",
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -66,13 +66,13 @@ export async function taskUpdate(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     params: { ...queryParams },
     data: body,
-    ...(options || { successMsg: '更新成功' }),
+    ...(options || { successMsg: "更新成功" }),
   });
 }
 
@@ -84,9 +84,9 @@ export async function taskDelete(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}`, {
-    method: 'DELETE',
+    method: "DELETE",
     params: { ...queryParams },
-    ...(options || { successMsg: '删除成功' }),
+    ...(options || { successMsg: "删除成功" }),
   });
 }
 
@@ -98,7 +98,7 @@ export async function taskOnce(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}/once`, {
-    method: 'PUT',
+    method: "PUT",
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -112,7 +112,7 @@ export async function taskStart(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}/start`, {
-    method: 'PUT',
+    method: "PUT",
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -126,7 +126,7 @@ export async function taskStop(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/tasks/${param0}/stop`, {
-    method: 'PUT',
+    method: "PUT",
     params: { ...queryParams },
     ...(options || {}),
   });

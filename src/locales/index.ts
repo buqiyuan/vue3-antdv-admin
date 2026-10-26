@@ -1,41 +1,261 @@
-import { createI18n, type I18nOptions } from 'vue-i18n';
-import { localeMap } from './config';
-import { setHtmlPageLang, setLoadLocalePool } from './helper';
-import type { App } from 'vue';
-import { useLocaleStoreWithOut } from '@/store/modules/locale';
+import { createI18n } from "vue-i18n";
 
-async function createI18nOptions(): Promise<I18nOptions> {
-  const localeStore = useLocaleStoreWithOut();
-  const locale = localeStore.getLocale;
-  const defaultLocal = await import(`./lang/${locale}.ts`);
-  const message = defaultLocal.default?.message ?? {};
+export type AppLocale = "zh-CN" | "en";
 
-  setHtmlPageLang(locale);
-  setLoadLocalePool((loadLocalePool) => {
-    loadLocalePool.push(locale);
-  });
+const LOCALE_KEY = "admin-locale";
 
-  return {
-    locale,
-    // legacy: false,
-    fallbackLocale: localeMap.zh_CN, // set fallback locale
-    messages: {
-      [locale]: message as { [key: string]: string },
+const messages = {
+  "zh-CN": {
+    app: { name: "管理系统" },
+    login: {
+      title: "登录",
+      subtitle: "使用 Nest Admin 账号进入后台",
+      username: "用户名",
+      password: "密码",
+      captcha: "验证码",
+      submit: "登录",
+      submitting: "登录中…",
+      usernameRequired: "请输入用户名",
+      passwordRequired: "请输入密码",
+      captchaRequired: "请输入验证码",
+      success: "登录成功",
+      captchaFailed: "验证码加载失败，点击重试",
+      demoHint: "演示账号 admin / a123456",
     },
-    globalInjection: true,
-    silentTranslationWarn: true, // true - warning off
-    missingWarn: false,
-    silentFallbackWarn: true,
-  };
+    layout: {
+      logout: "退出登录",
+      theme: "主题",
+      light: "浅色",
+      dark: "深色",
+      language: "语言",
+      collapse: "折叠侧栏",
+      expand: "展开侧栏",
+      openMenu: "打开菜单",
+    },
+    common: {
+      create: "新增",
+      edit: "编辑",
+      delete: "删除",
+      save: "保存",
+      cancel: "取消",
+      search: "查询",
+      reset: "重置",
+      actions: "操作",
+      enabled: "启用",
+      disabled: "禁用",
+      empty: "暂无数据",
+      loading: "加载中…",
+      saved: "已保存",
+      deleted: "已删除",
+      total: "共 {n} 条",
+      confirmDelete: "确认删除",
+      deleteHint: "删除后不可恢复。",
+      prev: "上一页",
+      next: "下一页",
+      required: "请填写必填项",
+      all: "全部",
+    },
+    dashboard: {
+      title: "欢迎",
+      lead: "壳层、登录和系统管理核心页已改用 shadcn-vue。其余菜单仍可打开，未迁移的页面会显示说明。",
+      openUser: "用户管理",
+      openRole: "角色管理",
+      openMenu: "菜单管理",
+      gapTitle: "这一轮覆盖的范围",
+      gapBody:
+        "已接上 Nest Admin 的登录、登出、会话校验、动态菜单和按钮权限。部门、字典、参数、监控、任务、网盘等页面留在后续迁移。",
+    },
+    user: {
+      title: "用户管理",
+      username: "用户名",
+      nickname: "昵称",
+      email: "邮箱",
+      phone: "手机",
+      password: "密码",
+      passwordHint: "编辑时留空表示不修改密码",
+      roles: "角色",
+      dept: "部门",
+      remark: "备注",
+      create: "新增用户",
+      edit: "编辑用户",
+      roleRequired: "请至少选择一个角色",
+    },
+    role: {
+      title: "角色管理",
+      name: "角色名",
+      value: "标识",
+      remark: "备注",
+      menus: "菜单权限",
+      create: "新增角色",
+      edit: "编辑角色",
+    },
+    menu: {
+      title: "菜单管理",
+      name: "名称",
+      type: "类型",
+      directory: "目录",
+      page: "菜单",
+      button: "按钮",
+      path: "路由",
+      component: "组件",
+      permission: "权限标识",
+      parent: "上级",
+      order: "排序",
+      visible: "显示",
+      cache: "缓存",
+      external: "外链",
+      icon: "图标",
+      root: "根节点",
+      keyword: "搜索名称、路由或权限",
+      create: "新增菜单",
+      edit: "编辑菜单",
+    },
+    pending: {
+      title: "页面尚未迁移",
+      body: "这个菜单还指向旧的 Ant Design Vue 页面。当前版本保留了路由和权限，界面会在后续补上。组件路径：{path}",
+    },
+    error: {
+      notFound: "页面不存在",
+      notFoundHint: "没有匹配的路由。",
+      backHome: "返回首页",
+    },
+  },
+  en: {
+    app: { name: "Admin" },
+    login: {
+      title: "Sign in",
+      subtitle: "Use your Nest Admin account",
+      username: "Username",
+      password: "Password",
+      captcha: "Captcha",
+      submit: "Sign in",
+      submitting: "Signing in…",
+      usernameRequired: "Username is required",
+      passwordRequired: "Password is required",
+      captchaRequired: "Captcha is required",
+      success: "Signed in",
+      captchaFailed: "Captcha failed to load. Click to retry",
+      demoHint: "Demo account admin / a123456",
+    },
+    layout: {
+      logout: "Sign out",
+      theme: "Theme",
+      light: "Light",
+      dark: "Dark",
+      language: "Language",
+      collapse: "Collapse sidebar",
+      expand: "Expand sidebar",
+      openMenu: "Open menu",
+    },
+    common: {
+      create: "New",
+      edit: "Edit",
+      delete: "Delete",
+      save: "Save",
+      cancel: "Cancel",
+      search: "Search",
+      reset: "Reset",
+      actions: "Actions",
+      enabled: "Enabled",
+      disabled: "Disabled",
+      empty: "No data",
+      loading: "Loading…",
+      saved: "Saved",
+      deleted: "Deleted",
+      total: "{n} total",
+      confirmDelete: "Delete this record?",
+      deleteHint: "This cannot be undone.",
+      prev: "Previous",
+      next: "Next",
+      required: "Fill in the required fields",
+      all: "All",
+    },
+    dashboard: {
+      title: "Welcome",
+      lead: "The shell, sign-in, and core system pages now use shadcn-vue. Other menus still open and show a migration note when the page has not been rebuilt.",
+      openUser: "Users",
+      openRole: "Roles",
+      openMenu: "Menus",
+      gapTitle: "What this pass covers",
+      gapBody:
+        "Login, logout, session checks, dynamic menus, and button permissions talk to Nest Admin. Dept, dict, config, monitors, jobs, and netdisk pages are still pending.",
+    },
+    user: {
+      title: "Users",
+      username: "Username",
+      nickname: "Nickname",
+      email: "Email",
+      phone: "Phone",
+      password: "Password",
+      passwordHint: "Leave blank to keep the current password",
+      roles: "Roles",
+      dept: "Department",
+      remark: "Remark",
+      create: "New user",
+      edit: "Edit user",
+      roleRequired: "Select at least one role",
+    },
+    role: {
+      title: "Roles",
+      name: "Name",
+      value: "Key",
+      remark: "Remark",
+      menus: "Menu access",
+      create: "New role",
+      edit: "Edit role",
+    },
+    menu: {
+      title: "Menus",
+      name: "Name",
+      type: "Type",
+      directory: "Directory",
+      page: "Menu",
+      button: "Button",
+      path: "Route",
+      component: "Component",
+      permission: "Permission",
+      parent: "Parent",
+      order: "Order",
+      visible: "Visible",
+      cache: "Cache",
+      external: "External",
+      icon: "Icon",
+      root: "Root",
+      keyword: "Search name, route, or permission",
+      create: "New menu",
+      edit: "Edit menu",
+    },
+    pending: {
+      title: "Page not migrated",
+      body: "This menu still points at a legacy Ant Design Vue screen. The route and permission stay in place. Component: {path}",
+    },
+    error: {
+      notFound: "Page not found",
+      notFoundHint: "No route matched this address.",
+      backHome: "Back home",
+    },
+  },
+};
+
+function readLocale(): AppLocale {
+  try {
+    const saved = localStorage.getItem(LOCALE_KEY);
+    if (saved === "en" || saved === "zh-CN") return saved;
+  } catch {
+    // localStorage can be unavailable in locked-down browsers
+  }
+  return "zh-CN";
 }
-type Options = Awaited<ReturnType<typeof createI18nOptions>>;
 
-// ReturnType<typeof createI18n<false, Options>>
-export let i18n = createI18n({} as Options);
+export const i18n = createI18n({
+  legacy: false,
+  locale: readLocale(),
+  fallbackLocale: "zh-CN",
+  messages,
+});
 
-// setup i18n instance with global
-export async function setupI18n(app: App) {
-  const options = await createI18nOptions();
-  i18n = createI18n(options);
-  app.use(i18n);
+export function setLocale(locale: AppLocale) {
+  i18n.global.locale.value = locale;
+  localStorage.setItem(LOCALE_KEY, locale);
+  document.documentElement.lang = locale;
 }

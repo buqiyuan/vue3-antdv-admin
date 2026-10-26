@@ -1,177 +1,40 @@
-import type { ConfigEnv, UserConfig } from 'vite'
-import https from 'node:https'
-import { resolve } from 'node:path'
-import Http2Proxy from '@admin-pkg/vite-plugin-http2-proxy'
-import mockServerPlugin from '@admin-pkg/vite-plugin-msw/vite'
-import TinymceResourcePlugin from '@admin-pkg/vite-plugin-tinymce-resource'
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import dayjs from 'dayjs'
-import Unocss from 'unocss/vite'
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
-import Components from 'unplugin-vue-components/vite'
-import { loadEnv } from 'vite'
-import checker from 'vite-plugin-checker'
-import mkcert from 'vite-plugin-mkcert'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import VueDevTools from 'vite-plugin-vue-devtools'
-import pkg from './package.json'
+import { fileURLToPath, URL } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig, loadEnv, lazyPlugins, type ESBuildOptions } from "vite-plus";
 
-const CWD = process.cwd()
-
-// 环境变量
-// const BASE_ENV_CONFIG = loadEnv('', CWD);
-// const DEV_ENV_CONFIG = loadEnv('development', CWD);
-// const PROD_ENV_CONFIG = loadEnv('production', CWD);
-
-const __APP_INFO__ = {
-  pkg,
-  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-}
-
-/**
- * https://vitejs.dev/config/
- */
-export default ({ command, mode }: ConfigEnv): UserConfig => {
-  // 环境变量
-  const { VITE_BASE_URL, VITE_DROP_CONSOLE, VITE_MOCK_IN_PROD } = loadEnv(mode, CWD)
-
-  const isDev = command === 'serve'
-  const isBuild = command === 'build'
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
 
   return {
-    base: VITE_BASE_URL,
-    define: {
-      __APP_INFO__: JSON.stringify(__APP_INFO__),
+    fmt: {},
+    lint: {
+      ignorePatterns: ["dist/**", "src/api/backend/**"],
+      jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
+      rules: { "vite-plus/prefer-vite-plus-imports": "error" },
+      options: { typeAware: true, typeCheck: true },
     },
+    base: env.VITE_BASE_URL || "/",
+    plugins: lazyPlugins(() => [vue(), tailwindcss()]),
     resolve: {
-      alias: [
-        {
-          find: '@',
-          replacement: resolve(__dirname, './src'),
-        },
-      ],
-    },
-    plugins: [
-      vue(),
-      VueDevTools(),
-      Unocss(),
-      vueJsx({
-        // options are passed on to @vue/babel-plugin-jsx
-      }),
-      // 指定 mkcert 的下载源为 coding，从 coding.net 镜像下载证书
-      mkcert({ source: 'coding' }),
-      // 开启 http2 代理
-      Http2Proxy(),
-      mockServerPlugin({ build: isBuild && VITE_MOCK_IN_PROD === 'true' }),
-      TinymceResourcePlugin({ baseUrl: '/tinymce-resource/' }),
-      createSvgIconsPlugin({
-        // Specify the icon folder to be cached
-        iconDirs: [resolve(CWD, 'src/assets/icons')],
-        // Specify symbolId format
-        symbolId: 'svg-icon-[dir]-[name]',
-      }),
-      Components({
-        dts: 'types/components.d.ts',
-        types: [
-          {
-            from: './src/components/basic/button/',
-            names: ['AButton'],
-          },
-          {
-            from: 'vue-router',
-            names: ['RouterLink', 'RouterView'],
-          },
-        ],
-        resolvers: [
-          AntDesignVueResolver({
-            importStyle: false, // css in js
-            exclude: ['Button'],
-          }),
-        ],
-      }),
-      // https://github.com/fi3ework/vite-plugin-checker
-      // isDev &&
-      //   checker({
-      //     typescript: true,
-      //     // vueTsc: true,
-      //     eslint: {
-      //       useFlatConfig: true,
-      //       lintCommand: 'eslint "./src/**/*.{.vue,ts,tsx}"', // for example, lint .ts & .tsx
-      //     },
-      //     overlay: {
-      //       initialIsOpen: false,
-      //     },
-      //   }),
-    ],
-    css: {
-      preprocessorOptions: {
-        less: {
-          javascriptEnabled: true,
-          modifyVars: {},
-          // additionalData: `
-          //   @import '@/styles/variables.less';
-          // `,
-        },
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
     server: {
-      host: '0.0.0.0',
+      host: "0.0.0.0",
       port: 8088,
-      open: true,
       proxy: {
-        '^/api': {
-          // target: 'https://nest-admin.buqiyuan.top',
-          target: 'http://127.0.0.1:7001',
-          secure: false,
-          agent: new https.Agent(),
+        "/api": {
+          target: env.VITE_API_PROXY_TARGET || "http://127.0.0.1:7001",
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, ''),
-        },
-        '^/upload': {
-          // target: 'https://nest-admin.buqiyuan.top/upload',
-          target: 'http://127.0.0.1:7001/upload',
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/upload/, ''),
+          rewrite: (path) => path.replace(/^\/api/, ""),
         },
       },
-      // 提前转换和缓存文件以进行预热。可以在服务器启动时提高初始页面加载速度，并防止转换瀑布。
-      warmup: {
-        // 请注意，只应该预热频繁使用的文件，以免在启动时过载 Vite 开发服务器
-        // 可以通过运行 npx vite --debug transform 并检查日志来找到频繁使用的文件
-        clientFiles: ['./index.html', './src/{components,api}/*'],
-      },
-    },
-    optimizeDeps: {
-      include: ['lodash-es', 'ant-design-vue/es/locale/zh_CN', 'ant-design-vue/es/locale/en_US'],
     },
     esbuild: {
-      pure: VITE_DROP_CONSOLE === 'true' ? ['console.log'] : [],
-      drop: VITE_DROP_CONSOLE === 'true' ? ['debugger'] : [],
-      supported: {
-        // https://github.com/vitejs/vite/pull/8665
-        'top-level-await': true,
-      },
-    },
-    build: {
-      minify: 'esbuild',
-      cssTarget: 'chrome108',
-      chunkSizeWarningLimit: 2000,
-      rollupOptions: {
-        output: {
-          // minifyInternalExports: false,
-        },
-        onwarn(warning, rollupWarn) {
-          // ignore circular dependency warning
-          if (
-            warning.code === 'CYCLIC_CROSS_CHUNK_REEXPORT'
-            && warning.exporter?.includes('src/api/')
-          ) {
-            return
-          }
-          rollupWarn(warning)
-        },
-      },
-    },
-  }
-}
+      drop: env.VITE_DROP_CONSOLE === "true" ? ["debugger"] : undefined,
+      pure: env.VITE_DROP_CONSOLE === "true" ? ["console.log"] : undefined,
+    } as ESBuildOptions,
+  };
+});

@@ -1,12 +1,14 @@
-<template>
-  <ProConfigProvider>
-    <router-view #="{ Component }">
-      <component :is="Component" />
-    </router-view>
-    <LockScreen />
-  </ProConfigProvider>
-</template>
-
 <script setup lang="ts">
-  import { LockScreen } from '@/components/basic/lockscreen';
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { useTheme } from "@/composables/useTheme";
+
+const mode = useTheme();
 </script>
+
+<template>
+  <TooltipProvider>
+    <router-view />
+    <Toaster position="top-center" :theme="mode === 'dark' ? 'dark' : 'light'" />
+  </TooltipProvider>
+</template>

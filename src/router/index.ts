@@ -1,35 +1,85 @@
-import 'nprogress/css/nprogress.css'; // 进度条样式
-import { createRouter, createWebHashHistory } from 'vue-router';
-
-import { createRouterGuards } from './router-guards';
-
-import { whiteNameList } from './constant';
-import { basicRoutes } from './routes';
-import type { App } from 'vue';
+import { createRouter, createWebHistory } from "vue-router";
+import { getToken } from "@/auth/token";
+import { i18n } from "@/locales";
+import { useUserStore } from "@/stores/user";
 
 export const router = createRouter({
-  // process.env.BASE_URL
-  history: createWebHashHistory(''),
-  routes: basicRoutes,
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
+  routes: [
+    {
+      path: "/login",
+      name: "Login",
+      component: () => import("@/views/login/index.vue"),
+      meta: { public: true, titleKey: "login.title" },
+    },
+    {
+      path: "/",
+      name: "Root",
+      component: () => import("@/layouts/AdminLayout.vue"),
+      redirect: "/dashboard/welcome",
+      children: [
+        {
+          path: "/dashboard/welcome",
+          name: "DashboardWelcome",
+          component: () => import("@/views/dashboard/welcome/index.vue"),
+          meta: { titleKey: "dashboard.title" },
+        },
+        {
+          path: "/system/user",
+          name: "SystemUser",
+          component: () => import("@/views/system/user/index.vue"),
+          meta: { titleKey: "user.title" },
+        },
+        {
+          path: "/system/role",
+          name: "SystemRole",
+          component: () => import("@/views/system/role/index.vue"),
+          meta: { titleKey: "role.title" },
+        },
+        {
+          path: "/system/menu",
+          name: "SystemMenu",
+          component: () => import("@/views/system/menu/index.vue"),
+          meta: { titleKey: "menu.title" },
+        },
+        {
+          path: "/:pathMatch(.*)*",
+          name: "NotFound",
+          component: () => import("@/views/error/not-found.vue"),
+          meta: { titleKey: "error.notFound", hideInMenu: true },
+        },
+      ],
+    },
+  ],
 });
 
-// reset router
-export function resetRouter() {
-  router.getRoutes().forEach((route) => {
-    const { name } = route;
-    if (name && !whiteNameList.some((n) => n === name)) {
-      router.hasRoute(name) && router.removeRoute(name);
+router.beforeEach(async (to) => {
+  const userStore = useUserStore();
+
+  if (to.meta.public) {
+    if (to.name === "Login" && getToken()) return { path: "/" };
+    return true;
+  }
+
+  if (!getToken()) return { name: "Login", query: { redirect: to.fullPath } };
+
+  if (!userStore.loaded) {
+    try {
+      await userStore.refreshSession();
+    } catch {
+      userStore.resetSession();
+      return { name: "Login", query: { redirect: to.fullPath } };
     }
-  });
-}
+    return { path: to.fullPath, query: to.query, hash: to.hash, replace: true };
+  }
 
-export async function setupRouter(app: App) {
-  // 创建路由守卫
-  createRouterGuards(router, whiteNameList);
+  return true;
+});
 
-  app.use(router);
-
-  // 路由准备就绪后挂载APP实例
-  await router.isReady();
-}
-export default router;
+router.afterEach((to) => {
+  const titleKey = to.meta.titleKey;
+  const title = to.meta.title || (titleKey ? i18n.global.t(titleKey) : "");
+  document.title = title
+    ? `${title} · ${import.meta.env.VITE_APP_TITLE || "Admin"}`
+    : import.meta.env.VITE_APP_TITLE || "Admin";
+});

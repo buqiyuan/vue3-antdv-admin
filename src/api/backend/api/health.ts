@@ -5,7 +5,7 @@
  * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
  * */
 
-import { request, type RequestOptions } from '@/utils/request';
+import { request, type RequestOptions } from "@/utils/request";
 
 /** 此处后端没有提供注释 GET /api/health/database */
 export async function healthCheckDatabase(options?: RequestOptions) {
@@ -14,8 +14,8 @@ export async function healthCheckDatabase(options?: RequestOptions) {
     info?: Record<string, any>;
     error?: Record<string, any>;
     details?: Record<string, any>;
-  }>('/api/health/database', {
-    method: 'GET',
+  }>("/api/health/database", {
+    method: "GET",
     ...(options || {}),
   });
 }
@@ -27,8 +27,8 @@ export async function healthCheckDisk(options?: RequestOptions) {
     info?: Record<string, any>;
     error?: Record<string, any>;
     details?: Record<string, any>;
-  }>('/api/health/disk', {
-    method: 'GET',
+  }>("/api/health/disk", {
+    method: "GET",
     ...(options || {}),
   });
 }
@@ -40,8 +40,8 @@ export async function healthCheckMemoryHeap(options?: RequestOptions) {
     info?: Record<string, any>;
     error?: Record<string, any>;
     details?: Record<string, any>;
-  }>('/api/health/memory-heap', {
-    method: 'GET',
+  }>("/api/health/memory-heap", {
+    method: "GET",
     ...(options || {}),
   });
 }
@@ -53,8 +53,8 @@ export async function healthCheckMemoryRss(options?: RequestOptions) {
     info?: Record<string, any>;
     error?: Record<string, any>;
     details?: Record<string, any>;
-  }>('/api/health/memory-rss', {
-    method: 'GET',
+  }>("/api/health/memory-rss", {
+    method: "GET",
     ...(options || {}),
   });
 }
@@ -66,8 +66,8 @@ export async function healthCheckNetwork(options?: RequestOptions) {
     info?: Record<string, any>;
     error?: Record<string, any>;
     details?: Record<string, any>;
-  }>('/api/health/network', {
-    method: 'GET',
+  }>("/api/health/network", {
+    method: "GET",
     ...(options || {}),
   });
 }

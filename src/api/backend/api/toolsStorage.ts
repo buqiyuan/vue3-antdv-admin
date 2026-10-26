@@ -5,17 +5,17 @@
  * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
  * */
 
-import { request, type RequestOptions } from '@/utils/request';
+import { request, type RequestOptions } from "@/utils/request";
 
 /** 删除文件 POST /api/tools/storage/delete */
 export async function storageDelete(body: API.StorageDeleteDto, options?: RequestOptions) {
-  return request<any>('/api/tools/storage/delete', {
-    method: 'POST',
+  return request<any>("/api/tools/storage/delete", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     data: body,
-    ...(options || { successMsg: '删除成功' }),
+    ...(options || { successMsg: "删除成功" }),
   });
 }
 
@@ -34,8 +34,8 @@ export async function storageList(
       totalPages?: number;
       currentPage?: number;
     };
-  }>('/api/tools/storage/list', {
-    method: 'GET',
+  }>("/api/tools/storage/list", {
+    method: "GET",
     params: {
       ...params,
     },

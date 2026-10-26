@@ -1,29 +1,11 @@
+FROM node:22-bookworm-slim AS builder
+WORKDIR /vue3-antdv-admin
+RUN npm install -g pnpm@10.10.0
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY . .
+RUN pnpm install --frozen-lockfile
+RUN pnpm exec vp build
 
-# https://stackoverflow.com/questions/53681522/share-variable-in-multi-stage-dockerfile-arg-before-from-not-substituted
-ARG PROJECT_DIR=/vue3-antdv-admin
-
-FROM node:20-slim as builder
-ARG PROJECT_DIR
-WORKDIR $PROJECT_DIR
-
-# 安装pnpm
-RUN npm install -g pnpm
-
-COPY . ./
-# 安装依赖
-# 若网络不通，可以使用淘宝源
-# RUN pnpm config set registry https://registry.npmmirror.com
-RUN pnpm install
-
-# 构建项目
-ENV VITE_BASE_URL=/
-RUN pnpm build
-
-
-FROM nginx:alpine as production
-ARG PROJECT_DIR
-
-COPY --from=builder $PROJECT_DIR/dist/ /usr/share/nginx/html
-# COPY --from=builder $PROJECT_DIR/nginx.conf /etc/nginx/nginx.conf
-
+FROM nginx:alpine AS production
+COPY --from=builder /vue3-antdv-admin/dist/ /usr/share/nginx/html
 EXPOSE 80

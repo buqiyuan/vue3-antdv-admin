@@ -13,8 +13,8 @@
       "</template>\n",
       "<style lang='less' scoped>\n",
       "</style>",
-      "$2"
+      "$2",
     ],
-    "description": "Vue3.3+defineOptions快速生成模板"
-  }
+    "description": "Vue3.3+defineOptions快速生成模板",
+  },
 }

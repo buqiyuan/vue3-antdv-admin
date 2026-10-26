@@ -1,89 +1,94 @@
 # vue3-antdv-admin
 
-基于 vite5.x + vue3.x + antd-design-vue4.x + typescript5.x 的后台管理系统
+Nest Admin 的前端。这一版用 **shadcn-vue（reka-ui）**、**Tailwind CSS v4** 和 **Vite+** 重写了壳层，不再依赖 Ant Design Vue。
 
-- 账号：admin，密码：a123456
-- [在线预览](http://buqiyuan.gitee.io/vue3-antdv-admin/)
-- [项目文档](https://buqiyuan.github.io/vue3-antdv-admin-docs/)
-- [swagger 文档](https://nest-api.buqiyuan.site/api-docs/)
-- [后端仓库地址](https://github.com/buqiyuan/nest-admin)
-- [gitee 地址](https://gitee.com/buqiyuan/vue3-antdv-admin)
-- 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
+后端仍然是 [nest-admin](https://github.com/buqiyuan/nest-admin)。接口契约没有改。
 
-## 安装使用
+- 演示账号：`admin` / `a123456`
+- 接口文档：https://nest-api.buqiyuan.site/api-docs/
 
-- 获取项目代码
+## 架构
 
-```bash
-git clone https://github.com/buqiyuan/vue3-antdv-admin
-```
+| 层          | 选择                                                                                                |
+| ----------- | --------------------------------------------------------------------------------------------------- |
+| UI          | shadcn-vue（`components.json` 风格 `reka-nova`）+ Tailwind v4                                       |
+| 路由 / 状态 | Vue Router 5、Pinia 4                                                                               |
+| 请求        | Axios，响应体 `{ code, message, data }`，`code === 200` 为成功                                      |
+| 文案        | vue-i18n（`zh-CN` / `en`），只覆盖壳层和已重写页面                                                  |
+| 主题        | `html.dark` class，跟 shadcn CSS 变量走                                                             |
+| 工具链      | Vite+ 1.4（`vp`）。Vite 通过 catalog 指向 `@voidzero-dev/vite-plus-core@1.4.0`，Vitest 锁定 `5.0.5` |
 
-- 安装依赖
+`vite.config.ts` 使用 `defineConfig` / `lazyPlugins`（来自 `vite-plus`）。格式化是 Oxfmt，检查是 Oxlint，测试是 `vp test`。
 
-```bash
-cd vue3-antdv-admin
+## 本地运行
 
-pnpm install
-
-```
-
-- 运行
+需要 Node `^22.18.0 || ^24.11.0 || >=26`，以及 pnpm 10+。
 
 ```bash
-pnpm dev
+vp install
+vp dev
+vp test
+vp check
+vp build
 ```
 
-- 打包
+`package.json` 里的 `dev` / `build` / `test` / `check` 也是这些命令。开发服务器默认 `http://127.0.0.1:8088`。
+
+复制环境变量：
 
 ```bash
-pnpm build
+cp .env.example .env.development
 ```
 
-## vscode 配置
+开发态 `VITE_BASE_API_URL=/api`，Vite 会把 `/api` 转到 `VITE_API_PROXY_TARGET`（默认 `http://127.0.0.1:7001`），并去掉第一段 `/api`，留下 Nest 的全局前缀。生产环境直接请求 `VITE_BASE_API_URL`。
 
-安装项目根目录 `.vscode` 推荐的插件，再安装 `Volar`，并禁用 `Vetur`，重启 vscode 即可。
+## 登录、登出、会话
 
-> 使用了 Vue3.x 全家桶、ant-design-vue4.x 和 typescript5.x，实践 vue3.x 的新特性以及玩法，不得不说 vue3.x 的 Composition API 相比于 vue2.x 的 Options API 灵活很多，让我们可以灵活地组合组件逻辑，我们可以很轻松的使用 hooks 的形式去代替以前 mixins 等的写法。更多 hooks 可以参考[vueuse](https://vueuse.org/functions.html)
+- `POST /api/auth/login`：验证码 id + 验证码，返回 `{ token }`。请求头是 `Authorization: Bearer <token>`。
+- `GET /api/account/logout`：登出。
+- `GET /api/account/profile`、`/menus`、`/permissions`：进入后台时重新校验 token，并刷新菜单和按钮权限。路由守卫在整页刷新后会走这一步。
+- 业务码 `1101` / `1105`（登录失效、账号在别处登录）会清掉本地 token 并回到登录页。
 
-### todolist
+Nest Admin 会在库里生成 refresh token，但登录接口只把 access token 交出来，也没有公开的 refresh 交换路由（见 nest-admin issue #88）。因此这里不会去请求一个不存在的 `/auth/refresh`。如果以后的登录响应里带了 `refreshToken` 字段，客户端会把它存下来，但在后端提供交换接口之前，失效的 access token 仍然只能重新登录。
 
-- [x] 动态表格(完善中)
-- [x] 动态表单(完善中)
-- [ ] 电商 SKU 功能演示
-- [ ] 纯前端导出 PDF 动态分页
-- [ ] 其他...
+菜单来自 `/api/account/menus`。目录只出现在侧栏；页面注册成路由。组件路径能在 `src/views` 里找到就加载对应页面，否则显示迁移说明。`isExt + extOpenMode = 1` 新窗口打开，`extOpenMode = 2` 用 iframe。按钮权限用 `usePermission().can('system:user:create')`，数据来自 `/api/account/permissions`。
 
-## Git 贡献提交规范
+服务端如果通过 `GET /api/sse/:uid?token=` 推送 `updatePermsAndMenus`，侧栏会重新拉菜单和权限。
 
-- 参考 [vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) 规范 ([Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
+## 已经重写的页面
 
-  - `feat` 增加新功能
-  - `fix` 修复问题/BUG
-  - `style` 代码风格相关无影响运行结果的
-  - `perf` 优化/性能提升
-  - `refactor` 重构
-  - `revert` 撤销修改
-  - `test` 测试相关
-  - `docs` 文档/注释
-  - `chore` 依赖更新/脚手架配置修改等
-  - `workflow` 工作流改进
-  - `ci` 持续集成
-  - `types` 类型定义文件更改
-  - `wip` 开发中
+- 登录 / 登出、浅色深色、中英文
+- 侧栏 + 顶栏，菜单来自后端
+- 欢迎页
+- 用户、角色、菜单的列表、新增、编辑、删除
 
-## 更新日志
+角色表单里的菜单树对应 `menuIds`。菜单的根节点 `parentId` 仍是 `-1`。
 
-[CHANGELOG](./CHANGELOG.md)
+## 破坏性变化
 
-## 赞赏
+旧的 Ant Design Vue 封装不再存在，也不再做 1:1 兼容：
 
-如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
+- 移除 `ant-design-vue`、`@ant-design/icons-vue`、UnoCSS、DynamicTable、SchemaForm
+- 移除 `$auth` / `v-auth`。按钮权限改为 `usePermission().can(code)`
+- 移除锁屏时记住密码的行为
+- 移除 workspace 里的 `@admin-pkg/*`（http2 代理、msw、tinymce 资源插件、组件包）和 Nx
+- 移除 mock service worker。联调直接打 Nest
+- 页面级组件路径保持 `src/views/**`，但页面内部不再使用 `a-*` 组件
 
-| 微信 | 支付宝 |
-| :-: | :-: |
-| <img src="https://cdn.jsdelivr.net/gh/buqiyuan/MyImageHosting/imgs/vue3-antdv-admin/weixin.jpg" height="220" /> | <img src="https://cdn.jsdelivr.net/gh/buqiyuan/MyImageHosting/imgs/vue3-antdv-admin/zhifubao.jpg" height="220" /> |
+## 还没迁的页面
 
-## 感谢 JetBrains 免费的开源授权
+这些菜单仍会从后端挂出来。点进去会看到迁移说明，而不是旧的 Ant Design 页面：
 
-<a href="https://www.jetbrains.com/?from=Mybatis-PageHelper" target="_blank">
-<img src="https://user-images.githubusercontent.com/1787798/69898077-4f4e3d00-138f-11ea-81f9-96fb7c49da89.png" height="200"/></a>
+- 部门、字典类型 / 字典项、参数配置
+- 在线用户、登录日志、服务监控、定时任务
+- 邮件、存储、网盘、账号设置、原来的 demo / 表格示例
+
+后续按 shadcn-vue 的 Table / Dialog / Form 逐页补即可，不必再包一层 DynamicTable。
+
+## 构建镜像
+
+```bash
+docker build -t vue3-antdv-admin .
+```
+
+镜像里执行 `pnpm exec vp build`。生产构建的 `VITE_BASE_URL` 来自 `.env.production`（默认 `/vue3-antdv-admin/`）。

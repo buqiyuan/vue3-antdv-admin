@@ -26,7 +26,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
           registry-url: https://registry.npmjs.com/
 
       - name: Setup pnpm
@@ -65,11 +65,11 @@ jobs:
       - name: Mirror the Github organization repos to Gitee.
         uses: Yikun/hub-mirror-action@master
         with:
-          src: 'github/buqiyuan'
-          dst: 'gitee/buqiyuan'
+          src: "github/buqiyuan"
+          dst: "gitee/buqiyuan"
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
           dst_token: ${{ secrets.GITEE_TOKEN }}
-          static_list: 'vue3-antdv-admin'
+          static_list: "vue3-antdv-admin"
           force_update: true
           debug: true
 

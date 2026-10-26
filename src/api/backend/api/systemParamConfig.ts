@@ -5,7 +5,7 @@
  * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
  * */
 
-import { request, type RequestOptions } from '@/utils/request';
+import { request, type RequestOptions } from "@/utils/request";
 
 /** 获取参数配置列表 GET /api/system/param-config */
 export async function paramConfigList(
@@ -22,8 +22,8 @@ export async function paramConfigList(
       totalPages?: number;
       currentPage?: number;
     };
-  }>('/api/system/param-config', {
-    method: 'GET',
+  }>("/api/system/param-config", {
+    method: "GET",
     params: {
       ...params,
     },
@@ -33,13 +33,13 @@ export async function paramConfigList(
 
 /** 新增参数配置 POST /api/system/param-config */
 export async function paramConfigCreate(body: API.ParamConfigDto, options?: RequestOptions) {
-  return request<any>('/api/system/param-config', {
-    method: 'POST',
+  return request<any>("/api/system/param-config", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     data: body,
-    ...(options || { successMsg: '创建成功' }),
+    ...(options || { successMsg: "创建成功" }),
   });
 }
 
@@ -51,7 +51,7 @@ export async function paramConfigInfo(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.ParamConfigEntity>(`/api/system/param-config/${param0}`, {
-    method: 'GET',
+    method: "GET",
     params: { ...queryParams },
     ...(options || {}),
   });
@@ -66,13 +66,13 @@ export async function paramConfigUpdate(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/param-config/${param0}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     params: { ...queryParams },
     data: body,
-    ...(options || { successMsg: '更新成功' }),
+    ...(options || { successMsg: "更新成功" }),
   });
 }
 
@@ -84,8 +84,8 @@ export async function paramConfigDelete(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<any>(`/api/system/param-config/${param0}`, {
-    method: 'DELETE',
+    method: "DELETE",
     params: { ...queryParams },
-    ...(options || { successMsg: '删除成功' }),
+    ...(options || { successMsg: "删除成功" }),
   });
 }

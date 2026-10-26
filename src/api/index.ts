@@ -1,4 +1,4 @@
-import Api from './backend/api';
+import Api from "./backend/api";
 
 export { Api };
 

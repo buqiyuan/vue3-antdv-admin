@@ -1,36 +1,24 @@
-name: Publish Package
+name: Build app
 
 on:
   push:
     branches: [main]
 
 jobs:
-  publish-npm:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1.22.0
         with:
-          fetch-depth: 0
+          node-version: "22"
+          cache: true
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-
-      - name: Use Node.js v18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Test
+        run: vp test
 
       - name: Build
-        run: pnpm build:pkg
-
-      - name: Publish 🚀
-        shell: bash
-        run: pnpm publish --filter './packages/*' --access public --no-git-checks --registry https://registry.npmjs.org --verbose
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: vp build

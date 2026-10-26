@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   vue3-antdv-admin:
@@ -9,7 +9,7 @@ services:
       target: production
     image: buqiyuan/vue3-antdv-admin:latest
     ports:
-      - '80:80'
+      - "80:80"
     env_file:
       - .env
       - .env.production

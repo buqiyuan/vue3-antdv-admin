@@ -5,7 +5,7 @@
  * 该文件为 @umijs/openapi 插件自动生成，请勿随意修改。如需修改请通过配置 openapi.config.ts 进行定制化。
  * */
 
-import { request, type RequestOptions } from '@/utils/request';
+import { request, type RequestOptions } from "@/utils/request";
 
 /** 服务端推送消息 GET /api/sse/${param0} */
 export async function sseSse(
@@ -15,7 +15,7 @@ export async function sseSse(
 ) {
   const { uid: param0, ...queryParams } = params;
   return request<Record<string, any>>(`/api/sse/${param0}`, {
-    method: 'GET',
+    method: "GET",
     params: { ...queryParams },
     ...(options || {}),
   });

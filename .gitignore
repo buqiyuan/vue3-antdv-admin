@@ -14,6 +14,9 @@ tests/server/static/upload
 .env.local
 .env.*.local
 .eslintcache
+.vite
+coverage
+.vitest
 
 # Log files
 npm-debug.log*
@@ -34,3 +37,4 @@ yarn-error.log*
 types/auto-imports.d.ts
 types/components.d.ts
  
+.vitest/

@@ -202,7 +202,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 字典类型 ID */
     typeId: number;
     /** 字典项键名 */
@@ -264,7 +264,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 字典类型名称 */
     name: string;
     /** 字典类型code */
@@ -305,7 +305,7 @@ declare namespace API {
 
   type FileOpItem = {
     /** 文件类型 */
-    type: 'file' | 'dir';
+    type: "file" | "dir";
     /** 文件名称 */
     name: string;
   };
@@ -338,7 +338,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 用户名 */
     username: string;
     /** 验证码 */
@@ -385,7 +385,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 用户名 */
     username: string;
     /** 登录IP */
@@ -401,7 +401,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 用户名 */
     username: string;
     /** 登录IP */
@@ -686,7 +686,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 参数名称 */
     name: string;
     _t?: number;
@@ -803,7 +803,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 角色名称 */
     name?: string;
     /** 角色值 */
@@ -865,7 +865,7 @@ declare namespace API {
     /** 文件id */
     id: string;
     /** 文件类型 */
-    type: 'file' | 'dir';
+    type: "file" | "dir";
     /** 文件名称 */
     name: string;
     /** 存入时间 */
@@ -943,7 +943,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 文件名 */
     name: string;
     /** 文件后缀 */
@@ -1028,7 +1028,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 任务名称 */
     name?: string;
     /** 调用的服务 */
@@ -1136,7 +1136,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 名称 */
     value: string;
     _t?: number;
@@ -1214,7 +1214,7 @@ declare namespace API {
     page?: number;
     pageSize?: number;
     field?: string;
-    order?: 'ASC' | 'DESC';
+    order?: "ASC" | "DESC";
     /** 头像 */
     avatar?: string;
     /** 登录账号 */
