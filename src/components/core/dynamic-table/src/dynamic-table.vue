@@ -60,15 +60,13 @@
 <script lang="tsx" setup>
   import { computed, onBeforeMount } from 'vue';
   import { Table } from 'ant-design-vue';
-  import {
-    useTableMethods,
-    createTableContext,
-    useExportData2Excel,
-    useTableForm,
-    useTableState,
-    useColumns,
-  } from './hooks';
-  import { ToolBar } from './components';
+  import { useTableMethods } from './hooks/useTableMethods';
+  import { createTableContext } from './hooks/useTableContext';
+  import { useExportData2Excel } from './hooks/useExportData2Excel';
+  import { useTableForm } from './hooks/useTableForm';
+  import { useTableState } from './hooks/useTableState';
+  import { useColumns } from './hooks/useColumns';
+  import ToolBar from './components/tool-bar/index.vue';
   import { dynamicTableProps, dynamicTableEmits } from './dynamic-table';
   import { SchemaForm } from '@/components/core/schema-form';
 
@@ -93,6 +91,8 @@
     getBindValues,
     editFormModel,
   } = tableState;
+  // These refs are assigned from the template (`ref="..."`). vue-tsc does not count that as a read.
+  void [tableRef, containerElRef, searchFormRef, editTableFormRef];
 
   // 表格内部方法
   const tableMethods = useTableMethods({ props, emit, tableState });

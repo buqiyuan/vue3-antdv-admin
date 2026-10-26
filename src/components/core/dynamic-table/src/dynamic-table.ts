@@ -2,8 +2,9 @@ import { tableProps } from 'ant-design-vue/es/table';
 import tableConfig from './dynamic-table.config';
 import type { PropType, ExtractPublicPropTypes, EmitsToProps, EmitFn } from 'vue';
 import type { BookType } from 'xlsx';
-import type { TableColumn, OnChangeCallbackParams, EditableType, OnSave, OnCancel } from './types/';
-import type { SchemaFormProps } from '@/components/core/schema-form';
+import type { TableColumn } from './types/column';
+import type { OnChangeCallbackParams, EditableType, OnSave, OnCancel } from './types/table';
+import type { SchemaFormProps } from '@/components/core/schema-form/src/schema-form';
 import type { GetRowKey } from 'ant-design-vue/es/table/interface';
 import { isBoolean } from '@/utils/is';
 

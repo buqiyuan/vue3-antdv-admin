@@ -141,7 +141,7 @@ const vnodeFactory = (
       return component
     }
     return compKeys.reduce<Recordable<CustomRenderFn>>((slots, slotName) => {
-      slots[slotName] = (...rest: any) => vnodeFactory(component[slotName], ...rest)
+      slots[slotName] = ((...rest: any) => vnodeFactory(component[slotName], ...rest) || '') as CustomRenderFn
       return slots
     }, {})
   }
@@ -163,11 +163,15 @@ const getComponent = computed(() => {
  */
 const getComponentSlots = computed<Recordable<CustomRenderFn>>(() => {
   const componentSlots = props.schema.componentSlots ?? {}
-  return isString(componentSlots) || isVNode(componentSlots)
-    ? {
-        default: (...rest: any) => vnodeFactory(componentSlots, rest),
-      }
-    : vnodeFactory(componentSlots)
+  if (isString(componentSlots) || isVNode(componentSlots)) {
+    return {
+      default: ((...rest: any) => vnodeFactory(componentSlots, rest) || '') as CustomRenderFn,
+    }
+  }
+  const rendered = vnodeFactory(componentSlots)
+  if (rendered && isObject(rendered) && !isVNode(rendered) && !Array.isArray(rendered))
+    return rendered as Recordable<CustomRenderFn>
+  return {}
 })
 
 const getLabel = computed(() => {
@@ -362,10 +366,10 @@ const fetchRemoteData = async (request: PromiseFn<RenderCallbackParams, any>) =>
     const { component } = unref(schema)
     const componentProps = newSchema.componentProps as ComponentProps
 
-    if (['Select', 'RadioGroup', 'CheckboxGroup'].includes(component)) {
+    if (isString(component) && ['Select', 'RadioGroup', 'CheckboxGroup'].includes(component)) {
       componentProps.options = result
     }
-    else if (['TreeSelect', 'Tree'].includes(component)) {
+    else if (isString(component) && ['TreeSelect', 'Tree'].includes(component)) {
       componentProps.treeData = result
     }
     if (newSchema.componentProps) {

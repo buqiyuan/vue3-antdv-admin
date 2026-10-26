@@ -1,2 +1,22 @@
 packages:
   - 'packages/*'
+overrides:
+  vite@*: 'catalog:'
+  vitest@*: 5.0.5
+  msw@*: 2.15.0
+peerDependencyRules:
+  allowedVersions:
+    vite: '*'
+  allowAny:
+    - vite
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+  typescript: 6.0.3
+onlyBuiltDependencies:
+  - core-js
+  - es5-ext
+  - esbuild
+  - msw
+  - unrs-resolver
+  - vue-demi

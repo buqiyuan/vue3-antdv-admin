@@ -2,7 +2,7 @@
 import type { TooltipProps } from 'ant-design-vue'
 import type { FunctionalComponent } from 'vue'
 import type { CustomRenderParams } from '../types/column'
-import type { ActionItem } from '../types/tableAction'
+import type { ActionItem } from '../types/column'
 import { Popconfirm, Tooltip } from 'ant-design-vue'
 import { isFunction, isObject, isString } from 'lodash-es'
 import { computed, h, ref } from 'vue'

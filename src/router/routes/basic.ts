@@ -1,6 +1,6 @@
 import { RouterView, type RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_NAME, REDIRECT_NAME } from '@/router/constant';
-import router from '@/router';
+import { getRouter } from '@/router/navigation';
 
 /**
  * 重定向路由 主要用于刷新当前页面
@@ -31,6 +31,7 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
 
         const _path = Array.isArray(path) ? path.join('/') : path;
         setTimeout(() => {
+          const router = getRouter();
           if (redirectType === 'name') {
             router.replace({
               name: _path,

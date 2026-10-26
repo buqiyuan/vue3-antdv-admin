@@ -32,7 +32,7 @@
   import { Divider, Space } from 'ant-design-vue';
   import TableSetting from '../table-settings/index.vue';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
-  import { useTableContext } from '@/components/core/dynamic-table/src/hooks';
+  import { useTableContext } from '../../hooks/useTableContext';
 
   defineOptions({
     name: 'ToolBar',

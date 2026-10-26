@@ -1,21 +1,19 @@
 import { cp, readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
-import { resolve, dirname } from 'node:path';
-import type { PluginOption } from 'vite';
+import { dirname, resolve } from 'node:path';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+import type { Plugin, PluginOption } from 'vite';
 
 const require = createRequire(import.meta.url);
-
 const tinymceDir = dirname(require.resolve('tinymce'));
-let outDir: string;
-let base: string;
 
 type Options = {
-  /** Public Dir  */
+  /** Public path prefix the dev server should serve TinyMCE assets from. */
   baseUrl: string;
   /**
-   * 要复制的目标文件夹
-   * @default: ['skins/content/default', 'skins/ui/oxide', 'skins/ui/oxide-dark']
-   **/
+   * TinyMCE directories copied into the production build.
+   * @default ['skins/content/default', 'skins/ui/oxide', 'skins/ui/oxide-dark']
+   */
   destDir?: string | string[];
 };
 
@@ -23,47 +21,46 @@ const defaultDestDir = ['skins/content/default', 'skins/ui/oxide', 'skins/ui/oxi
 
 export default (options: Options): PluginOption => {
   const { baseUrl, destDir = defaultDestDir } = options;
+  let outDir = 'dist';
+  let base = '/';
 
-  return {
+  const plugin: Plugin = {
     name: 'vite-plugin-tinymce-resource',
     configResolved(config) {
       outDir = config.build.outDir;
       base = config.base;
     },
     configureServer(server) {
-      server.middlewares.use(async (req, res, next) => {
+      server.middlewares.use(async (req: IncomingMessage, res: ServerResponse, next: (err?: unknown) => void) => {
         const urlPrefix = `${base}/${baseUrl}`.replace(/\/{2,}/, '/');
         if (!req.url?.startsWith(urlPrefix)) {
-          return next();
+          next();
+          return;
         }
         try {
           const url = resolve(tinymceDir, req.url.replace(urlPrefix, ''));
           const content = await readFile(url);
-          // console.log('req.url', req.url);
           res.setHeader('Content-Type', 'text/css');
           res.end(content);
-        } catch (error) {
+        }
+        catch (error) {
           console.error(error);
           res.statusCode = 500;
-          res.end(error.toString());
+          res.end(String(error));
         }
       });
     },
-    async closeBundle() {
-      Array<string>()
-        .concat(destDir)
-        .forEach(async (dir) => {
-          const sourceDir = resolve(tinymceDir, dir);
-          const destinationDir = resolve(outDir, `./${baseUrl}`, dir);
-          // console.log(sourceDir);
-          // console.log(destinationDir);
-
-          try {
-            await cp(sourceDir, destinationDir, { recursive: true, force: true });
-          } catch (error) {
-            console.error('[@admin-pkg/vite-plugin-tinymce-resource]: ', error);
-          }
+    closeBundle() {
+      const dirs = Array<string>().concat(destDir);
+      for (const dir of dirs) {
+        const sourceDir = resolve(tinymceDir, dir);
+        const destinationDir = resolve(outDir, `./${baseUrl}`, dir);
+        void cp(sourceDir, destinationDir, { recursive: true, force: true }).catch((error: unknown) => {
+          console.error('[@admin-pkg/vite-plugin-tinymce-resource]: ', error);
         });
+      }
     },
   };
+
+  return plugin;
 };

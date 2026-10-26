@@ -96,7 +96,7 @@ export const columns: TableColumn<ListItemType>[] = [
               options: getClothesByGender(formModel.gender),
             },
           });
-          formModel['clothes'] = '';
+          formModel.clothes = undefined as unknown as (typeof formModel)['clothes'];
           // console.log('formInstance', formInstance);
         },
       }),

@@ -1,8 +1,12 @@
+import type { Ref } from 'vue';
 import type { ColumnsType } from 'ant-design-vue/es/table';
-import type { FormSchema, GetFieldKeys } from '@/components/core/schema-form';
-import type { ActionItem } from './tableAction';
-import type { TableActionType } from '@/components/core/dynamic-table/src/types';
+import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
+import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
 import type { DataIndex } from 'ant-design-vue/es/vc-table/interface';
+import type { FormSchema, GetFieldKeys } from '@/components/core/schema-form/src/types/form';
+import type { ButtonType } from '@/components/basic/button';
+import type { PermissionType } from '@/permission/permCode';
+import type { TableActionType } from './tableAction';
 
 export type ColumnType<T> = ColumnsType<T>[number];
 
@@ -67,3 +71,50 @@ export enum ColumnKeyFlag {
 
 export const columnKeyFlags = Object.values(ColumnKeyFlag) as string[];
 export type ColumnKeyFlagType = `${ColumnKeyFlag}`;
+
+export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading' | 'type'> & {
+  onClick?: Fn<CustomRenderParams, any>;
+  label?: string;
+  color?: string;
+  type?: ButtonType;
+  loading?: Ref<ButtonProps['loading']> | ButtonProps['loading'];
+  icon?: string;
+  popConfirm?: PopConfirm;
+  disabled?: boolean;
+  divider?: boolean;
+  // 权限编码控制是否显示
+  // auth?: RoleEnum | RoleEnum[] | string | string[];
+  // 业务控制是否显示
+  ifShow?: boolean | ((action: ActionItem) => boolean);
+  tooltip?: string | TooltipProps;
+  /** 设置按钮权限, effect不传默认为disable */
+  auth?:
+    | PermissionType
+    | {
+        perm: PermissionType;
+        /** 无权限时，按钮不可见或是处于禁用状态 */
+        effect?: 'delete' | 'disable';
+      };
+};
+
+export type PopConfirm = PopconfirmProps & {
+  title: string;
+  okText?: string;
+  cancelText?: string;
+  onConfirm: Fn<CustomRenderParams, any>;
+  onCancel?: Fn<CustomRenderParams, any>;
+  icon?: string;
+  placement?:
+    | 'top'
+    | 'left'
+    | 'right'
+    | 'bottom'
+    | 'topLeft'
+    | 'topRight'
+    | 'leftTop'
+    | 'leftBottom'
+    | 'rightTop'
+    | 'rightBottom'
+    | 'bottomLeft'
+    | 'bottomRight';
+};

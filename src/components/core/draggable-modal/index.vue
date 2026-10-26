@@ -6,7 +6,7 @@
           v-bind="omit(props, ['open', 'onCancel', 'onOk', 'onUpdate:open'])"
           v-model:open="openModel"
           :mask-closable="false"
-          :get-container="() => modalWrapRef"
+          :get-container="getModalContainer"
           :width="innerWidth || width"
           @ok="emit('ok')"
           @cancel="emit('cancel')"
@@ -76,6 +76,7 @@
   // 是否已经初始化过了
   let inited = false;
   const modalWrapRef = useTemplateRef('modalWrap');
+  const getModalContainer = () => modalWrapRef.value || document.body;
 
   const closeModal = () => {
     openModel.value = false;

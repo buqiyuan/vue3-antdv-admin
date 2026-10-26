@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
     "esModuleInterop": true,
@@ -24,5 +24,5 @@
     "emitDecoratorMetadata": true,
     "types": ["node", "vite/client"]
   },
-  "include": ["**/*.ts"]
+  "include": ["src/**/*.ts"]
 }

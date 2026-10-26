@@ -62,7 +62,7 @@ export const columns: TableColumn<ListItemType>[] = [
               options: getClothesByGender(formModel.gender),
             },
           })
-          formModel.clothes = ''
+          formModel.clothes = undefined as unknown as ListItemType['clothes']
         },
       }),
     },
@@ -80,7 +80,7 @@ export const columns: TableColumn<ListItemType>[] = [
               options: getClothesByGender(formModel.gender),
             },
           })
-          formModel.clothes = ''
+          formModel.clothes = undefined as unknown as ListItemType['clothes']
         },
       }),
     },

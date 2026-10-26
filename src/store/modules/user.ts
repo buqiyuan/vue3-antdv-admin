@@ -1,19 +1,18 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { useLockscreenStore } from './lockscreen';
-import { useSSEStore } from './sse';
 import type { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
+import { accessToken, currentUserId, onUnauthorized, registerPermsRefresher } from '@/store/runtime';
 import Api from '@/api/';
-import { resetRouter } from '@/router';
+import { resetRouter } from '@/router/reset';
 import { generateDynamicRoutes } from '@/router/helper/routeHelper';
 
 export const useUserStore = defineStore(
   'user',
   () => {
-    const sseStore = useSSEStore();
     const lockscreenStore = useLockscreenStore();
-    const token = ref<string>();
+    const token = accessToken;
     const perms = ref<string[]>([]);
     const menus = ref<RouteRecordRaw[]>([]);
     const userInfo = ref<Partial<API.UserEntity>>({});
@@ -33,6 +32,7 @@ export const useUserStore = defineStore(
     /** 清空登录态(token、userInfo...) */
     const clearLoginStatus = () => {
       token.value = '';
+      currentUserId.value = undefined;
       perms.value = [];
       menus.value = [];
       userInfo.value = {};
@@ -65,8 +65,10 @@ export const useUserStore = defineStore(
         const userInfoData = await accountProfile();
 
         userInfo.value = userInfoData;
+        currentUserId.value = userInfo.value.id;
         await fetchPermsAndMenus();
-        sseStore.initServerMsgListener();
+        const { useSSEStore } = await import('./sse');
+        useSSEStore().initServerMsgListener();
       } catch (error) {
         return Promise.reject(error);
         // return logout();
@@ -84,7 +86,8 @@ export const useUserStore = defineStore(
     /** 登出 */
     const logout = async () => {
       await Api.account.accountLogout();
-      sseStore.closeEventSource();
+      const { useSSEStore } = await import('./sse');
+      useSSEStore().closeEventSource();
       clearLoginStatus();
     };
 
@@ -111,3 +114,11 @@ export const useUserStore = defineStore(
 export function useUserStoreWithOut() {
   return useUserStore(store);
 }
+
+onUnauthorized(() => {
+  useUserStore(store).clearLoginStatus();
+});
+
+registerPermsRefresher(() => {
+  void useUserStore(store).fetchPermsAndMenus();
+});

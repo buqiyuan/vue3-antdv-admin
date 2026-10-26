@@ -1,73 +1,25 @@
-import type { Ref } from 'vue';
-import type { CustomRenderParams } from './column';
-import type { PopconfirmProps } from 'ant-design-vue/es/popconfirm';
-import type { ButtonProps, TooltipProps } from 'ant-design-vue/es/components';
-import type { TableMethods, UseEditableType } from '../hooks/';
-import type { PermissionType } from '@/permission/permCode';
-import type { ButtonType } from '@/components/basic/button';
+import type { DebouncedFunc } from 'lodash-es';
 
-export type ActionItem = Omit<ButtonProps, 'onClick' | 'loading' | 'type'> & {
-  onClick?: Fn<CustomRenderParams, any>;
-  label?: string;
-  color?: string;
-  type?: ButtonType;
-  loading?: Ref<ButtonProps['loading']> | ButtonProps['loading'];
-  icon?: string;
-  popConfirm?: PopConfirm;
-  disabled?: boolean;
-  divider?: boolean;
-  // 权限编码控制是否显示
-  // auth?: RoleEnum | RoleEnum[] | string | string[];
-  // 业务控制是否显示
-  ifShow?: boolean | ((action: ActionItem) => boolean);
-  tooltip?: string | TooltipProps;
-  /** 设置按钮权限, effect不传默认为disable */
-  auth?:
-    | PermissionType
-    | {
-        perm: PermissionType;
-        /** 无权限时，按钮不可见或是处于禁用状态 */
-        effect?: 'delete' | 'disable';
-      };
-};
-
-export type PopConfirm = PopconfirmProps & {
-  title: string;
-  okText?: string;
-  cancelText?: string;
-  onConfirm: Fn<CustomRenderParams, any>;
-  onCancel?: Fn<CustomRenderParams, any>;
-  icon?: string;
-  placement?:
-    | 'top'
-    | 'left'
-    | 'right'
-    | 'bottom'
-    | 'topLeft'
-    | 'topRight'
-    | 'leftTop'
-    | 'leftBottom'
-    | 'rightTop'
-    | 'rightBottom'
-    | 'bottomLeft'
-    | 'bottomRight';
-};
-
+/**
+ * 表格实例上操作列会用到的方法。
+ * 签名与 `useTableMethods` / `useEditable` 的对应方法一致，但这里不引用 hooks，
+ * 避免类型层通过 hooks barrel 把组件实现卷进环。
+ */
 export type TableActionType = {
   /** 刷新并清空,页码也会重置，不包括搜索表单 */
-  reload: TableMethods['reload'];
+  reload: (resetPageIndex?: boolean) => Promise<unknown>;
   /** 设置动态表格属性 */
-  setProps: TableMethods['setProps'];
+  setProps: (props: Recordable) => void;
   /** 获取远程数据 */
-  fetchData: TableMethods['fetchData'];
+  fetchData: DebouncedFunc<(params?: Recordable) => Promise<unknown>>;
   /** 进入编辑状态 */
-  startEditable: UseEditableType['startEditable'];
+  startEditable: (recordKey: Key, currentRow?: Recordable) => boolean;
   /** 取消编辑 */
-  cancelEditable: UseEditableType['cancelEditable'];
+  cancelEditable: (recordKey: Key) => boolean;
   /** 获取编辑后表单的值 */
-  getEditFormModel: UseEditableType['getEditFormModel'];
+  getEditFormModel: (recordKey: Key) => any;
   /** 当前行是否处于编辑状态 */
-  isEditable: UseEditableType['isEditable'];
+  isEditable: (recordKey: Key) => boolean;
   /** 行编辑表单是否校验通过 */
-  validateRow: UseEditableType['validateRow'];
+  validateRow: (recordKey: Key) => Promise<any>;
 };

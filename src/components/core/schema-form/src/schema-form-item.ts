@@ -1,4 +1,4 @@
-import type { TableActionType } from '@/components/core/dynamic-table';
+import type { TableActionType } from '@/components/core/dynamic-table/src/types/tableAction';
 import type { FormSchema } from './types';
 
 export const schemaFormItemProps = {

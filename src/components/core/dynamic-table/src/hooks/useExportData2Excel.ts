@@ -1,5 +1,5 @@
 import { get, isEmpty } from 'lodash-es';
-import { columnKeyFlags } from '../types';
+import { columnKeyFlags } from '../types/column';
 import type { TableState } from './useTableState';
 import type { DynamicTableProps } from '../dynamic-table';
 import type { TableMethods } from './useTableMethods';

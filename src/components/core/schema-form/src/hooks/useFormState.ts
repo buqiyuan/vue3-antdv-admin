@@ -4,7 +4,8 @@ import type { DefineComponent } from 'vue';
 import type { AdvanceState } from '../types/hooks';
 import type { SchemaFormProps } from '../schema-form';
 import type { FormInstance } from 'ant-design-vue';
-import type { ComponentProps, RenderCallbackParams } from '../types';
+import type { ComponentProps } from '../types/component';
+import type { RenderCallbackParams } from '../types/form';
 import { isFunction } from '@/utils/is';
 
 export type FormState = ReturnType<typeof useFormState>;

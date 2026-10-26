@@ -36,7 +36,7 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue';
   import { EditOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons-vue';
-  import { useTableContext } from '../../hooks';
+  import { useTableContext } from '../../hooks/useTableContext';
   import type { PropType } from 'vue';
   import type { CustomRenderParams, EditableType } from '@/components/core/dynamic-table/src/types';
   import { schemaFormItemProps, SchemaFormItem } from '@/components/core/schema-form';

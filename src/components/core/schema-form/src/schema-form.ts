@@ -9,7 +9,7 @@ import type {
 } from 'vue';
 import type { FieldMapToTime, FormSchema, RowProps } from './types/form';
 import type { ButtonProps } from '@/components/basic/button';
-import type { TableActionType } from '@/components/core/dynamic-table';
+import type { TableActionType } from '@/components/core/dynamic-table/src/types/tableAction';
 import { isObject } from '@/utils/is';
 
 export const aFormPropKeys = Object.keys(formProps());

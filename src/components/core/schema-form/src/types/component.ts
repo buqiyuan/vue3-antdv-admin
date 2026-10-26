@@ -1,6 +1,21 @@
-import type { CSSProperties, WatchOptions } from 'vue';
-import type { RenderCallbackParams } from './form';
+import type { CSSProperties, ComputedRef, WatchOptions } from 'vue';
 import type { ComponentMapProps, ComponentType } from '../componentMap';
+
+/**
+ * 组件 `request` 回调能拿到的字段。
+ * 不引用 `form.ts` 的 `RenderCallbackParams`，避免组件类型和表单 schema 互相导入。
+ * 调用方如果需要完整字段，仍应把参数标成 `RenderCallbackParams`。
+ */
+export interface ComponentRequestParams {
+  schema: ComputedRef<Recordable>;
+  formModel: Recordable;
+  field: string;
+  values: any;
+  formInstance: Recordable;
+  tableInstance?: Recordable;
+  tableRowKey?: Key;
+  slotData?: Recordable;
+}
 
 export type { ComponentType };
 
@@ -8,11 +23,11 @@ type ColSpanType = number | string;
 
 /** 组件异步请求配置 */
 type RequestConfig =
-  | PromiseFn<RenderCallbackParams, any>
+  | PromiseFn<ComponentRequestParams, any>
   | {
       /** 指定监听的字段名, 当该字段值发生变化时会调用 callback */
       watchFields: string[];
-      callback: PromiseFn<RenderCallbackParams, any>;
+      callback: PromiseFn<ComponentRequestParams, any>;
       options?: WatchOptions;
       /** debounce 请求防抖 */
       wait?: number;
