@@ -3,6 +3,7 @@ import NProgress from 'nprogress';
 import 'nprogress/css/nprogress.css';
 import { Modal } from 'ant-design-vue';
 import { LOGIN_NAME, PAGE_NOT_FOUND_NAME, REDIRECT_NAME } from './constant';
+import { replayRegisteredRoute } from './routeLocation';
 import type { WhiteNameList } from './constant';
 import type { Router, RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
@@ -36,7 +37,9 @@ export function createRouterGuards(router: Router, whiteNameList: WhiteNameList)
           }
           // 解决警告：No match found for location with path "XXXXXXX"
           if (to.name === PAGE_NOT_FOUND_NAME) {
-            next({ path: to.fullPath, query: to.query, replace: true });
+            // fullPath 里已经带了 query/hash。把它当成 path 再单独传 query，
+            // hash 会丢掉，query 也依赖 vue-router 版本是否还解析 path 里的 search。
+            next(replayRegisteredRoute(to));
           }
           // 如果该路由不存在，可能是动态注册的路由，它还没准备好，需要再重定向一次到该路由
           else if (!hasRoute) {

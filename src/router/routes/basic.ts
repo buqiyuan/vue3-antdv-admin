@@ -1,6 +1,7 @@
 import { RouterView, type RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_NAME, REDIRECT_NAME } from '@/router/constant';
 import { getRouter } from '@/router/navigation';
+import { resolveRedirectTarget } from '@/router/routeLocation';
 
 /**
  * 重定向路由 主要用于刷新当前页面
@@ -23,7 +24,7 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
         hideInMenu: true,
       },
       beforeEnter: (to) => {
-        const { params, query } = to;
+        const { params, query, hash } = to;
         const { path, redirectType = 'path' } = params;
 
         Reflect.deleteProperty(params, '_redirect_type');
@@ -32,18 +33,15 @@ export const REDIRECT_ROUTE: RouteRecordRaw = {
         const _path = Array.isArray(path) ? path.join('/') : path;
         setTimeout(() => {
           const router = getRouter();
-          if (redirectType === 'name') {
-            router.replace({
-              name: _path,
+          router.replace(
+            resolveRedirectTarget({
+              pathParam: _path,
+              redirectType: String(redirectType),
               query,
+              hash,
               params,
-            });
-          } else {
-            router.replace({
-              path: _path.startsWith('/') ? _path : `/${_path}`,
-              query,
-            });
-          }
+            }),
+          );
         });
         return true;
       },

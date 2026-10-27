@@ -38,7 +38,8 @@ export const useEditable = (payload: UseEditablePayload) => {
   const setEditFormModel = (recordKey: Key, editValue: Recordable) => {
     Reflect.set(editFormModel.value, recordKey, editValue);
     nextTick(() => {
-      editTableFormRef.value?.setFormModel(recordKey, editValue);
+      // 数组路径把 rowKey 当成一个字面量字段，点号不会再被 lodash 拆开。
+      editTableFormRef.value?.setFormModel([recordKey], editValue);
     });
   };
 
@@ -135,7 +136,7 @@ export const useEditable = (payload: UseEditablePayload) => {
     );
 
     nextTick(() => {
-      editTableFormRef.value?.delFormModel?.(recordKey);
+      editTableFormRef.value?.delFormModel?.([recordKey]);
     });
 
     editableRowKeys.value.delete(recordKey);

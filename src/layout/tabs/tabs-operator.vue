@@ -54,11 +54,14 @@
 
   /** 刷新页面 */
   const reloadPage = () => {
+    const current = unref(route);
     router.replace({
       name: REDIRECT_NAME,
       params: {
-        path: unref(route).fullPath,
+        path: current.path,
       },
+      query: current.query,
+      hash: current.hash,
     });
   };
 
