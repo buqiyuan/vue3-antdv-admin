@@ -1,0 +1,1 @@
+import{H as e,g as t}from"./runtime-core.esm-bundler-XFvtJ1_i.js";import{h as n}from"./index-jmB6E9Qy.js";var r={};function i(n,r){return e(),t(`div`,null,` 个人中心 `)}var a=n(r,[[`render`,i]]);export{a as default};

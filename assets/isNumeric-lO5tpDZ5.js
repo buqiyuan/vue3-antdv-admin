@@ -1,0 +1,1 @@
+var e=e=>!isNaN(parseFloat(e))&&isFinite(e);export{e as t};

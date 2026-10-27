@@ -1,0 +1,1 @@
+import{c as e,s as t}from"./_Map-VqvNan0D.js";var n=`[object Number]`;function r(r){return typeof r==`number`||t(r)&&e(r)==n}export{r as t};

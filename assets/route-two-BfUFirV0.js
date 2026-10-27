@@ -1,0 +1,1 @@
+import{C as e,H as t,g as n,p as r,x as i}from"./runtime-core.esm-bundler-XFvtJ1_i.js";import{B as a}from"./index-jmB6E9Qy.js";var o=e({name:`DemosNestedRoutesTwo`,__name:`route-two`,setup(e){return(e,o)=>{let s=a;return t(),n(`div`,null,[o[0]||=r(`div`,null,`路由二`,-1),i(s)])}}});export{o as default};
