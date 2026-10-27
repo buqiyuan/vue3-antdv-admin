@@ -9,6 +9,11 @@ peerDependencyRules:
     vite: '*'
   allowAny:
     - vite
+# vite-plugin-svg-icons@2.0.1 imports fast-glob without declaring it.
+packageExtensions:
+  vite-plugin-svg-icons:
+    dependencies:
+      fast-glob: ^3.3.3
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@1.4.0
   vite-plus: 1.4.0
