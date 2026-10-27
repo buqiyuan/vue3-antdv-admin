@@ -51,7 +51,12 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies
+        # husky 的 prepare 会把 core.hooksPath 指到 .husky/_，并写入 pre-push。
+        # hub-mirror-action 随后无条件执行 git lfs install（lfs 输入控制不了这一步），
+        # 遇到已有钩子会以退出码 2 失败。CI 不需要 git 钩子，安装时跳过 husky。
         run: pnpm i --frozen-lockfile
+        env:
+          HUSKY: "0"
 
       - name: Build
         run: pnpm build
