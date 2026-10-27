@@ -7,12 +7,13 @@ import { cloneDeep, debounce, isEqual } from 'lodash-es'
 import { computed, isVNode, nextTick, toRefs, unref, watch } from 'vue'
 import BasicHelp from '@/components/basic/basic-help/index.vue'
 import { useI18n } from '@/hooks/useI18n'
-import { isArray, isBoolean, isFunction, isNull, isObject, isString } from '@/utils/is'
+import { isBoolean, isFunction, isNull, isObject, isString } from '@/utils/is'
 import { componentMap } from './componentMap'
 import { createPlaceholderMessage } from './helper'
 import { useFormContext } from './hooks/useFormContext'
 import { useItemLabelWidth } from './hooks/useLabelWidth'
 import { schemaFormItemProps } from './schema-form-item'
+import { resolveFieldNamePath } from './utils/fieldPath'
 
 defineOptions({
   name: 'SchemaFormItem',
@@ -33,7 +34,7 @@ const { schema } = toRefs(props)
 const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef)
 
 const namePath = computed<string[]>(() => {
-  return isArray(schema.value.field) ? schema.value.field : schema.value.field.split('.')
+  return resolveFieldNamePath(schema.value.field, props.tableRowKey)
 })
 
 const modelValue = computed({
@@ -41,9 +42,9 @@ const modelValue = computed({
     return namePath.value.reduce((prev, field) => prev?.[field], props.formModel)
   },
   set(val) {
-    const namePath = schema.value.field.split('.')
-    const prop = namePath.pop()!
-    const target = namePath.reduce((prev, field) => (prev[field] ??= {}), props.formModel)
+    const segments = resolveFieldNamePath(schema.value.field, props.tableRowKey)
+    const prop = segments.pop()!
+    const target = segments.reduce((prev, field) => (prev[field] ??= {}), props.formModel)
     target[prop] = val
     emit('update:formModel', props.formModel)
   },

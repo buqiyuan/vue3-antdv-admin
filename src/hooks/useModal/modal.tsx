@@ -3,6 +3,7 @@ import { omit } from 'lodash-es';
 import type { HookModalProps } from './types';
 import { isFunction } from '@/utils/is';
 import { DraggableModal } from '@/components/core/draggable-modal';
+import { confirmModalOk } from './confirmModalOk';
 
 export type MyModalInstance = InstanceType<typeof MyModal>;
 
@@ -56,10 +57,10 @@ export const MyModal = defineComponent({
     const handleConfirm = async (e: MouseEvent) => {
       confirmLoading.value = true;
       try {
-        await unref(getProps)?.onOk?.(e);
-        setVisible(false);
-      } catch (error) {
-        return Promise.reject(error);
+        const shouldClose = await confirmModalOk(unref(getProps)?.onOk, e);
+        if (shouldClose) {
+          setVisible(false);
+        }
       } finally {
         confirmLoading.value = false;
       }

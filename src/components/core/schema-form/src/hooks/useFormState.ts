@@ -1,5 +1,6 @@
 import { computed, reactive, ref, unref, watch, useAttrs } from 'vue';
-import { isUndefined, set, cloneDeep } from 'lodash-es';
+import { isUndefined, cloneDeep } from 'lodash-es';
+import { setFieldValue } from '../utils/fieldPath';
 import type { DefineComponent } from 'vue';
 import type { AdvanceState } from '../types/hooks';
 import type { SchemaFormProps } from '../schema-form';
@@ -66,7 +67,7 @@ export const useFormState = (props: SchemaFormProps) => {
           originComponentPropsFnMap.set(item.field, item.componentProps);
         }
         if (!isUndefined(item.defaultValue)) {
-          set(defaultFormValues, item.field, item.defaultValue);
+          setFieldValue(defaultFormValues, item.field, item.defaultValue);
         }
       });
     },

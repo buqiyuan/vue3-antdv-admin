@@ -1,7 +1,8 @@
 import { toRaw, unref } from 'vue';
-import { set, unset, isNil, uniqBy } from 'lodash-es';
+import { isNil, uniqBy } from 'lodash-es';
 import dayjs from 'dayjs';
 import { dateItemType, handleInputNumberValue } from '../helper';
+import { setFieldValue, unsetFieldValue } from '../utils/fieldPath';
 import type { SchemaFormEmitFn, SchemaFormProps } from '../schema-form';
 import type { FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
@@ -83,17 +84,21 @@ export const useFormMethods = (payload: UseFormMethodsPayload) => {
             for (const ele of value) {
               arr.push(ele ? dayjs(ele) : null);
             }
-            set(formModel, key, arr);
+            setFieldValue(formModel, key, arr);
           } else {
             const { componentProps } = schema || {};
             let _props = componentProps as any;
             if (isFunction(componentProps)) {
               _props = _props({ formPropsRef, formModel });
             }
-            set(formModel, key, value ? (_props?.valueFormat ? value : dayjs(value)) : null);
+            setFieldValue(
+              formModel,
+              key,
+              value ? (_props?.valueFormat ? value : dayjs(value)) : null,
+            );
           }
         } else {
-          set(formModel, key, value);
+          setFieldValue(formModel, key, value);
         }
         validKeys.push(key);
       }
@@ -151,7 +156,7 @@ export const useFormMethods = (payload: UseFormMethodsPayload) => {
       if (isString(field)) {
         const index = schemaList.findIndex((schema) => schema.field === field);
         if (index !== -1) {
-          unset(formModel, field);
+          unsetFieldValue(formModel, field);
           schemaList.splice(index, 1);
         }
       }
@@ -253,7 +258,7 @@ export const useFormMethods = (payload: UseFormMethodsPayload) => {
     }
 
     Object.keys(formModel).forEach((key) => {
-      set(formModel, key, defaultFormValues[key]);
+      setFieldValue(formModel, key, defaultFormValues[key]);
     });
 
     emit('reset', formModel);
@@ -278,18 +283,18 @@ export const useFormMethods = (payload: UseFormMethodsPayload) => {
   }
 
   // 设置某个字段的值
-  const setFormModel = (key: Key, value: any) => {
-    set(formModel, key, value);
-    set(cacheFormModel, key, value);
+  const setFormModel = (key: Key | Key[], value: any) => {
+    setFieldValue(formModel, key, value);
+    setFieldValue(cacheFormModel, key, value);
     const { validateTrigger } = unref(getFormProps);
     if (!validateTrigger || validateTrigger === 'change') {
       schemaFormRef.value?.validateFields([key]);
     }
   };
 
-  // 删除某个字段
-  const delFormModel = (key: Key) => {
-    return unset(formModel, key);
+  // 删除某个字段。数组路径的每一段都是字面量，避免 rowKey 里的点被当成嵌套路径。
+  const delFormModel = (key: Key | Key[]) => {
+    return unsetFieldValue(formModel, key);
   };
 
   const setSchemaFormProps = (formProps: Partial<SchemaFormProps>) => {
@@ -335,7 +340,7 @@ export const useFormMethods = (payload: UseFormMethodsPayload) => {
         }
       }
 
-      set(res, key, value);
+      setFieldValue(res, key, value);
     }
     return handleRangeTimeValue(res);
   }
