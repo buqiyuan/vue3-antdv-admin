@@ -14,7 +14,7 @@ export default defineComponent({
       <>
         <a-layout-footer class={styles.page_footer}>
           <div class={styles.page_footer_link}>
-            <a href="https://buqiyuan.github.io/vue3-antdv-admin" target="_blank">
+            <a href="https://vue3-antdv-admin.pages.dev" target="_blank">
               在线预览
             </a>
             <a href="https://github.com/buqiyuan/vue3-antdv-admin" target="_blank">

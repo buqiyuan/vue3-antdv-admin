@@ -3,9 +3,9 @@
 基于 Vite+ (`vp`) + Vue 3 + Ant Design Vue 4 + TypeScript 的后台管理系统。开发时代理到公开演示接口 `https://nest-admin-api.pages.dev`。
 
 - 账号：admin，密码：a123456
-- [在线预览](http://buqiyuan.gitee.io/vue3-antdv-admin/)
+- [在线预览](https://vue3-antdv-admin.pages.dev/)
 - [项目文档](https://buqiyuan.github.io/vue3-antdv-admin-docs/)
-- [swagger 文档](https://nest-api.buqiyuan.site/api-docs/)
+- [swagger 文档](https://nest-admin-api.pages.dev/api-docs/)
 - [后端仓库地址](https://github.com/buqiyuan/nest-admin)
 - [gitee 地址](https://gitee.com/buqiyuan/vue3-antdv-admin)
 - 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
