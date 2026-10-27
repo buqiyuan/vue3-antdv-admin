@@ -4,9 +4,25 @@ import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
 import type { Component, ComputedRef, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ColEx, ComponentType, ComponentProps } from './component';
+import type { TableActionType } from '@/components/core/dynamic-table/src/types/tableAction';
 
-import type { TableActionType } from '@/components/core/dynamic-table';
-import type { SchemaFormInstance } from '../hooks/useFormContext';
+/**
+ * 渲染回调里用到的表单动作。
+ * 不从 hooks 引入 `SchemaFormInstance`，避免 schema 类型和表单实现互相引用。
+ * 真实实例仍由 `useFormContext()` 以 `SchemaFormInstance` 提供，结构上兼容本接口。
+ */
+export interface SchemaFormAction {
+  setFieldsValue: (values: Recordable) => Promise<unknown>;
+  updateSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => void;
+  resetSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
+  appendSchemaByField: (schema: FormSchema, prefixField?: string, first?: boolean) => Promise<void>;
+  removeSchemaByField: (fields: string | string[]) => Promise<void>;
+  validateFields: (nameList?: any) => Promise<any>;
+  validate: (nameList?: any) => Promise<any>;
+  clearValidate: (name?: string | string[]) => Promise<void>;
+  resetFields: () => Promise<void>;
+  [key: string]: any;
+}
 
 export type { RowProps };
 
@@ -34,7 +50,7 @@ export interface RenderCallbackParams<
   /** 非响应式的表单数据对象(最终表单要提交的数据) */
   values: any;
   /** 动态表单实例 */
-  formInstance: SchemaFormInstance;
+  formInstance: SchemaFormAction;
   /** 动态表格实例 */
   tableInstance?: TableActionType;
   /** 动态表格rowKey */

@@ -20,8 +20,8 @@
     "./*": "./*"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && npm run build:dts",
+    "dev": "vp dev",
+    "build": "vp build && npm run build:dts",
     "build:dts": "tsc -p tsconfig.dts.json || true"
   },
   "keywords": [
@@ -46,7 +46,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "typescript": "~5.5.4"
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

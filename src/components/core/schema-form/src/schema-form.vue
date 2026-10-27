@@ -40,7 +40,10 @@
   import { Form, Row } from 'ant-design-vue';
   import SchemaFormItem from './schema-form-item.vue';
   import FormAction from './components/form-action.vue';
-  import { createFormContext, useFormState, useFormMethods, useAdvanced } from './hooks/';
+  import { createFormContext } from './hooks/useFormContext';
+  import { useFormState } from './hooks/useFormState';
+  import { useFormMethods } from './hooks/useFormMethods';
+  import { useAdvanced } from './hooks/useAdvanced';
   import { schemaFormProps, schemaFormEmits, aFormPropKeys } from './schema-form';
 
   defineOptions({
@@ -60,6 +63,7 @@
     getFormActionBindProps,
     formPropsRef,
   } = formState;
+  void schemaFormRef;
 
   // 表单内部方法
   const formMethods = useFormMethods({ formState, emit });

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* oxlint-disable @typescript-eslint/ban-ts-comment */
 import { randomUUID } from 'node:crypto';
 import { HttpHandler, handleRequest } from 'msw';
 import { Emitter } from 'strict-event-emitter';
@@ -13,7 +13,7 @@ async function transformReadableStramToUint8Array(stream: ReadableStream): Promi
   const reader = stream.getReader();
   const chunks: Uint8Array[] = [];
 
-  // eslint-disable-next-line no-constant-condition
+  // oxlint-disable-next-line no-constant-condition
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;

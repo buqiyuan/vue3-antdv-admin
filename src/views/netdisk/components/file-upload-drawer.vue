@@ -41,6 +41,7 @@
   const emit = defineEmits(['changed']);
 
   const uploadRef = ref<InstanceType<typeof Upload.Dragger>>();
+  void uploadRef;
   const loading = ref(false);
   const visible = ref(false);
   const path = ref('');

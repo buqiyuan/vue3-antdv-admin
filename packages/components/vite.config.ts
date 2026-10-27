@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { defineConfig, type PluginOption } from 'vite';
+import { defineConfig, type PluginOption, lazyPlugins } from 'vite-plus';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import Components from 'unplugin-vue-components/vite';
@@ -37,29 +37,10 @@ export default defineConfig({
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: ['vue', 'ant-design-vue'],
-      output: {
-        // minifyInternalExports: false,
-        //   // Provide global variables to use in the UMD build
-        //   // for externalized deps
-        //   globals: {
-        //     vue: 'Vue',
-        //     'ant-design-vue': 'AntDesignVue',
-        //   },
-        // manualChunks: {
-        //   library: ['lodash-es', 'vue-i18n'],
-        // },
-        manualChunks(id) {
-          if (id.includes('/src/locales/helper.ts')) {
-            console.log('id: ', id);
-            return 'vendor';
-          } else if (id.includes('ant-design-vue')) {
-            return 'vendor';
-          }
-        },
-      },
+      output: {},
     },
   },
-  plugins: [
+  plugins: lazyPlugins(() => [
     vue(),
     vueJsx(),
     Unocss(),
@@ -80,7 +61,7 @@ export default defineConfig({
         },
       ],
     }),
-  ],
+  ]),
 });
 
 function myPlugin(): PluginOption {

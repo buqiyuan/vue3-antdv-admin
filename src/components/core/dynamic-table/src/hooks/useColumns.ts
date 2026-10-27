@@ -1,15 +1,16 @@
 import { unref, h, useSlots, ref, watchEffect } from 'vue';
 import { cloneDeep, isFunction, mergeWith } from 'lodash-es';
 import { Input } from 'ant-design-vue';
-import { EditableCell } from '../components';
+import EditableCell from '../components/editable-cell/index.vue';
 import { ColumnKeyFlag, columnKeyFlags, type CustomRenderParams } from '../types/column';
 import tableConfig from '../dynamic-table.config';
 import type { TableState } from './useTableState';
 import type { TableMethods } from './useTableMethods';
-import type { DynamicTableProps, TableColumn } from '@/components/core/dynamic-table';
-import type { FormSchema } from '@/components/core/schema-form';
+import type { DynamicTableProps } from '../dynamic-table';
+import type { TableColumn } from '../types/column';
+import type { FormSchema } from '@/components/core/schema-form/src/types/form';
 import { isBoolean } from '@/utils/is';
-import { TableAction } from '@/components/core/dynamic-table/src/components';
+import TableAction from '../components/table-action.vue';
 
 interface UseColumnsPayload {
   tableState: TableState;

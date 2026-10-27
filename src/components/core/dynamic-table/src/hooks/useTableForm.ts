@@ -1,7 +1,8 @@
 import type { ComputedRef } from 'vue'
 import type { TableMethods } from './useTableMethods'
 import type { TableState } from './useTableState'
-import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form'
+import type { FormSchema } from '@/components/core/schema-form/src/types/form'
+import type { SchemaFormProps } from '@/components/core/schema-form/src/schema-form'
 import { computed, unref, useSlots } from 'vue'
 import { ColumnKeyFlag } from '../types/column'
 

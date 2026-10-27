@@ -17,8 +17,8 @@
     }
   },
   "scripts": {
-    "dev": "rimraf dist && tsup --watch",
-    "build": "rimraf dist && tsup"
+    "dev": "rimraf dist && vp pack --watch",
+    "build": "rimraf dist && vp pack"
   },
   "keywords": [
     "msw",
@@ -47,7 +47,7 @@
     "strict-event-emitter": "^0.5.1"
   },
   "devDependencies": {
-    "tsup": "^8.3.0"
+    "vite-plus": "catalog:"
   },
   "peerDependencies": {
     "msw": "^2.3.0"

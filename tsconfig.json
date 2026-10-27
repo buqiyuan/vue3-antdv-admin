@@ -7,13 +7,12 @@
     "lib": ["dom", "esnext", "DOM.Iterable"],
     "noLib": false, // 不排除默认库文件（比如 lib.d.ts）的类型检查。
     "useDefineForClassFields": true,
-    "experimentalDecorators": true, // 启用对装饰器的实验性支持。
-    "baseUrl": ".",
+    "experimentalDecorators": true,
     "module": "ESNext",
     /*  Bundler mode | 编译相关 */
     "moduleResolution": "bundler",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "types": ["node", "vite/client"],

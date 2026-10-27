@@ -4,8 +4,7 @@ import qs from 'qs';
 import { message as $message, Modal } from 'ant-design-vue';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ResultEnum } from '@/enums/httpEnum';
-import { useUserStore } from '@/store/modules/user';
-import { useSSEStore } from '@/store/modules/sse';
+import { accessToken, notifyUnauthorized, serverConnected } from '@/store/runtime';
 
 export interface RequestOptions extends AxiosRequestConfig {
   /** 是否直接将数据从响应中提取出，例如直接返回 res.data，而忽略 res.code 等信息 */
@@ -28,12 +27,9 @@ export const baseApiUrl = import.meta.env.VITE_BASE_API_URL;
 /** mock请求路径前缀 */
 // const baseMockUrl = import.meta.env.VITE_MOCK_API;
 
-const controller = new AbortController();
 const service = axios.create({
   baseURL: baseApiUrl,
-  // adapter: 'fetch',
   timeout: 10000,
-  signal: controller.signal,
   paramsSerializer(params) {
     return qs.stringify(params, { arrayFormat: 'brackets' });
   },
@@ -41,16 +37,13 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    const userStore = useUserStore();
-    const token = userStore.token;
-    if (token && config.headers) {
-      // 请求头token信息，请根据实际情况进行修改
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
+    const token = accessToken.value;
+    if (token && config.headers)
+      config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => {
-    Promise.reject(error);
+    return Promise.reject(error);
   },
 );
 
@@ -63,14 +56,13 @@ service.interceptors.response.use(
       $message.error(res.message || UNKNOWN_ERROR);
       // Illegal token
       if ([1101, 1105].includes(res.code)) {
-        // to re-login
         Modal.confirm({
           title: '警告',
           content: res.message || '账号异常，您可以取消停留在该页上，或重新登录',
           okText: '重新登录',
           cancelText: '取消',
           onOk: () => {
-            localStorage.clear();
+            notifyUnauthorized();
             window.location.reload();
           },
         });
@@ -80,11 +72,10 @@ service.interceptors.response.use(
       const error = new Error(res.message || UNKNOWN_ERROR) as Error & { code: any };
       error.code = res.code;
       return Promise.reject(error);
-    } else {
-      const sseStore = useSSEStore();
-      sseStore.setServerConnectStatus(true);
-      return response;
     }
+
+    serverConnected.value = true;
+    return response;
   },
   (error) => {
     if (!(error instanceof CanceledError)) {

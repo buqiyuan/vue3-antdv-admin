@@ -1,5 +1,6 @@
 import { NavigationFailureType, isNavigationFailure } from 'vue-router';
-import NProgress from 'nprogress'; // progress bar
+import NProgress from 'nprogress';
+import 'nprogress/css/nprogress.css';
 import { Modal } from 'ant-design-vue';
 import { LOGIN_NAME, PAGE_NOT_FOUND_NAME, REDIRECT_NAME } from './constant';
 import type { WhiteNameList } from './constant';

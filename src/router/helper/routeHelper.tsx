@@ -3,7 +3,7 @@ import type { RouteMeta, RouteRecordRaw } from 'vue-router';
 import IFramePage from '@/components/basic/iframe-page';
 import { warn } from '@/utils/log';
 import { rootRoute } from '@/router/routes';
-import router from '@/router';
+import { getRouter } from '@/router/navigation';
 import basic from '@/router/routes/basic';
 import routeModules from '@/router/routes/modules';
 import { uniqueSlash } from '@/utils/urlUtils';
@@ -67,6 +67,7 @@ export const generateDynamicRoutes = (menus: RouteRecordRaw[]) => {
   const allRoute = [...routes, ...basic];
   genNamePathForRoutes(allRoute);
   rootRoute.children = allRoute;
+  const router = getRouter();
   router.addRoute(rootRoute);
   console.log('routes', router.getRoutes());
   return routes;

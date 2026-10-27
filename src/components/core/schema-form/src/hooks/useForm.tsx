@@ -48,7 +48,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
     },
   });
 
-  const SchemaFormRender: FunctionalComponent<SchemaFormProps> = (compProps, { attrs, slots }) => {
+  const SchemaFormRender: FunctionalComponent<Partial<SchemaFormProps>> = (compProps, { attrs, slots }) => {
     return (
       <SchemaForm
         ref={formRef}

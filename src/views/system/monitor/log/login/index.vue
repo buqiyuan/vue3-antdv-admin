@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { TableColumn } from '@/components/core/dynamic-table'
-import { Alert, Tag } from 'ant-design-vue'
+import { Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import Api from '@/api/'
 import { useTable } from '@/components/core/dynamic-table'

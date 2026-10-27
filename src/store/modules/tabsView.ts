@@ -8,7 +8,7 @@ import {
 import { useKeepAliveStore } from './keepAlive';
 import { useLayoutSettingStore } from './layoutSetting';
 import { store } from '@/store';
-import router from '@/router';
+import { getRouter } from '@/router/navigation';
 import { LOGIN_NAME, REDIRECT_NAME, PAGE_NOT_FOUND_NAME } from '@/router/constant';
 
 /** 不需要出现在标签页中的路由 */
@@ -23,7 +23,7 @@ export const useTabsViewStore = defineStore(
 
     const getTabsList = computed(() => {
       return tabsList.value.filter((item) => {
-        return item && !isInRouteExcludes(item) && router.hasRoute(item.name!);
+        return item && !isInRouteExcludes(item) && getRouter().hasRoute(item.name!);
       });
     });
     /** 当前activity tab */
@@ -41,6 +41,7 @@ export const useTabsViewStore = defineStore(
     /** 将已关闭的标签页的组件从keep-alive中移除 */
     const delCompFromClosedTabs = (closedTabs: RouteLocationNormalizedLoaded[]) => {
       const keepAliveStore = useKeepAliveStore();
+      const router = getRouter();
       const routes = router.getRoutes();
       const compNames = closedTabs.reduce<string[]>((prev, curr) => {
         if (curr.name && router.hasRoute(curr.name)) {
@@ -100,7 +101,7 @@ export const useTabsViewStore = defineStore(
       // 如果关闭的tab就是当前激活的tab，则重定向页面
       if (isDelCurrentTab) {
         const currentRoute = tabsList.value[Math.max(0, tabsList.value.length - 1)];
-        router.push(currentRoute);
+        getRouter().push(currentRoute);
       }
     };
     /** 关闭全部 */
@@ -110,7 +111,7 @@ export const useTabsViewStore = defineStore(
     };
     // 更新tab标题
     const updateTabTitle = (title: string) => {
-      const currentRoute = router.currentRoute.value;
+      const currentRoute = getRouter().currentRoute.value;
       const upTarget = tabsList.value.find((item) => item.fullPath === currentRoute.fullPath);
       if (upTarget) {
         upTarget.meta.title = title;
