@@ -20,7 +20,7 @@ const __APP_INFO__ = {
   lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
 
-const DEMO_API_ORIGIN = 'https://nest-admin-d8l.pages.dev';
+const DEMO_API_ORIGIN = 'https://nest-admin-api.pages.dev';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, CWD, '');

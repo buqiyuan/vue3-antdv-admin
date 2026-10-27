@@ -1,6 +1,6 @@
 # vue3-antdv-admin
 
-基于 Vite+ (`vp`) + Vue 3 + Ant Design Vue 4 + TypeScript 的后台管理系统。开发时代理到公开演示接口 `https://nest-admin-d8l.pages.dev`。
+基于 Vite+ (`vp`) + Vue 3 + Ant Design Vue 4 + TypeScript 的后台管理系统。开发时代理到公开演示接口 `https://nest-admin-api.pages.dev`。
 
 - 账号：admin，密码：a123456
 - [在线预览](http://buqiyuan.gitee.io/vue3-antdv-admin/)
