@@ -12,15 +12,19 @@ import mkcert from 'vite-plugin-mkcert';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import VueDevTools from 'vite-plugin-vue-devtools';
 import pkg from './package.json';
+import { DEMO_API_ORIGIN, isBlankApiUrlEnv } from './src/utils/baseApi';
 
 const CWD = process.cwd();
+
+// A blank platform env wins over `.env.production` in Vite. Drop it so the file
+// is used. Non-empty custom values, including dev `/api`, stay as set.
+// If production still has no origin, `src/utils/baseApiUrl.ts` uses DEMO_API_ORIGIN.
+if (isBlankApiUrlEnv(process.env.VITE_BASE_API_URL)) delete process.env.VITE_BASE_API_URL;
 
 const __APP_INFO__ = {
   pkg,
   lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
-
-const DEMO_API_ORIGIN = 'https://nest-admin-api.pages.dev';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, CWD, '');
