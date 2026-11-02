@@ -1,0 +1,1 @@
+import{yt as e}from"./runtime-core.esm-bundler-XFvtJ1_i.js";var t=e(),n=e(),r;function i(e){r=e}function a(){r?.()}var o=e(!0),s=new Set;function c(e){return s.add(e),()=>{s.delete(e)}}function l(){s.forEach(e=>e())}export{i as a,c as i,n,a as o,l as r,o as s,t};

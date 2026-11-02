@@ -1,0 +1,1 @@
+var e=`/vue3-antdv-admin/assets/logo-BSiV-LMt.png`;export{e as t};
