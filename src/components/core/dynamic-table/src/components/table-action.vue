@@ -4,7 +4,7 @@ import type { FunctionalComponent } from 'vue'
 import type { CustomRenderParams } from '../types/column'
 import type { ActionItem } from '../types/column'
 import { Popconfirm, Tooltip } from 'ant-design-vue'
-import { isFunction, isObject, isString } from 'lodash-es'
+import { isFunction, isObject, isString, omit } from 'lodash-es'
 import { computed, h, ref } from 'vue'
 import { Icon } from '@/components/basic/icon'
 import { hasPermission } from '@/permission'
@@ -97,12 +97,12 @@ const getActions = computed(() => {
         }
         setClickFnFlag(item.onClick)
       }
-      if (item.icon) {
-        item.icon = <Icon icon={item.icon} class={{ 'mr-1': !!item.label }} />
-      }
       return item
     })
 })
+
+/** 图标 vnode 必须在渲染时创建。写进 computed 会进入当前 block，再次计算时把已挂载的 vnode 再包一层，操作列图标会在保存或权限刷新后消失。 */
+const getButtonProps = (action: ActionItem) => omit(action, ['icon'])
 
 const hasClickFnFlag = (clickFn: Function) => {
   return Reflect.get(clickFn, clickFnFlag)
@@ -132,8 +132,11 @@ const getTooltip = (data: ActionItem['tooltip']): TooltipProps => {
         type="link"
         size="small"
         :loading="loadingMap.get(getKey(actionItem, index))"
-        v-bind="actionItem"
+        v-bind="getButtonProps(actionItem)"
       >
+        <template v-if="actionItem.icon" #icon>
+          <Icon :icon="actionItem.icon" :class="{ 'mr-1': !!actionItem.label }" />
+        </template>
         {{ actionItem.label }}
       </a-button>
     </ActionItemRender>
