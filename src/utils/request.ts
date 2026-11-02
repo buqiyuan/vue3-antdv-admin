@@ -5,6 +5,7 @@ import { message as $message, Modal } from 'ant-design-vue';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ResultEnum } from '@/enums/httpEnum';
 import { accessToken, notifyUnauthorized, serverConnected } from '@/store/runtime';
+import { baseApiUrl } from './baseApiUrl';
 
 export interface RequestOptions extends AxiosRequestConfig {
   /** 是否直接将数据从响应中提取出，例如直接返回 res.data，而忽略 res.code 等信息 */
@@ -22,8 +23,8 @@ export interface RequestOptions extends AxiosRequestConfig {
 
 const UNKNOWN_ERROR = '未知错误，请重试';
 
-/** 真实请求的路径前缀 */
-export const baseApiUrl = import.meta.env.VITE_BASE_API_URL;
+/** 真实请求的路径前缀。生产构建在环境变量为空时回退到公开演示接口。 */
+export { baseApiUrl };
 /** mock请求路径前缀 */
 // const baseMockUrl = import.meta.env.VITE_MOCK_API;
 
@@ -38,8 +39,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     const token = accessToken.value;
-    if (token && config.headers)
-      config.headers.Authorization = `Bearer ${token}`;
+    if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => {

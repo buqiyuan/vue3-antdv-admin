@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { useIdle } from '@vueuse/core';
 import mitt from 'mitt';
 import { accessToken, currentUserId, requestPermsRefresh, serverConnected } from '@/store/runtime';
+import { baseApiUrl } from '@/utils/baseApiUrl';
 import { uniqueSlash } from '@/utils/urlUtils';
 
 export type MessageEvent = {
@@ -50,9 +51,7 @@ export const useSSEStore = defineStore('sse', () => {
     const uid = currentUserId.value;
     const token = accessToken.value;
     if (!uid || !token) return;
-    const sseUrl = uniqueSlash(
-      `${import.meta.env.VITE_BASE_API_URL}/api/sse/${uid}?token=${token}`,
-    );
+    const sseUrl = uniqueSlash(`${baseApiUrl}/api/sse/${uid}?token=${token}`);
 
     eventSource = new EventSource(sseUrl);
 
