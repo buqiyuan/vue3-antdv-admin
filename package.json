@@ -105,6 +105,7 @@
     "conventional-changelog-cli": "^5.0.0",
     "core-js": "^3.42.0",
     "cross-env": "^10.1.0",
+    "happy-dom": "^20.14.6",
     "husky": "~9.1.7",
     "less": "^4.9.1",
     "lint-staged": "^17.6.0",
@@ -117,8 +118,8 @@
     "vite-plugin-mkcert": "^2.1.0",
     "vite-plugin-svg-icons": "~2.0.1",
     "vite-plugin-vue-devtools": "^8.2.1",
-    "vue-tsc": "~3.3.13",
-    "vite-plus": "catalog:"
+    "vite-plus": "catalog:",
+    "vue-tsc": "~3.3.13"
   },
   "target": "web"
 }
