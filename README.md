@@ -8,7 +8,7 @@
 - [swagger 文档](https://nest-admin-api.pages.dev/api-docs/)
 - [后端仓库地址](https://github.com/buqiyuan/nest-admin)
 - [gitee 地址](https://gitee.com/buqiyuan/vue3-antdv-admin)
-- 根据 JSON 生成 typescript 的工具：[http://json2ts.com/](http://json2ts.com/)
+- 根据 JSON 生成 typescript 的工具：[https://jsonviewertool.com/json-to-typescript](https://jsonviewertool.com/json-to-typescript)
 
 ## 安装使用
 
