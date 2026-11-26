@@ -1,0 +1,1 @@
+import{n as e}from"./request-BB9TwHh8.js";function t(t){return e({url:`/demo/wzry/hero_list`,method:`get`,params:t})}function n(t){return e({url:`/demo/lol/hero_list`,method:`get`,params:t})}function r({id:t}){return e({url:`/demo/lol/hero_info/${t}`,method:`get`})}export{n,t as r,r as t};

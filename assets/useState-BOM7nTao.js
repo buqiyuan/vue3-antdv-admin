@@ -1,0 +1,1 @@
+import{yt as e}from"./runtime-core.esm-bundler-XFvtJ1_i.js";import{d as t}from"./isVisible-DYOTk-Ny.js";var n=((e,n,r)=>{t(e,`[ant-design-vue: ${n}] ${r}`)});function r(t){let n=typeof t==`function`?t():t,r=e(n);function i(e){r.value=e}return[r,i]}export{n,r as t};

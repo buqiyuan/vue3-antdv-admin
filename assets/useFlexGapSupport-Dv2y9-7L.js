@@ -1,0 +1,1 @@
+import{St as e,z as t}from"./runtime-core.esm-bundler-XFvtJ1_i.js";import{n}from"./styleChecker-C3GlOXGI.js";var r=(()=>{let r=e(!1);return t(()=>{r.value=n()}),r});export{r as t};
